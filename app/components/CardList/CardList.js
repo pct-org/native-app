@@ -51,7 +51,7 @@ export default class CardList extends React.Component {
           {title}
         </Typography>
 
-        <ScrollView horizontal>
+        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
           {items.map(item => (
             <Card
               key={item.id}

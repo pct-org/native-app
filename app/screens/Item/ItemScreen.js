@@ -1,6 +1,10 @@
 import React from 'react'
 import { StyleSheet, Text, View, ScrollView, Image, StatusBar, TouchableHighlight } from 'react-native'
 
+import ScrollViewWithHeader from 'components/ScrollViewWithHeader'
+import CoverGradient from 'components/CoverGradient'
+import Typography from 'components/Typography'
+
 const styles = StyleSheet.create({
 
   root: {
@@ -17,8 +21,18 @@ const styles = StyleSheet.create({
   },
 
   mainImage: {
-    height    : '100%',
-    width     : '100%',
+    height: '100%',
+    width : '100%',
+  },
+
+  container: {
+    margin: 10,
+  },
+
+  title: {
+    position: 'absolute',
+    bottom  : 20,
+    left    : 10,
   },
 
 })
@@ -31,7 +45,7 @@ export default class Item extends React.Component {
     return (
       <View style={styles.root}>
 
-        <ScrollView>
+        <ScrollViewWithHeader>
 
           <View style={styles.mainImageContainer}>
             <Image
@@ -39,11 +53,18 @@ export default class Item extends React.Component {
               source={{ uri: item.images.fanart.high }}
             />
 
+            <CoverGradient start={{ x: 0, y: 0.80 }} />
+
+            <Typography
+              style={styles.title}
+              variant={'title'}>{item.title}</Typography>
           </View>
 
-          {/*<Text>{JSON.stringify(item)}</Text>*/}
+          <View style={styles.container}>
+            <Typography variant={'body1'}>{item.summary}</Typography>
+          </View>
 
-        </ScrollView>
+        </ScrollViewWithHeader>
 
       </View>
     )

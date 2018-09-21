@@ -1,8 +1,11 @@
 import React from 'react'
-import { StyleSheet, Text, View, ScrollView, TouchableHighlight, Image, StatusBar } from 'react-native'
+import { StyleSheet, Text, View, ScrollView, Image, StatusBar } from 'react-native'
 
 import CardList from 'components/CardList'
 import MainCover from 'components/MainCover'
+import ScrollViewWithHeader from 'components/ScrollViewWithHeader'
+
+import logoImage from 'images/logo.png'
 
 import * as HomeConstants from './HomeConstants'
 
@@ -11,8 +14,15 @@ const styles = StyleSheet.create({
   root: {
     flex           : 1,
     backgroundColor: '#292929',
+    position       : 'relative',
   },
 
+  logo: {
+    position: 'absolute',
+    width   : 50,
+    height  : 50,
+    top     : 30,
+  },
 })
 
 export default class Home extends React.Component {
@@ -36,7 +46,7 @@ export default class Home extends React.Component {
   }
 
   getMainCover = () => {
-    const movies = this.getMovies()
+    const movies = this.getMovies(false)
 
     if (movies.length > 0) {
       return movies[0]
@@ -49,10 +59,16 @@ export default class Home extends React.Component {
     return []
   }
 
-  getMovies = () => {
+  getMovies = (withSlice = true) => {
     const { modes } = this.props
 
-    return modes[HomeConstants.MODE_MOVIES].items
+    const movies = modes[HomeConstants.MODE_MOVIES].items
+
+    if (withSlice) {
+      return movies.slice(1, 21)
+    }
+
+    return movies
   }
 
   getShows = () => {
@@ -68,23 +84,23 @@ export default class Home extends React.Component {
       )
     }
 
-    const myList = this.getMyList()
-
     return (
       <View style={styles.root}>
-        <StatusBar
-          translucent
-          backgroundColor="rgba(0, 0, 0, 0.20)"
-          animated
-        />
 
         {hasInternet && (
-          <ScrollView>
+          <ScrollViewWithHeader>
 
             <MainCover
               onPress={this.handleItemOpen}
               loading={isLoading}
-              item={this.getMainCover()} />
+              item={this.getMainCover()}>
+
+              <Image
+                style={styles.logo}
+                source={logoImage}
+              />
+
+            </MainCover>
 
             <CardList
               style={{ marginTop: -20 }}
@@ -105,7 +121,7 @@ export default class Home extends React.Component {
               title={'Shows'}
               items={this.getShows()} />
 
-          </ScrollView>
+          </ScrollViewWithHeader>
         )}
 
         {!hasInternet && (

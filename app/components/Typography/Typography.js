@@ -17,6 +17,7 @@ Typography.propTypes = {
     'display1',
     'headline',
     'title',
+    'body1',
   ]),
 }
 
