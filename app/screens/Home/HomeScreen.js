@@ -1,11 +1,10 @@
 import React from 'react'
 import { StyleSheet, Text, View, ScrollView, Image, StatusBar } from 'react-native'
+import Orientation from 'react-native-orientation'
 
 import CardList from 'components/CardList'
 import MainCover from 'components/MainCover'
 import ScrollViewWithHeader from 'components/ScrollViewWithHeader'
-
-import logoImage from 'images/logo.png'
 
 import * as HomeConstants from './HomeConstants'
 
@@ -17,18 +16,26 @@ const styles = StyleSheet.create({
     position       : 'relative',
   },
 
-  logo: {
+/*  logo: {
     position: 'absolute',
     width   : 50,
     height  : 50,
     top     : 30,
-  },
+  },*/
 })
 
 export default class Home extends React.Component {
 
   componentWillMount() {
     this.load()
+  }
+
+  componentDidMount() {
+    Orientation.lockToPortrait()
+  }
+
+  componentWillUnmount() {
+    Orientation.unlockAllOrientations()
   }
 
   load = () => {
@@ -93,14 +100,7 @@ export default class Home extends React.Component {
             <MainCover
               onPress={this.handleItemOpen}
               loading={isLoading}
-              item={this.getMainCover()}>
-
-              <Image
-                style={styles.logo}
-                source={logoImage}
-              />
-
-            </MainCover>
+              item={this.getMainCover()} />
 
             <CardList
               style={{ marginTop: -20 }}

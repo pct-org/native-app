@@ -1,5 +1,6 @@
 import React from 'react'
-import { StyleSheet, Text, View, ScrollView, Image, StatusBar, TouchableHighlight } from 'react-native'
+import { StyleSheet, Text, View, ScrollView, Image, StatusBar, TouchableHighlight, SafeAreaView } from 'react-native'
+import Orientation from 'react-native-orientation'
 
 import ScrollViewWithHeader from 'components/ScrollViewWithHeader'
 import CoverGradient from 'components/CoverGradient'
@@ -39,6 +40,21 @@ const styles = StyleSheet.create({
 
 export default class Item extends React.Component {
 
+  playItem = () => {
+    const { navigation: { navigate, state: { params: item } } } = this.props
+
+    navigate('Player', { magnet: item.torrents['1080p'].url })
+  }
+
+  componentDidMount() {
+    console.log('componentDidMount')
+    Orientation.lockToPortrait()
+  }
+
+  componentWillUnmount() {
+    Orientation.unlockAllOrientations()
+  }
+
   render() {
     const { navigation: { state: { params: item } }, isLoading } = this.props
 
@@ -47,18 +63,22 @@ export default class Item extends React.Component {
 
         <ScrollViewWithHeader>
 
-          <View style={styles.mainImageContainer}>
-            <Image
-              style={styles.mainImage}
-              source={{ uri: item.images.fanart.high }}
-            />
+          <TouchableHighlight
+            onPress={this.playItem}
+            style={styles.mainImageContainer}>
+            <React.Fragment>
+              <Image
+                style={styles.mainImage}
+                source={{ uri: item.images.fanart.high }}
+              />
 
-            <CoverGradient start={{ x: 0, y: 0.80 }} />
+              <CoverGradient start={{ x: 0, y: 0.80 }} />
 
-            <Typography
-              style={styles.title}
-              variant={'title'}>{item.title}</Typography>
-          </View>
+              <Typography
+                style={styles.title}
+                variant={'title'}>{item.title}</Typography>
+            </React.Fragment>
+          </TouchableHighlight>
 
           <View style={styles.container}>
             <Typography variant={'body1'}>{item.summary}</Typography>

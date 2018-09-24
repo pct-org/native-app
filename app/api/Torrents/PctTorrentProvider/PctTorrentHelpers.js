@@ -4,6 +4,10 @@ import type { ImageType, TorrentType, RatingType } from './PctTorrentTypes'
 export const formatImages = (images: ImageType) => {
   const replaceWidthPart = (uri: string, replaceWith: string) => uri.replace('w500', replaceWith)
 
+  if (!images.poster || !images.fanart) {
+    return {}
+  }
+
   return {
     poster: {
       full  : replaceWidthPart(images.poster, 'original'),
