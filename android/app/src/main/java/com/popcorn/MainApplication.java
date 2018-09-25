@@ -3,6 +3,9 @@ package com.popcorn;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.rnfs.RNFSPackage;
+import com.futurepress.staticserver.FPStaticServerPackage;
+import com.googlecast.GoogleCastPackage;
 import com.ghondar.torrentstreamer.*;
 import com.github.yamill.orientation.OrientationPackage;
 import com.brentvatne.react.ReactVideoPackage;
@@ -27,6 +30,9 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new RNFSPackage(),
+            new FPStaticServerPackage(),
+            new GoogleCastPackage(),
             new TorrentStreamerPackage(),
             new OrientationPackage(),
             new ReactVideoPackage(),

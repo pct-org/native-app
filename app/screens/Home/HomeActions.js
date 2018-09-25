@@ -1,5 +1,4 @@
-// @flow
-import Butter from 'api/Butter'
+import Popcorn from 'popcorn-sdk'
 
 import * as HomeConstants from './HomeConstants'
 import * as HomeSelectors from './HomeSelectors'
@@ -41,7 +40,7 @@ export const getItems = (mode, page = 1, givenFilters = {}) => (dispatch, getSta
 
   switch (mode) {
     case HomeConstants.MODE_MOVIES:
-      return Butter.getMovies(page, filters).then(movies => dispatch(fetchedItems(movies, mode))).catch(catchNoCon)
+      return Popcorn.getMovies(page, filters).then(movies => dispatch(fetchedItems(movies, mode))).catch(catchNoCon)
 
     /*case HomeConstants.MODE_SHOWS:
       return Butter.getShows(page, filters).then(shows => dispatch(fetchedItems(shows, mode))).catch(catchNoCon)*/

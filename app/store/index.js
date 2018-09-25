@@ -1,4 +1,4 @@
-import { createStore, applyMiddleware } from 'redux-clazz'
+import { createStore, applyMiddleware } from 'redux'
 import logger from 'redux-logger'
 import thunk from 'redux-thunk'
 

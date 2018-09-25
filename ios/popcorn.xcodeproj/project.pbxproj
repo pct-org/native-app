@@ -40,6 +40,9 @@
 		2C586EFACBE6433E95D9DB91 /* libBVLinearGradient.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0C4E37E04DFE4CF5B4B36F25 /* libBVLinearGradient.a */; };
 		54BD26F7C3D0437CA526A21D /* libRCTVideo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D2770D34CFB949E98D6E8C42 /* libRCTVideo.a */; };
 		F816D7E2313345848A7197D1 /* libRCTOrientation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D3A522A388C7499A826D13B4 /* libRCTOrientation.a */; };
+		318C5D0FF646407B94F524F8 /* libRNGoogleCast.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 247F7BECD5694F94AC1C1E50 /* libRNGoogleCast.a */; };
+		D78B2E8DF4044FBD9697AA4D /* libFPStaticServer.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 23F21816955549748740A9B5 /* libFPStaticServer.a */; };
+		B16B79D21726402190CFA392 /* libRNFS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 246AD9D7784042A78A6829F4 /* libRNFS.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -351,6 +354,12 @@
 		D2770D34CFB949E98D6E8C42 /* libRCTVideo.a */ = {isa = PBXFileReference; name = "libRCTVideo.a"; path = "libRCTVideo.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
 		B1EF992DE2EB4C538F86895E /* RCTOrientation.xcodeproj */ = {isa = PBXFileReference; name = "RCTOrientation.xcodeproj"; path = "../node_modules/react-native-orientation/iOS/RCTOrientation.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
 		D3A522A388C7499A826D13B4 /* libRCTOrientation.a */ = {isa = PBXFileReference; name = "libRCTOrientation.a"; path = "libRCTOrientation.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
+		99D39588CB6F437C9A2E2404 /* RNGoogleCast.xcodeproj */ = {isa = PBXFileReference; name = "RNGoogleCast.xcodeproj"; path = "../node_modules/react-native-google-cast/ios/RNGoogleCast.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
+		247F7BECD5694F94AC1C1E50 /* libRNGoogleCast.a */ = {isa = PBXFileReference; name = "libRNGoogleCast.a"; path = "libRNGoogleCast.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
+		4E077158463349C3B4E3218A /* FPStaticServer.xcodeproj */ = {isa = PBXFileReference; name = "FPStaticServer.xcodeproj"; path = "../node_modules/react-native-static-server/ios/FPStaticServer.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
+		23F21816955549748740A9B5 /* libFPStaticServer.a */ = {isa = PBXFileReference; name = "libFPStaticServer.a"; path = "libFPStaticServer.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
+		28786BD17A3A425987D16C5A /* RNFS.xcodeproj */ = {isa = PBXFileReference; name = "RNFS.xcodeproj"; path = "../node_modules/react-native-fs/RNFS.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
+		246AD9D7784042A78A6829F4 /* libRNFS.a */ = {isa = PBXFileReference; name = "libRNFS.a"; path = "libRNFS.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -382,6 +391,9 @@
 				2C586EFACBE6433E95D9DB91 /* libBVLinearGradient.a in Frameworks */,
 				54BD26F7C3D0437CA526A21D /* libRCTVideo.a in Frameworks */,
 				F816D7E2313345848A7197D1 /* libRCTOrientation.a in Frameworks */,
+				318C5D0FF646407B94F524F8 /* libRNGoogleCast.a in Frameworks */,
+				D78B2E8DF4044FBD9697AA4D /* libFPStaticServer.a in Frameworks */,
+				B16B79D21726402190CFA392 /* libRNFS.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -571,6 +583,9 @@
 				58774CB248E74B5C898C4C4E /* BVLinearGradient.xcodeproj */,
 				9F717E2EA9C04D9BBFAFDE10 /* RCTVideo.xcodeproj */,
 				B1EF992DE2EB4C538F86895E /* RCTOrientation.xcodeproj */,
+				99D39588CB6F437C9A2E2404 /* RNGoogleCast.xcodeproj */,
+				4E077158463349C3B4E3218A /* FPStaticServer.xcodeproj */,
+				28786BD17A3A425987D16C5A /* RNFS.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -1200,12 +1215,18 @@
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-linear-gradient/BVLinearGradient",
 					"$(SRCROOT)/../node_modules/react-native-video/ios",
 					"$(SRCROOT)/../node_modules/react-native-orientation/iOS/RCTOrientation/**",
+					"$(SRCROOT)/../node_modules/react-native-google-cast/ios/RNGoogleCast/**",
+					"$(SRCROOT)/../node_modules/react-native-static-server/ios/**",
+					"$(SRCROOT)/../node_modules/react-native-fs/**",
 				);
 			};
 			name = Debug;
@@ -1229,12 +1250,18 @@
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-linear-gradient/BVLinearGradient",
 					"$(SRCROOT)/../node_modules/react-native-video/ios",
 					"$(SRCROOT)/../node_modules/react-native-orientation/iOS/RCTOrientation/**",
+					"$(SRCROOT)/../node_modules/react-native-google-cast/ios/RNGoogleCast/**",
+					"$(SRCROOT)/../node_modules/react-native-static-server/ios/**",
+					"$(SRCROOT)/../node_modules/react-native-fs/**",
 				);
 			};
 			name = Release;
@@ -1259,6 +1286,9 @@
 					"$(SRCROOT)/../node_modules/react-native-linear-gradient/BVLinearGradient",
 					"$(SRCROOT)/../node_modules/react-native-video/ios",
 					"$(SRCROOT)/../node_modules/react-native-orientation/iOS/RCTOrientation/**",
+					"$(SRCROOT)/../node_modules/react-native-google-cast/ios/RNGoogleCast/**",
+					"$(SRCROOT)/../node_modules/react-native-static-server/ios/**",
+					"$(SRCROOT)/../node_modules/react-native-fs/**",
 				);
 			};
 			name = Debug;
@@ -1282,6 +1312,9 @@
 					"$(SRCROOT)/../node_modules/react-native-linear-gradient/BVLinearGradient",
 					"$(SRCROOT)/../node_modules/react-native-video/ios",
 					"$(SRCROOT)/../node_modules/react-native-orientation/iOS/RCTOrientation/**",
+					"$(SRCROOT)/../node_modules/react-native-google-cast/ios/RNGoogleCast/**",
+					"$(SRCROOT)/../node_modules/react-native-static-server/ios/**",
+					"$(SRCROOT)/../node_modules/react-native-fs/**",
 				);
 			};
 			name = Release;
@@ -1314,12 +1347,18 @@
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-linear-gradient/BVLinearGradient",
 					"$(SRCROOT)/../node_modules/react-native-video/ios",
 					"$(SRCROOT)/../node_modules/react-native-orientation/iOS/RCTOrientation/**",
+					"$(SRCROOT)/../node_modules/react-native-google-cast/ios/RNGoogleCast/**",
+					"$(SRCROOT)/../node_modules/react-native-static-server/ios/**",
+					"$(SRCROOT)/../node_modules/react-native-fs/**",
 				);
 			};
 			name = Debug;
@@ -1352,12 +1391,18 @@
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-linear-gradient/BVLinearGradient",
 					"$(SRCROOT)/../node_modules/react-native-video/ios",
 					"$(SRCROOT)/../node_modules/react-native-orientation/iOS/RCTOrientation/**",
+					"$(SRCROOT)/../node_modules/react-native-google-cast/ios/RNGoogleCast/**",
+					"$(SRCROOT)/../node_modules/react-native-static-server/ios/**",
+					"$(SRCROOT)/../node_modules/react-native-fs/**",
 				);
 			};
 			name = Release;
@@ -1389,12 +1434,18 @@
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-linear-gradient/BVLinearGradient",
 					"$(SRCROOT)/../node_modules/react-native-video/ios",
 					"$(SRCROOT)/../node_modules/react-native-orientation/iOS/RCTOrientation/**",
+					"$(SRCROOT)/../node_modules/react-native-google-cast/ios/RNGoogleCast/**",
+					"$(SRCROOT)/../node_modules/react-native-static-server/ios/**",
+					"$(SRCROOT)/../node_modules/react-native-fs/**",
 				);
 			};
 			name = Debug;
@@ -1426,12 +1477,18 @@
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-linear-gradient/BVLinearGradient",
 					"$(SRCROOT)/../node_modules/react-native-video/ios",
 					"$(SRCROOT)/../node_modules/react-native-orientation/iOS/RCTOrientation/**",
+					"$(SRCROOT)/../node_modules/react-native-google-cast/ios/RNGoogleCast/**",
+					"$(SRCROOT)/../node_modules/react-native-static-server/ios/**",
+					"$(SRCROOT)/../node_modules/react-native-fs/**",
 				);
 			};
 			name = Release;

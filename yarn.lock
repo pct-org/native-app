@@ -1411,6 +1411,10 @@ balanced-match@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/balanced-match/-/balanced-match-1.0.0.tgz#89b4d199ab2bee49de164ea02b89ce462d71b767"
 
+base-64@^0.1.0:
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/base-64/-/base-64-0.1.0.tgz#780a99c84e7d600260361511c4877613bf24f6bb"
+
 base64-js@0.0.8:
   version "0.0.8"
   resolved "https://registry.yarnpkg.com/base64-js/-/base64-js-0.0.8.tgz#1101e9544f4a76b1bc3b26d452ca96d7a35e7978"
@@ -2489,10 +2493,6 @@ has-flag@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/has-flag/-/has-flag-3.0.0.tgz#b5d454dc2199ae225699f3467e5a07f3b955bafd"
 
-has-own-property@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/has-own-property/-/has-own-property-1.0.0.tgz#3e98cc1d2b5f3da80d3eafd28cc65fcadda965da"
-
 has-unicode@^2.0.0:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/has-unicode/-/has-unicode-2.0.1.tgz#e0e6fe6a28cf51138855e086d1691e771de2a8b9"
@@ -3449,7 +3449,7 @@ locate-path@^2.0.0:
     p-locate "^2.0.0"
     path-exists "^3.0.0"
 
-lodash-es@^4.17.5, lodash-es@^4.2.1:
+lodash-es@^4.17.5:
   version "4.17.11"
   resolved "https://registry.yarnpkg.com/lodash-es/-/lodash-es-4.17.11.tgz#145ab4a7ac5c5e52a3531fb4f310255a152b4be0"
 
@@ -3477,7 +3477,7 @@ lodash@^3.5.0:
   version "3.10.1"
   resolved "http://registry.npmjs.org/lodash/-/lodash-3.10.1.tgz#5bf45e8e49ba4189e17d482789dfd15bd140b7b6"
 
-lodash@^4.13.1, lodash@^4.17.10, lodash@^4.17.4, lodash@^4.17.5, lodash@^4.2.1, lodash@^4.3.0, lodash@^4.6.1:
+lodash@^4.13.1, lodash@^4.17.10, lodash@^4.17.4, lodash@^4.17.5, lodash@^4.3.0, lodash@^4.6.1:
   version "4.17.11"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.11.tgz#b39ea6229ef607ecd89e2c8df12536891cac9b8d"
 
@@ -4235,6 +4235,12 @@ pn@^1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/pn/-/pn-1.1.0.tgz#e2f4cef0e219f463c179ab37463e4e1ecdccbafb"
 
+popcorn-sdk@0.0.10:
+  version "0.0.10"
+  resolved "https://registry.yarnpkg.com/popcorn-sdk/-/popcorn-sdk-0.0.10.tgz#a291ddd9b958e2d6af3bd85a4224c5ef2cc83c72"
+  dependencies:
+    axios "^0.18.0"
+
 posix-character-classes@^0.1.0:
   version "0.1.1"
   resolved "https://registry.yarnpkg.com/posix-character-classes/-/posix-character-classes-0.1.1.tgz#01eac0fe3b5af71a2a6c02feabb8c1fef7e00eab"
@@ -4383,6 +4389,19 @@ react-native-drawer-layout@1.3.2:
   dependencies:
     react-native-dismiss-keyboard "1.0.0"
 
+react-native-fs@^2.11.15:
+  version "2.11.15"
+  resolved "https://registry.yarnpkg.com/react-native-fs/-/react-native-fs-2.11.15.tgz#b80ac78edf124137624697b4864f834c1caf4f43"
+  dependencies:
+    base-64 "^0.1.0"
+    utf8 "^2.1.1"
+
+"react-native-google-cast@github:flextv/react-native-google-cast":
+  version "3.0.0-beta.1"
+  resolved "https://codeload.github.com/flextv/react-native-google-cast/tar.gz/5f33c32af4500cf830b8c649c36a3e284f19fa39"
+  dependencies:
+    prop-types "^15.6.0"
+
 react-native-linear-gradient@^2.4.2:
   version "2.4.2"
   resolved "https://registry.yarnpkg.com/react-native-linear-gradient/-/react-native-linear-gradient-2.4.2.tgz#9d3acd0a198b9d4566e8f6253ef1f60fef0ff2be"
@@ -4400,6 +4419,10 @@ react-native-safe-area-view@0.11.0:
 react-native-screens@^1.0.0-alpha.11:
   version "1.0.0-alpha.12"
   resolved "https://registry.yarnpkg.com/react-native-screens/-/react-native-screens-1.0.0-alpha.12.tgz#5953c39c9dbfbe324610005e07d85a416081c48c"
+
+react-native-static-server@^0.3.0:
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/react-native-static-server/-/react-native-static-server-0.3.0.tgz#19cbe5156942992f0a123d00d4950978f15c0f16"
 
 react-native-super-grid@^2.4.3:
   version "2.4.3"
@@ -4420,9 +4443,9 @@ react-native-tab-view@^1.0.0:
   dependencies:
     prop-types "^15.6.1"
 
-react-native-torrent-streamer@^0.1.1:
+"react-native-torrent-streamer@github:tripss/react-native-torrent-streamer":
   version "0.1.1"
-  resolved "https://registry.yarnpkg.com/react-native-torrent-streamer/-/react-native-torrent-streamer-0.1.1.tgz#a2dac9ccfcbed4e6743d183497d5864a70f6df8a"
+  resolved "https://codeload.github.com/tripss/react-native-torrent-streamer/tar.gz/5d34562a0efe1b9d292e96180184447ff377cdf6"
 
 react-native-typography@^1.3.0:
   version "1.3.0"
@@ -4636,12 +4659,6 @@ realpath-native@^1.0.0:
   dependencies:
     util.promisify "^1.0.0"
 
-redux-clazz@^2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/redux-clazz/-/redux-clazz-2.0.0.tgz#7443343cc99d259ea1ae0490b059a3a05db62cce"
-  dependencies:
-    redux "^3.7.1"
-
 redux-logger@^3.0.6:
   version "3.0.6"
   resolved "https://registry.yarnpkg.com/redux-logger/-/redux-logger-3.0.6.tgz#f7555966f3098f3c88604c449cf0baf5778274bf"
@@ -4651,15 +4668,6 @@ redux-logger@^3.0.6:
 redux-thunk@^2.3.0:
   version "2.3.0"
   resolved "https://registry.yarnpkg.com/redux-thunk/-/redux-thunk-2.3.0.tgz#51c2c19a185ed5187aaa9a2d08b666d0d6467622"
-
-redux@^3.7.1:
-  version "3.7.2"
-  resolved "https://registry.yarnpkg.com/redux/-/redux-3.7.2.tgz#06b73123215901d25d065be342eb026bc1c8537b"
-  dependencies:
-    lodash "^4.2.1"
-    lodash-es "^4.2.1"
-    loose-envify "^1.1.0"
-    symbol-observable "^1.0.3"
 
 redux@^4.0.0:
   version "4.0.0"
@@ -5230,7 +5238,7 @@ supports-color@^5.3.0:
   dependencies:
     has-flag "^3.0.0"
 
-symbol-observable@^1.0.3, symbol-observable@^1.2.0:
+symbol-observable@^1.2.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/symbol-observable/-/symbol-observable-1.2.0.tgz#c22688aed4eab3cdc2dfeacbb561660560a00804"
 
@@ -5416,6 +5424,10 @@ urix@^0.1.0:
 use@^3.1.0:
   version "3.1.1"
   resolved "https://registry.yarnpkg.com/use/-/use-3.1.1.tgz#d50c8cac79a19fbc20f2911f56eb973f4e10070f"
+
+utf8@^2.1.1:
+  version "2.1.2"
+  resolved "https://registry.yarnpkg.com/utf8/-/utf8-2.1.2.tgz#1fa0d9270e9be850d9b05027f63519bf46457d96"
 
 util-deprecate@1.0.2, util-deprecate@~1.0.1:
   version "1.0.2"

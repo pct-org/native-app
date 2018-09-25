@@ -101,12 +101,22 @@ android {
         applicationId "com.popcorn"
         minSdkVersion 16
         targetSdkVersion 22
-        versionCode 1
-        versionName "1.0"
+        versionCode 2
+        versionName "1.1"
         ndk {
             abiFilters "armeabi-v7a", "x86"
         }
     }
+
+    signingConfigs {
+        release {
+            storeFile file("pct.keystore")
+            storePassword "P0pcorn"
+            keyAlias "key0"
+            keyPassword "P0pcorn"
+        }
+    }
+
     splits {
         abi {
             reset()
@@ -119,6 +129,7 @@ android {
         release {
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
+            signingConfig signingConfigs.release
         }
     }
     // applicationVariants are e.g. debug, release
@@ -137,6 +148,9 @@ android {
 }
 
 dependencies {
+    compile project(':react-native-fs')
+    compile project(':react-native-static-server')
+    compile project(':react-native-google-cast')
     compile project(':react-native-torrent-streamer')
     compile project(':react-native-orientation')
     compile project(':react-native-video')

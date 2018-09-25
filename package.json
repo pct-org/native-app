@@ -2,6 +2,36 @@
   "name": "popcorn-native",
   "version": "0.1.0",
   "private": true,
+  "scripts": {
+    "android": "react-native run-android",
+    "build": "cd android && ./gradlew assembleRelease && cd ../",
+    "build-and-install": "yarn build && yarn install-on-device",
+    "install-on-device": "adb install -r ./android/app/build/outputs/apk/release/app-release.apk",
+    "ios": "react-native run-ios",
+    "start": "react-native start",
+    "test": "jest"
+  },
+  "dependencies": {
+    "popcorn-sdk": "0.0.10",
+    "prop-types": "^15.6.2",
+    "react": "16.3.1",
+    "react-native": "~0.55.2",
+    "react-native-animatable": "^1.3.0",
+    "react-native-fs": "^2.11.15",
+    "react-native-google-cast": "github:flextv/react-native-google-cast",
+    "react-native-linear-gradient": "^2.4.2",
+    "react-native-orientation": "^3.1.3",
+    "react-native-static-server": "^0.3.0",
+    "react-native-super-grid": "^2.4.3",
+    "react-native-torrent-streamer": "github:tripss/react-native-torrent-streamer",
+    "react-native-typography": "^1.3.0",
+    "react-native-video": "^3.2.1",
+    "react-navigation": "^2.14.2",
+    "react-redux": "^5.0.7",
+    "redux": "^4.0.0",
+    "redux-logger": "^3.0.6",
+    "redux-thunk": "^2.3.0"
+  },
   "devDependencies": {
     "babel-plugin-module-resolver": "^3.1.1",
     "babel-preset-react-native-stage-0": "^1.0.1",
@@ -9,33 +39,7 @@
     "jest-react-native": "^18.0.0",
     "react-test-renderer": "16.3.1"
   },
-  "scripts": {
-    "start": "react-native start",
-    "android": "react-native run-android",
-    "ios": "react-native run-ios",
-    "test": "jest"
-  },
   "jest": {
     "preset": "react-native"
-  },
-  "dependencies": {
-    "axios": "^0.18.0",
-    "has-own-property": "^1.0.0",
-    "prop-types": "^15.6.2",
-    "react": "16.3.1",
-    "react-native": "~0.55.2",
-    "react-native-animatable": "^1.3.0",
-    "react-native-linear-gradient": "^2.4.2",
-    "react-native-orientation": "^3.1.3",
-    "react-native-super-grid": "^2.4.3",
-    "react-native-torrent-streamer": "^0.1.1",
-    "react-native-typography": "^1.3.0",
-    "react-native-video": "^3.2.1",
-    "react-navigation": "^2.14.2",
-    "react-redux": "^5.0.7",
-    "redux": "^4.0.0",
-    "redux-clazz": "^2.0.0",
-    "redux-logger": "^3.0.6",
-    "redux-thunk": "^2.3.0"
   }
 }

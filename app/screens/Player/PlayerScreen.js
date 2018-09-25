@@ -1,9 +1,12 @@
 import React, { Component } from 'react'
-import { StatusBar, StyleSheet, Text, TouchableOpacity, View, Environment } from 'react-native'
+import { StatusBar, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import Video from 'react-native-video'
 import Orientation from 'react-native-orientation'
 import * as Animatable from 'react-native-animatable'
 import TorrentStreamer from 'react-native-torrent-streamer'
+import GoogleCast, { CastButton } from 'react-native-google-cast'
+import StaticServer from 'react-native-static-server'
+import RNFS from 'react-native-fs'
 
 export default class VideoPlayer extends Component {
 
@@ -22,61 +25,135 @@ export default class VideoPlayer extends Component {
     seeds        : 0,
 
     url: null,
+
+    casting: false,
   }
 
   video
 
-  componentDidMount() {
+  server
+  serverUrl
+
+
+  constructor(props) {
+    super(props)
+
+    TorrentStreamer.setup(RNFS.CachesDirectoryPath, true)
+
+    this.server = new StaticServer(0, RNFS.CachesDirectoryPath, { keepAlive: true })
+  }
+
+  async componentDidMount() {
     Orientation.lockToLandscape()
 
-    this.video.presentFullscreenPlayer()
+    const { navigation: { state: { params: { magnet, item } } } } = this.props
+    console.log('magnet', magnet)
+    console.log('NativeModules.RNFSManager', RNFS.CachesDirectoryPath)
+    console.log('castState', await GoogleCast.getCastState())
 
-    const { navigation: { state: { params: { magnet } } } } = this.props
-    console.log(magnet)
+    this.serverUrl = await this.server.start()
 
-    // this.engine = new WebTorrent({ maxConns: 20 })
+    console.log('serving from', this.serverUrl)
 
-    /*this.engine.add(magnet, function (torrent) {
-     // Got torrent metadata!
-     console.log('Client is downloading:', torrent.infoHash)
+    TorrentStreamer.addEventListener('error', this.onError.bind(this))
+    TorrentStreamer.addEventListener('status', this.onStatus.bind(this))
+    TorrentStreamer.addEventListener('ready', this.onReady.bind(this))
+    TorrentStreamer.addEventListener('stop', this.onStop.bind(this))
 
-     torrent.files.forEach(function (file) {
-     console.log(file)
-     })
+    console.log(' TorrentStreamer.start(magnet)', TorrentStreamer.start(magnet))
+
+    /*    GoogleCast.castMedia({
+     title    : item.title,
+     subtitle : item.summary,
+     // studio: video.studio,
+     // duration: video.duration,
+     // mediaUrl : '/storage/emulated/0/Download/Sicario Day Of The So…f.The.Soldado.2018.1080p.WEBRip.x264-[YTS.AM].mp4',
+     mediaUrl : 'http://distribution.bbb3d.renderfarming.net/video/mp4/bbb_sunflower_1080p_60fps_normal.mp4',
+     imageUrl : item.images.fanart.high,
+     posterUrl: item.images.poster.high,
      })*/
-
-    TorrentStreamer.start(magnet)
 
   }
 
   componentWillMount() {
-    TorrentStreamer.addEventListener('error', this.onError)
-    TorrentStreamer.addEventListener('status', this.onStatus.bind(this))
-    TorrentStreamer.addEventListener('ready', this.onReady.bind(this))
-    TorrentStreamer.addEventListener('stop', this.onStop.bind(this))
+    // Establishing connection to Chromecast
+    GoogleCast.EventEmitter.addListener(GoogleCast.SESSION_STARTING, () => console.log('Chromecast session starting'))
+
+    // Connection established
+    GoogleCast.EventEmitter.addListener(GoogleCast.SESSION_STARTED, () => {
+      console.log('Chromecast session started')
+
+      this.setState({
+        casting: true,
+      })
+    })
+
+    // Connection failed
+    GoogleCast.EventEmitter.addListener(GoogleCast.SESSION_START_FAILED, (error) => { console.error(error) })
+
+    // Connection suspended (your application went to background or disconnected)
+    GoogleCast.EventEmitter.addListener(GoogleCast.SESSION_SUSPENDED, () => console.log('Chromecast session suspended'))
+
+    // Attempting to reconnect
+    GoogleCast.EventEmitter.addListener(GoogleCast.SESSION_RESUMING, () => console.log('Chromecast session resuming'))
+
+    // Reconnected
+    GoogleCast.EventEmitter.addListener(GoogleCast.SESSION_RESUMED, () => console.log('Chromecast session resumed'))
+
+    // Disconnecting
+    GoogleCast.EventEmitter.addListener(GoogleCast.SESSION_ENDING, () => console.log('Chromecast session ending'))
+
+    // Disconnected (error provides explanation if ended forcefully)
+    GoogleCast.EventEmitter.addListener(GoogleCast.SESSION_ENDED, (error) => console.log('Chromecast session ended', error))
   }
 
   onError(e) {
     console.log(e)
   }
 
-  onStatus({ progress, buffer, downloadSpeed, seeds }) {
-    this.setState({
-      progress,
-      buffer,
-      downloadSpeed,
-      seeds,
-    })
+  onStatus(status) {
+    this.setState(status)
   }
 
-  onReady(data) {
-    TorrentStreamer.open(data.url, 'video/mp4')
+  async onReady(data) {
+    // TorrentStreamer.open(data.url, 'video/mp4')
+
+    const { navigation: { state: { params: { item } } } } = this.props
 
     console.log('onReady', data)
+    console.log('item', item)
+    console.log('castState', GoogleCast.getCastState())
 
-    this.setState({
-      url: data.url,
-    })
+    const { casting } = this.state
+
+    if (casting || await GoogleCast.getCastState().toLowerCase() === 'connected') {
+      const { navigation: { state: { params: { item } } } } = this.props
+      console.log('data.url', data.url)
+      const mediaUrl = this.serverUrl + data.url.replace(RNFS.CachesDirectoryPath, '')
+      console.log('\n\n\nmediaUrl', mediaUrl)
+
+      GoogleCast.castMedia({
+        title   : item.title,
+        subtitle: item.summary,
+        // studio: video.studio,
+        // duration: video.duration,
+        mediaUrl,
+
+        imageUrl : item.images.fanart.high,
+        posterUrl: item.images.poster.high,
+      })
+
+      GoogleCast.launchExpandedControls()
+
+
+    } else {
+      this.setState({
+        url: data.url,
+      }, () => {
+        this.video.presentFullscreenPlayer()
+
+      })
+    }
   }
 
   onStop(data) {
@@ -85,6 +162,9 @@ export default class VideoPlayer extends Component {
 
   componentWillUnmount() {
     Orientation.lockToPortrait()
+
+    TorrentStreamer.stop()
+    this.server.kill()
   }
 
   onLoad = (data) => {
@@ -157,33 +237,36 @@ export default class VideoPlayer extends Component {
     const flexCompleted = this.getCurrentTimePercentage() * 100
     const flexRemaining = (1 - this.getCurrentTimePercentage()) * 100
 
-    const { url } = this.state
-console.log('url',url)
+    const { url, casting } = this.state
+
     return (
       <View style={styles.container}>
+
         <StatusBar hidden />
 
         <TouchableOpacity
           style={styles.fullScreen}
           onPress={() => this.setState({ paused: !this.state.paused })}
         >
-          <Video
-            ref={(ref) => { this.video = ref }}
-            /* For ExoPlayer */
-            /* source={{ uri: 'http://www.youtube.com/api/manifest/dash/id/bf5bb2419360daf1/source/youtube?as=fmp4_audio_clear,fmp4_sd_hd_clear&sparams=ip,ipbits,expire,source,id,as&ip=0.0.0.0&ipbits=0&expire=19000000000&signature=51AF5F39AB0CEC3E5497CD9C900EBFEAECCCB5C7.8506521BFC350652163895D4C26DEE124209AA9E&key=ik0', type: 'mpd' }} */
-            source={{ uri: url }}
-            style={styles.fullScreen}
-            rate={this.state.rate}
-            paused={this.state.paused}
-            volume={this.state.volume}
-            muted={this.state.muted}
-            resizeMode={this.state.resizeMode}
-            onLoad={this.onLoad}
-            onProgress={this.onProgress}
-            onEnd={this.onEnd}
-            onAudioBecomingNoisy={this.onAudioBecomingNoisy}
-            repeat={false}
-          />
+          {url && (
+            <Video
+              ref={(ref) => { this.video = ref }}
+              /* For ExoPlayer */
+              /* source={{ uri: 'http://www.youtube.com/api/manifest/dash/id/bf5bb2419360daf1/source/youtube?as=fmp4_audio_clear,fmp4_sd_hd_clear&sparams=ip,ipbits,expire,source,id,as&ip=0.0.0.0&ipbits=0&expire=19000000000&signature=51AF5F39AB0CEC3E5497CD9C900EBFEAECCCB5C7.8506521BFC350652163895D4C26DEE124209AA9E&key=ik0', type: 'mpd' }} */
+              source={{ uri: url }}
+              style={styles.fullScreen}
+              rate={this.state.rate}
+              paused={this.state.paused || casting}
+              volume={this.state.volume}
+              muted={this.state.muted}
+              resizeMode={this.state.resizeMode}
+              onLoad={this.onLoad}
+              onProgress={this.onProgress}
+              onEnd={this.onEnd}
+              onAudioBecomingNoisy={this.onAudioBecomingNoisy}
+              repeat={false}
+            />
+          )}
         </TouchableOpacity>
 
         <View style={styles.controls}>
@@ -208,6 +291,19 @@ console.log('url',url)
               </View>
 
               <View style={styles.resizeModeControl}>
+                <CastButton
+                  style={{ width: 24, height: 24, tintColor: 'white' }} />
+              </View>
+
+              <View style={styles.resizeModeControl}>
+                <Text style={styles.controlOption}>progress: {this.state.progress} - </Text>
+                <Text style={styles.controlOption}>buffer: {this.state.buffer} - </Text>
+                <Text style={styles.controlOption}>downloadSpeed: {this.state.downloadSpeed} - </Text>
+                <Text style={styles.controlOption}>seeds: {this.state.seeds}</Text>
+              </View>
+
+
+              <View style={styles.resizeModeControl}>
                 {this.renderResizeModeControl('cover')}
                 {this.renderResizeModeControl('contain')}
                 {this.renderResizeModeControl('stretch')}
@@ -226,7 +322,6 @@ console.log('url',url)
     )
   }
 }
-
 
 const styles = StyleSheet.create({
   container             : {

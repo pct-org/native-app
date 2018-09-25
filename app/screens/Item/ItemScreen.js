@@ -43,7 +43,7 @@ export default class Item extends React.Component {
   playItem = () => {
     const { navigation: { navigate, state: { params: item } } } = this.props
 
-    navigate('Player', { magnet: item.torrents['1080p'].url })
+    navigate('Player', { magnet: item.torrents['1080p'].url, item })
   }
 
   componentDidMount() {

@@ -16,12 +16,12 @@ const styles = StyleSheet.create({
     position       : 'relative',
   },
 
-/*  logo: {
-    position: 'absolute',
-    width   : 50,
-    height  : 50,
-    top     : 30,
-  },*/
+  /*  logo: {
+   position: 'absolute',
+   width   : 50,
+   height  : 50,
+   top     : 30,
+   },*/
 })
 
 export default class Home extends React.Component {
