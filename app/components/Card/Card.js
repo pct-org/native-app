@@ -36,6 +36,10 @@ export default class Card extends React.Component {
   render() {
     const { item, empty, ...rest } = this.props
 
+    if (!item) {
+      return null
+    }
+
     return (
       <TouchableHighlight
         activeOpacity={0.8}

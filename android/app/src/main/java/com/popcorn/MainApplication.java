@@ -3,6 +3,7 @@ package com.popcorn;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.oblador.vectoricons.VectorIconsPackage;
 import com.rnfs.RNFSPackage;
 import com.futurepress.staticserver.FPStaticServerPackage;
 import com.googlecast.GoogleCastPackage;
@@ -30,6 +31,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new VectorIconsPackage(),
             new RNFSPackage(),
             new FPStaticServerPackage(),
             new GoogleCastPackage(),

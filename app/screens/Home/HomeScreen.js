@@ -1,5 +1,5 @@
 import React from 'react'
-import { StyleSheet, Text, View, ScrollView, Image, StatusBar } from 'react-native'
+import { StyleSheet, Text, View } from 'react-native'
 import Orientation from 'react-native-orientation'
 
 import CardList from 'components/CardList'
@@ -16,12 +16,6 @@ const styles = StyleSheet.create({
     position       : 'relative',
   },
 
-  /*  logo: {
-   position: 'absolute',
-   width   : 50,
-   height  : 50,
-   top     : 30,
-   },*/
 })
 
 export default class Home extends React.Component {
@@ -103,23 +97,11 @@ export default class Home extends React.Component {
               item={this.getMainCover()} />
 
             <CardList
-              style={{ marginTop: -20 }}
-              onPress={this.handleItemOpen}
-              loading={isLoading}
-              title={'My List'}
-              items={this.getMyList()} />
-
-            <CardList
+              style={{ marginTop: -20, marginBottom: 20 }}
               onPress={this.handleItemOpen}
               loading={isLoading}
               title={'Movies'}
               items={this.getMovies()} />
-
-            <CardList
-              onPress={this.handleItemOpen}
-              loading={isLoading}
-              title={'Shows'}
-              items={this.getShows()} />
 
           </ScrollViewWithHeader>
         )}
