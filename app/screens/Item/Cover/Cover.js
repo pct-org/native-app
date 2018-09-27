@@ -1,9 +1,11 @@
-import CoverGradient from 'components/CoverGradient/CoverGradient'
-import Typography from 'components/Typography/Typography'
 import React from 'react'
 import PropTypes from 'prop-types'
 import { Image, StyleSheet, View } from 'react-native'
 import Icon from 'react-native-vector-icons/MaterialIcons'
+import { Constants } from 'popcorn-sdk'
+
+import CoverGradient from 'components/CoverGradient/CoverGradient'
+import Typography from 'components/Typography/Typography'
 
 const styles = StyleSheet.create({
 
@@ -48,7 +50,7 @@ const styles = StyleSheet.create({
 
 })
 
-export const Cover = ({ item, playItem }) => (
+export const Cover = ({ item, playMovie }) => (
   <View style={styles.container}>
     <Image
       style={styles.mainImage}
@@ -59,17 +61,19 @@ export const Cover = ({ item, playItem }) => (
 
     <CoverGradient start={{ x: 0, y: 0.80 }} />
 
-    <View style={styles.playContainer}>
-      <Icon.Button
-        activeOpacity={0.1}
-        onPress={playItem}
-        iconStyle={{ margin: 0 }}
-        backgroundColor={'transparent'}
-        borderRadius={0}
-        name={'play-circle-outline'}
-        color={'#FFF'}
-        size={80} />
-    </View>
+    {item.type === Constants.TYPE_MOVIE && (
+      <View style={styles.playContainer}>
+        <Icon.Button
+          activeOpacity={0.1}
+          onPress={playMovie}
+          iconStyle={{ margin: 0 }}
+          backgroundColor={'transparent'}
+          borderRadius={0}
+          name={'play-circle-outline'}
+          color={'#FFF'}
+          size={80} />
+      </View>
+    )}
 
     <Typography
       style={styles.title}
@@ -80,7 +84,8 @@ export const Cover = ({ item, playItem }) => (
 )
 
 Cover.propTypes = {
-  item: PropTypes.object.isRequired,
+  item     : PropTypes.object.isRequired,
+  playMovie: PropTypes.func.isRequired,
 }
 
 Cover.defaultProps = {}

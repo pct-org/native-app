@@ -1,6 +1,7 @@
 import React from 'react'
 import { StyleSheet, View } from 'react-native'
 import Orientation from 'react-native-orientation'
+import {utils} from 'popcorn-sdk'
 
 import ScrollViewWithHeader from 'components/ScrollViewWithHeader'
 import Typography from 'components/Typography'
@@ -22,10 +23,13 @@ const styles = StyleSheet.create({
 
 export default class Item extends React.Component {
 
-  playItem = () => {
+  playMovie = () => {
     const { navigation: { navigate, state: { params: item } } } = this.props
 
-    navigate('Player', { magnet: item.torrents['1080p'].url, item })
+    navigate('Player', {
+      magnet: utils.getBestTorrent(item.torrents['1080p'], item.torrents['720p']),
+      item,
+    })
   }
 
   componentDidMount() {
@@ -40,7 +44,7 @@ export default class Item extends React.Component {
 
         <ScrollViewWithHeader>
 
-          <Cover item={item} playItem={this.playItem} />
+          <Cover item={item} playMovie={this.playMovie} />
 
           <View style={styles.container}>
             <Typography variant={'body1'}>{item.summary}</Typography>

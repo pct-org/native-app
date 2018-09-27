@@ -38,7 +38,7 @@ export default class VideoPlayer extends Component {
     super(props)
 
     TorrentStreamer.setup(RNFS.CachesDirectoryPath, true)
-    this.server = new StaticServer(0, RNFS.CachesDirectoryPath, { keepAlive: true })
+    this.staticServer = new StaticServer(0, RNFS.CachesDirectoryPath, { keepAlive: true })
   }
 
   async componentDidMount() {

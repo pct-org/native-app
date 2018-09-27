@@ -1,6 +1,8 @@
 package com.popcorn;
 
 import com.facebook.react.GoogleCastActivity;
+import android.content.Intent;
+import android.content.res.Configuration;
 
 public class MainActivity extends GoogleCastActivity {
 
@@ -11,5 +13,15 @@ public class MainActivity extends GoogleCastActivity {
     @Override
     protected String getMainComponentName() {
         return "popcorn";
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+
+        Intent intent = new Intent("onConfigurationChanged");
+        intent.putExtra("newConfig", newConfig);
+
+        this.sendBroadcast(intent);
     }
 }
