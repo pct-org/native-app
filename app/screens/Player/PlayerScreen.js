@@ -21,7 +21,6 @@ export default class VideoPlayer extends Component {
     paused     : false,
     loading    : true,
     casting    : false,
-    fullScreen : false,
 
     progress     : 0,
     buffer       : 0,
@@ -46,11 +45,28 @@ export default class VideoPlayer extends Component {
     this.staticServer = new StaticServer(0, this.serverDirectory, { keepAlive: true })
   }
 
+  async componentDidMount() {
+    const { navigation: { state: { params: { magnet } } } } = this.props
+
+    Orientation.addOrientationListener(this.onOrientationChange)
+
+    GoogleCast.EventEmitter.addListener(GoogleCast.MEDIA_STATUS_UPDATED, this.onCastMediaUpdate)
+
+    TorrentStreamer.addEventListener('error', this.onError)
+    TorrentStreamer.addEventListener('status', this.onTorrentStatus)
+    TorrentStreamer.addEventListener('ready', this.onTorrentReady)
+
+    // Start
+    TorrentStreamer.start(magnet.url)
+  }
+
   componentWillUnmount() {
     console.log('componentWillUnmount')
 
     Orientation.removeOrientationListener(this.onOrientationChange)
     Orientation.lockToPortrait()
+
+    GoogleCast.EventEmitter.removeAllListeners(GoogleCast.MEDIA_STATUS_UPDATED)
 
     TorrentStreamer.removeEventListener('error', this.onError)
     TorrentStreamer.removeEventListener('status', this.onTorrentStatus)
@@ -59,40 +75,21 @@ export default class VideoPlayer extends Component {
     TorrentStreamer.stop()
 
     this.staticServer.kill()
-  }
 
-  async componentDidMount() {
-    const { navigation: { state: { params: { magnet, item } } } } = this.props
-
-
-    Orientation.addOrientationListener(this.onOrientationChange)
-
-//    this.serverUrl = await this.server.start()
-
-    TorrentStreamer.addEventListener('error', this.onError)
-    TorrentStreamer.addEventListener('status', this.onTorrentStatus)
-    TorrentStreamer.addEventListener('ready', this.onTorrentReady)
-    // TorrentStreamer.addEventListener('stop', this.onStop.bind(this))
-
-    // Start
-    TorrentStreamer.start(magnet.url)
+    GoogleCast.endSession(true)
   }
 
   onOrientationChange = (orientation) => {
     if (orientation === 'LANDSCAPE' && this.videoRef) {
       this.videoRef.presentFullscreenPlayer()
 
-      this.setState({
-        fullScreen: true,
-      })
-
     } else if (orientation === 'PORTRAIT' && this.videoRef) {
       this.videoRef.dismissFullscreenPlayer()
-
-      this.setState({
-        fullScreen: false,
-      })
     }
+  }
+
+  onCastMediaUpdate = () => {
+    console.log('MEDIA_STATUS_UPDATED', arguments)
   }
 
   onTorrentStatus = (status) => {
@@ -112,41 +109,43 @@ export default class VideoPlayer extends Component {
 
   onTorrentReady = async(data) => {
     const { navigation: { state: { params: { item } } } } = this.props
-    const { casting } = this.state
 
-    console.log('onReady', data)
-    console.log('item', item)
-    // console.log('castState', GoogleCast.getCastState())
+    const castState = await GoogleCast.getCastState()
 
-    /*if (casting || await GoogleCast.getCastState().toLowerCase() === 'connected') {
-     console.log('data.url', data.url)
-     const mediaUrl = this.serverUrl + data.url.replace(RNFS.CachesDirectoryPath, '')
-     console.log('\n\n\nmediaUrl', mediaUrl)
+    if (castState.toLowerCase() === 'connected') {
+      if (!this.serverUrl) {
+        this.serverUrl = await this.staticServer.start()
+      }
 
-     GoogleCast.castMedia({
-     title   : item.title,
-     subtitle: item.summary,
-     // studio: video.studio,
-     // duration: video.duration,
-     mediaUrl,
+      GoogleCast.castMedia({
+        title   : item.title,
+        subtitle: item.summary,
+        // studio: video.studio,
+        // duration: video.duration,
 
-     imageUrl : item.images.fanart.high,
-     posterUrl: item.images.poster.high,
-     })
+        mediaUrl: this.serverUrl + data.url.replace(this.serverDirectory, ''),
 
-     GoogleCast.launchExpandedControls()
+        imageUrl : item.images.fanart.high,
+        posterUrl: item.images.poster.high,
+      })
 
+      this.showCastingControls()
 
-     } else {*/
+      this.setState({
+        buffer       : '100',
+        doneBuffering: true,
+        loading      : false,
+        casting      : true,
+      })
 
-    this.setState({
-      url          : data.url,
-      buffer       : '100',
-      doneBuffering: true,
-      loading      : false,
-    })
-
-    //}
+    } else {
+      this.setState({
+        url          : data.url,
+        buffer       : '100',
+        doneBuffering: true,
+        loading      : false,
+      })
+    }
   }
 
   onVideoPause = () => {
@@ -180,6 +179,10 @@ export default class VideoPlayer extends Component {
     this.videoRef.seek(0)
   }
 
+  showCastingControls = () => {
+    GoogleCast.launchExpandedControls()
+  }
+
   getCurrentTimePercentage() {
     if (this.state.currentTime > 0) {
       return parseFloat(this.state.currentTime) / parseFloat(this.state.duration)
@@ -190,7 +193,7 @@ export default class VideoPlayer extends Component {
 
   render() {
     const { navigation: { state: { params: { item } } } } = this.props
-    const { url, casting, paused, muted, loading, fullScreen } = this.state
+    const { url, casting, paused, muted, loading } = this.state
     const { progress, doneBuffering, buffer, downloadSpeed, seeds } = this.state
 
     return (
@@ -198,10 +201,12 @@ export default class VideoPlayer extends Component {
 
         <StatusBar hidden={!paused && !casting && doneBuffering} animated />
 
-        {loading && (
+        {(loading || casting) && (
           <View style={[styles.fullScreen, styles.loadingContainer]}>
 
-            <ActivityIndicator size={60} color="#FFF" />
+            {loading && (
+              <ActivityIndicator size={60} color="#FFF" />
+            )}
 
             <Typography
               style={{ marginTop: 10 }}
@@ -255,15 +260,18 @@ export default class VideoPlayer extends Component {
         )}
 
         <View style={styles.controlsTopBar}>
-          <View style={styles.castButton}>
+          <Animatable.View
+            animation={paused || loading ? 'fadeInDown' : 'fadeOutUp'}
+            useNativeDriver
+            style={styles.castButton}>
             <CastButton style={{ width: 30, height: 30, tintColor: 'white' }} />
-          </View>
+          </Animatable.View>
         </View>
 
         {buffer !== 0 && (
           <Animatable.View
             style={styles.controlsBottom}
-            animation={paused ? 'fadeInUp' : 'fadeOutDown'}
+            animation={paused || casting ? 'fadeInUp' : 'fadeOutDown'}
             useNativeDriver>
             <View style={styles.stats}>
               {progress !== '100' && (
@@ -313,8 +321,8 @@ const styles = StyleSheet.create({
 
   castButton: {
     position: 'absolute',
-    right   : 16,
-    top     : 16,
+    right   : 24,
+    top     : 24,
   },
 
   controlsCenter: {},
@@ -329,7 +337,7 @@ const styles = StyleSheet.create({
     display       : 'flex',
     flexDirection : 'row',
     justifyContent: 'space-between',
-    margin        : 16,
+    margin        : 24,
   },
 
 })
