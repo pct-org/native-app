@@ -37,6 +37,7 @@ export default class Home extends React.Component {
 
     if (!isLoading) {
       getItems(HomeConstants.MODE_MOVIES)
+      getItems(HomeConstants.MODE_SHOWS)
     }
   }
 
@@ -73,7 +74,9 @@ export default class Home extends React.Component {
   }
 
   getShows = () => {
-    return []
+    const { modes } = this.props
+
+    return modes[HomeConstants.MODE_SHOWS].items
   }
 
   render() {
@@ -102,6 +105,13 @@ export default class Home extends React.Component {
               loading={isLoading}
               title={'Movies'}
               items={this.getMovies()} />
+
+            <CardList
+              style={{ marginBottom: 20 }}
+              onPress={this.handleItemOpen}
+              loading={isLoading}
+              title={'Shows'}
+              items={this.getShows()} />
 
           </ScrollViewWithHeader>
         )}

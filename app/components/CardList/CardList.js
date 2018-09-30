@@ -60,7 +60,7 @@ export default class CardList extends React.Component {
             />
           ))}
 
-          {!loading && items.length === 0 && (
+          {(loading || items.length === 0) && (
             <React.Fragment>
               <Card empty />
               <Card empty />

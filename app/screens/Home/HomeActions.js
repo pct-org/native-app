@@ -42,8 +42,8 @@ export const getItems = (mode, page = 1, givenFilters = {}) => (dispatch, getSta
     case HomeConstants.MODE_MOVIES:
       return Popcorn.getMovies(page, filters).then(movies => dispatch(fetchedItems(movies, mode))).catch(catchNoCon)
 
-    /*case HomeConstants.MODE_SHOWS:
-      return Butter.getShows(page, filters).then(shows => dispatch(fetchedItems(shows, mode))).catch(catchNoCon)*/
+    case HomeConstants.MODE_SHOWS:
+      return Popcorn.getShows(page, filters).then(shows => dispatch(fetchedItems(shows, mode))).catch(catchNoCon)
 
     default:
       return null

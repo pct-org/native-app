@@ -19,6 +19,8 @@ Typography.propTypes = {
     'title',
     'body1',
     'body2',
+    'caption',
+    'button',
   ]),
 }
 

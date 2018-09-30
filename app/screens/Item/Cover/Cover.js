@@ -4,8 +4,9 @@ import { Image, StyleSheet, View } from 'react-native'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import { Constants } from 'popcorn-sdk'
 
-import CoverGradient from 'components/CoverGradient/CoverGradient'
-import Typography from 'components/Typography/Typography'
+import CoverGradient from 'components/CoverGradient'
+import Typography from 'components/Typography'
+import Overlay from 'components/Overlay'
 
 const styles = StyleSheet.create({
 
@@ -15,16 +16,6 @@ const styles = StyleSheet.create({
     alignSelf: 'stretch',
     position : 'relative',
     display  : 'flex',
-  },
-
-  overlay: {
-    position       : 'absolute',
-    top            : 0,
-    right          : 0,
-    bottom         : 0,
-    left           : 0,
-    backgroundColor: 'black',
-    opacity        : 0.3,
   },
 
   mainImage: {
@@ -54,18 +45,22 @@ export const Cover = ({ item, playMovie }) => (
   <View style={styles.container}>
     <Image
       style={styles.mainImage}
-      source={{ uri: item.images.fanart.high }}
+      source={{
+        uri: item
+          ? item.images.fanart.high
+          : null,
+      }}
     />
 
-    <View style={styles.overlay} />
+    <Overlay />
 
     <CoverGradient start={{ x: 0, y: 0.80 }} />
 
-    {item.type === Constants.TYPE_MOVIE && (
+    {item && item.type === Constants.TYPE_MOVIE && (
       <View style={styles.playContainer}>
         <Icon.Button
           activeOpacity={0.1}
-          onPress={playMovie}
+          onPress={() => playMovie(item.torrents)}
           iconStyle={{ margin: 0 }}
           backgroundColor={'transparent'}
           borderRadius={0}
@@ -75,19 +70,23 @@ export const Cover = ({ item, playMovie }) => (
       </View>
     )}
 
-    <Typography
-      style={styles.title}
-      variant={'title'}>
-      {item.title}
-    </Typography>
+    {item && (
+      <Typography
+        style={styles.title}
+        variant={'title'}>
+        {item.title}
+      </Typography>
+    )}
   </View>
 )
 
 Cover.propTypes = {
-  item     : PropTypes.object.isRequired,
+  item     : PropTypes.object,
   playMovie: PropTypes.func.isRequired,
 }
 
-Cover.defaultProps = {}
+Cover.defaultProps = {
+  item: null
+}
 
 export default Cover

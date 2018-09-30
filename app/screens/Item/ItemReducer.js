@@ -1,4 +1,3 @@
-// @flow
 import * as ItemConstants from './ItemConstants'
 
 export default (state = ItemConstants.INITIAL_STATE, action) => {
@@ -8,6 +7,13 @@ export default (state = ItemConstants.INITIAL_STATE, action) => {
       return {
         ...state,
         isLoading: true,
+        item     : null,
+      }
+
+    case ItemConstants.PARTLY_FETCH_ITEM:
+      return {
+        ...state,
+        item: action.payload,
       }
 
     case ItemConstants.FETCHED_ITEM:
