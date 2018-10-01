@@ -1,10 +1,12 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { StyleSheet, View, Image, TouchableNativeFeedback } from 'react-native'
+import Icon from 'react-native-vector-icons/MaterialIcons'
+
+import posterHolderImage from 'images/posterholder.png'
 
 import Typography from 'components/Typography'
 import Overlay from 'components/Overlay'
-import Icon from 'react-native-vector-icons/MaterialIcons'
 
 export const styles = StyleSheet.create({
   container: {
@@ -37,43 +39,54 @@ export const styles = StyleSheet.create({
   },
 })
 
-export const Episode = ({ playItem, hasTorrents, title, summary, images, torrents }) => (
-  <View style={styles.container}>
+export const Episode = ({ playItem, hasTorrents, title, summary, images, torrents }) => {
+  console.log('images.poster.thumb', images)
+  return (
+    <View style={styles.container}>
 
-    <View style={styles.posterWithTitle}>
-      <TouchableNativeFeedback
-        onPress={() => hasTorrents ? playItem(torrents) : null}
-        background={TouchableNativeFeedback.Ripple()}>
-        <View>
-          <Image
-            source={{ uri: images.poster.thumb }}
-            style={{ width: 150, height: 100 }} />
+      <View style={styles.posterWithTitle}>
+        <TouchableNativeFeedback
+          onPress={() => hasTorrents ? playItem(torrents) : null}
+          background={TouchableNativeFeedback.Ripple()}>
+          <View>
+            {images.poster.thumb && (
+              <Image
+                source={{ uri: images.poster.thumb }}
+                style={{ width: 150, height: 100 }} />
+            )}
 
-          <View style={styles.iconContainer}>
-            <Overlay />
+            {!images.poster.thumb && (
+              <Image
+                source={posterHolderImage}
+                style={{ width: 150, height: 100 }} />
+            )}
 
-            <Icon
-              iconStyle={{ margin: 0 }}
-              backgroundColor={'transparent'}
-              borderRadius={0}
-              name={hasTorrents ? 'play-circle-outline' : 'highlight-off'}
-              color={'#FFF'}
-              size={60} />
+            <View style={styles.iconContainer}>
+              <Overlay />
+
+              <Icon
+                iconStyle={{ margin: 0 }}
+                backgroundColor={'transparent'}
+                borderRadius={0}
+                name={hasTorrents ? 'play-circle-outline' : 'highlight-off'}
+                color={hasTorrents ? '#FFF' : 'red'}
+                size={60} />
+            </View>
           </View>
-        </View>
-      </TouchableNativeFeedback>
+        </TouchableNativeFeedback>
 
-      <Typography style={styles.title}>
-        {title}
+        <Typography style={styles.title}>
+          {title}
+        </Typography>
+      </View>
+
+      <Typography style={styles.summary} variant={'caption'}>
+        {summary}
       </Typography>
+
     </View>
-
-    <Typography style={styles.summary} variant={'caption'}>
-      {summary}
-    </Typography>
-
-  </View>
-)
+  )
+}
 
 Episode.propTypes = {}
 

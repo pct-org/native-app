@@ -1,4 +1,4 @@
-import Popcorn from 'popcorn-sdk'
+import Popcorn, { Constants } from 'popcorn-sdk'
 
 import * as HomeConstants from './HomeConstants'
 import * as HomeSelectors from './HomeSelectors'
@@ -39,10 +39,10 @@ export const getItems = (mode, page = 1, givenFilters = {}) => (dispatch, getSta
   }
 
   switch (mode) {
-    case HomeConstants.MODE_MOVIES:
+    case Constants.TYPE_MOVIE:
       return Popcorn.getMovies(page, filters).then(movies => dispatch(fetchedItems(movies, mode))).catch(catchNoCon)
 
-    case HomeConstants.MODE_SHOWS:
+    case Constants.TYPE_SHOW:
       return Popcorn.getShows(page, filters).then(shows => dispatch(fetchedItems(shows, mode))).catch(catchNoCon)
 
     default:

@@ -9,8 +9,8 @@ const styles = StyleSheet.create({
   root: {
     height     : 190,
     width      : 120,
-    marginLeft : 10,
-    marginRight: 10,
+    marginLeft : 8,
+    marginRight: 8,
     alignSelf  : 'stretch',
     position   : 'relative',
   },
@@ -35,10 +35,6 @@ export default class Card extends React.Component {
 
   render() {
     const { item, empty, ...rest } = this.props
-
-    if (!item) {
-      return null
-    }
 
     return (
       <TouchableHighlight

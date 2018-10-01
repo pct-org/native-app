@@ -3,7 +3,7 @@ import { StyleSheet, View, ActivityIndicator, Picker } from 'react-native'
 import Orientation from 'react-native-orientation'
 import { utils, Constants } from 'popcorn-sdk'
 
-import ScrollViewWithHeader from 'components/ScrollViewWithHeader'
+import ScrollViewWithStatusBar from 'components/ScrollViewWithStatusBar'
 import Typography from 'components/Typography'
 
 import Cover from './Cover'
@@ -36,8 +36,10 @@ export default class Item extends React.Component {
     activeSeason: 0,
   }
 
-  componentWillMount() {
+  componentDidMount() {
     const { getItem, navigation: { state: { params: item } } } = this.props
+
+    Orientation.lockToPortrait()
 
     getItem(item.type, item.id).then(({ payload: { type, seasons } }) => {
       if (type === Constants.TYPE_SHOW) {
@@ -60,15 +62,11 @@ export default class Item extends React.Component {
     })
   }
 
-  componentDidMount() {
-    Orientation.lockToPortrait()
-  }
-
   getAiredEpisodes = () => {
     const { item, isLoading } = this.props
     const { activeSeason } = this.state
 
-    if (isLoading || !item) {
+    if (isLoading || !item || !item.seasons) {
       return []
     }
 
@@ -77,14 +75,26 @@ export default class Item extends React.Component {
     return item.seasons[activeSeason].episodes.filter(episode => episode.aired < today)
   }
 
+  getSeasonsForPicker = () => {
+    const { item, isLoading } = this.props
+
+    if (isLoading) {
+      return []
+    }
+
+    return item.seasons
+  }
+
   render() {
     const { item, isLoading } = this.props
     const { activeSeason } = this.state
 
+    console.log('isLoading', isLoading, item, activeSeason)
+
     return (
       <View style={styles.root}>
 
-        <ScrollViewWithHeader>
+        <ScrollViewWithStatusBar>
 
           <Cover item={item} playMovie={this.playItem} />
 
@@ -94,23 +104,25 @@ export default class Item extends React.Component {
             </View>
           )}
 
-          <ActivityIndicator color={'#FFF'} size={50} animating={isLoading} hidesWhenStopped />
-
-          {!isLoading && item && item.type === Constants.TYPE_SHOW && (
+          {item && item.type === Constants.TYPE_SHOW && (
             <Picker
               mode={'dropdown'}
               selectedValue={activeSeason}
               style={styles.dropDown}
               onValueChange={(itemValue, itemIndex) => this.setState({ activeSeason: itemIndex })}>
 
-              {item.seasons.map((season, index) => (
-                <Picker.Item color={'#FFF'} key={season.title} label={season.title} value={index} />
+              {this.getSeasonsForPicker().map((season, index) => (
+                <Picker.Item
+                  color={'#FFF'}
+                  key={index}
+                  label={season.title}
+                  value={index} />
               ))}
 
             </Picker>
           )}
 
-          {!isLoading && item && item.type === Constants.TYPE_SHOW && (
+          {item && item.type === Constants.TYPE_SHOW && (
             this.getAiredEpisodes().map(episode => (
               <Episode
                 key={episode.id}
@@ -119,7 +131,9 @@ export default class Item extends React.Component {
             ))
           )}
 
-        </ScrollViewWithHeader>
+          <ActivityIndicator color={'#FFF'} size={50} animating={isLoading} hidesWhenStopped />
+
+        </ScrollViewWithStatusBar>
 
       </View>
     )

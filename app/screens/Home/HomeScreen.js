@@ -1,12 +1,12 @@
 import React from 'react'
 import { StyleSheet, Text, View } from 'react-native'
 import Orientation from 'react-native-orientation'
+import { Constants } from 'popcorn-sdk'
 
 import CardList from 'components/CardList'
 import MainCover from 'components/MainCover'
-import ScrollViewWithHeader from 'components/ScrollViewWithHeader'
-
-import * as HomeConstants from './HomeConstants'
+import FullScreenLoading from 'components/FullScreenLoading'
+import ScrollViewWithStatusBar from 'components/ScrollViewWithStatusBar'
 
 const styles = StyleSheet.create({
 
@@ -20,25 +20,21 @@ const styles = StyleSheet.create({
 
 export default class Home extends React.Component {
 
-  componentWillMount() {
-    this.load()
+  state = {
+    loading: true,
   }
 
   componentDidMount() {
+    const { getItems } = this.props
+
     Orientation.lockToPortrait()
+
+    getItems(Constants.TYPE_MOVIE)
+    getItems(Constants.TYPE_SHOW)
   }
 
   componentWillUnmount() {
     Orientation.unlockAllOrientations()
-  }
-
-  load = () => {
-    const { isLoading, getItems } = this.props
-
-    if (!isLoading) {
-      getItems(HomeConstants.MODE_MOVIES)
-      getItems(HomeConstants.MODE_SHOWS)
-    }
   }
 
   handleItemOpen = (item) => {
@@ -46,6 +42,8 @@ export default class Home extends React.Component {
 
     navigation.navigate('Item', item)
   }
+
+  coverLoaded = () => this.setState({ loading: false })
 
   getMainCover = () => {
     const movies = this.getMovies(false)
@@ -64,10 +62,10 @@ export default class Home extends React.Component {
   getMovies = (withSlice = true) => {
     const { modes } = this.props
 
-    const movies = modes[HomeConstants.MODE_MOVIES].items
+    const movies = modes[Constants.TYPE_MOVIE].items
 
     if (withSlice) {
-      return movies.slice(1, 21)
+      return movies.slice(1, 11)
     }
 
     return movies
@@ -76,27 +74,25 @@ export default class Home extends React.Component {
   getShows = () => {
     const { modes } = this.props
 
-    return modes[HomeConstants.MODE_SHOWS].items
+    return modes[Constants.TYPE_SHOW].items.slice(0, 10)
   }
 
   render() {
     const { isLoading, hasInternet } = this.props
-
-    if (isLoading) {
-      return (
-        <Text>Loading...</Text>
-      )
-    }
+    const { loading } = this.state
 
     return (
       <View style={styles.root}>
 
+        <FullScreenLoading enabled={isLoading || loading} />
+
         {hasInternet && (
-          <ScrollViewWithHeader>
+          <ScrollViewWithStatusBar>
 
             <MainCover
               onPress={this.handleItemOpen}
               loading={isLoading}
+              onLoad={this.coverLoaded}
               item={this.getMainCover()} />
 
             <CardList
@@ -113,7 +109,7 @@ export default class Home extends React.Component {
               title={'Shows'}
               items={this.getShows()} />
 
-          </ScrollViewWithHeader>
+          </ScrollViewWithStatusBar>
         )}
 
         {!hasInternet && (

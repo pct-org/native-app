@@ -1,4 +1,3 @@
-// @flow
 import * as HomeConstants from './HomeConstants'
 
 export default (state = HomeConstants.INITIAL_STATE, action) => {

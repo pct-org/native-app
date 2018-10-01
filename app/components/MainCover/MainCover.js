@@ -1,7 +1,9 @@
 import React from 'react'
 import { Image, StyleSheet, TouchableHighlight, View } from 'react-native'
+import Icon from 'react-native-vector-icons/MaterialIcons'
 
 import CoverGradient from '../CoverGradient'
+import Typography from '../Typography'
 
 const styles = StyleSheet.create({
 
@@ -11,8 +13,6 @@ const styles = StyleSheet.create({
     alignSelf     : 'stretch',
     position      : 'relative',
     display       : 'flex',
-    justifyContent: 'flex-end',
-    alignItems    : 'center',
   },
 
   image: {
@@ -23,8 +23,8 @@ const styles = StyleSheet.create({
 
 })
 
-export const MainCover = ({ loading, item, onPress, children }) => {
-  if (loading || !item) {
+export const MainCover = ({ item, onPress, children, onLoad }) => {
+  if (!item) {
     return null
   }
 
@@ -35,6 +35,7 @@ export const MainCover = ({ loading, item, onPress, children }) => {
         <Image
           style={styles.image}
           source={{ uri: item.images.poster.high }}
+          onLoad={onLoad}
         />
 
         <CoverGradient />
