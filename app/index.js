@@ -10,9 +10,9 @@ export default () => (
   <Provider store={store}>
     <React.Fragment>
 
-      <CheckForUpdates />
-
       <Screens />
+
+      <CheckForUpdates />
 
     </React.Fragment>
   </Provider>
