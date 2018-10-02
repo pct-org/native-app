@@ -5432,9 +5432,9 @@ unset-value@^1.0.0:
     has-value "^0.3.1"
     isobject "^3.0.0"
 
-update-react-native-app@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/update-react-native-app/-/update-react-native-app-1.0.0.tgz#3364b1126763795ce1dea2fa18e23d8472850bb9"
+update-react-native-app@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/update-react-native-app/-/update-react-native-app-1.0.1.tgz#4e17bfd8ee6d535a186689fb6f1bf1f4a2fadb50"
   dependencies:
     react-native-fs "^2.3.3"
 
