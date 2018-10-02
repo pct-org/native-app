@@ -34,10 +34,6 @@ export default class Mode extends React.Component {
   }
 
   componentDidMount() {
-    const { page } = this.state
-
-    this.load(page)
-
     Orientation.lockToPortrait()
   }
 
@@ -86,12 +82,6 @@ export default class Mode extends React.Component {
 
   render() {
     const { isLoading, hasInternet } = this.props
-    /*
-     if (isLoading) {
-     return (
-     <Text>Loading...</Text>
-     )
-     }*/
 
     const items = this.getItems()
 
@@ -107,7 +97,7 @@ export default class Mode extends React.Component {
             columnWrapperStyle={styles.listItem}
             data={items}
             numColumns={3}
-            initialNumToRender={16}
+            initialNumToRender={12}
             renderItem={this.renderCard}
             keyExtractor={(item, index) => `${item.id}-${index}`}
             onEndReachedThreshold={100}

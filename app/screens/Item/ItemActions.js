@@ -43,12 +43,12 @@ export function getItem(type, itemId) {
     const item = hasItem(itemId, type, getState())
 
     if (type === Constants.TYPE_MOVIE) {
-      console.log('item', item)
       if (item) {
-        return resolve(dispatch(fetchedItem(item)))
-      }
+         resolve(dispatch(fetchedItem(item)))
 
-      return resolve(Popcorn.getMovie(itemId).then(movie => dispatch(fetchedItem(movie))))
+      } else {
+        resolve(Popcorn.getMovie(itemId).then(movie => dispatch(fetchedItem(movie))))
+      }
 
     } else if (type === Constants.TYPE_SHOW) {
       if (item) {

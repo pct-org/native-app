@@ -32,7 +32,7 @@ export const styles = StyleSheet.create({
   },
 })
 
-export default class FullScreenLoading extends React.Component {
+export default class FullScreenLoading extends React.PureComponent {
 
   static propTypes = {
     enabled: PropTypes.bool,
@@ -68,12 +68,10 @@ export default class FullScreenLoading extends React.Component {
       return null
     }
 
-    console.log('enabled',enabled)
-
     return (
       <Animatable.View
         animation={enabled ? (first ? null : 'fadeIn') : 'fadeOut'}
-        duration={!enabled ? 1200 : 500}
+        duration={500}
         style={styles.root}
         onAnimationBegin={this.handleAnimationBegin}
         onAnimationEnd={this.handleAnimationEnd}

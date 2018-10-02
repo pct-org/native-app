@@ -31,7 +31,8 @@
     "react-redux": "^5.0.7",
     "redux": "^4.0.0",
     "redux-logger": "^3.0.6",
-    "redux-thunk": "^2.3.0"
+    "redux-thunk": "^2.3.0",
+    "update-react-native-app": "^1.0.0"
   },
   "devDependencies": {
     "babel-plugin-module-resolver": "^3.1.1",

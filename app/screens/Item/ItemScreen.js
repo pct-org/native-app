@@ -89,8 +89,6 @@ export default class Item extends React.Component {
     const { item, isLoading } = this.props
     const { activeSeason } = this.state
 
-    console.log('isLoading', isLoading, item, activeSeason)
-
     return (
       <View style={styles.root}>
 

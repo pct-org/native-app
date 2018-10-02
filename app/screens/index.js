@@ -10,7 +10,6 @@ import ModeScreen from './Mode'
 
 export default createStackNavigator({
   Main: {
-    // screen: HomeScreen,
     screen: createBottomTabNavigator({
       Home: {
         screen           : HomeScreen,
