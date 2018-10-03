@@ -16,7 +16,7 @@
   <a target="_blank" href="https://david-dm.org/tripss/popcorn-native?type=dev" title="devDependencies status">
     <img src="https://david-dm.org/tripss/popcorn-native/dev-status.svg"/>
   </a>
-    <a target="_blank" href="https://gitter.im/popcorn-time-desktop/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge">
+    <a target="_blank" href="https://gitter.im/pct-org/app?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge">
     <img src="https://badges.gitter.im/popcorn-time-desktop.svg" alt="Gitter" />
   </a>
   <a target="_blank" href="https://github.com/tripss/popcorn-native/pulls">
