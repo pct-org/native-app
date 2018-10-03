@@ -9,11 +9,9 @@ import Screens from './screens'
 export default () => (
   <Provider store={store}>
     <React.Fragment>
-
       <Screens />
 
       <CheckForUpdates />
-
     </React.Fragment>
   </Provider>
 )

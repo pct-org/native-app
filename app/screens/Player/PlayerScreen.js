@@ -10,6 +10,8 @@ import { CastButton } from 'react-native-google-cast'
 import Orientation from 'react-native-orientation'
 import { utils } from 'popcorn-sdk'
 
+import i18n from 'modules/i18n'
+
 import Typography from 'components/Typography'
 
 export default class VideoPlayer extends Component {
@@ -217,7 +219,7 @@ export default class VideoPlayer extends Component {
             {buffer !== 0 && !doneBuffering && (
               <React.Fragment>
                 <Typography style={{ marginTop: 10 }}>
-                  Buffering...
+                  {i18n.t('Buffering...')}
                 </Typography>
                 <Typography variant={'body2'} style={{ marginTop: 5 }}>
                   {buffer}% / {downloadSpeed}
@@ -227,7 +229,7 @@ export default class VideoPlayer extends Component {
 
             {buffer === 0 && (
               <Typography style={{ marginTop: 10 }}>
-                Connecting...
+                {i18n.t('Connecting...')}
               </Typography>
             )}
 
@@ -276,16 +278,16 @@ export default class VideoPlayer extends Component {
             <View style={styles.stats}>
               {progress !== '100' && (
                 <React.Fragment>
-                  <Typography>progress: {progress}</Typography>
-                  <Typography>speed: {downloadSpeed}</Typography>
-                  <Typography>seeds: {seeds}</Typography>
+                  <Typography>{i18n.t('progress:')} {progress}</Typography>
+                  <Typography>{i18n.t('speed:')} {downloadSpeed}</Typography>
+                  <Typography>{i18n.t('seeds:')} {seeds}</Typography>
                 </React.Fragment>
               )}
 
               {progress === '100' && (
-                <React.Fragment>
-                  <Typography>complete</Typography>
-                </React.Fragment>
+                <Typography>
+                  {i18n.t('complete')}
+                </Typography>
               )}
             </View>
           </Animatable.View>

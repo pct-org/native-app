@@ -3,6 +3,8 @@ import { StyleSheet, View, ActivityIndicator, Picker } from 'react-native'
 import Orientation from 'react-native-orientation'
 import { utils, Constants } from 'popcorn-sdk'
 
+import i18n from 'modules/i18n'
+
 import ScrollViewWithStatusBar from 'components/ScrollViewWithStatusBar'
 import Typography from 'components/Typography'
 
@@ -113,7 +115,7 @@ export default class Item extends React.Component {
                 <Picker.Item
                   color={'#FFF'}
                   key={index}
-                  label={season.title}
+                  label={i18n.t('Season {{number}}', { number: season.number })}
                   value={index} />
               ))}
 

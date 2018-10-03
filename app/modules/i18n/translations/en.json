@@ -1,0 +1,12 @@
+{
+  "Home": "Home",
+  "Movies": "Movies",
+  "Shows": "Shows",
+  "Season {{number}}": "Season {{number}}",
+  "Buffering...": "Buffering...",
+  "Connecting...": "Connecting...",
+  "progress:": "progress:",
+  "speed:": "speed:",
+  "seeds:": "seeds:",
+  "complete": "complete"
+}

@@ -3,6 +3,8 @@ import { StyleSheet, Text, View } from 'react-native'
 import Orientation from 'react-native-orientation'
 import { Constants } from 'popcorn-sdk'
 
+import i18n from 'modules/i18n'
+
 import CardList from 'components/CardList'
 import MainCover from 'components/MainCover'
 import FullScreenLoading from 'components/FullScreenLoading'
@@ -99,14 +101,14 @@ export default class Home extends React.PureComponent {
               style={{ marginTop: -20, marginBottom: 20 }}
               onPress={this.handleItemOpen}
               loading={isLoading}
-              title={'Movies'}
+              title={i18n.t('Movies')}
               items={this.getMovies()} />
 
             <CardList
               style={{ marginBottom: 20 }}
               onPress={this.handleItemOpen}
               loading={isLoading}
-              title={'Shows'}
+              title={i18n.t('Shows')}
               items={this.getShows()} />
 
           </ScrollViewWithStatusBar>

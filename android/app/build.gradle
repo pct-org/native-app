@@ -154,6 +154,7 @@ android {
 }
 
 dependencies {
+    compile project(':react-native-languages')
     compile project(':update-react-native-app')
     compile project(':react-native-vector-icons')
     compile project(':react-native-fs')

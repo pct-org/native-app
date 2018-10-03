@@ -1,6 +1,5 @@
 import Logo from 'images/logo.png'
 import React from 'react'
-import PropTypes from 'prop-types'
 import { StyleSheet, Image, View, ActivityIndicator } from 'react-native'
 import * as Animatable from 'react-native-animatable'
 import Updater from 'update-react-native-app'

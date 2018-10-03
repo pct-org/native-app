@@ -3,6 +3,8 @@ import Icon from 'react-native-vector-icons/MaterialIcons'
 import { createStackNavigator, createBottomTabNavigator } from 'react-navigation'
 import { Constants } from 'popcorn-sdk'
 
+import i18n from 'modules/i18n'
+
 import HomeScreen from './Home'
 import ItemScreen from './Item'
 import PlayerScreen from './Player'
@@ -14,7 +16,7 @@ export default createStackNavigator({
       Home: {
         screen           : HomeScreen,
         navigationOptions: {
-          tabBarLabel: 'Home',
+          tabBarLabel: i18n.t('Home'),
           tabBarIcon : ({ focused, tintColor }) => (
             <Icon
               name={'home'}
@@ -29,7 +31,7 @@ export default createStackNavigator({
         screen: ({ ...props }) => <ModeScreen mode={Constants.TYPE_MOVIE} {...props} />,
 
         navigationOptions: {
-          tabBarLabel: 'Movies',
+          tabBarLabel: i18n.t('Movies'),
           tabBarIcon : ({ focused, tintColor }) => (
             <Icon
               name={'movie'}
@@ -44,7 +46,7 @@ export default createStackNavigator({
         screen: ({ ...props }) => <ModeScreen mode={Constants.TYPE_SHOW} {...props} />,
 
         navigationOptions: {
-          tabBarLabel: 'Shows',
+          tabBarLabel: i18n.t('Shows'),
           tabBarIcon : ({ focused, tintColor }) => (
             <Icon
               name={'subscriptions'}
