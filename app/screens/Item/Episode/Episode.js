@@ -85,8 +85,18 @@ export const Episode = ({ playItem, hasTorrents, title, summary, images, torrent
   </View>
 )
 
-Episode.propTypes = {}
+Episode.propTypes = {
+  playItem   : PropTypes.func.isRequired,
+  title      : PropTypes.string.isRequired,
+  images     : PropTypes.object.isRequired,
+  torrents   : PropTypes.object.isRequired,
+  summary    : PropTypes.string,
+  hasTorrents: PropTypes.bool,
+}
 
-Episode.defaultProps = {}
+Episode.defaultProps = {
+  summary    : null,
+  hasTorrents: false,
+}
 
 export default Episode

@@ -22,40 +22,35 @@ const styles = StyleSheet.create({
 
 })
 
-export default class Card extends React.Component {
+export const Card = ({ item, empty, ...rest }) => (
+  <TouchableHighlight
+    activeOpacity={0.8}
+    // onLongPress={() => console.warn(item.title)}
+    // onPress={() => this.openItem(item)}
+    style={styles.root}
+    {...rest}>
+    <View style={{ width: '100%', height: '100%' }}>
+      <Image
+        style={styles.image}
+        defaultSource={posterHolder}
+        source={
+          !empty
+            ? { uri: item.images.poster.thumb }
+            : posterHolder
+        }
+      />
+    </View>
+  </TouchableHighlight>
+)
 
-  static propTypes = {
-    item : PropTypes.object,
-    empty: PropTypes.bool,
-  }
-
-  static defaultProps = {
-    empty: false,
-  }
-
-  render() {
-    const { item, empty, ...rest } = this.props
-
-    return (
-      <TouchableHighlight
-        activeOpacity={0.8}
-        // onLongPress={() => console.warn(item.title)}
-        // onPress={() => this.openItem(item)}
-        style={styles.root}
-        {...rest}>
-        <View style={{ width: '100%', height: '100%' }}>
-          <Image
-            style={styles.image}
-            defaultSource={posterHolder}
-            source={
-              !empty
-                ? { uri: item.images.poster.thumb }
-                : posterHolder
-            }
-          />
-        </View>
-      </TouchableHighlight>
-    )
-  }
-
+Card.propTypes = {
+  item : PropTypes.object,
+  empty: PropTypes.bool,
 }
+
+Card.defaultProps = {
+  item : null,
+  empty: false,
+}
+
+export default Card

@@ -17,7 +17,7 @@ export default createStackNavigator({
         screen           : HomeScreen,
         navigationOptions: {
           tabBarLabel: i18n.t('Home'),
-          tabBarIcon : ({ focused, tintColor }) => (
+          tabBarIcon : ({ tintColor }) => (
             <Icon
               name={'home'}
               color={tintColor}
@@ -32,7 +32,7 @@ export default createStackNavigator({
 
         navigationOptions: {
           tabBarLabel: i18n.t('Movies'),
-          tabBarIcon : ({ focused, tintColor }) => (
+          tabBarIcon : ({ tintColor }) => (
             <Icon
               name={'movie'}
               color={tintColor}
@@ -47,7 +47,7 @@ export default createStackNavigator({
 
         navigationOptions: {
           tabBarLabel: i18n.t('Shows'),
-          tabBarIcon : ({ focused, tintColor }) => (
+          tabBarIcon : ({ tintColor }) => (
             <Icon
               name={'subscriptions'}
               color={tintColor}

@@ -35,7 +35,7 @@ export const Button = ({ children, onPress, variant }) => (
 )
 
 Button.propTypes = {
-  //onPress: PropTypes.func.isRequired,
+  onPress: PropTypes.func.isRequired,
   children: PropTypes.string.isRequired,
   variant: PropTypes.oneOf(['default', 'primary']),
 }

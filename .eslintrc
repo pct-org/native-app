@@ -1,0 +1,141 @@
+{
+  "parser"  : "babel-eslint",
+  "extends" : [
+    "standard",
+    "standard-react",
+    "airbnb",
+    "plugin:jest/recommended"
+  ],
+  "plugins": [
+    "babel",
+    "react",
+    "promise",
+    "jsx-a11y",
+    "jest"
+  ],
+  "root": true,
+  "globals" : {
+    "__DEV__": false
+  },
+  "env": {
+    "browser" : true,
+    "jest/globals": true
+  },
+  "settings": {
+    "import/resolver": {
+      "node": {
+        "paths": ["app"]
+      }
+    }
+  },
+  "rules": {
+    // ESLint Rules
+    "no-console": 2,
+    "no-extra-semi": 2,
+    "no-multi-spaces": 0,
+    "key-spacing": 0,
+    "no-return-assign": 0,
+    "curly": 0,
+    "padded-blocks": 0,
+    "brace-style": 0,
+    "no-use-before-define": 0,
+    "object-curly-newline": 0,
+
+    "space-before-function-paren": [2, "never"],
+    "semi" : [2, "never"],
+    "max-len": [2, 120, 2],
+    "no-trailing-spaces": 0,
+
+    // Babel Rules
+    "babel/generator-star-spacing": 2,
+    "babel/new-cap": 2,
+    "babel/array-bracket-spacing": 2,
+    "babel/object-curly-spacing": [2, "always"],
+    "babel/object-shorthand": 2,
+    "babel/arrow-parens": [0, "as-needed"/*, { "requireForBlockBody": true }*/],
+    "babel/no-await-in-loop": 2,
+    "babel/flow-object-type": 2,
+    "babel/func-params-comma-dangle": 2,
+
+    // React Rules
+    "react/forbid-component-props": [0],
+    "react/forbid-prop-types": [0],
+    "react/no-children-prop": [2],
+    "react/no-danger": [0],
+    "react/no-danger-with-children": [2],
+    "react/no-deprecated": [2],
+    "react/no-did-mount-set-state": [2],
+    "react/no-did-update-set-state": [2],
+    "react/no-direct-mutation-state": [2],
+    "react/no-find-dom-node": [2],
+    "react/no-is-mounted": [2],
+    "react/no-multi-comp": [2],
+    "react/no-set-state": [0],
+    "react/no-string-refs": [2],
+    "react/no-unescaped-entities": [2],
+    "react/no-unknown-property": [2],
+    "react/no-unused-prop-types": [0],
+    "react/prefer-es6-class": [2, "always"],
+    "react/prefer-stateless-function": [2],
+    "react/prop-types": [2],
+    "react/react-in-jsx-scope": [2],
+    "react/require-optimization": [1],
+    "react/require-render-return": [2],
+    "react/self-closing-comp": [2],
+    "react/sort-comp": [2, {
+      "order": [
+        "static-methods",
+        "props",
+        "state",
+        "/.+Ref/",
+        "lifecycle",
+        "/^on.+$/",
+        "/^handle.+$/",
+        "everything-else",
+        "/^get.+$/",
+        "rendering"
+      ],
+      "groups": {
+        "rendering": [
+          "/^render.+$/",
+          "render"
+        ]
+      }
+    }],
+    "react/sort-prop-types": [0],
+    "react/style-prop-object": [2],
+
+    // React JSX Rules
+    "react/jsx-boolean-value": [0],
+    "react/jsx-closing-bracket-location": [0],
+    "react/jsx-curly-brace-presence": [2, { "props": "always", "children": "never" }],
+    "react/jsx-curly-spacing": [2],
+    "react/jsx-equals-spacing": [2],
+    "react/jsx-filename-extension": [2, { "extensions": [".js"] }],
+    "react/jsx-first-prop-new-line": [2, "multiline-multiprop"],
+    "react/jsx-handler-names": [2],
+    "react/jsx-indent": [2, 2],
+    "react/jsx-indent-props": [0, 2],
+    "react/jsx-key": [2],
+    "react/jsx-no-bind": [1],
+    "react/jsx-no-comment-textnodes": [2],
+    "react/jsx-no-duplicate-props": [2],
+    "react/jsx-no-literals": [0],
+    "react/jsx-no-target-blank": [2],
+    "react/jsx-no-undef": [2],
+    "react/jsx-pascal-case": [2],
+    "react/jsx-space-before-closing": [2],
+    "react/jsx-uses-react": [2],
+    "react/jsx-uses-vars": [2],
+    "react/jsx-wrap-multilines": [2],
+
+    // a11y Rules
+    "jsx-a11y/img-has-alt": [0],
+    "jsx-a11y/img-redundant-alt": [2],
+    "jsx-a11y/aria-role": [2],
+    "jsx-a11y/no-access-key": [2],
+    "jsx-a11y/href-no-hash": "off",
+    "react/jsx-one-expression-per-line": 0
+
+  }
+}

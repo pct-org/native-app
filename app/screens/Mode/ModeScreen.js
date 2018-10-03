@@ -29,6 +29,16 @@ const styles = StyleSheet.create({
 
 export default class Mode extends React.Component {
 
+  static propTypes = {
+    isLoading  : PropTypes.bool,
+    hasInternet: PropTypes.bool,
+  }
+
+  static defaultProps = {
+    isLoading  : false,
+    hasInternet: true,
+  }
+
   state = {
     page: 1,
   }
@@ -39,14 +49,6 @@ export default class Mode extends React.Component {
 
   componentWillUnmount() {
     Orientation.unlockAllOrientations()
-  }
-
-  load = (page) => {
-    const { isLoading, getItems, mode } = this.props
-
-    if (!isLoading) {
-      getItems(mode, page)
-    }
   }
 
   handleItemOpen = (item) => {
@@ -62,6 +64,7 @@ export default class Mode extends React.Component {
   }
 
   onLoadMore = () => {
+    const { isLoading, getItems, mode } = this.props
     const { page } = this.state
 
     const nPage = page + 1
@@ -69,7 +72,9 @@ export default class Mode extends React.Component {
     this.setState({
       page: nPage,
     }, () => {
-      this.load(nPage)
+      if (!isLoading) {
+        getItems(mode, nPage)
+      }
     })
   }
 

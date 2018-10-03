@@ -3,11 +3,12 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "android": "react-native run-android",
     "build": "cd android && ./gradlew assembleRelease && cd ../",
     "build-and-install": "yarn build && yarn install-on-device",
     "install-on-device": "adb install -r ./android/app/build/outputs/apk/release/app-release.apk",
-    "ios": "react-native run-ios",
+    "lint": "eslint ./app/**/*.js",
+    "lint:fix": "yarn lint --fix",
+    "run:android": "react-native run-android",
     "start": "react-native start",
     "test": "jest"
   },
@@ -38,8 +39,21 @@
     "update-react-native-app": "^1.1.0"
   },
   "devDependencies": {
+    "babel-eslint": "^10.0.1",
     "babel-plugin-module-resolver": "^3.1.1",
     "babel-preset-react-native-stage-0": "^1.0.1",
+    "eslint": "^5.6.1",
+    "eslint-config-airbnb": "^17.1.0",
+    "eslint-config-standard": "^12.0.0",
+    "eslint-config-standard-react": "^7.0.2",
+    "eslint-plugin-babel": "^5.2.1",
+    "eslint-plugin-import": "^2.14.0",
+    "eslint-plugin-jest": "^21.24.1",
+    "eslint-plugin-jsx-a11y": "^6.1.1",
+    "eslint-plugin-node": "^7.0.1",
+    "eslint-plugin-promise": "^4.0.1",
+    "eslint-plugin-react": "^7.11.1",
+    "eslint-plugin-standard": "^4.0.0",
     "jest": "^23.6.0",
     "jest-react-native": "^18.0.0",
     "react-test-renderer": "16.3.1"
