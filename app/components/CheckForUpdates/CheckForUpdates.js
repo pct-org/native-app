@@ -26,10 +26,19 @@ export const styles = StyleSheet.create({
     alignItems    : 'center',
   },
 
+  title: {
+    marginBottom: 16,
+  },
+
   logo: {
     width       : 100,
     height      : 100,
     marginBottom: 8,
+  },
+
+  loader: {
+    display   : 'flex',
+    alignItems: 'center',
   },
 
   actions: {
@@ -65,6 +74,7 @@ export default class CheckForUpdates extends React.Component {
     animating      : false,
 
     updating: false,
+    progress: 0,
 
     update       : null,
     githubRelease: {},
@@ -76,7 +86,7 @@ export default class CheckForUpdates extends React.Component {
 
       onUpdateAvailable: this.onUpdateAvailable,
       onDownloadStart  : this.onDownloadStart,
-      onProgress       : (per) => console.log('onProgress', per),
+      onProgress       : this.onProgress,
     })
 
     // Don't check for newer versions in dev
@@ -100,6 +110,12 @@ export default class CheckForUpdates extends React.Component {
     })
   }
 
+  onProgress = (progress) => {
+    this.setState({
+      progress,
+    })
+  }
+
   cancelUpdate = () => {
     this.setState({
       updateAvailable: false,
@@ -114,7 +130,8 @@ export default class CheckForUpdates extends React.Component {
   }
 
   render() {
-    const { updateAvailable, githubRelease, update, animating, updating } = this.state
+    const { updateAvailable, githubRelease } = this.state
+    const { update, animating, updating, progress } = this.state
 
     if (!updateAvailable && !animating && !updating) {
       return null
@@ -132,7 +149,7 @@ export default class CheckForUpdates extends React.Component {
           style={styles.logo}
           source={Logo} />
 
-        <Typography variant={'headline'}>
+        <Typography variant={'headline'} style={styles.title}>
           New version available {githubRelease.name}
         </Typography>
 
@@ -144,13 +161,18 @@ export default class CheckForUpdates extends React.Component {
 
         {updating && (
           <Animatable.View
+            style={styles.loader}
             animation={'fadeIn'}
             duration={500}
             useNativeDriver>
             <ActivityIndicator
               size={40}
-              style={styles.loader}
+              style={{ marginBottom: 8 }}
               color={'#FFF'} />
+
+            <Typography variant={'caption'}>
+              {progress}%
+            </Typography>
           </Animatable.View>
         )}
 
