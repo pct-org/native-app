@@ -13,7 +13,7 @@ export const Typography = ({ variant, style, color, children }) => (
 )
 
 Typography.propTypes = {
-  variant: PropTypes.oneOf([
+  variant : PropTypes.oneOf([
     'display1',
     'headline',
     'title',
@@ -22,12 +22,18 @@ Typography.propTypes = {
     'caption',
     'button',
   ]),
+  color   : PropTypes.oneOf(['white', '']),
+  style   : PropTypes.oneOfType([
+    PropTypes.number,
+    PropTypes.object,
+  ]),
+  children: PropTypes.string.isRequired,
 }
 
 Typography.defaultProps = {
   variant: 'body1',
   color  : 'white',
+  style  : null,
 }
 
 export default Typography
-

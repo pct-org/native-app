@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import { StyleSheet, Text, View } from 'react-native'
 import Orientation from 'react-native-orientation'
 import { Constants } from 'popcorn-sdk'
@@ -21,6 +22,18 @@ const styles = StyleSheet.create({
 })
 
 export default class Home extends React.PureComponent {
+
+  static propTypes = {
+    getItems   : PropTypes.func.isRequired,
+    modes      : PropTypes.object.isRequired,
+    isLoading  : PropTypes.bool.isRequired,
+    hasInternet: PropTypes.bool,
+    navigation : PropTypes.object.isRequired,
+  }
+
+  static defaultProps = {
+    hasInternet: true,
+  }
 
   state = {
     loading: true,
@@ -45,7 +58,7 @@ export default class Home extends React.PureComponent {
     navigation.navigate('Item', item)
   }
 
-  coverLoaded = () => this.setState({ loading: false })
+  handleCoverLoaded = () => this.setState({ loading: false })
 
   getMainCover = () => {
     const movies = this.getMovies(false)
@@ -57,9 +70,7 @@ export default class Home extends React.PureComponent {
     return null
   }
 
-  getMyList = () => {
-    return []
-  }
+  getMyList = () => []
 
   getMovies = (withSlice = true) => {
     const { modes } = this.props
@@ -94,7 +105,7 @@ export default class Home extends React.PureComponent {
             <MainCover
               onPress={this.handleItemOpen}
               loading={isLoading}
-              onLoad={this.coverLoaded}
+              onLoad={this.handleCoverLoaded}
               item={this.getMainCover()} />
 
             <CardList

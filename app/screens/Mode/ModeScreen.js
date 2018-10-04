@@ -33,6 +33,11 @@ export default class Mode extends React.Component {
   static propTypes = {
     isLoading  : PropTypes.bool,
     hasInternet: PropTypes.bool,
+
+    modes     : PropTypes.object.isRequired,
+    getItems  : PropTypes.func.isRequired,
+    mode      : PropTypes.string.isRequired,
+    navigation: PropTypes.object.isRequired,
   }
 
   static defaultProps = {
@@ -52,19 +57,19 @@ export default class Mode extends React.Component {
     Orientation.unlockAllOrientations()
   }
 
-  handleItemOpen = (item) => {
-    const { navigation } = this.props
-
-    navigation.navigate('Item', item)
-  }
-
   getItems = () => {
     const { modes, mode } = this.props
 
     return modes[mode].items
   }
 
-  onLoadMore = () => {
+  handleItemOpen = (item) => {
+    const { navigation } = this.props
+
+    navigation.navigate('Item', item)
+  }
+
+  handleEndReached = () => {
     const { isLoading, getItems, mode } = this.props
     const { page } = this.state
 
@@ -107,7 +112,7 @@ export default class Mode extends React.Component {
             renderItem={this.renderCard}
             keyExtractor={(item, index) => `${item.id}-${index}`}
             onEndReachedThreshold={100}
-            onEndReached={this.onLoadMore}
+            onEndReached={this.handleEndReached}
             ListHeaderComponent={() => <View style={{ marginTop: 16 }} />}
             ListFooterComponent={() => <View style={{ marginBottom: 16 }} />}
           />

@@ -64,9 +64,16 @@ export default class Item extends React.Component {
     })
   }
 
+  getSelectedSeason = () => {
+    const { item } = this.props
+
+    const { activeSeason } = this.state
+
+    return item.seasons.find(season => season.number === activeSeason)
+  }
+
   getAiredEpisodes = () => {
     const { item, isLoading } = this.props
-    const { activeSeason } = this.state
 
     if (isLoading || !item || !item.seasons) {
       return []
@@ -74,7 +81,7 @@ export default class Item extends React.Component {
 
     const today = Date.now()
 
-    return item.seasons[activeSeason].episodes.filter(episode => episode.aired < today)
+    return this.getSelectedSeason().episodes.filter(episode => episode.aired < today)
   }
 
   getSeasonsForPicker = () => {
@@ -98,7 +105,7 @@ export default class Item extends React.Component {
 
           <Cover item={item} playMovie={this.playItem} />
 
-          {item && (
+          {item && item.summary && (
             <View style={styles.container}>
               <Typography variant={'body1'}>{item.summary}</Typography>
             </View>
@@ -111,12 +118,12 @@ export default class Item extends React.Component {
               style={styles.dropDown}
               onValueChange={(itemValue, itemIndex) => this.setState({ activeSeason: itemIndex })}>
 
-              {this.getSeasonsForPicker().map((season, index) => (
+              {this.getSeasonsForPicker().map(season => (
                 <Picker.Item
                   color={'#FFF'}
-                  key={index}
+                  key={season.number}
                   label={i18n.t('Season {{number}}', { number: season.number })}
-                  value={index} />
+                  value={season.number} />
               ))}
 
             </Picker>

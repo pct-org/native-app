@@ -86,7 +86,7 @@ Cover.propTypes = {
 }
 
 Cover.defaultProps = {
-  item: null
+  item: null,
 }
 
 export default Cover

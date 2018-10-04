@@ -1,8 +1,10 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { StyleSheet, View, TouchableHighlight, Image } from 'react-native'
+import { StyleSheet, View, Image } from 'react-native'
 
 import posterHolder from 'images/posterholder.png'
+
+import BaseButton from '../BaseButton'
 
 const styles = StyleSheet.create({
 
@@ -23,13 +25,11 @@ const styles = StyleSheet.create({
 })
 
 export const Card = ({ item, empty, ...rest }) => (
-  <TouchableHighlight
-    activeOpacity={0.8}
+  <BaseButton
     // onLongPress={() => console.warn(item.title)}
     // onPress={() => this.openItem(item)}
-    style={styles.root}
     {...rest}>
-    <View style={{ width: '100%', height: '100%' }}>
+    <View style={styles.root}>
       <Image
         style={styles.image}
         defaultSource={posterHolder}
@@ -40,7 +40,7 @@ export const Card = ({ item, empty, ...rest }) => (
         }
       />
     </View>
-  </TouchableHighlight>
+  </BaseButton>
 )
 
 Card.propTypes = {

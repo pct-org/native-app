@@ -5,8 +5,11 @@
   "Season {{number}}": "Season {{number}}",
   "Buffering...": "Buffering...",
   "Connecting...": "Connecting...",
-  "progress:": "progress:",
-  "speed:": "speed:",
-  "seeds:": "seeds:",
-  "complete": "complete"
+  "progress: {{progress}}": "progress: {{progress}}",
+  "speed: {{downloadSpeed}}": "speed: {{downloadSpeed}}",
+  "seeds: {{seeds}}": "seeds: {{seeds}}",
+  "complete": "complete",
+  "New version available {{version}}": "New version available {{version}}",
+  "cancel": "cancel",
+  "update": "update"
 }

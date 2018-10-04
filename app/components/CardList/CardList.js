@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { StyleSheet, View, TouchableHighlight, ScrollView, Text } from 'react-native'
+import { StyleSheet, View, ScrollView } from 'react-native'
 
 import Card from '../Card'
 import Typography from '../Typography'
@@ -31,46 +31,45 @@ const styles = StyleSheet.create({
 
 })
 
-export default class CardList extends React.Component {
+export const CardList = ({ loading, title, items, onPress, style }) => (
+  <View style={style}>
+    <Typography
+      style={styles.title}
+      variant={'title'}>
+      {title}
+    </Typography>
 
-  static propTypes = {
-    title: PropTypes.string.isRequired,
-    items: PropTypes.array.isRequired,
+    <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+      {items.map(item => (
+        <Card
+          key={item.id}
+          item={item}
+          onPress={() => onPress(item)}
+        />
+      ))}
 
-    loading: PropTypes.bool.isRequired,
-  }
+      {(loading || items.length === 0) && (
+        <React.Fragment>
+          <Card empty />
+          <Card empty />
+          <Card empty />
+        </React.Fragment>
+      )}
+    </ScrollView>
 
-  render() {
-    const { loading, title, items, onPress, style } = this.props
+  </View>
+)
 
-    return (
-      <View style={style}>
-        <Typography
-          style={styles.title}
-          variant={'title'}>
-          {title}
-        </Typography>
-
-        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-          {items.map(item => (
-            <Card
-              key={item.id}
-              item={item}
-              onPress={() => onPress(item)}
-            />
-          ))}
-
-          {(loading || items.length === 0) && (
-            <React.Fragment>
-              <Card empty />
-              <Card empty />
-              <Card empty />
-            </React.Fragment>
-          )}
-        </ScrollView>
-
-      </View>
-    )
-  }
-
+CardList.propTypes = {
+  title  : PropTypes.string.isRequired,
+  items  : PropTypes.array.isRequired,
+  onPress: PropTypes.func.isRequired,
+  loading: PropTypes.bool.isRequired,
+  style  : PropTypes.object,
 }
+
+CardList.defaultProps = {
+  style: null,
+}
+
+export default CardList

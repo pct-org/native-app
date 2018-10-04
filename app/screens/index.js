@@ -1,3 +1,5 @@
+/* eslint react/prop-types: 0 */
+
 import React from 'react'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import { createStackNavigator, createBottomTabNavigator } from 'react-navigation'

@@ -6,6 +6,8 @@ import Updater from 'update-react-native-app'
 import Markdown from 'react-native-markdown-renderer'
 import { material } from 'react-native-typography'
 
+import i18n from 'modules/i18n'
+
 import Typography from '../Typography'
 import Button from '../Button'
 
@@ -119,7 +121,7 @@ export default class CheckForUpdates extends React.Component {
     })
   }
 
-  cancelUpdate = () => {
+  handleCancelUpdate = () => {
     this.setState({
       updateAvailable: false,
       animating      : true,
@@ -153,7 +155,7 @@ export default class CheckForUpdates extends React.Component {
           source={Logo} />
 
         <Typography variant={'headline'} style={styles.title}>
-          New version available {githubRelease.name}
+          {i18n.t('New version available {{version}}', { version: githubRelease.name })}
         </Typography>
 
         {!updating && githubRelease && githubRelease.body && (
@@ -176,7 +178,7 @@ export default class CheckForUpdates extends React.Component {
               color={'#FFF'} />
 
             <Typography variant={'caption'}>
-              {progress}%
+              {`${progress}%`}
             </Typography>
           </Animatable.View>
         )}
@@ -184,14 +186,14 @@ export default class CheckForUpdates extends React.Component {
         {!updating && (
           <View style={styles.actions}>
             <Button
-              onPress={this.cancelUpdate}>
-              cancel
+              onPress={this.handleCancelUpdate}>
+              {i18n.t('cancel')}
             </Button>
 
             <Button
               variant={'primary'}
               onPress={update}>
-              update
+              {i18n.t('update')}
             </Button>
           </View>
         )}

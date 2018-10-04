@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { StyleSheet, View, Image, ActivityIndicator } from 'react-native'
+import { StyleSheet, Image, ActivityIndicator } from 'react-native'
 import * as Animatable from 'react-native-animatable'
 
 import Logo from 'images/logo.png'
@@ -47,6 +47,21 @@ export default class FullScreenLoading extends React.PureComponent {
     first : true,
   }
 
+  getAnimation = () => {
+    const { enabled } = this.props
+    const { first } = this.state
+
+    if (enabled) {
+      if (!first) {
+        return 'fadeIn'
+      }
+    } else {
+      return 'fadeOut'
+    }
+
+    return null
+  }
+
   handleAnimationEnd = () => {
     this.setState({
       hidden: true,
@@ -62,7 +77,7 @@ export default class FullScreenLoading extends React.PureComponent {
 
   render() {
     const { enabled } = this.props
-    const { hidden, first } = this.state
+    const { hidden } = this.state
 
     if (hidden && !enabled) {
       return null
@@ -70,7 +85,7 @@ export default class FullScreenLoading extends React.PureComponent {
 
     return (
       <Animatable.View
-        animation={enabled ? (first ? null : 'fadeIn') : 'fadeOut'}
+        animation={this.getAnimation()}
         duration={500}
         style={styles.root}
         onAnimationBegin={this.handleAnimationBegin}

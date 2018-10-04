@@ -1,8 +1,10 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { StyleSheet, Text, TouchableNativeFeedback } from 'react-native'
+import { StyleSheet, Text } from 'react-native'
 
 import { material } from 'react-native-typography'
+
+import BaseButton from '../BaseButton'
 
 export const styles = StyleSheet.create({
 
@@ -23,15 +25,13 @@ export const styles = StyleSheet.create({
 })
 
 export const Button = ({ children, onPress, variant }) => (
-  <TouchableNativeFeedback
-    onPress={onPress}
-    background={TouchableNativeFeedback.Ripple('#212121')}>
+  <BaseButton onPress={onPress}>
 
     <Text style={[styles.base, styles[variant]]}>
       {children.toUpperCase()}
     </Text>
 
-  </TouchableNativeFeedback>
+  </BaseButton>
 )
 
 Button.propTypes = {
