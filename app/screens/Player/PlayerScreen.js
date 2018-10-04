@@ -52,12 +52,14 @@ export default class VideoPlayer extends React.Component {
     this.staticServer = new StaticServer(0, this.serverDirectory, { keepAlive: true })
   }
 
-  async componentDidMount() {
+  componentDidMount() {
     const { navigation: { state: { params: { magnet } } } } = this.props
 
     Orientation.addOrientationListener(this.handleOrientationChange)
 
     GoogleCast.EventEmitter.addListener(GoogleCast.MEDIA_STATUS_UPDATED, this.handleCastMediaUpdate)
+    GoogleCast.EventEmitter.addListener(GoogleCast.SESSION_STARTED, this.handleCastSessionStarted)
+    GoogleCast.EventEmitter.addListener(GoogleCast.SESSION_ENDED, this.handleCastSessionEnded)
 
     TorrentStreamer.addEventListener('error', this.handleTorrentError)
     TorrentStreamer.addEventListener('status', this.handleTorrentStatus)
@@ -68,13 +70,12 @@ export default class VideoPlayer extends React.Component {
   }
 
   componentWillUnmount() {
-    // eslint-disable-next-line no-console
-    console.log('componentWillUnmount')
-
     Orientation.removeOrientationListener(this.handleOrientationChange)
     Orientation.lockToPortrait()
 
     GoogleCast.EventEmitter.removeAllListeners(GoogleCast.MEDIA_STATUS_UPDATED)
+    GoogleCast.EventEmitter.removeAllListeners(GoogleCast.SESSION_STARTED)
+    GoogleCast.EventEmitter.removeAllListeners(GoogleCast.SESSION_ENDED)
 
     TorrentStreamer.removeEventListener('error', this.handleTorrentError)
     TorrentStreamer.removeEventListener('status', this.handleTorrentStatus)
@@ -96,20 +97,38 @@ export default class VideoPlayer extends React.Component {
     }
   }
 
-  handleCastMediaUpdate = (...args) => {
-    // eslint-disable-next-line no-console
-    console.log('MEDIA_STATUS_UPDATED', args)
+  handleCastSessionStarted = () => {
+    const { url, doneBuffering } = this.state
+
+    if (doneBuffering) {
+      this.startCasting(url)
+    }
+  }
+
+  handleCastMediaUpdate = ({ mediaStatus }) => {
+    if (mediaStatus.streamPosition > 0) {
+      this.setState({
+        currentTime: mediaStatus.streamPosition,
+      })
+    }
+  }
+
+  handleCastSessionEnded = () => {
+    this.setState({
+      paused : false,
+      casting: false,
+    })
   }
 
   handleTorrentStatus = (status) => {
     const { buffer, progress } = this.state
 
-    const nProgress = parseFloat(status.progress).toFixed(2)
+    const nProgress = parseFloat(status.progress)
 
-    if (status.buffer !== buffer || nProgress > (progress + 1.0)) {
+    if (status.buffer !== buffer || (nProgress > (progress + 1)) || nProgress > 99) {
       this.setState({
         ...status,
-        progress     : nProgress,
+        progress     : nProgress > 99 ? 100 : nProgress,
         downloadSpeed: utils.formatKbToString(status.downloadSpeed),
         doneBuffering: status.buffer === '100',
       })
@@ -117,35 +136,10 @@ export default class VideoPlayer extends React.Component {
   }
 
   handleTorrentReady = async(data) => {
-    const { navigation: { state: { params: { item } } } } = this.props
-
     const castState = await GoogleCast.getCastState()
 
     if (castState.toLowerCase() === 'connected') {
-      if (!this.serverUrl) {
-        this.serverUrl = await this.staticServer.start()
-      }
-
-      GoogleCast.castMedia({
-        title   : item.title,
-        subtitle: item.summary,
-        // studio: video.studio,
-        // duration: video.duration,
-
-        mediaUrl: this.serverUrl + data.url.replace(this.serverDirectory, ''),
-
-        imageUrl : item.images.fanart.high,
-        posterUrl: item.images.poster.high,
-      })
-
-      this.showCastingControls()
-
-      this.setState({
-        buffer       : '100',
-        doneBuffering: true,
-        loading      : false,
-        casting      : true,
-      })
+      this.startCasting(data.url)
 
     } else {
       this.setState({
@@ -177,13 +171,16 @@ export default class VideoPlayer extends React.Component {
   }
 
   handleVideoLoad = (data) => {
-    // eslint-disable-next-line no-console
-    console.log('onLoad', data)
+    const { currentTime } = this.state
 
     this.setState({
       duration: data.duration,
       loading : false,
     }, () => {
+      if (currentTime > 0) {
+        this.videoRef.seek(currentTime)
+      }
+
       Orientation.unlockAllOrientations()
     })
   }
@@ -200,6 +197,39 @@ export default class VideoPlayer extends React.Component {
 
   showCastingControls = () => {
     GoogleCast.launchExpandedControls()
+  }
+
+  startCasting = async(url) => {
+    const { navigation: { state: { params: { item } } } } = this.props
+    const { currentTime } = this.state
+
+    if (!this.serverUrl) {
+      this.serverUrl = await this.staticServer.start()
+    }
+
+    GoogleCast.castMedia({
+      title   : item.title,
+      subtitle: item.summary,
+      // studio: video.studio,
+      // duration: video.duration,
+
+      playPosition: currentTime,
+
+      mediaUrl: this.serverUrl + url.replace(this.serverDirectory, ''),
+
+      imageUrl : item.images.fanart.high,
+      posterUrl: item.images.poster.high,
+    })
+
+    this.setState({
+      url,
+      buffer       : '100',
+      doneBuffering: true,
+      loading      : false,
+      casting      : true,
+    }, () => {
+      this.showCastingControls()
+    })
   }
 
   getCurrentTimePercentage() {
@@ -269,6 +299,7 @@ export default class VideoPlayer extends React.Component {
                 rate={1}
                 muted={muted}
                 resizeMode={'contain'}
+                onVideoError={(e) => console.log('onVideoError', e)}
                 onLoad={this.handleVideoLoad}
                 onProgress={this.handleVideoProgress}
                 onEnd={this.handleVideoEnd}
@@ -295,15 +326,15 @@ export default class VideoPlayer extends React.Component {
             animation={paused || casting ? 'fadeInUp' : 'fadeOutDown'}
             useNativeDriver>
             <View style={styles.stats}>
-              {progress !== '100' && (
+              {progress !== 100 && (
                 <React.Fragment>
-                  <Typography>{i18n.t('progress: {{progress}}', { progress })}</Typography>
+                  <Typography>{i18n.t('progress: {{progress}}', { progress: progress.toFixed(2) })}</Typography>
                   <Typography>{i18n.t('speed: {{downloadSpeed}}', { downloadSpeed })}</Typography>
                   <Typography>{i18n.t('seeds: {{seeds}}', { seeds })}</Typography>
                 </React.Fragment>
               )}
 
-              {progress === '100' && (
+              {progress === 100 && (
                 <Typography>
                   {i18n.t('complete')}
                 </Typography>

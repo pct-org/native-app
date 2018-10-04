@@ -118,12 +118,12 @@ export default class Item extends React.Component {
               style={styles.dropDown}
               onValueChange={(itemValue, itemIndex) => this.setState({ activeSeason: itemIndex })}>
 
-              {this.getSeasonsForPicker().map(season => (
+              {this.getSeasonsForPicker().map((season, index) => (
                 <Picker.Item
                   color={'#FFF'}
-                  key={season.number}
-                  label={i18n.t('Season {{number}}', { number: season.number })}
-                  value={season.number} />
+                  key={index}
+                  label={i18n.t('Season {{number}}', { number: index })}
+                  value={index} />
               ))}
 
             </Picker>

@@ -27,7 +27,10 @@ Typography.propTypes = {
     PropTypes.number,
     PropTypes.object,
   ]),
-  children: PropTypes.string.isRequired,
+  children: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.arrayOf(PropTypes.string)
+  ]).isRequired,
 }
 
 Typography.defaultProps = {

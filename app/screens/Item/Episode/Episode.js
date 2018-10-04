@@ -43,7 +43,7 @@ export const styles = StyleSheet.create({
 export const Episode = ({ playItem, hasTorrents, title, summary, images, torrents }) => {
   const handlePlayItem = () => {
     if (hasTorrents) {
-      playItem(torrents)
+      playItem(torrents, { title, summary })
     }
   }
 
@@ -79,18 +79,14 @@ export const Episode = ({ playItem, hasTorrents, title, summary, images, torrent
           </View>
         </BaseButton>
 
-        {title && (
-          <Typography style={styles.title}>
-            {title}
-          </Typography>
-        )}
+        <Typography style={styles.title}>
+          {title}
+        </Typography>
       </View>
 
-      {summary && (
-        <Typography style={styles.summary} variant={'caption'}>
-          {summary}
-        </Typography>
-      )}
+      <Typography style={styles.summary} variant={'caption'}>
+        {summary}
+      </Typography>
 
     </View>
   )
