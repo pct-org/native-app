@@ -1,6 +1,6 @@
 import Logo from 'images/logo.png'
 import React from 'react'
-import { StyleSheet, Image, View, ActivityIndicator } from 'react-native'
+import { StyleSheet, Image, View, ScrollView, ActivityIndicator } from 'react-native'
 import * as Animatable from 'react-native-animatable'
 import Updater from 'update-react-native-app'
 import Markdown from 'react-native-markdown-renderer'
@@ -40,6 +40,14 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
   },
 
+  bodyContainer: {
+    width    : '100%',
+    maxHeight: '30%',
+
+    paddingLeft : 16,
+    paddingRight: 16,
+  },
+
   actions: {
     display       : 'flex',
     justifyContent: 'center',
@@ -56,11 +64,7 @@ export const styles = StyleSheet.create({
 
 export const mdStyle = StyleSheet.create({
 
-  heading2: {
-    ...material.titleWhiteObject,
-
-    width: '90%',
-  },
+  heading2: material.titleWhiteObject,
 
   text: material.body1WhiteObject,
 
@@ -153,9 +157,11 @@ export default class CheckForUpdates extends React.Component {
         </Typography>
 
         {!updating && githubRelease && githubRelease.body && (
-          <Markdown style={mdStyle}>
-            {githubRelease.body}
-          </Markdown>
+          <ScrollView style={styles.bodyContainer}>
+            <Markdown style={mdStyle}>
+              {githubRelease.body}
+            </Markdown>
+          </ScrollView>
         )}
 
         {updating && (

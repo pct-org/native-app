@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import { StyleSheet, Text, View, FlatList, StatusBar } from 'react-native'
 import Orientation from 'react-native-orientation'
 
