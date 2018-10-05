@@ -94,7 +94,9 @@ export default class CheckForUpdates extends React.Component {
         accepted: accepted && accepted === 'y',
         loading : false,
       }, () => {
-        SplashScreen.hide()
+        if (!accepted) {
+          SplashScreen.hide()
+        }
       })
     })
   }

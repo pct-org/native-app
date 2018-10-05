@@ -5,17 +5,20 @@
         <!-- Customize your theme here. -->
 
         <item name="android:spinnerDropDownItemStyle">@style/SpinnerDropDownItem</item>
-        <item name="android:navigationBarColor">#17181b</item>
-
+        <item name="android:navigationBarColor">@color/background</item>
     </style>
 
+    <style name="SplashTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:statusBarColor">@color/background</item>
+        <item name="android:navigationBarColor">@color/background</item>
+    </style>
 
     <style name="SpinnerDropDownItem" parent="Theme.AppCompat.Light.NoActionBar">>
         <item name="android:textColor">#ffffff</item>
         <item name="android:textSize">18dp</item>
         <item name="android:fontFamily">sans-serif-light</item>
         <item name="android:gravity">center</item>
-        <item name="android:background">#17181b</item>
+        <item name="android:background">@color/background</item>
     </style>
 
 </resources>

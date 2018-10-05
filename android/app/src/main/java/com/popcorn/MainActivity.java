@@ -11,7 +11,7 @@ public class MainActivity extends GoogleCastActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        SplashScreen.show(this);  // here
+        SplashScreen.show(this, R.style.SplashTheme);
         super.onCreate(savedInstanceState);
     }
 

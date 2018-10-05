@@ -3,13 +3,13 @@ import PropTypes from 'prop-types'
 import { StyleSheet, Text, View } from 'react-native'
 import Orientation from 'react-native-orientation'
 import { Constants } from 'popcorn-sdk'
+import SplashScreen from 'react-native-splash-screen'
 
 import i18n from 'modules/i18n'
 import colors from 'modules/colors'
 
 import CardList from 'components/CardList'
 import MainCover from 'components/MainCover'
-import FullScreenLoading from 'components/FullScreenLoading'
 import ScrollViewWithStatusBar from 'components/ScrollViewWithStatusBar'
 
 const styles = StyleSheet.create({
@@ -36,10 +36,6 @@ export default class Home extends React.PureComponent {
     hasInternet: true,
   }
 
-  state = {
-    loading: true,
-  }
-
   componentDidMount() {
     const { getItems } = this.props
 
@@ -59,7 +55,9 @@ export default class Home extends React.PureComponent {
     navigation.navigate('Item', item)
   }
 
-  handleCoverLoaded = () => this.setState({ loading: false })
+  handleCoverLoaded = () => {
+    SplashScreen.hide()
+  }
 
   getMainCover = () => {
     const movies = this.getMovies(false)
@@ -93,12 +91,9 @@ export default class Home extends React.PureComponent {
 
   render() {
     const { isLoading, hasInternet } = this.props
-    const { loading } = this.state
 
     return (
       <View style={styles.root}>
-
-        <FullScreenLoading enabled={isLoading || loading} />
 
         {hasInternet && (
           <ScrollViewWithStatusBar>
