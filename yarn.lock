@@ -4997,6 +4997,10 @@ react-native-screens@^1.0.0-alpha.11:
   version "1.0.0-alpha.12"
   resolved "https://registry.yarnpkg.com/react-native-screens/-/react-native-screens-1.0.0-alpha.12.tgz#5953c39c9dbfbe324610005e07d85a416081c48c"
 
+react-native-splash-screen@^3.1.1:
+  version "3.1.1"
+  resolved "https://registry.yarnpkg.com/react-native-splash-screen/-/react-native-splash-screen-3.1.1.tgz#1a4e46c9fdce53ff52af2a2cb4181788c4e30b30"
+
 react-native-static-server@^0.3.0:
   version "0.3.0"
   resolved "https://registry.yarnpkg.com/react-native-static-server/-/react-native-static-server-0.3.0.tgz#19cbe5156942992f0a123d00d4950978f15c0f16"
