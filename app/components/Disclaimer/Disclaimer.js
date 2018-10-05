@@ -12,7 +12,6 @@ import colors from 'modules/colors'
 import Settings from 'modules/db/Settings'
 
 import Typography from '../Typography'
-import FullScreenLoading from '../FullScreenLoading'
 import Button from '../Button'
 
 export const styles = StyleSheet.create({
@@ -90,7 +89,7 @@ export default class CheckForUpdates extends React.Component {
   componentWillMount() {
     Settings.getItem(Settings.DISCLAIMER_ACCEPTED).then((accepted) => {
       this.setState({
-        accepted: accepted && accepted === 'y',
+        accepted: accepted && accepted === 'yy',
         loading : false,
       })
     })
@@ -101,10 +100,10 @@ export default class CheckForUpdates extends React.Component {
   }
 
   handleAccept = () => {
-    Settings.setItem(Settings.DISCLAIMER_ACCEPTED, 'y')
-
     this.setState({
       accepted: true,
+    }, () => {
+      Settings.setItem(Settings.DISCLAIMER_ACCEPTED, 'y')
     })
   }
 
@@ -112,7 +111,7 @@ export default class CheckForUpdates extends React.Component {
     const { children } = this.props
     const { accepted, loading } = this.state
 
-    if (accepted) {
+    if (accepted || loading) {
       return children
     }
 
@@ -122,8 +121,6 @@ export default class CheckForUpdates extends React.Component {
         duration={500}
         style={styles.root}
         useNativeDriver>
-
-        <FullScreenLoading enabled={loading} />
 
         <StatusBar backgroundColor={colors.BACKGROUND} animated />
 
