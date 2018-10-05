@@ -5,6 +5,7 @@ import Orientation from 'react-native-orientation'
 import { Constants } from 'popcorn-sdk'
 
 import i18n from 'modules/i18n'
+import colors from 'modules/colors'
 
 import CardList from 'components/CardList'
 import MainCover from 'components/MainCover'
@@ -15,7 +16,7 @@ const styles = StyleSheet.create({
 
   root: {
     flex           : 1,
-    backgroundColor: '#292929',
+    backgroundColor: colors.BACKGROUND,
     position       : 'relative',
   },
 
@@ -109,14 +110,14 @@ export default class Home extends React.PureComponent {
               item={this.getMainCover()} />
 
             <CardList
-              style={{ marginTop: -20, marginBottom: 20 }}
+              style={{ marginTop: -20, marginBottom: 8 }}
               onPress={this.handleItemOpen}
               loading={isLoading}
               title={i18n.t('Movies')}
               items={this.getMovies()} />
 
             <CardList
-              style={{ marginBottom: 20 }}
+              style={{ marginBottom: 16 }}
               onPress={this.handleItemOpen}
               loading={isLoading}
               title={i18n.t('Shows')}

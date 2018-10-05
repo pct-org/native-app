@@ -1,6 +1,7 @@
 import React from 'react'
 import { Provider } from 'react-redux'
 
+import Disclaimer from 'components/Disclaimer'
 import CheckForUpdates from 'components/CheckForUpdates'
 
 import store from './store'
@@ -8,10 +9,10 @@ import Screens from './screens'
 
 export default () => (
   <Provider store={store}>
-    <React.Fragment>
+    <Disclaimer>
       <Screens />
 
       <CheckForUpdates />
-    </React.Fragment>
+    </Disclaimer>
   </Provider>
 )

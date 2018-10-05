@@ -299,7 +299,6 @@ export default class VideoPlayer extends React.Component {
                 rate={1}
                 muted={muted}
                 resizeMode={'contain'}
-                onVideoError={(e) => console.log('onVideoError', e)}
                 onLoad={this.handleVideoLoad}
                 onProgress={this.handleVideoProgress}
                 onEnd={this.handleVideoEnd}

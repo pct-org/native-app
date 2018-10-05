@@ -1,4 +1,3 @@
-import Logo from 'images/logo.png'
 import React from 'react'
 import { StyleSheet, Image, View, ScrollView, ActivityIndicator } from 'react-native'
 import * as Animatable from 'react-native-animatable'
@@ -7,6 +6,9 @@ import Markdown from 'react-native-markdown-renderer'
 import { material } from 'react-native-typography'
 
 import i18n from 'modules/i18n'
+import colors from 'modules/colors'
+
+import Logo from 'images/logo.png'
 
 import Typography from '../Typography'
 import Button from '../Button'
@@ -20,7 +22,7 @@ export const styles = StyleSheet.create({
     right   : 0,
     left    : 0,
 
-    backgroundColor: '#242424',
+    backgroundColor: colors.BACKGROUND,
 
     display       : 'flex',
     justifyContent: 'center',

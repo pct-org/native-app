@@ -11,5 +11,8 @@
   "complete": "complete",
   "New version available {{version}}": "New version available {{version}}",
   "cancel": "cancel",
-  "update": "update"
+  "update": "update",
+  "i accept": "i accept",
+  "leave": "leave",
+  "Terms of Service":"Terms of Service"
 }

@@ -3,6 +3,8 @@ import PropTypes from 'prop-types'
 import { StyleSheet, Image, ActivityIndicator } from 'react-native'
 import * as Animatable from 'react-native-animatable'
 
+import colors from 'modules/colors'
+
 import Logo from 'images/logo.png'
 
 export const styles = StyleSheet.create({
@@ -14,7 +16,7 @@ export const styles = StyleSheet.create({
     right   : 0,
     left    : 0,
 
-    backgroundColor: '#242424',
+    backgroundColor: colors.BACKGROUND,
 
     display       : 'flex',
     justifyContent: 'center',

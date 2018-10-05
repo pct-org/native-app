@@ -4,6 +4,8 @@ import { StyleSheet, Text } from 'react-native'
 
 import { material } from 'react-native-typography'
 
+import colors from 'modules/colors'
+
 import BaseButton from '../BaseButton'
 
 export const styles = StyleSheet.create({
@@ -19,7 +21,7 @@ export const styles = StyleSheet.create({
   },
 
   primary: {
-    backgroundColor: '#202020',
+    backgroundColor: colors.BACKGROUND_LIGHTER,
   },
 
 })
