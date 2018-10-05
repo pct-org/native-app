@@ -28,7 +28,7 @@ export const Card = ({ item, empty, ...rest }) => (
   <BaseButton
     // onLongPress={() => console.warn(item.title)}
     // onPress={() => this.openItem(item)}
-    >
+    {...rest}>
     <View style={styles.root}>
       <Image
         style={styles.image}

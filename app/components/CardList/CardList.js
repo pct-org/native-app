@@ -19,8 +19,8 @@ const styles = StyleSheet.create({
   },
 
   title: {
-    marginLeft: 10,
-    marginTop : 10,
+    marginLeft: 8,
+    marginTop : 8,
   },
 
   image: {

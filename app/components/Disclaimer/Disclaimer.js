@@ -76,7 +76,6 @@ export const mdStyle = StyleSheet.create({
 
 })
 
-
 export default class CheckForUpdates extends React.Component {
 
   static propTypes = {

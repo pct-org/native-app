@@ -107,8 +107,8 @@ android {
         applicationId "com.popcorn"
         minSdkVersion 16
         targetSdkVersion 22
-        versionCode 4
-        versionName "v0.5.1"
+        versionCode 6
+        versionName "v0.6.0"
         ndk {
             abiFilters "armeabi-v7a", "x86"
         }
@@ -178,7 +178,6 @@ dependencies {
     compile project(':react-native-orientation')
     compile project(':react-native-video')
     compile project(':react-native-linear-gradient')
-    compile project(':react-native-sqlite-storage')
     compile fileTree(dir: "libs", include: ["*.jar"])
     compile "com.android.support:appcompat-v7:23.0.1"
     compile "com.facebook.react:react-native:+"  // From node_modules
