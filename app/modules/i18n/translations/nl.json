@@ -11,5 +11,8 @@
   "complete": "klaar",
   "New version available {{version}}": "Nieuwe versie beschikbaar {{version}}",
   "cancel": "annuleren",
-  "update": "updaten"
+  "update": "updaten",
+  "i accept": "accepteren",
+  "leave": "afsluiten",
+  "Terms of Service":"Gebruiksvoorwaarden"
 }

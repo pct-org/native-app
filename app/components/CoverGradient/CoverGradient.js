@@ -3,6 +3,8 @@ import PropTypes from 'prop-types'
 import { StyleSheet } from 'react-native'
 import LinearGradient from 'react-native-linear-gradient'
 
+import colors from 'modules/colors'
+
 const styles = StyleSheet.create({
 
   linearGradient: {
@@ -18,7 +20,7 @@ export const CoverGradient = ({ start, end }) => (
   <LinearGradient
     start={start}
     end={end}
-    colors={['transparent', '#292929']}
+    colors={['transparent', colors.BACKGROUND]}
     locations={[0, 1]}
     style={styles.linearGradient} />
 )

@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
   title: {
     position: 'absolute',
     bottom  : 20,
-    left    : 16,
+    left    : 8,
   },
 
   playContainer: {

@@ -3,6 +3,8 @@ import PropTypes from 'prop-types'
 import { StyleSheet, Text, View, FlatList, StatusBar } from 'react-native'
 import Orientation from 'react-native-orientation'
 
+import colors from 'modules/colors'
+
 import Card from 'components/Card'
 import FullScreenLoading from 'components/FullScreenLoading'
 
@@ -10,7 +12,7 @@ const styles = StyleSheet.create({
 
   root: {
     flex           : 1,
-    backgroundColor: '#292929',
+    backgroundColor: colors.BACKGROUND,
     position       : 'relative',
   },
 

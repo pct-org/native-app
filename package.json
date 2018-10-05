@@ -8,7 +8,7 @@
     "install-on-device": "adb install -r ./android/app/build/outputs/apk/release/app-release.apk",
     "lint": "eslint ./app/**/*.js",
     "lint:fix": "yarn lint --fix",
-    "run:android": "react-native run-android",
+    "run:android": "react-native run-android --variant=devDebug",
     "start": "react-native start",
     "test": "jest"
   },

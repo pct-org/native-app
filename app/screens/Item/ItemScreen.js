@@ -8,6 +8,8 @@ import i18n from 'modules/i18n'
 import ScrollViewWithStatusBar from 'components/ScrollViewWithStatusBar'
 import Typography from 'components/Typography'
 
+import colors from 'modules/colors'
+
 import Cover from './Cover'
 import Episode from './Episode'
 
@@ -15,19 +17,19 @@ const styles = StyleSheet.create({
 
   root: {
     flex           : 1,
-    backgroundColor: '#292929',
+    backgroundColor: colors.BACKGROUND,
   },
 
   container: {
-    margin: 16,
+    margin: 8,
   },
 
   dropDown: {
-    margin: 16,
+    margin: 8,
 
     height         : 50,
     width          : 150,
-    backgroundColor: '#242424',
+    backgroundColor: colors.BACKGROUND_LIGHTER,
   },
 
 })
@@ -81,7 +83,13 @@ export default class Item extends React.Component {
 
     const today = Date.now()
 
-    return this.getSelectedSeason().episodes.filter(episode => episode.aired < today)
+    const season = this.getSelectedSeason()
+
+    if (!season) {
+      return []
+    }
+
+    return season.episodes.filter(episode => episode.aired < today)
   }
 
   getSeasonsForPicker = () => {

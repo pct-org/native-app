@@ -6,6 +6,7 @@ import { createStackNavigator, createBottomTabNavigator } from 'react-navigation
 import { Constants } from 'popcorn-sdk'
 
 import i18n from 'modules/i18n'
+import colors from 'modules/colors'
 
 import HomeScreen from './Home'
 import ItemScreen from './Item'
@@ -65,7 +66,7 @@ export default createStackNavigator({
         activeTintColor  : '#FFF',
 
         style: {
-          backgroundColor: '#202020',
+          backgroundColor: colors.BACKGROUND,
         },
       },
     }),
