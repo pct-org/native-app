@@ -1,4 +1,7 @@
+/* eslint max-len: 0 */
+
 import React from 'react'
+import PropTypes from 'prop-types'
 import { StyleSheet, BackHandler, View, ScrollView, StatusBar } from 'react-native'
 import * as Animatable from 'react-native-animatable'
 import Markdown from 'react-native-markdown-renderer'
@@ -75,6 +78,10 @@ export const mdStyle = StyleSheet.create({
 
 
 export default class CheckForUpdates extends React.Component {
+
+  static propTypes = {
+    children: PropTypes.node.isRequired,
+  }
 
   state = {
     accepted: false,
