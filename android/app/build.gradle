@@ -100,15 +100,15 @@ def enableSeparateBuildPerCPUArchitecture = false
 def enableProguardInReleaseBuilds = false
 
 android {
-    compileSdkVersion 23
+    compileSdkVersion 26
     buildToolsVersion "28.0.2"
 
     defaultConfig {
         applicationId "com.popcorn"
         minSdkVersion 16
-        targetSdkVersion 22
-        versionCode 6
-        versionName "v0.6.0"
+        targetSdkVersion 26
+        versionCode 7
+        versionName "v0.6.1"
         ndk {
             abiFilters "armeabi-v7a", "x86"
         }
@@ -168,6 +168,7 @@ android {
 }
 
 dependencies {
+    compile project(':react-native-splash-screen')
     compile project(':react-native-languages')
     compile project(':update-react-native-app')
     compile project(':react-native-vector-icons')

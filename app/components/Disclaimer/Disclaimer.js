@@ -6,6 +6,7 @@ import { StyleSheet, BackHandler, View, ScrollView, StatusBar } from 'react-nati
 import * as Animatable from 'react-native-animatable'
 import Markdown from 'react-native-markdown-renderer'
 import { material } from 'react-native-typography'
+import SplashScreen from 'react-native-splash-screen'
 
 import i18n from 'modules/i18n'
 import colors from 'modules/colors'
@@ -82,16 +83,25 @@ export default class CheckForUpdates extends React.Component {
   }
 
   state = {
-    accepted: false,
-    loading : true,
+    accepted : false,
+    animating: false,
+    loading  : true,
   }
 
   componentWillMount() {
     Settings.getItem(Settings.DISCLAIMER_ACCEPTED).then((accepted) => {
       this.setState({
-        accepted: accepted && accepted === 'yy',
+        accepted: accepted && accepted === 'y',
         loading : false,
+      }, () => {
+        SplashScreen.hide()
       })
+    })
+  }
+
+  handleAnimationEnd = () => {
+    this.setState({
+      animating: false,
     })
   }
 
@@ -101,7 +111,8 @@ export default class CheckForUpdates extends React.Component {
 
   handleAccept = () => {
     this.setState({
-      accepted: true,
+      accepted : true,
+      animating: true,
     }, () => {
       Settings.setItem(Settings.DISCLAIMER_ACCEPTED, 'y')
     })
@@ -109,28 +120,30 @@ export default class CheckForUpdates extends React.Component {
 
   render() {
     const { children } = this.props
-    const { accepted, loading } = this.state
-
-    if (accepted || loading) {
-      return children
-    }
+    const { animating, accepted, loading } = this.state
 
     return (
-      <Animatable.View
-        animation={!accepted ? 'fadeIn' : 'fadeOut'}
-        duration={500}
-        style={styles.root}
-        useNativeDriver>
+      <React.Fragment>
 
-        <StatusBar backgroundColor={colors.BACKGROUND} animated />
+        {children}
 
-        <Typography variant={'headline'} style={styles.title}>
-          {i18n.t('Terms of Service')}
-        </Typography>
+        {(!accepted || animating) && (
+          <Animatable.View
+            animation={!accepted ? 'fadeIn' : 'fadeOut'}
+            duration={500}
+            style={styles.root}
+            onAnimationEnd={this.handleAnimationEnd}
+            useNativeDriver>
 
-        <ScrollView style={styles.bodyContainer}>
-          <Markdown style={mdStyle}>
-            {`## Your Acceptance
+            <StatusBar backgroundColor={colors.BACKGROUND} animated translucent />
+
+            <Typography variant={'headline'} style={styles.title}>
+              {i18n.t('Terms of Service')}
+            </Typography>
+
+            <ScrollView style={styles.bodyContainer}>
+              <Markdown style={mdStyle}>
+                {`## Your Acceptance
 By using the Popcorn Time app you signify your agreement to (1) these terms and conditions (the 'Terms of Service').
 
 ## Privacy Policy.
@@ -148,23 +161,25 @@ ALL MOVIES ARE NOT HOSTED ON ANY SERVER AND ARE STREAMED USING THE P2P BIT TORRE
 ## Ability to Accept Terms of Service
 By using Popcorn Time or accessing this site you affirm that you are either more than 18 years of age, or an emancipated minor, or possess legal parental or guardian consent, and are fully able and competent to enter into the terms, conditions, obligations, affirmations, representations, and warranties set forth in these Terms of Service, and to abide by and comply with these Terms of Service. In any case, you affirm that you are over the age of 13, as the Service is not intended for children under 13. If you are under 13 years of age, then please do not use the Service. There are lots of other great web sites for you. Talk to your parents about what sites are appropriate for you.
 `}
-          </Markdown>
-        </ScrollView>
+              </Markdown>
+            </ScrollView>
 
-        <View style={styles.actions}>
-          <Button
-            onPress={this.handleLeave}>
-            {i18n.t('leave')}
-          </Button>
+            <View style={styles.actions}>
+              <Button
+                onPress={this.handleLeave}>
+                {i18n.t('leave')}
+              </Button>
 
-          <Button
-            variant={'primary'}
-            onPress={this.handleAccept}>
-            {i18n.t('i accept')}
-          </Button>
-        </View>
+              <Button
+                variant={'primary'}
+                onPress={this.handleAccept}>
+                {i18n.t('i accept')}
+              </Button>
+            </View>
 
-      </Animatable.View>
+          </Animatable.View>
+        )}
+      </React.Fragment>
     )
   }
 }

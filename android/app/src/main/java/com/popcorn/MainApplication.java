@@ -3,6 +3,7 @@ package com.popcorn;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import org.devio.rn.splashscreen.SplashScreenReactPackage;
 import com.reactcommunity.rnlanguages.RNLanguagesPackage;
 import com.tripss.updaternapp.UpdateRNAppPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
@@ -33,6 +34,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new SplashScreenReactPackage(),
             new RNLanguagesPackage(),
             new UpdateRNAppPackage(),
             new VectorIconsPackage(),
