@@ -1,18 +1,24 @@
-import React, { Component } from 'react'
+import React from 'react'
+import PropTypes from 'prop-types'
 import { StatusBar, StyleSheet, ActivityIndicator, TouchableOpacity, View } from 'react-native'
 import RNFS from 'react-native-fs'
-import GoogleCast from 'react-native-google-cast'
+import GoogleCast, { CastButton } from 'react-native-google-cast'
 import StaticServer from 'react-native-static-server'
 import TorrentStreamer from 'react-native-torrent-streamer'
 import Video from 'react-native-video'
 import * as Animatable from 'react-native-animatable'
-import { CastButton } from 'react-native-google-cast'
 import Orientation from 'react-native-orientation'
 import { utils } from 'popcorn-sdk'
 
+import i18n from 'modules/i18n'
+
 import Typography from 'components/Typography'
 
-export default class VideoPlayer extends Component {
+export default class VideoPlayer extends React.Component {
+
+  static propTypes = {
+    navigation: PropTypes.object.isRequired,
+  }
 
   state = {
     muted      : false,
@@ -31,10 +37,11 @@ export default class VideoPlayer extends Component {
 
   videoRef
 
-  staticServer
-  serverUrl
+  staticServer = null
 
-  serverDirectory
+  serverUrl = null
+
+  serverDirectory = null
 
   constructor(props) {
     super(props)
@@ -45,32 +52,34 @@ export default class VideoPlayer extends Component {
     this.staticServer = new StaticServer(0, this.serverDirectory, { keepAlive: true })
   }
 
-  async componentDidMount() {
+  componentDidMount() {
     const { navigation: { state: { params: { magnet } } } } = this.props
 
-    Orientation.addOrientationListener(this.onOrientationChange)
+    Orientation.addOrientationListener(this.handleOrientationChange)
 
-    GoogleCast.EventEmitter.addListener(GoogleCast.MEDIA_STATUS_UPDATED, this.onCastMediaUpdate)
+    GoogleCast.EventEmitter.addListener(GoogleCast.MEDIA_STATUS_UPDATED, this.handleCastMediaUpdate)
+    GoogleCast.EventEmitter.addListener(GoogleCast.SESSION_STARTED, this.handleCastSessionStarted)
+    GoogleCast.EventEmitter.addListener(GoogleCast.SESSION_ENDED, this.handleCastSessionEnded)
 
-    TorrentStreamer.addEventListener('error', this.onError)
-    TorrentStreamer.addEventListener('status', this.onTorrentStatus)
-    TorrentStreamer.addEventListener('ready', this.onTorrentReady)
+    TorrentStreamer.addEventListener('error', this.handleTorrentError)
+    TorrentStreamer.addEventListener('status', this.handleTorrentStatus)
+    TorrentStreamer.addEventListener('ready', this.handleTorrentReady)
 
     // Start
     TorrentStreamer.start(magnet.url)
   }
 
   componentWillUnmount() {
-    console.log('componentWillUnmount')
-
-    Orientation.removeOrientationListener(this.onOrientationChange)
+    Orientation.removeOrientationListener(this.handleOrientationChange)
     Orientation.lockToPortrait()
 
     GoogleCast.EventEmitter.removeAllListeners(GoogleCast.MEDIA_STATUS_UPDATED)
+    GoogleCast.EventEmitter.removeAllListeners(GoogleCast.SESSION_STARTED)
+    GoogleCast.EventEmitter.removeAllListeners(GoogleCast.SESSION_ENDED)
 
-    TorrentStreamer.removeEventListener('error', this.onError)
-    TorrentStreamer.removeEventListener('status', this.onTorrentStatus)
-    TorrentStreamer.removeEventListener('ready', this.onTorrentReady)
+    TorrentStreamer.removeEventListener('error', this.handleTorrentError)
+    TorrentStreamer.removeEventListener('status', this.handleTorrentStatus)
+    TorrentStreamer.removeEventListener('ready', this.handleTorrentReady)
 
     TorrentStreamer.stop()
 
@@ -79,7 +88,7 @@ export default class VideoPlayer extends Component {
     GoogleCast.endSession(true)
   }
 
-  onOrientationChange = (orientation) => {
+  handleOrientationChange = (orientation) => {
     if (orientation === 'LANDSCAPE' && this.videoRef) {
       this.videoRef.presentFullscreenPlayer()
 
@@ -88,55 +97,49 @@ export default class VideoPlayer extends Component {
     }
   }
 
-  onCastMediaUpdate = () => {
-    console.log('MEDIA_STATUS_UPDATED', arguments)
+  handleCastSessionStarted = () => {
+    const { url, doneBuffering } = this.state
+
+    if (doneBuffering) {
+      this.startCasting(url)
+    }
   }
 
-  onTorrentStatus = (status) => {
+  handleCastMediaUpdate = ({ mediaStatus }) => {
+    if (mediaStatus.streamPosition > 0) {
+      this.setState({
+        currentTime: mediaStatus.streamPosition,
+      })
+    }
+  }
+
+  handleCastSessionEnded = () => {
+    this.setState({
+      paused : false,
+      casting: false,
+    })
+  }
+
+  handleTorrentStatus = (status) => {
     const { buffer, progress } = this.state
 
-    const nProgress = parseFloat(status.progress).toFixed(2)
+    const nProgress = parseFloat(status.progress)
 
-    if (status.buffer !== buffer || nProgress > (progress + 1.0)) {
+    if (status.buffer !== buffer || (nProgress > (progress + 1)) || nProgress > 99) {
       this.setState({
         ...status,
-        progress     : nProgress,
+        progress     : nProgress > 99 ? 100 : nProgress,
         downloadSpeed: utils.formatKbToString(status.downloadSpeed),
         doneBuffering: status.buffer === '100',
       })
     }
   }
 
-  onTorrentReady = async(data) => {
-    const { navigation: { state: { params: { item } } } } = this.props
-
+  handleTorrentReady = async(data) => {
     const castState = await GoogleCast.getCastState()
 
     if (castState.toLowerCase() === 'connected') {
-      if (!this.serverUrl) {
-        this.serverUrl = await this.staticServer.start()
-      }
-
-      GoogleCast.castMedia({
-        title   : item.title,
-        subtitle: item.summary,
-        // studio: video.studio,
-        // duration: video.duration,
-
-        mediaUrl: this.serverUrl + data.url.replace(this.serverDirectory, ''),
-
-        imageUrl : item.images.fanart.high,
-        posterUrl: item.images.poster.high,
-      })
-
-      this.showCastingControls()
-
-      this.setState({
-        buffer       : '100',
-        doneBuffering: true,
-        loading      : false,
-        casting      : true,
-      })
+      this.startCasting(data.url)
 
     } else {
       this.setState({
@@ -148,33 +151,46 @@ export default class VideoPlayer extends Component {
     }
   }
 
-  onVideoPause = () => {
+  handleVideoPressed = () => {
+    const { paused } = this.state
+
+    this.setState({
+      paused: !paused,
+    })
+  }
+
+  handleVideoPause = () => {
     this.setState({
       paused: true,
     })
   }
 
-  onError = (e) => {
+  handleTorrentError = (e) => {
+    // eslint-disable-next-line no-console
     console.log('error', e)
   }
 
-  onVideoLoad = (data) => {
-    console.log('onLoad', data)
+  handleVideoLoad = (data) => {
+    const { currentTime } = this.state
 
     this.setState({
       duration: data.duration,
       loading : false,
     }, () => {
+      if (currentTime > 0) {
+        this.videoRef.seek(currentTime)
+      }
+
       Orientation.unlockAllOrientations()
     })
   }
 
-  onVideoProgress = (data) => {
+  handleVideoProgress = (data) => {
     this.setState({ currentTime: data.currentTime })
   }
 
-  onVideoEnd = () => {
-    this.onVideoPause()
+  handleVideoEnd = () => {
+    this.handleVideoPause()
 
     this.videoRef.seek(0)
   }
@@ -183,9 +199,44 @@ export default class VideoPlayer extends Component {
     GoogleCast.launchExpandedControls()
   }
 
+  startCasting = async(url) => {
+    const { navigation: { state: { params: { item } } } } = this.props
+    const { currentTime } = this.state
+
+    if (!this.serverUrl) {
+      this.serverUrl = await this.staticServer.start()
+    }
+
+    GoogleCast.castMedia({
+      title   : item.title,
+      subtitle: item.summary,
+      // studio: video.studio,
+      // duration: video.duration,
+
+      playPosition: currentTime,
+
+      mediaUrl: this.serverUrl + url.replace(this.serverDirectory, ''),
+
+      imageUrl : item.images.fanart.high,
+      posterUrl: item.images.poster.high,
+    })
+
+    this.setState({
+      url,
+      buffer       : '100',
+      doneBuffering: true,
+      loading      : false,
+      casting      : true,
+    }, () => {
+      this.showCastingControls()
+    })
+  }
+
   getCurrentTimePercentage() {
-    if (this.state.currentTime > 0) {
-      return parseFloat(this.state.currentTime) / parseFloat(this.state.duration)
+    const { currentTime, duration } = this.state
+
+    if (currentTime > 0) {
+      return parseFloat(currentTime) / parseFloat(duration)
     }
 
     return 0
@@ -205,7 +256,7 @@ export default class VideoPlayer extends Component {
           <View style={[styles.fullScreen, styles.loadingContainer]}>
 
             {loading && (
-              <ActivityIndicator size={60} color="#FFF" />
+              <ActivityIndicator size={60} color={'#FFF'} />
             )}
 
             <Typography
@@ -217,7 +268,7 @@ export default class VideoPlayer extends Component {
             {buffer !== 0 && !doneBuffering && (
               <React.Fragment>
                 <Typography style={{ marginTop: 10 }}>
-                  Buffering...
+                  {i18n.t('Buffering...')}
                 </Typography>
                 <Typography variant={'body2'} style={{ marginTop: 5 }}>
                   {buffer}% / {downloadSpeed}
@@ -227,7 +278,7 @@ export default class VideoPlayer extends Component {
 
             {buffer === 0 && (
               <Typography style={{ marginTop: 10 }}>
-                Connecting...
+                {i18n.t('Connecting...')}
               </Typography>
             )}
 
@@ -237,7 +288,7 @@ export default class VideoPlayer extends Component {
         {!loading && !casting && doneBuffering && (
           <TouchableOpacity
             style={styles.fullScreen}
-            onPress={() => this.setState({ paused: !this.state.paused })}>
+            onPress={this.handleVideoPressed}>
             {(url && !casting && !loading) && (
               <Video
                 ref={(ref) => { this.videoRef = ref }}
@@ -248,11 +299,12 @@ export default class VideoPlayer extends Component {
                 rate={1}
                 muted={muted}
                 resizeMode={'contain'}
-                onLoad={this.onVideoLoad}
-                onProgress={this.onVideoProgress}
-                onEnd={this.onVideoEnd}
-                onError={this.onError}
-                onAudioBecomingNoisy={this.onVideoPause}
+                onVideoError={(e) => console.log('onVideoError', e)}
+                onLoad={this.handleVideoLoad}
+                onProgress={this.handleVideoProgress}
+                onEnd={this.handleVideoEnd}
+                onError={this.handleTorrentError}
+                onAudioBecomingNoisy={this.handleVideoPause}
                 repeat={false}
               />
             )}
@@ -274,18 +326,18 @@ export default class VideoPlayer extends Component {
             animation={paused || casting ? 'fadeInUp' : 'fadeOutDown'}
             useNativeDriver>
             <View style={styles.stats}>
-              {progress !== '100' && (
+              {progress !== 100 && (
                 <React.Fragment>
-                  <Typography>progress: {progress}</Typography>
-                  <Typography>speed: {downloadSpeed}</Typography>
-                  <Typography>seeds: {seeds}</Typography>
+                  <Typography>{i18n.t('progress: {{progress}}', { progress: progress.toFixed(2) })}</Typography>
+                  <Typography>{i18n.t('speed: {{downloadSpeed}}', { downloadSpeed })}</Typography>
+                  <Typography>{i18n.t('seeds: {{seeds}}', { seeds })}</Typography>
                 </React.Fragment>
               )}
 
-              {progress === '100' && (
-                <React.Fragment>
-                  <Typography>complete</Typography>
-                </React.Fragment>
+              {progress === 100 && (
+                <Typography>
+                  {i18n.t('complete')}
+                </Typography>
               )}
             </View>
           </Animatable.View>

@@ -1,0 +1,18 @@
+{
+  "Home": "Home",
+  "Movies": "Movies",
+  "Shows": "Shows",
+  "Season {{number}}": "Season {{number}}",
+  "Buffering...": "Buffering...",
+  "Connecting...": "Connecting...",
+  "progress: {{progress}}": "progress: {{progress}}",
+  "speed: {{downloadSpeed}}": "speed: {{downloadSpeed}}",
+  "seeds: {{seeds}}": "seeds: {{seeds}}",
+  "complete": "complete",
+  "New version available {{version}}": "New version available {{version}}",
+  "cancel": "cancel",
+  "update": "update",
+  "i accept": "i accept",
+  "leave": "leave",
+  "Terms of Service":"Terms of Service"
+}

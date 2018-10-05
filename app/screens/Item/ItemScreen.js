@@ -3,8 +3,12 @@ import { StyleSheet, View, ActivityIndicator, Picker } from 'react-native'
 import Orientation from 'react-native-orientation'
 import { utils, Constants } from 'popcorn-sdk'
 
+import i18n from 'modules/i18n'
+
 import ScrollViewWithStatusBar from 'components/ScrollViewWithStatusBar'
 import Typography from 'components/Typography'
+
+import colors from 'modules/colors'
 
 import Cover from './Cover'
 import Episode from './Episode'
@@ -13,19 +17,19 @@ const styles = StyleSheet.create({
 
   root: {
     flex           : 1,
-    backgroundColor: '#292929',
+    backgroundColor: colors.BACKGROUND,
   },
 
   container: {
-    margin: 16,
+    margin: 8,
   },
 
   dropDown: {
-    margin: 16,
+    margin: 8,
 
     height         : 50,
     width          : 150,
-    backgroundColor: '#242424',
+    backgroundColor: colors.BACKGROUND_LIGHTER,
   },
 
 })
@@ -62,9 +66,16 @@ export default class Item extends React.Component {
     })
   }
 
+  getSelectedSeason = () => {
+    const { item } = this.props
+
+    const { activeSeason } = this.state
+
+    return item.seasons.find(season => season.number === activeSeason)
+  }
+
   getAiredEpisodes = () => {
     const { item, isLoading } = this.props
-    const { activeSeason } = this.state
 
     if (isLoading || !item || !item.seasons) {
       return []
@@ -72,7 +83,13 @@ export default class Item extends React.Component {
 
     const today = Date.now()
 
-    return item.seasons[activeSeason].episodes.filter(episode => episode.aired < today)
+    const season = this.getSelectedSeason()
+
+    if (!season) {
+      return []
+    }
+
+    return season.episodes.filter(episode => episode.aired < today)
   }
 
   getSeasonsForPicker = () => {
@@ -96,7 +113,7 @@ export default class Item extends React.Component {
 
           <Cover item={item} playMovie={this.playItem} />
 
-          {item && (
+          {item && item.summary && (
             <View style={styles.container}>
               <Typography variant={'body1'}>{item.summary}</Typography>
             </View>
@@ -113,7 +130,7 @@ export default class Item extends React.Component {
                 <Picker.Item
                   color={'#FFF'}
                   key={index}
-                  label={season.title}
+                  label={i18n.t('Season {{number}}', { number: index })}
                   value={index} />
               ))}
 

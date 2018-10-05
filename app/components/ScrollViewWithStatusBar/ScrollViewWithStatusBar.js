@@ -1,16 +1,17 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import { ScrollView, StatusBar, SafeAreaView } from 'react-native'
 
 export default class ScrollViewWithStatusBar extends React.Component {
+
+  static propTypes = {
+    children: PropTypes.node.isRequired,
+  }
 
   state = {
     statusBarBackgroundColor: 'rgba(0, 0, 0, 0)',
     statusBarColor          : 'default',
   }
-
-  static propTypes = {}
-
-  static defaultProps = {}
 
   handleScroll = (event) => {
     const { statusBarColor } = this.state

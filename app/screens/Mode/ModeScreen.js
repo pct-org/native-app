@@ -1,6 +1,9 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import { StyleSheet, Text, View, FlatList, StatusBar } from 'react-native'
 import Orientation from 'react-native-orientation'
+
+import colors from 'modules/colors'
 
 import Card from 'components/Card'
 import FullScreenLoading from 'components/FullScreenLoading'
@@ -9,7 +12,7 @@ const styles = StyleSheet.create({
 
   root: {
     flex           : 1,
-    backgroundColor: '#292929',
+    backgroundColor: colors.BACKGROUND,
     position       : 'relative',
   },
 
@@ -29,6 +32,21 @@ const styles = StyleSheet.create({
 
 export default class Mode extends React.Component {
 
+  static propTypes = {
+    isLoading  : PropTypes.bool,
+    hasInternet: PropTypes.bool,
+
+    modes     : PropTypes.object.isRequired,
+    getItems  : PropTypes.func.isRequired,
+    mode      : PropTypes.string.isRequired,
+    navigation: PropTypes.object.isRequired,
+  }
+
+  static defaultProps = {
+    isLoading  : false,
+    hasInternet: true,
+  }
+
   state = {
     page: 1,
   }
@@ -41,12 +59,10 @@ export default class Mode extends React.Component {
     Orientation.unlockAllOrientations()
   }
 
-  load = (page) => {
-    const { isLoading, getItems, mode } = this.props
+  getItems = () => {
+    const { modes, mode } = this.props
 
-    if (!isLoading) {
-      getItems(mode, page)
-    }
+    return modes[mode].items
   }
 
   handleItemOpen = (item) => {
@@ -55,13 +71,8 @@ export default class Mode extends React.Component {
     navigation.navigate('Item', item)
   }
 
-  getItems = () => {
-    const { modes, mode } = this.props
-
-    return modes[mode].items
-  }
-
-  onLoadMore = () => {
+  handleEndReached = () => {
+    const { isLoading, getItems, mode } = this.props
     const { page } = this.state
 
     const nPage = page + 1
@@ -69,7 +80,9 @@ export default class Mode extends React.Component {
     this.setState({
       page: nPage,
     }, () => {
-      this.load(nPage)
+      if (!isLoading) {
+        getItems(mode, nPage)
+      }
     })
   }
 
@@ -101,7 +114,7 @@ export default class Mode extends React.Component {
             renderItem={this.renderCard}
             keyExtractor={(item, index) => `${item.id}-${index}`}
             onEndReachedThreshold={100}
-            onEndReached={this.onLoadMore}
+            onEndReached={this.handleEndReached}
             ListHeaderComponent={() => <View style={{ marginTop: 16 }} />}
             ListFooterComponent={() => <View style={{ marginBottom: 16 }} />}
           />

@@ -1,12 +1,13 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { StyleSheet, View, Image, TouchableNativeFeedback } from 'react-native'
+import { StyleSheet, View, Image } from 'react-native'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 
 import posterHolderImage from 'images/posterholder.png'
 
 import Typography from 'components/Typography'
 import Overlay from 'components/Overlay'
+import BaseButton from 'components/BaseButton'
 
 export const styles = StyleSheet.create({
   container: {
@@ -39,54 +40,70 @@ export const styles = StyleSheet.create({
   },
 })
 
-export const Episode = ({ playItem, hasTorrents, title, summary, images, torrents }) => (
-  <View style={styles.container}>
+export const Episode = ({ playItem, hasTorrents, title, summary, images, torrents }) => {
+  const handlePlayItem = () => {
+    if (hasTorrents) {
+      playItem(torrents, { title, summary })
+    }
+  }
 
-    <View style={styles.posterWithTitle}>
-      <TouchableNativeFeedback
-        onPress={() => hasTorrents ? playItem(torrents) : null}
-        background={TouchableNativeFeedback.Ripple()}>
-        <View>
-          {images.poster.thumb && (
-            <Image
-              source={{ uri: images.poster.thumb }}
-              style={{ width: 150, height: 100 }} />
-          )}
+  return (
+    <View style={styles.container}>
 
-          {!images.poster.thumb && (
-            <Image
-              source={posterHolderImage}
-              style={{ width: 150, height: 100 }} />
-          )}
+      <View style={styles.posterWithTitle}>
+        <BaseButton onPress={handlePlayItem}>
+          <View>
+            {images.poster.thumb && (
+              <Image
+                source={{ uri: images.poster.thumb }}
+                style={{ width: 150, height: 100 }} />
+            )}
 
-          <View style={styles.iconContainer}>
-            <Overlay />
+            {!images.poster.thumb && (
+              <Image
+                source={posterHolderImage}
+                style={{ width: 150, height: 100 }} />
+            )}
 
-            <Icon
-              iconStyle={{ margin: 0 }}
-              backgroundColor={'transparent'}
-              borderRadius={0}
-              name={hasTorrents ? 'play-circle-outline' : 'highlight-off'}
-              color={hasTorrents ? '#FFF' : 'red'}
-              size={60} />
+            <View style={styles.iconContainer}>
+              <Overlay />
+
+              <Icon
+                iconStyle={{ margin: 0 }}
+                backgroundColor={'transparent'}
+                borderRadius={0}
+                name={hasTorrents ? 'play-circle-outline' : 'highlight-off'}
+                color={hasTorrents ? '#FFF' : 'red'}
+                size={60} />
+            </View>
           </View>
-        </View>
-      </TouchableNativeFeedback>
+        </BaseButton>
 
-      <Typography style={styles.title}>
-        {title}
+        <Typography style={styles.title}>
+          {title}
+        </Typography>
+      </View>
+
+      <Typography style={styles.summary} variant={'caption'}>
+        {summary}
       </Typography>
+
     </View>
+  )
+}
 
-    <Typography style={styles.summary} variant={'caption'}>
-      {summary}
-    </Typography>
+Episode.propTypes = {
+  playItem   : PropTypes.func.isRequired,
+  title      : PropTypes.string.isRequired,
+  images     : PropTypes.object.isRequired,
+  torrents   : PropTypes.object.isRequired,
+  summary    : PropTypes.string,
+  hasTorrents: PropTypes.bool,
+}
 
-  </View>
-)
-
-Episode.propTypes = {}
-
-Episode.defaultProps = {}
+Episode.defaultProps = {
+  summary    : null,
+  hasTorrents: false,
+}
 
 export default Episode

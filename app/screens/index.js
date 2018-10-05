@@ -1,7 +1,12 @@
+/* eslint react/prop-types: 0 */
+
 import React from 'react'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import { createStackNavigator, createBottomTabNavigator } from 'react-navigation'
 import { Constants } from 'popcorn-sdk'
+
+import i18n from 'modules/i18n'
+import colors from 'modules/colors'
 
 import HomeScreen from './Home'
 import ItemScreen from './Item'
@@ -14,8 +19,8 @@ export default createStackNavigator({
       Home: {
         screen           : HomeScreen,
         navigationOptions: {
-          tabBarLabel: 'Home',
-          tabBarIcon : ({ focused, tintColor }) => (
+          tabBarLabel: i18n.t('Home'),
+          tabBarIcon : ({ tintColor }) => (
             <Icon
               name={'home'}
               color={tintColor}
@@ -29,8 +34,8 @@ export default createStackNavigator({
         screen: ({ ...props }) => <ModeScreen mode={Constants.TYPE_MOVIE} {...props} />,
 
         navigationOptions: {
-          tabBarLabel: 'Movies',
-          tabBarIcon : ({ focused, tintColor }) => (
+          tabBarLabel: i18n.t('Movies'),
+          tabBarIcon : ({ tintColor }) => (
             <Icon
               name={'movie'}
               color={tintColor}
@@ -44,8 +49,8 @@ export default createStackNavigator({
         screen: ({ ...props }) => <ModeScreen mode={Constants.TYPE_SHOW} {...props} />,
 
         navigationOptions: {
-          tabBarLabel: 'Shows',
-          tabBarIcon : ({ focused, tintColor }) => (
+          tabBarLabel: i18n.t('Shows'),
+          tabBarIcon : ({ tintColor }) => (
             <Icon
               name={'subscriptions'}
               color={tintColor}
@@ -61,7 +66,7 @@ export default createStackNavigator({
         activeTintColor  : '#FFF',
 
         style: {
-          backgroundColor: '#202020',
+          backgroundColor: colors.BACKGROUND,
         },
       },
     }),

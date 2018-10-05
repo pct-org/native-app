@@ -44,7 +44,7 @@ export function getItem(type, itemId) {
 
     if (type === Constants.TYPE_MOVIE) {
       if (item) {
-         resolve(dispatch(fetchedItem(item)))
+        resolve(dispatch(fetchedItem(item)))
 
       } else {
         resolve(Popcorn.getMovie(itemId).then(movie => dispatch(fetchedItem(movie))))
@@ -55,10 +55,10 @@ export function getItem(type, itemId) {
         dispatch(partlyFetchedItem(item))
       }
 
-      return Popcorn.getShowBasic(itemId).then((show) => {
-        dispatch(partlyFetchedItem(show))
+      return Popcorn.getShowBasic(itemId).then((basicShow) => {
+        dispatch(partlyFetchedItem(basicShow))
 
-        return resolve(Popcorn.getShowMeta(show).then(show => dispatch(fetchedItem(show))))
+        return resolve(Popcorn.getShowMeta(basicShow).then(show => dispatch(fetchedItem(show))))
       })
     }
 

@@ -1,7 +1,11 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import { StyleSheet, Text, View } from 'react-native'
 import Orientation from 'react-native-orientation'
 import { Constants } from 'popcorn-sdk'
+
+import i18n from 'modules/i18n'
+import colors from 'modules/colors'
 
 import CardList from 'components/CardList'
 import MainCover from 'components/MainCover'
@@ -12,13 +16,25 @@ const styles = StyleSheet.create({
 
   root: {
     flex           : 1,
-    backgroundColor: '#292929',
+    backgroundColor: colors.BACKGROUND,
     position       : 'relative',
   },
 
 })
 
 export default class Home extends React.PureComponent {
+
+  static propTypes = {
+    getItems   : PropTypes.func.isRequired,
+    modes      : PropTypes.object.isRequired,
+    isLoading  : PropTypes.bool.isRequired,
+    hasInternet: PropTypes.bool,
+    navigation : PropTypes.object.isRequired,
+  }
+
+  static defaultProps = {
+    hasInternet: true,
+  }
 
   state = {
     loading: true,
@@ -43,7 +59,7 @@ export default class Home extends React.PureComponent {
     navigation.navigate('Item', item)
   }
 
-  coverLoaded = () => this.setState({ loading: false })
+  handleCoverLoaded = () => this.setState({ loading: false })
 
   getMainCover = () => {
     const movies = this.getMovies(false)
@@ -55,9 +71,7 @@ export default class Home extends React.PureComponent {
     return null
   }
 
-  getMyList = () => {
-    return []
-  }
+  getMyList = () => []
 
   getMovies = (withSlice = true) => {
     const { modes } = this.props
@@ -92,21 +106,21 @@ export default class Home extends React.PureComponent {
             <MainCover
               onPress={this.handleItemOpen}
               loading={isLoading}
-              onLoad={this.coverLoaded}
+              onLoad={this.handleCoverLoaded}
               item={this.getMainCover()} />
 
             <CardList
-              style={{ marginTop: -20, marginBottom: 20 }}
+              style={{ marginTop: -20, marginBottom: 8 }}
               onPress={this.handleItemOpen}
               loading={isLoading}
-              title={'Movies'}
+              title={i18n.t('Movies')}
               items={this.getMovies()} />
 
             <CardList
-              style={{ marginBottom: 20 }}
+              style={{ marginBottom: 16 }}
               onPress={this.handleItemOpen}
               loading={isLoading}
-              title={'Shows'}
+              title={i18n.t('Shows')}
               items={this.getShows()} />
 
           </ScrollViewWithStatusBar>

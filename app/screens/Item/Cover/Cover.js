@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
   title: {
     position: 'absolute',
     bottom  : 20,
-    left    : 16,
+    left    : 8,
   },
 
   playContainer: {
@@ -86,7 +86,7 @@ Cover.propTypes = {
 }
 
 Cover.defaultProps = {
-  item: null
+  item: null,
 }
 
 export default Cover

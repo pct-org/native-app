@@ -1,18 +1,18 @@
 import React from 'react'
-import { Image, StyleSheet, TouchableHighlight, View } from 'react-native'
-import Icon from 'react-native-vector-icons/MaterialIcons'
+import PropTypes from 'prop-types'
+import { Image, StyleSheet, View } from 'react-native'
 
 import CoverGradient from '../CoverGradient'
-import Typography from '../Typography'
+import BaseButton from '../BaseButton'
 
 const styles = StyleSheet.create({
 
   container: {
-    height        : 600,
-    width         : '100%',
-    alignSelf     : 'stretch',
-    position      : 'relative',
-    display       : 'flex',
+    height   : 600,
+    width    : '100%',
+    alignSelf: 'stretch',
+    position : 'relative',
+    display  : 'flex',
   },
 
   image: {
@@ -29,7 +29,7 @@ export const MainCover = ({ item, onPress, children, onLoad }) => {
   }
 
   return (
-    <TouchableHighlight onPress={() => onPress(item)}>
+    <BaseButton onPress={() => onPress(item)}>
       <View style={styles.container}>
 
         <Image
@@ -43,8 +43,20 @@ export const MainCover = ({ item, onPress, children, onLoad }) => {
         {children}
 
       </View>
-    </TouchableHighlight>
+    </BaseButton>
   )
+}
+
+MainCover.propTypes = {
+  item    : PropTypes.object,
+  onPress : PropTypes.func.isRequired,
+  onLoad  : PropTypes.func.isRequired,
+  children: PropTypes.node,
+}
+
+MainCover.defaultProps = {
+  item    : null,
+  children: null,
 }
 
 export default MainCover
