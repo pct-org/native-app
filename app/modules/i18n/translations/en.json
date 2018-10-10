@@ -10,6 +10,7 @@
   "seeds: {{seeds}}": "seeds: {{seeds}}",
   "complete": "complete",
   "New version available {{version}}": "New version available {{version}}",
+  "Downloading {{version}}": "Downloading {{version}}",
   "cancel": "cancel",
   "update": "update",
   "i accept": "i accept",

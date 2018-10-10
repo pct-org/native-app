@@ -10,6 +10,7 @@
   "seeds: {{seeds}}": "seeds: {{seeds}}",
   "complete": "klaar",
   "New version available {{version}}": "Nieuwe versie beschikbaar {{version}}",
+  "Downloading {{version}}": "Downloaden {{version}}",
   "cancel": "annuleren",
   "update": "updaten",
   "i accept": "accepteren",

@@ -157,7 +157,11 @@ export default class CheckForUpdates extends React.Component {
           source={Logo} />
 
         <Typography variant={'headline'} style={styles.title}>
-          {i18n.t('New version available {{version}}', { version: githubRelease.name })}
+          {
+            !updating
+              ? i18n.t('New version available {{version}}', { version: githubRelease.name })
+              : i18n.t('Downloading {{version}}', { version: githubRelease.name })
+          }
         </Typography>
 
         {!updating && githubRelease && githubRelease.body && (
