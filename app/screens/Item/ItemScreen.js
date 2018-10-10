@@ -46,9 +46,9 @@ export default class Item extends React.Component {
     Orientation.lockToPortrait()
 
     getItem(item.type, item.id).then(({ payload: { type, seasons } }) => {
-      if (type === Constants.TYPE_SHOW) {
+      if (type === Constants.TYPE_SHOW && seasons.length > 0) {
         this.setState({
-          activeSeason: seasons.length - 1,
+          activeSeason: seasons[seasons.length - 1].number,
         })
       }
     })
@@ -124,14 +124,14 @@ export default class Item extends React.Component {
               mode={'dropdown'}
               selectedValue={activeSeason}
               style={styles.dropDown}
-              onValueChange={(itemValue, itemIndex) => this.setState({ activeSeason: itemIndex })}>
+              onValueChange={(itemValue, itemIndex) => this.setState({ activeSeason: itemValue })}>
 
-              {this.getSeasonsForPicker().map((season, index) => (
+              {this.getSeasonsForPicker().map(season => (
                 <Picker.Item
                   color={'#FFF'}
-                  key={index}
-                  label={i18n.t('Season {{number}}', { number: index })}
-                  value={index} />
+                  key={season.number}
+                  label={i18n.t('Season {{number}}', { number: season.number })}
+                  value={season.number} />
               ))}
 
             </Picker>
