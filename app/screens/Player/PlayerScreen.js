@@ -268,7 +268,7 @@ export default class VideoPlayer extends React.Component {
             {buffer !== 0 && !doneBuffering && (
               <React.Fragment>
                 <Typography style={{ marginTop: 10 }}>
-                  {i18n.t('Buffering...')}
+                  {i18n.t('Buffering')}
                 </Typography>
                 <Typography variant={'body2'} style={{ marginTop: 5 }}>
                   {buffer}% / {downloadSpeed}
@@ -278,7 +278,7 @@ export default class VideoPlayer extends React.Component {
 
             {buffer === 0 && (
               <Typography style={{ marginTop: 10 }}>
-                {i18n.t('Connecting...')}
+                {i18n.t('Connecting')}
               </Typography>
             )}
 
