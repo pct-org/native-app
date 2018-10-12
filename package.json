@@ -38,7 +38,7 @@
     "redux": "^4.0.0",
     "redux-logger": "^3.0.6",
     "redux-thunk": "^2.3.0",
-    "update-react-native-app": "^1.1.0"
+    "update-react-native-app": "1.1.1"
   },
   "devDependencies": {
     "babel-eslint": "^10.0.1",
