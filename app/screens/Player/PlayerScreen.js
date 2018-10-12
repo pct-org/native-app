@@ -201,7 +201,7 @@ export default class VideoPlayer extends React.Component {
 
   startCasting = async(url) => {
     const { navigation: { state: { params: { item } } } } = this.props
-    const { currentTime } = this.state
+    // const { currentTime } = this.state
 
     if (!this.serverUrl) {
       this.serverUrl = await this.staticServer.start()
@@ -213,7 +213,7 @@ export default class VideoPlayer extends React.Component {
       // studio: video.studio,
       // duration: video.duration,
 
-      playPosition: currentTime,
+      // playPosition: currentTime,
 
       mediaUrl: this.serverUrl + url.replace(this.serverDirectory, ''),
 
@@ -268,7 +268,7 @@ export default class VideoPlayer extends React.Component {
             {buffer !== 0 && !doneBuffering && (
               <React.Fragment>
                 <Typography style={{ marginTop: 10 }}>
-                  {i18n.t('Buffering...')}
+                  {i18n.t('Buffering')}
                 </Typography>
                 <Typography variant={'body2'} style={{ marginTop: 5 }}>
                   {buffer}% / {downloadSpeed}
@@ -278,7 +278,7 @@ export default class VideoPlayer extends React.Component {
 
             {buffer === 0 && (
               <Typography style={{ marginTop: 10 }}>
-                {i18n.t('Connecting...')}
+                {i18n.t('Connecting')}
               </Typography>
             )}
 
@@ -312,7 +312,7 @@ export default class VideoPlayer extends React.Component {
 
         <View style={styles.controlsTopBar}>
           <Animatable.View
-            animation={paused || loading ? 'fadeInDown' : 'fadeOutUp'}
+            animation={paused || loading || casting ? 'fadeInDown' : 'fadeOutUp'}
             useNativeDriver
             style={styles.castButton}>
             <CastButton style={{ width: 30, height: 30, tintColor: 'white' }} />

@@ -101,14 +101,14 @@ def enableProguardInReleaseBuilds = false
 
 android {
     compileSdkVersion 26
-    buildToolsVersion "28.0.2"
+    buildToolsVersion "28.0.3"
 
     defaultConfig {
         applicationId "com.popcorn"
         minSdkVersion 16
         targetSdkVersion 26
-        versionCode 8
-        versionName "v0.6.2"
+        versionCode 9
+        versionName "v0.6.3"
         ndk {
             abiFilters "armeabi-v7a", "x86"
         }

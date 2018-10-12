@@ -1,6 +1,7 @@
 package com.popcorn;
 
 import android.app.Application;
+import android.os.StrictMode;
 
 import com.facebook.react.ReactApplication;
 import org.devio.rn.splashscreen.SplashScreenReactPackage;
@@ -19,6 +20,7 @@ import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
 import com.facebook.soloader.SoLoader;
 
+import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.List;
 
@@ -61,6 +63,13 @@ public class MainApplication extends Application implements ReactApplication {
 
   @Override
   public void onCreate() {
+    try{
+      Method m = StrictMode.class.getMethod("disableDeathOnFileUriExposure");
+      m.invoke(null);
+    }catch(Exception e){
+      e.printStackTrace();
+    }
+
     super.onCreate();
     SoLoader.init(this, /* native exopackage */ false);
   }
