@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import { StyleSheet, Text, View, FlatList, StatusBar, TextInput } from 'react-native'
 import Orientation from 'react-native-orientation'
 import * as Animatable from 'react-native-animatable'
+import Icon from 'react-native-vector-icons/MaterialIcons'
 
 import colors from 'modules/colors'
 
@@ -43,14 +44,20 @@ const styles = StyleSheet.create({
 
   input: {
     height    : '100%',
-    width     : '85%',
+    width     : '80%',
     color     : '#FFF',
-    marginLeft: 8,
+    marginLeft: 40,
   },
 
   cancelSearch: {
     position: 'absolute',
     right   : 8,
+    top     : 8,
+  },
+
+  searchIcon: {
+    position: 'absolute',
+    left    : 8,
     top     : 8,
   },
 
@@ -152,7 +159,6 @@ export default class Mode extends React.Component {
   renderSearchBar = () => {
     const { searchText, firstSearch } = this.state
 
-    console.log('firstSearch',firstSearch)
     return (
       <View style={styles.searchRoot}>
 
@@ -170,6 +176,13 @@ export default class Mode extends React.Component {
               size={32}
             />
           </Animatable.View>
+
+          <Icon
+            style={styles.searchIcon}
+            name={'search'}
+            color={'#FFF'}
+            size={32}
+          />
 
           <TextInput
             style={styles.input}

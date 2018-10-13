@@ -86,7 +86,7 @@ export default class CheckForUpdates extends React.Component {
     super(props, context)
 
     this.state = {
-      accepted : __DEV__,
+      accepted : false,
       animating: false,
     }
   }

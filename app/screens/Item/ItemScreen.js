@@ -7,6 +7,7 @@ import i18n from 'modules/i18n'
 
 import ScrollViewWithStatusBar from 'components/ScrollViewWithStatusBar'
 import Typography from 'components/Typography'
+import IconButton from 'components/IconButton'
 
 import colors from 'modules/colors'
 
@@ -36,8 +37,22 @@ const styles = StyleSheet.create({
 
 export default class Item extends React.Component {
 
+  static getDerivedStateFromProps(nextProps, state) {
+    const { item: nextItem } = nextProps
+    const { activeSeason } = state
+
+    // If we retrieve more season then update to the latest one
+    if (nextItem && nextItem.seasons && nextItem.seasons.length > activeSeason) {
+      return {
+        activeSeason: nextItem.seasons[nextItem.seasons.length - 1].number,
+      }
+    }
+
+    return null
+  }
+
   state = {
-    activeSeason: 0,
+    activeSeason: null,
   }
 
   componentDidMount() {
@@ -66,24 +81,15 @@ export default class Item extends React.Component {
     })
   }
 
-  getSelectedSeason = () => {
-    const { item } = this.props
-
-    const { activeSeason } = this.state
-
-    return item.seasons.find(season => season.number === activeSeason)
-  }
-
   getAiredEpisodes = () => {
-    const { item, isLoading } = this.props
+    const { activeSeason } = this.state
+    const today = Date.now()
 
-    if (isLoading || !item || !item.seasons) {
+    if (!activeSeason) {
       return []
     }
 
-    const today = Date.now()
-
-    const season = this.getSelectedSeason()
+    const season = this.getSeasons(activeSeason)
 
     if (!season) {
       return []
@@ -92,11 +98,19 @@ export default class Item extends React.Component {
     return season.episodes.filter(episode => episode.aired < today)
   }
 
-  getSeasonsForPicker = () => {
-    const { item, isLoading } = this.props
+  getSeasons = (seasonNr = null) => {
+    const { item } = this.props
 
-    if (isLoading) {
+    if (!item || !item.seasons || item.seasons.length === 0) {
+      if (seasonNr) {
+        return null
+      }
+
       return []
+    }
+
+    if (seasonNr) {
+      return item.seasons.find(season => season.number === seasonNr)
     }
 
     return item.seasons
@@ -124,9 +138,9 @@ export default class Item extends React.Component {
               mode={'dropdown'}
               selectedValue={activeSeason}
               style={styles.dropDown}
-              onValueChange={(itemValue, itemIndex) => this.setState({ activeSeason: itemValue })}>
+              onValueChange={(itemValue) => this.setState({ activeSeason: itemValue })}>
 
-              {this.getSeasonsForPicker().map(season => (
+              {this.getSeasons().map(season => (
                 <Picker.Item
                   color={'#FFF'}
                   key={season.number}
@@ -140,7 +154,7 @@ export default class Item extends React.Component {
           {item && item.type === Constants.TYPE_SHOW && (
             this.getAiredEpisodes().map(episode => (
               <Episode
-                key={episode.id}
+                key={episode.key}
                 playItem={this.playItem}
                 {...episode} />
             ))

@@ -1,7 +1,11 @@
 import Popcorn, { Constants } from 'popcorn-sdk'
 
+import BookmarkAdapter from 'modules/BookmarkAdapter'
+
 import * as ItemConstants from './ItemConstants'
 import * as HomeSelectors from '../Home/HomeSelectors'
+
+Popcorn.setBookmarkAdapter(BookmarkAdapter)
 
 export function hasItem(itemId, mode, state) {
   return HomeSelectors.getModes(state)[mode].items.find(item => item.id === itemId)
@@ -35,7 +39,7 @@ export function fetchedEpisodeTorrents(item) {
 }
 
 export function getItem(type, itemId) {
-  return (dispatch, getState) => new Promise((resolve) => {
+  return (dispatch, getState) => new Promise(async(resolve) => {
     dispatch({
       type: ItemConstants.FETCH_ITEM,
     })
@@ -44,7 +48,13 @@ export function getItem(type, itemId) {
 
     if (type === Constants.TYPE_MOVIE) {
       if (item) {
-        resolve(dispatch(fetchedItem(item)))
+        resolve(
+          dispatch(
+            fetchedItem(
+              await BookmarkAdapter.checkMovie(item),
+            ),
+          ),
+        )
 
       } else {
         resolve(Popcorn.getMovie(itemId).then(movie => dispatch(fetchedItem(movie))))
@@ -52,13 +62,17 @@ export function getItem(type, itemId) {
 
     } else if (type === Constants.TYPE_SHOW) {
       if (item) {
-        dispatch(partlyFetchedItem(item))
+        dispatch(
+          partlyFetchedItem(
+            await BookmarkAdapter.checkShow(item),
+          ),
+        )
       }
 
       return Popcorn.getShowBasic(itemId).then((basicShow) => {
-        dispatch(partlyFetchedItem(basicShow))
+        resolve(dispatch(partlyFetchedItem(basicShow)))
 
-        return resolve(Popcorn.getShowMeta(basicShow).then(show => dispatch(fetchedItem(show))))
+        Popcorn.getShowMeta(basicShow).then(show => dispatch(fetchedItem(show)))
       })
     }
 
