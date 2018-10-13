@@ -4781,9 +4781,9 @@ pn@^1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/pn/-/pn-1.1.0.tgz#e2f4cef0e219f463c179ab37463e4e1ecdccbafb"
 
-popcorn-sdk@1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/popcorn-sdk/-/popcorn-sdk-1.0.0.tgz#5a2fc3596f3ecc1045ff255deb685a96b3bd8a0e"
+popcorn-sdk@1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/popcorn-sdk/-/popcorn-sdk-1.1.0.tgz#f7dc79c79a48fea764991327dceb9596449b6563"
   dependencies:
     axios "^0.18.0"
 
