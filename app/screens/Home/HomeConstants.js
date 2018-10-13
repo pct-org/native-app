@@ -4,10 +4,14 @@ export const INITIAL_STATE = {
   isLoading  : true,
   hasInternet: true,
   modes      : {
-    bookmark: { page: 1, items: [], filters: {} },
-    movie   : { page: 1, items: [], filters: { limit: 50, sort: 'trending' } },
-    show    : { page: 1, items: [], filters: { limit: 50, sort: 'trending' } },
-    search  : { page: 1, items: [], filters: {} },
+    bookmark      : { items: [] },
+    bookmarkSearch: { items: [] },
+
+    movie         : { page: 1, items: [], filters: { limit: 50, sort: 'trending' } },
+    movieSearch   : { page: 1, items: [], filters: {} },
+
+    show          : { page: 1, items: [], filters: { limit: 50, sort: 'trending' } },
+    showSearch    : { page: 1, items: [], filters: {} },
   },
 }
 

@@ -23,23 +23,22 @@ export default (state = ItemConstants.INITIAL_STATE, action) => {
         item     : action.payload,
       }
 
-    case ItemConstants.FETCH_EPISODE_TORRENTS:
+    case ItemConstants.ADD_TO_BOOKMARKS:
       return {
         ...state,
-        fetchingEpisodeTorrents: true,
+        item: {
+          ...state.item,
+          bookmarked: true,
+        },
       }
 
-    case ItemConstants.FETCHED_EPISODE_TORRENTS:
+    case ItemConstants.REMOVE_FROM_BOOKMARKS:
       return {
         ...state,
-        fetchingEpisodeTorrents: false,
-        item                   : action.payload,
-      }
-
-    case ItemConstants.SELECT_SEASON_EPISODE:
-      return {
-        ...state,
-        ...action.payload,
+        item: {
+          ...state.item,
+          bookmarked: false,
+        },
       }
 
     default:

@@ -1,11 +1,15 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { StyleSheet, Text, View, FlatList, StatusBar } from 'react-native'
+import { StyleSheet, Text, View, FlatList, StatusBar, TextInput } from 'react-native'
 import Orientation from 'react-native-orientation'
+import * as Animatable from 'react-native-animatable'
+import Icon from 'react-native-vector-icons/MaterialIcons'
+import { Constants } from 'popcorn-sdk'
 
 import colors from 'modules/colors'
 
 import Card from 'components/Card'
+import IconButton from 'components/IconButton'
 import FullScreenLoading from 'components/FullScreenLoading'
 
 const styles = StyleSheet.create({
@@ -20,12 +24,42 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
   },
 
-  list: {
-    marginTop: 32,
-  },
-
   listItem: {
     marginTop: 16,
+  },
+
+  searchRoot: {
+    width         : '100%',
+    height        : 50,
+    marginTop     : 40,
+    display       : 'flex',
+    justifyContent: 'center',
+    alignItems    : 'center',
+  },
+
+  searchContainer: {
+    backgroundColor: colors.BACKGROUND_LIGHTER,
+    width          : '90%',
+    height         : '100%',
+  },
+
+  input: {
+    height    : '100%',
+    width     : '80%',
+    color     : '#FFF',
+    marginLeft: 40,
+  },
+
+  cancelSearch: {
+    position: 'absolute',
+    right   : 8,
+    top     : 8,
+  },
+
+  searchIcon: {
+    position: 'absolute',
+    left    : 8,
+    top     : 8,
   },
 
 })
@@ -48,7 +82,10 @@ export default class Mode extends React.Component {
   }
 
   state = {
-    page: 1,
+    page       : 1,
+    firstSearch: true,
+    searching  : false,
+    searchText : '',
   }
 
   componentDidMount() {
@@ -61,6 +98,11 @@ export default class Mode extends React.Component {
 
   getItems = () => {
     const { modes, mode } = this.props
+    const { searching } = this.state
+
+    if (searching) {
+      return modes[`${mode}Search`].items
+    }
 
     return modes[mode].items
   }
@@ -71,9 +113,35 @@ export default class Mode extends React.Component {
     navigation.navigate('Item', item)
   }
 
+  handleSearch = () => {
+    const { isLoading, getItems, mode } = this.props
+    const { searchText } = this.state
+
+    if (!isLoading && searchText.trim().length > 0) {
+      getItems(`${mode}Search`, 1, { keywords: searchText }).then(() => {
+        this.setState({
+          searching: true,
+        })
+      })
+    }
+  }
+
+  handleCancelSearch = () => {
+    this.setState({
+      searchText: '',
+      searching : false,
+    })
+  }
+
+  handleTextChange = text => this.setState({ searchText: text, firstSearch: false })
+
   handleEndReached = () => {
     const { isLoading, getItems, mode } = this.props
     const { page } = this.state
+
+    if (mode === Constants.TYPE_BOOKMARK) {
+      return
+    }
 
     const nPage = page + 1
 
@@ -93,6 +161,48 @@ export default class Mode extends React.Component {
     />
   )
 
+  renderSearchBar = () => {
+    const { searchText, firstSearch } = this.state
+
+    return (
+      <View style={styles.searchRoot}>
+
+        <View style={styles.searchContainer}>
+
+          <Animatable.View
+            style={styles.cancelSearch}
+            animation={searchText.trim().length > 0 ? 'zoomIn' : 'zoomOut'}
+            duration={firstSearch ? 1 : 300}
+            useNativeDriver>
+            <IconButton
+              name={'cancel'}
+              color={'#FFF'}
+              onPress={this.handleCancelSearch}
+              size={32}
+            />
+          </Animatable.View>
+
+          <Icon
+            style={styles.searchIcon}
+            name={'search'}
+            color={'#FFF'}
+            size={32}
+          />
+
+          <TextInput
+            style={styles.input}
+            selectionColor={'#FFF'}
+            underlineColorAndroid={'transparent'}
+            onChangeText={this.handleTextChange}
+            onSubmitEditing={this.handleSearch}
+            value={searchText} />
+
+        </View>
+
+      </View>
+    )
+  }
+
   render() {
     const { isLoading, hasInternet } = this.props
 
@@ -106,18 +216,22 @@ export default class Mode extends React.Component {
         <FullScreenLoading enabled={isLoading && items.length === 0} />
 
         {hasInternet && (
-          <FlatList
-            columnWrapperStyle={styles.listItem}
-            data={items}
-            numColumns={3}
-            initialNumToRender={12}
-            renderItem={this.renderCard}
-            keyExtractor={(item, index) => `${item.id}-${index}`}
-            onEndReachedThreshold={100}
-            onEndReached={this.handleEndReached}
-            ListHeaderComponent={() => <View style={{ marginTop: 16 }} />}
-            ListFooterComponent={() => <View style={{ marginBottom: 16 }} />}
-          />
+          <React.Fragment>
+
+            <FlatList
+              columnWrapperStyle={styles.listItem}
+              data={items}
+              numColumns={3}
+              initialNumToRender={12}
+              renderItem={this.renderCard}
+              keyExtractor={(item, index) => `${item.id}-${index}`}
+              onEndReachedThreshold={100}
+              onEndReached={this.handleEndReached}
+              ListHeaderComponent={this.renderSearchBar}
+              ListFooterComponent={() => <View style={{ marginBottom: 16 }} />}
+            />
+
+          </React.Fragment>
         )}
 
         {!hasInternet && (

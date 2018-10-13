@@ -10,7 +10,7 @@ const styles = StyleSheet.create({
 
   root: {
     height     : 190,
-    width      : 120,
+    width      : 121,
     marginLeft : 8,
     marginRight: 8,
     alignSelf  : 'stretch',
@@ -24,33 +24,56 @@ const styles = StyleSheet.create({
 
 })
 
-export const Card = ({ item, empty, ...rest }) => (
-  <BaseButton
-    // onLongPress={() => console.warn(item.title)}
-    // onPress={() => this.openItem(item)}
-    {...rest}>
-    <View style={styles.root}>
-      <Image
-        style={styles.image}
-        defaultSource={posterHolder}
-        source={
-          !empty
-            ? { uri: item.images.poster.thumb }
-            : posterHolder
-        }
-      />
-    </View>
-  </BaseButton>
-)
+export default class Card extends React.Component {
 
-Card.propTypes = {
-  item : PropTypes.object,
-  empty: PropTypes.bool,
+  static propTypes = {
+    item : PropTypes.object,
+    empty: PropTypes.bool,
+  }
+
+  static defaultProps = {
+    item : null,
+    empty: false,
+  }
+
+  constructor(props) {
+    super(props)
+
+    const { item, empty } = props
+
+    this.state = {
+      showPlaceholder: empty || !item.images.poster.thumb,
+    }
+  }
+
+  handleImageError = () => {
+    this.setState({
+      showPlaceholder: true,
+    })
+  }
+
+  render() {
+    const { item, empty, ...rest } = this.props
+    const { showPlaceholder } = this.state
+
+    return (
+      <BaseButton
+        // onLongPress={() => console.warn(item.title)}
+        // onPress={() => this.openItem(item)}
+        {...rest}>
+        <View style={styles.root}>
+          <Image
+            style={styles.image}
+            defaultSource={posterHolder}
+            onError={this.handleImageError}
+            source={
+              !showPlaceholder
+                ? { uri: item.images.poster.thumb }
+                : posterHolder
+            }
+          />
+        </View>
+      </BaseButton>
+    )
+  }
 }
-
-Card.defaultProps = {
-  item : null,
-  empty: false,
-}
-
-export default Card

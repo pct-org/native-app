@@ -82,17 +82,19 @@ export default class CheckForUpdates extends React.Component {
     children: PropTypes.node.isRequired,
   }
 
-  state = {
-    accepted : false,
-    animating: false,
-    loading  : true,
+  constructor(props, context) {
+    super(props, context)
+
+    this.state = {
+      accepted : false,
+      animating: false,
+    }
   }
 
   componentWillMount() {
     Settings.getItem(Settings.DISCLAIMER_ACCEPTED).then((accepted) => {
       this.setState({
         accepted: accepted && accepted === 'y',
-        loading : false,
       }, () => {
         if (!accepted) {
           SplashScreen.hide()
@@ -122,7 +124,7 @@ export default class CheckForUpdates extends React.Component {
 
   render() {
     const { children } = this.props
-    const { animating, accepted, loading } = this.state
+    const { animating, accepted } = this.state
 
     return (
       <React.Fragment>
