@@ -1,11 +1,8 @@
-import Popcorn, { Constants } from 'popcorn-sdk'
-
-import BookmarkAdapter from 'modules/BookmarkAdapter'
+import { Constants } from 'popcorn-sdk'
+import Popcorn from 'modules/PopcornSDK'
 
 import * as ItemConstants from './ItemConstants'
 import * as HomeSelectors from '../Home/HomeSelectors'
-
-Popcorn.setBookmarkAdapter(BookmarkAdapter)
 
 export function hasItem(itemId, mode, state) {
   return HomeSelectors.getModes(state)[mode].items.find(item => item.id === itemId)
@@ -25,19 +22,6 @@ export function partlyFetchedItem(item) {
   }
 }
 
-export function fetchEpisodeTorrents() {
-  return {
-    type: ItemConstants.FETCH_EPISODE_TORRENTS,
-  }
-}
-
-export function fetchedEpisodeTorrents(item) {
-  return {
-    type   : ItemConstants.FETCHED_EPISODE_TORRENTS,
-    payload: item,
-  }
-}
-
 export function getItem(type, itemId) {
   return (dispatch, getState) => new Promise(async(resolve) => {
     dispatch({
@@ -48,13 +32,9 @@ export function getItem(type, itemId) {
 
     if (type === Constants.TYPE_MOVIE) {
       if (item) {
-        resolve(
-          dispatch(
-            fetchedItem(
-              await BookmarkAdapter.checkMovie(item),
-            ),
-          ),
-        )
+        resolve(dispatch(fetchedItem(
+          await Popcorn.bookmarks.checkMovie(item),
+        )))
 
       } else {
         resolve(Popcorn.getMovie(itemId).then(movie => dispatch(fetchedItem(movie))))
@@ -62,20 +42,36 @@ export function getItem(type, itemId) {
 
     } else if (type === Constants.TYPE_SHOW) {
       if (item) {
-        dispatch(
-          partlyFetchedItem(
-            await BookmarkAdapter.checkShow(item),
-          ),
-        )
+        resolve(dispatch(partlyFetchedItem(
+          await Popcorn.bookmarks.checkMovie(item),
+        )))
       }
 
       return Popcorn.getShowBasic(itemId).then((basicShow) => {
-        resolve(dispatch(partlyFetchedItem(basicShow)))
+        dispatch(partlyFetchedItem(basicShow))
 
         Popcorn.getShowMeta(basicShow).then(show => dispatch(fetchedItem(show)))
       })
     }
 
     return null
+  })
+}
+
+export const addToBookmarks = (item) => (dispatch) => {
+  Popcorn.bookmarks.addItem(item)
+
+  dispatch({
+    type   : ItemConstants.ADD_TO_BOOKMARKS,
+    payload: item,
+  })
+}
+
+export const removeFromBookmarks = (item) => (dispatch) => {
+  Popcorn.bookmarks.removeItem(item)
+
+  dispatch({
+    type   : ItemConstants.REMOVE_FROM_BOOKMARKS,
+    payload: item,
   })
 }

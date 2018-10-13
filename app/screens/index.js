@@ -30,6 +30,21 @@ export default createStackNavigator({
         },
       },
 
+      MyList: {
+        screen: ({ ...props }) => <ModeScreen mode={Constants.TYPE_BOOKMARK} {...props} />,
+
+        navigationOptions: {
+          tabBarLabel: i18n.t('My List'),
+          tabBarIcon : ({ tintColor }) => (
+            <Icon
+              name={'bookmark'}
+              color={tintColor}
+              size={25}
+            />
+          ),
+        },
+      },
+
       Movies: {
         screen: ({ ...props }) => <ModeScreen mode={Constants.TYPE_MOVIE} {...props} />,
 

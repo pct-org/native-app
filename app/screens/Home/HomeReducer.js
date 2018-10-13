@@ -1,4 +1,5 @@
 import * as HomeConstants from './HomeConstants'
+import * as ItemConstants from '../Item/ItemConstants'
 
 export default (state = HomeConstants.INITIAL_STATE, action) => {
   switch (action.type) {
@@ -37,6 +38,33 @@ export default (state = HomeConstants.INITIAL_STATE, action) => {
         modes: {
           ...state.modes,
           [action.payload]: HomeConstants.INITIAL_STATE.modes[action.payload],
+        },
+      }
+
+    case ItemConstants.ADD_TO_BOOKMARKS:
+      return {
+        ...state,
+        modes: {
+          ...state.modes,
+          bookmark: {
+            ...state.modes.bookmark,
+            items: [
+              ...state.modes.bookmark.items,
+              action.payload,
+            ],
+          },
+        },
+      }
+
+    case ItemConstants.REMOVE_FROM_BOOKMARKS:
+      return {
+        ...state,
+        modes: {
+          ...state.modes,
+          bookmark: {
+            ...state.modes.bookmark,
+            items: state.modes.bookmark.items.filter(bookmark => bookmark.id !== action.payload.id),
+          },
         },
       }
 

@@ -4,6 +4,7 @@ import { StyleSheet, Text, View, FlatList, StatusBar, TextInput } from 'react-na
 import Orientation from 'react-native-orientation'
 import * as Animatable from 'react-native-animatable'
 import Icon from 'react-native-vector-icons/MaterialIcons'
+import { Constants } from 'popcorn-sdk'
 
 import colors from 'modules/colors'
 
@@ -137,6 +138,10 @@ export default class Mode extends React.Component {
   handleEndReached = () => {
     const { isLoading, getItems, mode } = this.props
     const { page } = this.state
+
+    if (mode === Constants.TYPE_BOOKMARK) {
+      return
+    }
 
     const nPage = page + 1
 

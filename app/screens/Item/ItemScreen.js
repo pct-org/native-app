@@ -69,6 +69,17 @@ export default class Item extends React.Component {
     })
   }
 
+  handleToggleBookmarks = () => {
+    const { item, addToBookmarks, removeFromBookmarks } = this.props
+
+    if (item.bookmarked) {
+      removeFromBookmarks(item)
+
+    } else {
+      addToBookmarks(item)
+    }
+  }
+
   playItem = (torrents, episode = {}) => {
     const { navigation: { navigate, state: { params: item } } } = this.props
 
@@ -130,6 +141,17 @@ export default class Item extends React.Component {
           {item && item.summary && (
             <View style={styles.container}>
               <Typography variant={'body1'}>{item.summary}</Typography>
+            </View>
+          )}
+
+          {item && (
+            <View style={styles.container}>
+              <IconButton
+                onPress={this.handleToggleBookmarks}
+                name={item.bookmarked ? 'playlist-add-check' : 'playlist-add'}
+                color={'#FFF'}
+                size={40}
+              />
             </View>
           )}
 

@@ -43,6 +43,7 @@ export default class Home extends React.PureComponent {
 
     getItems(Constants.TYPE_MOVIE)
     getItems(Constants.TYPE_SHOW)
+    getItems(Constants.TYPE_BOOKMARK)
   }
 
   componentWillUnmount() {
@@ -69,7 +70,11 @@ export default class Home extends React.PureComponent {
     return null
   }
 
-  getMyList = () => []
+  getMyList = () => {
+    const { modes } = this.props
+
+    return modes[Constants.TYPE_BOOKMARK].items.slice(0, 10)
+  }
 
   getMovies = (withSlice = true) => {
     const { modes } = this.props
@@ -92,6 +97,8 @@ export default class Home extends React.PureComponent {
   render() {
     const { isLoading, hasInternet } = this.props
 
+    const myList = this.getMyList()
+
     return (
       <View style={styles.root}>
 
@@ -104,8 +111,20 @@ export default class Home extends React.PureComponent {
               onLoad={this.handleCoverLoaded}
               item={this.getMainCover()} />
 
+            {myList && myList.length > 0 && (
+              <CardList
+                style={{ marginTop: -20, marginBottom: 8 }}
+                onPress={this.handleItemOpen}
+                loading={isLoading}
+                title={i18n.t('My List')}
+                items={myList} />
+            )}
+
             <CardList
-              style={{ marginTop: -20, marginBottom: 8 }}
+              style={{
+                marginTop   : myList.length > 0 ? 0 : -20,
+                marginBottom: 8,
+              }}
               onPress={this.handleItemOpen}
               loading={isLoading}
               title={i18n.t('Movies')}
