@@ -16,7 +16,7 @@ export default new (class BookmarksDB extends Base {
 
     if (bookmarks) {
       this.bookmarks = JSON.parse(bookmarks)
-      console.log('this.bookmarks', this.bookmarks)
+
       return this.bookmarks
     }
 

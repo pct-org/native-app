@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { StyleSheet, Text, View, FlatList, StatusBar, TextInput } from 'react-native'
 import Orientation from 'react-native-orientation'
 import * as Animatable from 'react-native-animatable'
-import Icon from 'react-native-vector-icons/MaterialIcons'
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import { Constants } from 'popcorn-sdk'
 
 import colors from 'modules/colors'
@@ -175,7 +175,7 @@ export default class Mode extends React.Component {
             duration={firstSearch ? 1 : 300}
             useNativeDriver>
             <IconButton
-              name={'cancel'}
+              name={'close-circle'}
               color={'#FFF'}
               onPress={this.handleCancelSearch}
               size={32}
@@ -184,7 +184,7 @@ export default class Mode extends React.Component {
 
           <Icon
             style={styles.searchIcon}
-            name={'search'}
+            name={'magnify'}
             color={'#FFF'}
             size={32}
           />

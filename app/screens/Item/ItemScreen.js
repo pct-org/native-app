@@ -1,7 +1,7 @@
 import React from 'react'
 import { StyleSheet, View, ActivityIndicator, Picker } from 'react-native'
 import Orientation from 'react-native-orientation'
-import { utils, Constants } from 'popcorn-sdk'
+import { Constants } from 'popcorn-sdk'
 
 import i18n from 'modules/i18n'
 
@@ -13,6 +13,7 @@ import colors from 'modules/colors'
 
 import Cover from './Cover'
 import Episode from './Episode'
+import QualitySelector from './QualitySelector'
 
 const styles = StyleSheet.create({
 
@@ -53,6 +54,9 @@ export default class Item extends React.Component {
 
   state = {
     activeSeason: null,
+
+    selectFromTorrents: null,
+    episodeToPlay     : {},
   }
 
   componentDidMount() {
@@ -80,15 +84,30 @@ export default class Item extends React.Component {
     }
   }
 
-  playItem = (torrents, episode = {}) => {
+  playItem = (magnet) => {
     const { navigation: { navigate, state: { params: item } } } = this.props
+    const { episodeToPlay } = this.state
 
     navigate('Player', {
-      magnet: utils.getBestTorrent(torrents),
-      item  : {
+      magnet,
+      item: {
         ...item,
-        ...episode,
+        ...episodeToPlay,
       },
+    })
+  }
+
+  selectQuality = (torrents, episode = {}) => {
+    this.setState({
+      selectFromTorrents: torrents,
+
+      episodeToPlay: episode,
+    })
+  }
+
+  cancelQualitySelect = () => {
+    this.setState({
+      selectFromTorrents: null,
     })
   }
 
@@ -129,14 +148,14 @@ export default class Item extends React.Component {
 
   render() {
     const { item, isLoading } = this.props
-    const { activeSeason } = this.state
+    const { activeSeason, selectFromTorrents } = this.state
 
     return (
       <View style={styles.root}>
 
         <ScrollViewWithStatusBar>
 
-          <Cover item={item} playMovie={this.playItem} />
+          <Cover item={item} playMovie={this.selectQuality} />
 
           {item && item.summary && (
             <View style={styles.container}>
@@ -148,7 +167,7 @@ export default class Item extends React.Component {
             <View style={styles.container}>
               <IconButton
                 onPress={this.handleToggleBookmarks}
-                name={item.bookmarked ? 'playlist-add-check' : 'playlist-add'}
+                name={item.bookmarked ? 'check' : 'plus'}
                 color={'#FFF'}
                 size={40}
               />
@@ -177,7 +196,7 @@ export default class Item extends React.Component {
             this.getAiredEpisodes().map(episode => (
               <Episode
                 key={episode.key}
-                playItem={this.playItem}
+                playItem={this.selectQuality}
                 {...episode} />
             ))
           )}
@@ -185,6 +204,11 @@ export default class Item extends React.Component {
           <ActivityIndicator color={'#FFF'} size={50} animating={isLoading} hidesWhenStopped />
 
         </ScrollViewWithStatusBar>
+
+        <QualitySelector
+          cancel={this.cancelQualitySelect}
+          torrents={selectFromTorrents}
+          playItem={this.playItem} />
 
       </View>
     )

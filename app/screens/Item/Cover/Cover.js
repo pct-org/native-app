@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { Image, StyleSheet, View } from 'react-native'
-import Icon from 'react-native-vector-icons/MaterialIcons'
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import { Constants } from 'popcorn-sdk'
 
 import CoverGradient from 'components/CoverGradient'
