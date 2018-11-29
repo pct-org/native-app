@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { StyleSheet, View, Image } from 'react-native'
-import Icon from 'react-native-vector-icons/MaterialIcons'
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 
 import posterHolderImage from 'images/posterholder.png'
 
@@ -72,7 +72,7 @@ export const Episode = ({ playItem, hasTorrents, title, summary, images, torrent
                 iconStyle={{ margin: 0 }}
                 backgroundColor={'transparent'}
                 borderRadius={0}
-                name={hasTorrents ? 'play-circle-outline' : 'highlight-off'}
+                name={hasTorrents ? 'play-circle-outline' : 'cancel'}
                 color={hasTorrents ? '#FFF' : 'red'}
                 size={60} />
             </View>

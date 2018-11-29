@@ -1,7 +1,7 @@
 /* eslint react/prop-types: 0 */
 
 import React from 'react'
-import Icon from 'react-native-vector-icons/MaterialIcons'
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import { createStackNavigator, createBottomTabNavigator } from 'react-navigation'
 import { Constants } from 'popcorn-sdk'
 
@@ -67,7 +67,7 @@ export default createStackNavigator({
           tabBarLabel: i18n.t('Shows'),
           tabBarIcon : ({ tintColor }) => (
             <Icon
-              name={'subscriptions'}
+              name={'animation-play'}
               color={tintColor}
               size={25}
             />
