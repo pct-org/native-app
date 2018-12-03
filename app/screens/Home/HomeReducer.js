@@ -68,6 +68,52 @@ export default (state = HomeConstants.INITIAL_STATE, action) => {
         },
       }
 
+    case ItemConstants.MARK_MOVIE_WATCHED:
+      return {
+        ...state,
+        modes: {
+          ...state.modes,
+          movie: {
+            ...state.modes.movie,
+            items: state.modes.movie.items.map(movie => {
+              if (movie.id !== action.payload.id) {
+                return movie
+              }
+
+              return {
+                ...movie,
+                watched: {
+                  complete: true,
+                },
+              }
+            }),
+          },
+        },
+      }
+
+      case ItemConstants.MARK_MOVIE_UNWATCHED:
+      return {
+        ...state,
+        modes: {
+          ...state.modes,
+          movie: {
+            ...state.modes.movie,
+            items: state.modes.movie.items.map(movie => {
+              if (movie.id !== action.payload.id) {
+                return movie
+              }
+
+              return {
+                ...movie,
+                watched: {
+                  complete: false,
+                },
+              }
+            }),
+          },
+        },
+      }
+
     default:
       return state
   }

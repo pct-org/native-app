@@ -4,12 +4,11 @@ import Orientation from 'react-native-orientation'
 import { Constants } from 'popcorn-sdk'
 
 import i18n from 'modules/i18n'
+import colors from 'modules/colors'
 
 import ScrollViewWithStatusBar from 'components/ScrollViewWithStatusBar'
 import Typography from 'components/Typography'
 import IconButton from 'components/IconButton'
-
-import colors from 'modules/colors'
 
 import Cover from './Cover'
 import Episode from './Episode'
@@ -23,7 +22,18 @@ const styles = StyleSheet.create({
   },
 
   container: {
-    margin: 8,
+    display      : 'flex',
+    flexDirection: 'row',
+  },
+
+  iconsContainer: {
+    marginTop   : 24,
+    marginBottom: 24,
+  },
+
+  icon: {
+    minWidth : 100,
+    textAlign: 'center',
   },
 
   dropDown: {
@@ -81,6 +91,17 @@ export default class Item extends React.Component {
 
     } else {
       addToBookmarks(item)
+    }
+  }
+
+  handleToggleWatched = () => {
+    const { item, markWatched, markUnwatched } = this.props
+
+    if (item.watched.complete) {
+      markUnwatched(item)
+
+    } else {
+      markWatched(item)
     }
   }
 
@@ -164,13 +185,26 @@ export default class Item extends React.Component {
           )}
 
           {item && (
-            <View style={styles.container}>
+            <View style={[styles.container, styles.iconsContainer]}>
               <IconButton
+                style={styles.icon}
                 onPress={this.handleToggleBookmarks}
                 name={item.bookmarked ? 'check' : 'plus'}
                 color={'#FFF'}
-                size={40}
-              />
+                size={40}>
+                {i18n.t('My List')}
+              </IconButton>
+
+              {item && item.type === Constants.TYPE_MOVIE && (
+                <IconButton
+                  style={styles.icon}
+                  onPress={this.handleToggleWatched}
+                  name={item.watched.complete ? 'eye-off-outline' : 'eye-outline'}
+                  color={'#FFF'}
+                  size={40}>
+                  {i18n.t(item.watched.complete ? 'Mark Unwatched' : 'Mark Watched')}
+                </IconButton>
+              )}
             </View>
           )}
 

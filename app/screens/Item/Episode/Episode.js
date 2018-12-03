@@ -10,9 +10,10 @@ import Overlay from 'components/Overlay'
 import BaseButton from 'components/BaseButton'
 
 export const styles = StyleSheet.create({
+
   container: {
     display: 'flex',
-    margin : 16,
+    margin : 8,
   },
 
   posterWithTitle: {
@@ -38,6 +39,7 @@ export const styles = StyleSheet.create({
   summary: {
     marginTop: 8,
   },
+
 })
 
 export const Episode = ({ playItem, hasTorrents, title, summary, images, torrents }) => {

@@ -1,6 +1,8 @@
 import { Constants } from 'popcorn-sdk'
 import Popcorn from 'modules/PopcornSDK'
 
+import Bookmarks from 'modules/db/Bookmarks'
+
 import * as HomeConstants from './HomeConstants'
 import * as HomeSelectors from './HomeSelectors'
 
@@ -59,10 +61,10 @@ export const getItems = (mode, page = 1, givenFilters = {}) => (dispatch, getSta
       return Popcorn.getShows(page, filters).then(shows => dispatch(fetchedItems(shows, mode))).catch(catchNoCon)
 
     case Constants.TYPE_BOOKMARK:
-      return Popcorn.bookmarks.getAll().then(bookmarks => dispatch(fetchedItems(bookmarks, mode)))
+      return Bookmarks.getAll().then(bookmarks => dispatch(fetchedItems(bookmarks, mode)))
 
     case 'bookmarkSearch':
-      return Popcorn.bookmarks.getAll().then(bookmarks => dispatch(
+      return Bookmarks.getAll().then(bookmarks => dispatch(
         fetchedItems(
           bookmarks.filter(bookmark => bookmark.title.toLowerCase().indexOf(filters.keywords.toLowerCase()) > -1),
           mode,

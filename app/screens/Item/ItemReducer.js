@@ -41,6 +41,28 @@ export default (state = ItemConstants.INITIAL_STATE, action) => {
         },
       }
 
+    case ItemConstants.MARK_MOVIE_WATCHED:
+      return {
+        ...state,
+        item: {
+          ...state.item,
+          watched: {
+            complete: true,
+          },
+        },
+      }
+
+    case ItemConstants.MARK_MOVIE_UNWATCHED:
+      return {
+        ...state,
+        item: {
+          ...state.item,
+          watched: {
+            complete: false,
+          },
+        },
+      }
+
     default:
       return state
 

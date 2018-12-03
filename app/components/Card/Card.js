@@ -22,6 +22,17 @@ const styles = StyleSheet.create({
     width : '100%',
   },
 
+  overlay: {
+    position: 'absolute',
+    top     : 0,
+    left    : 0,
+    height  : '100%',
+    width   : '100%',
+    opacity : 0.8,
+
+    backgroundColor: '#000',
+  },
+
 })
 
 export default class Card extends React.Component {
@@ -72,6 +83,11 @@ export default class Card extends React.Component {
                 : posterHolder
             }
           />
+
+          {item && item.watched && item.watched.complete && (
+            <View style={styles.overlay} />
+          )}
+
         </View>
       </BaseButton>
     )
