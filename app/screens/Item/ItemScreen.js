@@ -140,7 +140,7 @@ export default class Item extends React.Component {
     this.setState({
       selectFromTorrents: null,
     })
-    
+
     navigate('Player', {
       magnet,
       item: {
