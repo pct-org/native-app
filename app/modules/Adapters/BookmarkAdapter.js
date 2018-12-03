@@ -1,10 +1,8 @@
-import DefaultBookmarkAdapter from 'popcorn-sdk/BookmarkAdapter'
+import DefaultAdapter from 'popcorn-sdk/Adapter'
 
 import Bookmarks from '../db/Bookmarks'
 
-export default new (class BookmarkAdapter extends DefaultBookmarkAdapter {
-
-  getAll = Bookmarks.getAll
+export default new (class BookmarkAdapter extends DefaultAdapter {
 
   checkMovie = movie => new Promise(async(resolve) => {
     const bookmarks = await Bookmarks.getAllMovies()
@@ -23,9 +21,5 @@ export default new (class BookmarkAdapter extends DefaultBookmarkAdapter {
       bookmarked: bookmarks.filter(bookmark => bookmark.id === show.id).length === 1,
     })
   })
-
-  addItem = Bookmarks.addItem
-
-  removeItem = Bookmarks.removeItem
 
 })()

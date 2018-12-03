@@ -79,7 +79,8 @@ export default class Home extends React.PureComponent {
   getMovies = (withSlice = true) => {
     const { modes } = this.props
 
-    const movies = modes[Constants.TYPE_MOVIE].items
+    // Don't show movies that we already watched on the home screen
+    const movies = modes[Constants.TYPE_MOVIE].items.filter(movie => !movie.watched.complete)
 
     if (withSlice) {
       return movies.slice(1, 11)

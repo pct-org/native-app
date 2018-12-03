@@ -15,3 +15,6 @@ export const FETCHED_ITEM = `${REDUCER_NAME}.fetched.item`
 
 export const ADD_TO_BOOKMARKS = `${REDUCER_NAME}.add.to.bookmarks`
 export const REMOVE_FROM_BOOKMARKS = `${REDUCER_NAME}.remove.from.bookmarks`
+
+export const MARK_MOVIE_WATCHED = `${REDUCER_NAME}.mark.watched.movie`
+export const MARK_MOVIE_UNWATCHED = `${REDUCER_NAME}.mark.unwatched.movie`

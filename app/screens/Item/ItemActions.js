@@ -1,6 +1,9 @@
 import { Constants } from 'popcorn-sdk'
 import Popcorn from 'modules/PopcornSDK'
 
+import Bookmarks from 'modules/db/Bookmarks'
+import Watched from 'modules/db/Watched'
+
 import * as ItemConstants from './ItemConstants'
 import * as HomeSelectors from '../Home/HomeSelectors'
 
@@ -33,7 +36,7 @@ export function getItem(type, itemId) {
     if (type === Constants.TYPE_MOVIE) {
       if (item) {
         resolve(dispatch(fetchedItem(
-          await Popcorn.bookmarks.checkMovie(item),
+          await Popcorn.checkAdapters('checkMovie')(item),
         )))
 
       } else {
@@ -43,7 +46,7 @@ export function getItem(type, itemId) {
     } else if (type === Constants.TYPE_SHOW) {
       if (item) {
         resolve(dispatch(partlyFetchedItem(
-          await Popcorn.bookmarks.checkMovie(item),
+          await Popcorn.checkAdapters('checkShow')(item),
         )))
       }
 
@@ -59,7 +62,7 @@ export function getItem(type, itemId) {
 }
 
 export const addToBookmarks = (item) => (dispatch) => {
-  Popcorn.bookmarks.addItem(item)
+  Bookmarks.addItem(item)
 
   dispatch({
     type   : ItemConstants.ADD_TO_BOOKMARKS,
@@ -68,10 +71,28 @@ export const addToBookmarks = (item) => (dispatch) => {
 }
 
 export const removeFromBookmarks = (item) => (dispatch) => {
-  Popcorn.bookmarks.removeItem(item)
+  Bookmarks.removeItem(item)
 
   dispatch({
     type   : ItemConstants.REMOVE_FROM_BOOKMARKS,
+    payload: item,
+  })
+}
+
+export const markWatched = (item) => (dispatch) => {
+  Watched.markMovie(item)
+
+  dispatch({
+    type   : ItemConstants.MARK_MOVIE_WATCHED,
+    payload: item,
+  })
+}
+
+export const markUnwatched = (item) => (dispatch) => {
+  Watched.removeMovie(item)
+
+  dispatch({
+    type   : ItemConstants.MARK_MOVIE_UNWATCHED,
     payload: item,
   })
 }

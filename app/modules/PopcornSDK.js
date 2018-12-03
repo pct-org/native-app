@@ -1,8 +1,9 @@
 import Popcorn from 'popcorn-sdk'
 
-import BookmarkAdapter from './BookmarkAdapter'
+import Adapters from './Adapters'
 
 const SDK = Popcorn
-SDK.setBookmarkAdapter(BookmarkAdapter)
+
+Adapters.forEach(adapter => SDK.addAdapter(adapter))
 
 export default SDK
