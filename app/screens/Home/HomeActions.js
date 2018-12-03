@@ -61,7 +61,14 @@ export const getItems = (mode, page = 1, givenFilters = {}) => (dispatch, getSta
       return Popcorn.getShows(page, filters).then(shows => dispatch(fetchedItems(shows, mode))).catch(catchNoCon)
 
     case Constants.TYPE_BOOKMARK:
-      return Bookmarks.getAll().then(bookmarks => dispatch(fetchedItems(bookmarks, mode)))
+      return Bookmarks.getAll().then((bookmarks) => {
+        Popcorn.checkAdapters('checkMovies')(bookmarks).then(bookmarks => dispatch(
+          fetchedItems(
+            bookmarks,
+            mode,
+          ),
+        ))
+      })
 
     case 'bookmarkSearch':
       return Bookmarks.getAll().then(bookmarks => dispatch(

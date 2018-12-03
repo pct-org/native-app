@@ -13,20 +13,24 @@ export const Typography = ({ variant, style, color, children }) => (
 )
 
 Typography.propTypes = {
-  variant : PropTypes.oneOf([
+  variant: PropTypes.oneOf([
     'display1',
     'headline',
     'title',
+    'subheading',
     'body1',
     'body2',
     'caption',
     'button',
   ]),
-  color   : PropTypes.oneOf(['white', '']),
-  style   : PropTypes.oneOfType([
+
+  color: PropTypes.oneOf(['white', '']),
+
+  style: PropTypes.oneOfType([
     PropTypes.number,
     PropTypes.object,
   ]),
+
   children: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.arrayOf(PropTypes.string),

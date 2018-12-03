@@ -62,37 +62,37 @@ export function getItem(type, itemId) {
 }
 
 export const addToBookmarks = (item) => (dispatch) => {
-  Bookmarks.addItem(item)
-
   dispatch({
     type   : ItemConstants.ADD_TO_BOOKMARKS,
     payload: item,
   })
+
+  Bookmarks.addItem(item)
 }
 
 export const removeFromBookmarks = (item) => (dispatch) => {
-  Bookmarks.removeItem(item)
-
   dispatch({
     type   : ItemConstants.REMOVE_FROM_BOOKMARKS,
     payload: item,
   })
+
+  Bookmarks.removeItem(item)
 }
 
 export const markWatched = (item) => (dispatch) => {
-  Watched.markMovie(item)
-
   dispatch({
     type   : ItemConstants.MARK_MOVIE_WATCHED,
     payload: item,
   })
+
+  Watched.markMovie(item)
 }
 
 export const markUnwatched = (item) => (dispatch) => {
-  Watched.removeMovie(item)
-
   dispatch({
     type   : ItemConstants.MARK_MOVIE_UNWATCHED,
     payload: item,
   })
+
+  Watched.removeMovie(item)
 }

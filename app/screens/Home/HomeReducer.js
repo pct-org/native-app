@@ -69,47 +69,59 @@ export default (state = HomeConstants.INITIAL_STATE, action) => {
       }
 
     case ItemConstants.MARK_MOVIE_WATCHED:
+      const checkAndMarkMovies = items => items.map(movie => {
+        if (movie.id !== action.payload.id) {
+          return movie
+        }
+
+        return {
+          ...movie,
+          watched: {
+            complete: true,
+          },
+        }
+      })
+
       return {
         ...state,
         modes: {
           ...state.modes,
-          movie: {
+          bookmark: {
+            ...state.modes.bookmark,
+            items: checkAndMarkMovies(state.modes.bookmark.items),
+          },
+          movie   : {
             ...state.modes.movie,
-            items: state.modes.movie.items.map(movie => {
-              if (movie.id !== action.payload.id) {
-                return movie
-              }
-
-              return {
-                ...movie,
-                watched: {
-                  complete: true,
-                },
-              }
-            }),
+            items: checkAndMarkMovies(state.modes.movie.items),
           },
         },
       }
 
-      case ItemConstants.MARK_MOVIE_UNWATCHED:
+    case ItemConstants.MARK_MOVIE_UNWATCHED:
+      const checkAndUnmarkMovies = items => items.map(movie => {
+        if (movie.id !== action.payload.id) {
+          return movie
+        }
+
+        return {
+          ...movie,
+          watched: {
+            complete: false,
+          },
+        }
+      })
+
       return {
         ...state,
         modes: {
           ...state.modes,
-          movie: {
+          bookmark: {
+            ...state.modes.bookmark,
+            items: checkAndUnmarkMovies(state.modes.bookmark.items),
+          },
+          movie   : {
             ...state.modes.movie,
-            items: state.modes.movie.items.map(movie => {
-              if (movie.id !== action.payload.id) {
-                return movie
-              }
-
-              return {
-                ...movie,
-                watched: {
-                  complete: false,
-                },
-              }
-            }),
+            items: checkAndUnmarkMovies(state.modes.movie.items),
           },
         },
       }
