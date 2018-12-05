@@ -1,6 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { View, StyleSheet } from 'react-native'
+import { StyleSheet } from 'react-native'
+import * as Animatable from 'react-native-animatable'
 
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 
@@ -19,9 +20,9 @@ export const styles = StyleSheet.create({
 
 })
 
-export const IconButton = ({ onPress, buttonProps, children, ...rest }) => (
+export const IconButton = ({ onPress, animatable, buttonProps, children, ...rest }) => (
   <BaseButton onPress={onPress} {...buttonProps}>
-    <View style={styles.container}>
+    <Animatable.View {...animatable} style={styles.container}>
       <Icon
         {...rest}
       />
@@ -31,7 +32,7 @@ export const IconButton = ({ onPress, buttonProps, children, ...rest }) => (
           {children}
         </Typography>
       )}
-    </View>
+    </Animatable.View>
   </BaseButton>
 )
 
@@ -39,10 +40,12 @@ IconButton.propTypes = {
   onPress    : PropTypes.func,
   children   : PropTypes.string,
   buttonProps: PropTypes.object,
+  animatable : PropTypes.object,
 }
 
 IconButton.defaultProps = {
   buttonProps: {},
+  animatable : {},
   onPress    : null,
   children   : null,
 }

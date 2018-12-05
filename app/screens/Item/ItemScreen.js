@@ -25,6 +25,7 @@ const styles = StyleSheet.create({
     display      : 'flex',
     flexDirection: 'row',
     marginLeft   : 8,
+    marginTop    : 8,
   },
 
   iconsContainer: {
@@ -47,19 +48,11 @@ export default class Item extends React.PureComponent {
   }
 
   componentDidMount() {
-    const { getItem, navigation: { state: { params: item } } } = this.props
-
     Orientation.lockToPortrait()
 
     BackHandler.addEventListener('hardwareBackPress', this.handleBackPress)
 
-    getItem(item.type, item.id).then(({ payload: { type, seasons } }) => {
-      if (type === Constants.TYPE_SHOW && seasons.length > 0) {
-        this.setState({
-          activeSeason: seasons[seasons.length - 1].number,
-        })
-      }
-    })
+    this.getItem()
   }
 
   componentWillUnmount() {
@@ -102,6 +95,19 @@ export default class Item extends React.PureComponent {
     }
   }
 
+  getItem = (fetchThisItem = null) => {
+    const { getItem, navigation: { state: { params: item } } } = this.props
+
+    console.log('getItem', fetchThisItem, item)
+    getItem(fetchThisItem || item).then(({ payload: { type, seasons } }) => {
+      if (type === Constants.TYPE_SHOW && seasons.length > 0) {
+        this.setState({
+          activeSeason: seasons[seasons.length - 1].number,
+        })
+      }
+    })
+  }
+
   handleTrailer = () => {
     const { item } = this.props
 
@@ -141,11 +147,9 @@ export default class Item extends React.PureComponent {
     })
   }
 
-
-
   render() {
     const { item, isLoading } = this.props
-    const { activeSeason, selectFromTorrents } = this.state
+    const { selectFromTorrents } = this.state
 
     return (
       <View style={styles.root}>
@@ -163,6 +167,9 @@ export default class Item extends React.PureComponent {
           {item && (
             <View style={[styles.container, styles.iconsContainer]}>
               <IconButton
+                animatable={{
+                  animation: 'fadeIn',
+                }}
                 style={styles.icon}
                 onPress={this.handleToggleBookmarks}
                 name={item.bookmarked ? 'check' : 'plus'}
@@ -173,6 +180,9 @@ export default class Item extends React.PureComponent {
 
               {item && item.type === Constants.TYPE_MOVIE && (
                 <IconButton
+                  animatable={{
+                    animation: 'fadeIn',
+                  }}
                   style={[styles.icon, { minWidth: 95 }]}
                   onPress={this.handleToggleWatched}
                   name={item.watched.complete ? 'eye-off-outline' : 'eye-outline'}
@@ -184,6 +194,9 @@ export default class Item extends React.PureComponent {
 
               {item && item.trailer && (
                 <IconButton
+                  animatable={{
+                    animation: 'fadeIn',
+                  }}
                   style={styles.icon}
                   onPress={this.handleTrailer}
                   name={'youtube'}
@@ -199,6 +212,7 @@ export default class Item extends React.PureComponent {
             <ItemOrRecommendations
               item={item}
               playItem={this.selectQuality}
+              getItem={this.getItem}
             />
           )}
 

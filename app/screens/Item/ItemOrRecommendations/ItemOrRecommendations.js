@@ -2,11 +2,12 @@ import React from 'react'
 import { View, Text, StyleSheet } from 'react-native'
 import PropTypes from 'prop-types'
 import { material, systemWeights } from 'react-native-typography'
-import { Constants } from 'popcorn-sdk'
+import Popcorn from 'modules/PopcornSDK'
 
 import BaseButton from 'components/BaseButton'
 
 import SeasonsAndEpisodes from './SeasonsAndEpisodes'
+import Recommendations from './Recommendations'
 
 export const styles = StyleSheet.create({
 
@@ -68,7 +69,7 @@ export default class ItemOrRecommendations extends React.PureComponent {
   }
 
   render() {
-    const { item, playItem } = this.props
+    const { item, playItem, getItem } = this.props
     const { recommendationActive } = this.state
 
     return (
@@ -87,10 +88,18 @@ export default class ItemOrRecommendations extends React.PureComponent {
           </BaseButton>
         </View>
 
-        <SeasonsAndEpisodes
-          item={item}
-          playItem={playItem}
-        />
+        {!recommendationActive && (
+          <SeasonsAndEpisodes
+            item={item}
+            playItem={playItem}
+          />
+        )}
+
+        {recommendationActive && (
+          <Recommendations
+            item={item}
+            getItem={getItem} />
+        )}
 
       </React.Fragment>
     )

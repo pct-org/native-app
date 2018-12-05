@@ -24,7 +24,9 @@ export default class SeasonsAndEpisodes extends React.PureComponent {
     const { item: nextItem } = nextProps
     const { activeSeason, onlyWhenHigherThen } = state
 
-    const newSeasonCount = nextItem && nextItem.seasons ? nextItem.seasons[nextItem.seasons.length - 1].number : 0
+    const newSeasonCount = nextItem && nextItem.seasons && nextItem.seasons.length > 0
+      ? nextItem.seasons[nextItem.seasons.length - 1].number
+      : 0
 
     // If we retrieve more season then update to the latest one
     if (newSeasonCount > activeSeason && newSeasonCount > onlyWhenHigherThen) {

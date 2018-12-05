@@ -25,36 +25,58 @@ export function partlyFetchedItem(item) {
   }
 }
 
-export function getItem(type, itemId) {
+export function getItem(itemToGet) {
   return (dispatch, getState) => new Promise(async(resolve) => {
     dispatch({
       type: ItemConstants.FETCH_ITEM,
     })
 
-    const item = hasItem(itemId, type, getState())
+    const item = hasItem(itemToGet.id, itemToGet.type, getState())
 
-    if (type === Constants.TYPE_MOVIE) {
+    if (itemToGet.type === Constants.TYPE_MOVIE) {
       if (item) {
         resolve(dispatch(fetchedItem(
           await Popcorn.checkAdapters('checkMovie')(item),
         )))
 
       } else {
-        resolve(Popcorn.getMovie(itemId).then(movie => dispatch(fetchedItem(movie))))
+        resolve(Popcorn.getMovie({ ids: { imdb: item.id } }).then(movie => dispatch(fetchedItem(movie))))
       }
 
-    } else if (type === Constants.TYPE_SHOW) {
+    } else if (itemToGet.type === Constants.TYPE_SHOW) {
       if (item) {
         resolve(dispatch(partlyFetchedItem(
           await Popcorn.checkAdapters('checkShow')(item),
         )))
-      }
 
-      return Popcorn.getShowBasic(itemId).then((basicShow) => {
+        const basicShow = await Popcorn.getShowBasic(item.id)
         dispatch(partlyFetchedItem(basicShow))
 
-        Popcorn.getShowMeta(basicShow).then(show => dispatch(fetchedItem(show)))
-      })
+        dispatch(fetchedItem(
+          await Popcorn.getShowMeta(basicShow),
+        ))
+
+      } else if (itemToGet.ids.tmdb) {
+        // Okay, we don't have any thing yet so we have to partly to it in steps
+
+        const showWithIds = await Popcorn.getShowIds(itemToGet)
+        const basicShow = await Popcorn.getShowBasic(showWithIds.id)
+
+        const show = {
+          ...showWithIds,
+          ...basicShow,
+          ids: {
+            ...basicShow.ids,
+            ...showWithIds.ids,
+          },
+        }
+
+        resolve(dispatch(partlyFetchedItem(show)))
+
+        dispatch(fetchedItem(
+          await Popcorn.getShowSeasonsMeta(show),
+        ))
+      }
     }
 
     return null

@@ -53,7 +53,7 @@ const styles = StyleSheet.create({
   cancelSearch: {
     position: 'absolute',
     right   : 8,
-    top     : 8,
+    top: 0,
   },
 
   searchIcon: {

@@ -17,6 +17,11 @@ const styles = StyleSheet.create({
     position   : 'relative',
   },
 
+  small: {
+    height: 180,
+    width : 115,
+  },
+
   image: {
     height: '100%',
     width : '100%',
@@ -45,6 +50,7 @@ export default class Card extends React.Component {
   static defaultProps = {
     item : null,
     empty: false,
+    small: false,
   }
 
   constructor(props) {
@@ -64,7 +70,7 @@ export default class Card extends React.Component {
   }
 
   render() {
-    const { item, empty, ...rest } = this.props
+    const { item, small, empty, ...rest } = this.props
     const { showPlaceholder } = this.state
 
     return (
@@ -72,7 +78,7 @@ export default class Card extends React.Component {
         // onLongPress={() => console.warn(item.title)}
         // onPress={() => this.openItem(item)}
         {...rest}>
-        <View style={styles.root}>
+        <View style={[styles.root, small ? styles.small : {}]}>
           <Image
             style={styles.image}
             defaultSource={posterHolder}

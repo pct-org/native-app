@@ -8,7 +8,7 @@ import SplashScreen from 'react-native-splash-screen'
 import i18n from 'modules/i18n'
 import colors from 'modules/colors'
 
-import CardList from 'components/CardList'
+import CardSlider from 'components/CardSlider'
 import MainCover from 'components/MainCover'
 import ScrollViewWithStatusBar from 'components/ScrollViewWithStatusBar'
 
@@ -113,7 +113,7 @@ export default class Home extends React.PureComponent {
               item={this.getMainCover()} />
 
             {myList && myList.length > 0 && (
-              <CardList
+              <CardSlider
                 style={{ marginTop: -20, marginBottom: 8 }}
                 onPress={this.handleItemOpen}
                 loading={isLoading}
@@ -121,7 +121,7 @@ export default class Home extends React.PureComponent {
                 items={myList} />
             )}
 
-            <CardList
+            <CardSlider
               style={{
                 marginTop   : myList.length > 0 ? 0 : -20,
                 marginBottom: 8,
@@ -131,7 +131,7 @@ export default class Home extends React.PureComponent {
               title={i18n.t('Movies')}
               items={this.getMovies()} />
 
-            <CardList
+            <CardSlider
               style={{ marginBottom: 16 }}
               onPress={this.handleItemOpen}
               loading={isLoading}
