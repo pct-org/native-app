@@ -57,7 +57,7 @@ export default class Recommendations extends React.PureComponent {
       Popcorn.getShowRecommendations(item).then((foundRecommendations) => {
         this.setState({
           fetching       : false,
-          recommendations: foundRecommendations,
+          recommendations: foundRecommendations.splice(0, 12),
         })
       })
     }
@@ -68,15 +68,18 @@ export default class Recommendations extends React.PureComponent {
     const { fetching, recommendations } = this.state
 
     return (
-      <View>
+      <React.Fragment>
 
         <CardList
           handleItemOpen={getItem}
-          items={recommendations} />
+          items={recommendations}
+          ListFooterComponent={null} />
 
-        <ActivityIndicator color={'#FFF'} size={50} animating={fetching} hidesWhenStopped />
+        {fetching && (
+          <ActivityIndicator color={'#FFF'} size={50} animating={fetching} hidesWhenStopped />
+        )}
 
-      </View>
+      </React.Fragment>
     )
   }
 

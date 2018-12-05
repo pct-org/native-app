@@ -29,6 +29,9 @@ const styles = StyleSheet.create({
     resizeMode: 'cover',
   },
 
+  scrollView: {
+    margin: 4,
+  }
 })
 
 export const CardSlider = ({ loading, title, items, onPress, style }) => (
@@ -39,7 +42,10 @@ export const CardSlider = ({ loading, title, items, onPress, style }) => (
       {title}
     </Typography>
 
-    <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+    <ScrollView
+      horizontal
+      style={styles.scrollView}
+      showsHorizontalScrollIndicator={false}>
       {items.map(item => (
         <Card
           small

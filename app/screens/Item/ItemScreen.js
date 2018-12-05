@@ -216,7 +216,9 @@ export default class Item extends React.PureComponent {
             />
           )}
 
-          <ActivityIndicator color={'#FFF'} size={50} animating={isLoading} hidesWhenStopped />
+          {isLoading && (
+            <ActivityIndicator color={'#FFF'} size={50} animating={isLoading} hidesWhenStopped />
+          )}
 
         </ScrollViewWithStatusBar>
 

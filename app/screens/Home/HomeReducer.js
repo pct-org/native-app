@@ -46,6 +46,21 @@ export default (state = HomeConstants.INITIAL_STATE, action) => {
         ...state,
         modes: {
           ...state.modes,
+
+          [action.payload.type]: {
+            ...state.modes[action.payload.type],
+            items: state.modes[action.payload.type].items.map((item) => {
+              if (item.id !== action.payload.id) {
+                return item
+              }
+
+              return {
+                ...item,
+                bookmarked: true,
+              }
+            }),
+          },
+
           bookmark: {
             ...state.modes.bookmark,
             items: [
@@ -61,6 +76,21 @@ export default (state = HomeConstants.INITIAL_STATE, action) => {
         ...state,
         modes: {
           ...state.modes,
+
+          [action.payload.type]: {
+            ...state.modes[action.payload.type],
+            items: state.modes[action.payload.type].items.map((item) => {
+              if (item.id !== action.payload.id) {
+                return item
+              }
+
+              return {
+                ...item,
+                bookmarked: false,
+              }
+            }),
+          },
+
           bookmark: {
             ...state.modes.bookmark,
             items: state.modes.bookmark.items.filter(bookmark => bookmark.id !== action.payload.id),
@@ -86,11 +116,13 @@ export default (state = HomeConstants.INITIAL_STATE, action) => {
         ...state,
         modes: {
           ...state.modes,
+
           bookmark: {
             ...state.modes.bookmark,
             items: checkAndMarkMovies(state.modes.bookmark.items),
           },
-          movie   : {
+
+          movie: {
             ...state.modes.movie,
             items: checkAndMarkMovies(state.modes.movie.items),
           },
@@ -115,11 +147,13 @@ export default (state = HomeConstants.INITIAL_STATE, action) => {
         ...state,
         modes: {
           ...state.modes,
+
           bookmark: {
             ...state.modes.bookmark,
             items: checkAndUnmarkMovies(state.modes.bookmark.items),
           },
-          movie   : {
+
+          movie: {
             ...state.modes.movie,
             items: checkAndUnmarkMovies(state.modes.movie.items),
           },

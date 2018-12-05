@@ -10,9 +10,9 @@ const styles = StyleSheet.create({
 
   root: {
     height     : 190,
-    width      : 121,
-    marginLeft : 8,
-    marginRight: 8,
+    width      : 125,
+    marginLeft : 4,
+    marginRight: 4,
     alignSelf  : 'stretch',
     position   : 'relative',
   },
@@ -84,7 +84,7 @@ export default class Card extends React.Component {
             defaultSource={posterHolder}
             onError={this.handleImageError}
             source={
-              !showPlaceholder
+              !showPlaceholder && !empty
                 ? { uri: item.images.poster.thumb }
                 : posterHolder
             }

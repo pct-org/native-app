@@ -29,7 +29,7 @@ export class CardList extends React.Component {
 
     return (
       <FlatList
-        columnWrapperStyle={{ marginTop: 16 }}
+        columnWrapperStyle={{ margin: 4 }}
         data={items}
         numColumns={3}
         initialNumToRender={12}

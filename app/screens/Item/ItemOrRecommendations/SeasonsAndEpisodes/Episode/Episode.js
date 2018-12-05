@@ -42,70 +42,83 @@ export const styles = StyleSheet.create({
 
 })
 
-export const Episode = ({ playItem, hasTorrents, title, summary, images, torrents }) => {
-  const handlePlayItem = () => {
+export default class Episode extends React.Component {
+
+  static propTypes = {
+    playItem   : PropTypes.func.isRequired,
+    title      : PropTypes.string.isRequired,
+    images     : PropTypes.object.isRequired,
+    torrents   : PropTypes.object.isRequired,
+    summary    : PropTypes.string,
+    hasTorrents: PropTypes.bool,
+  }
+
+  static defaultProps = {
+    summary    : null,
+    hasTorrents: false,
+  }
+
+  state = {
+    showPlaceholder: false,
+  }
+
+  handleImageError = () => {
+    this.setState({
+      showPlaceholder: true,
+    })
+  }
+
+  handlePlayItem = () => {
+    const { playItem, hasTorrents, torrents, ...episode } = this.props
+
     if (hasTorrents) {
-      playItem(torrents, { title, summary })
+      playItem(torrents, episode)
     }
   }
 
-  return (
-    <View style={styles.container}>
+  render() {
+    const { hasTorrents, title, summary, images } = this.props
+    const { showPlaceholder } = this.props
 
-      <View style={styles.posterWithTitle}>
-        <BaseButton onPress={handlePlayItem}>
-          <View>
-            {images.poster.thumb && (
+    return (
+      <View style={styles.container}>
+
+        <View style={styles.posterWithTitle}>
+          <BaseButton onPress={this.handlePlayItem}>
+            <View>
               <Image
-                source={{ uri: images.poster.thumb }}
+                onError={this.handleImageError}
+                defaultSource={posterHolderImage}
+                source={images.poster.thumb && !showPlaceholder
+                  ? { uri: images.poster.thumb }
+                  : posterHolderImage
+                }
                 style={{ width: 150, height: 100 }} />
-            )}
 
-            {!images.poster.thumb && (
-              <Image
-                source={posterHolderImage}
-                style={{ width: 150, height: 100 }} />
-            )}
+              <View style={styles.iconContainer}>
+                <Overlay />
 
-            <View style={styles.iconContainer}>
-              <Overlay />
-
-              <Icon
-                iconStyle={{ margin: 0 }}
-                backgroundColor={'transparent'}
-                borderRadius={0}
-                name={hasTorrents ? 'play-circle-outline' : 'cancel'}
-                color={hasTorrents ? '#FFF' : 'red'}
-                size={60} />
+                <Icon
+                  iconStyle={{ margin: 0 }}
+                  backgroundColor={'transparent'}
+                  borderRadius={0}
+                  name={hasTorrents ? 'play-circle-outline' : 'cancel'}
+                  color={hasTorrents ? '#FFF' : 'red'}
+                  size={60} />
+              </View>
             </View>
-          </View>
-        </BaseButton>
+          </BaseButton>
 
-        <Typography style={styles.title}>
-          {title}
+          <Typography style={styles.title}>
+            {title}
+          </Typography>
+        </View>
+
+        <Typography style={styles.summary} variant={'caption'}>
+          {summary}
         </Typography>
+
       </View>
-
-      <Typography style={styles.summary} variant={'caption'}>
-        {summary}
-      </Typography>
-
-    </View>
-  )
+    )
+  }
 }
-
-Episode.propTypes = {
-  playItem   : PropTypes.func.isRequired,
-  title      : PropTypes.string.isRequired,
-  images     : PropTypes.object.isRequired,
-  torrents   : PropTypes.object.isRequired,
-  summary    : PropTypes.string,
-  hasTorrents: PropTypes.bool,
-}
-
-Episode.defaultProps = {
-  summary    : null,
-  hasTorrents: false,
-}
-
-export default Episode
