@@ -56,7 +56,7 @@ export function getItem(itemToGet) {
           await Popcorn.getShowMeta(basicShow),
         ))
 
-      } else if (itemToGet.ids.tmdb) {
+      } else if (itemToGet.id || itemToGet.ids.tmdb) {
         // Okay, we don't have any thing yet so we have to partly to it in steps
 
         const showWithIds = await Popcorn.getShowIds(itemToGet)

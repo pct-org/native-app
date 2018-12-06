@@ -48,11 +48,18 @@ export default class ItemOrRecommendations extends React.PureComponent {
 
   state = {
     recommendationActive: false,
+    recommendations     : [],
   }
 
   handleViewRecommendation = (recommendationActive) => {
     this.setState({
       recommendationActive,
+    })
+  }
+
+  handleFetchedRecommendations = (recommendations) => {
+    this.setState({
+      recommendations,
     })
   }
 
@@ -70,7 +77,7 @@ export default class ItemOrRecommendations extends React.PureComponent {
 
   render() {
     const { item, playItem, getItem } = this.props
-    const { recommendationActive } = this.state
+    const { recommendationActive, recommendations } = this.state
 
     return (
       <React.Fragment>
@@ -97,6 +104,8 @@ export default class ItemOrRecommendations extends React.PureComponent {
 
         {recommendationActive && (
           <Recommendations
+            onFetchedRecommendations={this.handleFetchedRecommendations}
+            recommendations={recommendations}
             item={item}
             getItem={getItem} />
         )}

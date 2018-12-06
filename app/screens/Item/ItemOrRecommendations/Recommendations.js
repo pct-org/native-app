@@ -40,32 +40,40 @@ export const styles = StyleSheet.create({
 
 export default class Recommendations extends React.PureComponent {
 
+  static getDerivedStateFromProps(props) {
+    if (props.recommendations.length > 0) {
+      return {
+        fetching: false,
+      }
+    }
+
+    return {}
+  }
+
   static propTypes = {}
 
   static defaultProps = {}
 
   state = {
-    fetching       : true,
-    recommendations: [],
+    fetching: true,
   }
 
   componentDidMount() {
-    const { item } = this.props
-    const { recommendations } = this.state
+    const { item, onFetchedRecommendations, recommendations } = this.props
 
     if (recommendations.length === 0) {
       Popcorn.getShowRecommendations(item).then((foundRecommendations) => {
-        this.setState({
-          fetching       : false,
-          recommendations: foundRecommendations.splice(0, 12),
-        })
+
+        onFetchedRecommendations(
+          foundRecommendations.splice(0, 12),
+        )
       })
     }
   }
 
   render() {
-    const { getItem } = this.props
-    const { fetching, recommendations } = this.state
+    const { getItem, recommendations } = this.props
+    const { fetching } = this.state
 
     return (
       <React.Fragment>

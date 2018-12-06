@@ -98,7 +98,6 @@ export default class Item extends React.PureComponent {
   getItem = (fetchThisItem = null) => {
     const { getItem, navigation: { state: { params: item } } } = this.props
 
-    console.log('getItem', fetchThisItem, item)
     getItem(fetchThisItem || item).then(({ payload: { type, seasons } }) => {
       if (type === Constants.TYPE_SHOW && seasons.length > 0) {
         this.setState({
