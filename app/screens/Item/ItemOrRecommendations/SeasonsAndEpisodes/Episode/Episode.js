@@ -76,8 +76,17 @@ export default class Episode extends React.Component {
     }
   }
 
+  getAirsDate = () => {
+    const { aired } = this.props
+
+    const airs = new Date()
+    airs.setTime(aired)
+
+    return `${airs.getDate()}-${(airs.getMonth() + 1)}-${airs.getFullYear()}`
+  }
+
   render() {
-    const { hasTorrents, title, summary, images } = this.props
+    const { hasTorrents, title, summary, images, hasAired } = this.props
     const { showPlaceholder } = this.props
 
     return (
@@ -98,13 +107,21 @@ export default class Episode extends React.Component {
               <View style={styles.iconContainer}>
                 <Overlay />
 
-                <Icon
-                  iconStyle={{ margin: 0 }}
-                  backgroundColor={'transparent'}
-                  borderRadius={0}
-                  name={hasTorrents ? 'play-circle-outline' : 'cancel'}
-                  color={hasTorrents ? '#FFF' : 'red'}
-                  size={60} />
+                {hasAired && (
+                  <Icon
+                    iconStyle={{ margin: 0 }}
+                    backgroundColor={'transparent'}
+                    borderRadius={0}
+                    name={hasTorrents ? 'play-circle-outline' : 'cancel'}
+                    color={hasTorrents ? '#FFF' : 'red'}
+                    size={60} />
+                )}
+
+                {!hasAired && (
+                  <Typography variant={'caption'}>
+                    {this.getAirsDate()}
+                  </Typography>
+                )}
               </View>
             </View>
           </BaseButton>

@@ -48,9 +48,14 @@ export default class SeasonsAndEpisodes extends React.PureComponent {
     onlyWhenHigherThen: 0,
   }
 
-  getAiredEpisodes = () => {
+  constructor(props) {
+    super(props)
+
+    this.today = Date.now()
+  }
+
+  getEpisodes = () => {
     const { activeSeason } = this.state
-    const today = Date.now()
 
     if (!activeSeason) {
       return []
@@ -62,7 +67,7 @@ export default class SeasonsAndEpisodes extends React.PureComponent {
       return []
     }
 
-    return season.episodes.filter(episode => episode.aired < today)
+    return season.episodes
   }
 
   getSeasons = (seasonNr = null) => {
@@ -105,10 +110,11 @@ export default class SeasonsAndEpisodes extends React.PureComponent {
 
         </Picker>
 
-        {this.getAiredEpisodes().map(episode => (
+        {this.getEpisodes().map(episode => (
           <Episode
             key={episode.key}
             playItem={playItem}
+            hasAired={episode.aired < this.today}
             {...episode} />
         ))}
       </View>
