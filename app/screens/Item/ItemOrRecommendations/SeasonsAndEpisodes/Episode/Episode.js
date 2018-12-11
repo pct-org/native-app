@@ -49,6 +49,7 @@ export default class Episode extends React.Component {
     title      : PropTypes.string.isRequired,
     images     : PropTypes.object.isRequired,
     torrents   : PropTypes.object.isRequired,
+    number     : PropTypes.number.isRequired,
     summary    : PropTypes.string,
     hasTorrents: PropTypes.bool,
   }
@@ -86,7 +87,7 @@ export default class Episode extends React.Component {
   }
 
   render() {
-    const { hasTorrents, title, summary, images, hasAired } = this.props
+    const { hasTorrents, title, summary, number, images, hasAired } = this.props
     const { showPlaceholder } = this.props
 
     return (
@@ -127,7 +128,7 @@ export default class Episode extends React.Component {
           </BaseButton>
 
           <Typography style={styles.title}>
-            {title}
+            {`${number}. ${title}`}
           </Typography>
         </View>
 
