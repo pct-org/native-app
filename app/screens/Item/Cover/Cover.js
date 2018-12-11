@@ -29,6 +29,12 @@ const styles = StyleSheet.create({
     left    : 8,
   },
 
+  genres: {
+    position: 'absolute',
+    bottom  : 0,
+    left    : 8,
+  },
+
   playContainer: {
     position: 'absolute',
     top     : 0,
@@ -75,6 +81,14 @@ export const Cover = ({ item, playMovie }) => (
         style={styles.title}
         variant={'title'}>
         {item.title}
+      </Typography>
+    )}
+
+    {item && item.genres && (
+      <Typography
+        style={styles.genres}
+        variant={'caption'}>
+        {item.genres.join(' - ')}
       </Typography>
     )}
   </View>

@@ -1,20 +1,27 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { StyleSheet, View, Image } from 'react-native'
+import { StyleSheet, View, Image, Dimensions } from 'react-native'
 
 import posterHolder from 'images/posterholder.png'
 
 import BaseButton from '../BaseButton'
 
+const { width } = Dimensions.get('window')
+
 const styles = StyleSheet.create({
 
   root: {
     height     : 190,
-    width      : 121,
-    marginLeft : 8,
-    marginRight: 8,
+    width      : (width - 32) / 3,
+    marginLeft : 4,
+    marginRight: 4,
     alignSelf  : 'stretch',
     position   : 'relative',
+  },
+
+  small: {
+    height: 180,
+    width : 115,
   },
 
   image: {
@@ -45,6 +52,7 @@ export default class Card extends React.Component {
   static defaultProps = {
     item : null,
     empty: false,
+    small: false,
   }
 
   constructor(props) {
@@ -64,7 +72,7 @@ export default class Card extends React.Component {
   }
 
   render() {
-    const { item, empty, ...rest } = this.props
+    const { item, small, empty, ...rest } = this.props
     const { showPlaceholder } = this.state
 
     return (
@@ -72,13 +80,13 @@ export default class Card extends React.Component {
         // onLongPress={() => console.warn(item.title)}
         // onPress={() => this.openItem(item)}
         {...rest}>
-        <View style={styles.root}>
+        <View style={[styles.root, small ? styles.small : {}]}>
           <Image
             style={styles.image}
             defaultSource={posterHolder}
             onError={this.handleImageError}
             source={
-              !showPlaceholder
+              !showPlaceholder && !empty
                 ? { uri: item.images.poster.thumb }
                 : posterHolder
             }

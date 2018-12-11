@@ -1,75 +1,47 @@
 import React from 'react'
-import PropTypes from 'prop-types'
-import { StyleSheet, View, ScrollView } from 'react-native'
+import { View, FlatList } from 'react-native'
+import { withNavigation } from 'react-navigation'
 
-import Card from '../Card'
-import Typography from '../Typography'
+import Card from 'components/Card'
 
-const styles = StyleSheet.create({
+export class CardList extends React.Component {
 
-  root: {
-    height     : 190,
-    width      : 120,
-    marginLeft : 10,
-    marginRight: 10,
-    alignSelf  : 'stretch',
-    position   : 'relative',
-    display    : 'flex',
-    alignItems : 'center',
-  },
+  handleItemOpen = (item) => {
+    const { handleItemOpen, navigation } = this.props
 
-  title: {
-    marginLeft: 8,
-    marginTop : 8,
-  },
+    if (handleItemOpen) {
+      handleItemOpen(item)
 
-  image: {
-    height    : '100%',
-    width     : '100%',
-    resizeMode: 'cover',
-  },
+    } else {
+      navigation.navigate('Item', item)
+    }
+  }
 
-})
+  renderCard = ({ item }) => (
+    <Card
+      item={item}
+      onPress={() => this.handleItemOpen(item)}
+    />
+  )
 
-export const CardList = ({ loading, title, items, onPress, style }) => (
-  <View style={style}>
-    <Typography
-      style={styles.title}
-      variant={'title'}>
-      {title}
-    </Typography>
+  render() {
+    const { items, handleItemOpen, ...props } = this.props
 
-    <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-      {items.map(item => (
-        <Card
-          key={item.id}
-          item={item}
-          onPress={() => onPress(item)}
-        />
-      ))}
+    return (
+      <FlatList
+        columnWrapperStyle={{ margin: 4 }}
+        data={items}
+        numColumns={3}
+        initialNumToRender={12}
+        renderItem={this.renderCard}
+        keyExtractor={(item, index) => `${item.id}-${index}`}
+        onEndReachedThreshold={100}
+        ListFooterComponent={() => <View style={{ marginBottom: 16 }} />}
+        {...props}
+      />
+    )
+  }
 
-      {(loading || items.length === 0) && (
-        <React.Fragment>
-          <Card empty />
-          <Card empty />
-          <Card empty />
-        </React.Fragment>
-      )}
-    </ScrollView>
-
-  </View>
-)
-
-CardList.propTypes = {
-  title  : PropTypes.string.isRequired,
-  items  : PropTypes.array.isRequired,
-  onPress: PropTypes.func.isRequired,
-  loading: PropTypes.bool.isRequired,
-  style  : PropTypes.object,
 }
 
-CardList.defaultProps = {
-  style: null,
-}
-
-export default CardList
+export default withNavigation(CardList)

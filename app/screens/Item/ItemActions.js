@@ -25,36 +25,58 @@ export function partlyFetchedItem(item) {
   }
 }
 
-export function getItem(type, itemId) {
+export function getItem(itemToGet) {
   return (dispatch, getState) => new Promise(async(resolve) => {
     dispatch({
       type: ItemConstants.FETCH_ITEM,
     })
 
-    const item = hasItem(itemId, type, getState())
+    const item = hasItem(itemToGet.id, itemToGet.type, getState())
 
-    if (type === Constants.TYPE_MOVIE) {
+    if (itemToGet.type === Constants.TYPE_MOVIE) {
       if (item) {
         resolve(dispatch(fetchedItem(
           await Popcorn.checkAdapters('checkMovie')(item),
         )))
 
       } else {
-        resolve(Popcorn.getMovie(itemId).then(movie => dispatch(fetchedItem(movie))))
+        resolve(Popcorn.getMovie({ ids: { imdb: item.id } }).then(movie => dispatch(fetchedItem(movie))))
       }
 
-    } else if (type === Constants.TYPE_SHOW) {
+    } else if (itemToGet.type === Constants.TYPE_SHOW) {
       if (item) {
         resolve(dispatch(partlyFetchedItem(
           await Popcorn.checkAdapters('checkShow')(item),
         )))
-      }
 
-      return Popcorn.getShowBasic(itemId).then((basicShow) => {
+        const basicShow = await Popcorn.getShowBasic(item.id)
         dispatch(partlyFetchedItem(basicShow))
 
-        Popcorn.getShowMeta(basicShow).then(show => dispatch(fetchedItem(show)))
-      })
+        dispatch(fetchedItem(
+          await Popcorn.getShowMeta(basicShow),
+        ))
+
+      } else if (itemToGet.id || itemToGet.ids.tmdb) {
+        // Okay, we don't have any thing yet so we have to partly to it in steps
+
+        const showWithIds = await Popcorn.getShowIds(itemToGet)
+        const basicShow = await Popcorn.getShowBasic(showWithIds.id)
+
+        const show = {
+          ...showWithIds,
+          ...basicShow,
+          ids: {
+            ...basicShow.ids,
+            ...showWithIds.ids,
+          },
+        }
+
+        resolve(dispatch(partlyFetchedItem(show)))
+
+        dispatch(fetchedItem(
+          await Popcorn.getShowSeasonsMeta(show),
+        ))
+      }
     }
 
     return null
@@ -62,37 +84,37 @@ export function getItem(type, itemId) {
 }
 
 export const addToBookmarks = (item) => (dispatch) => {
-  Bookmarks.addItem(item)
-
   dispatch({
     type   : ItemConstants.ADD_TO_BOOKMARKS,
     payload: item,
   })
+
+  Bookmarks.addItem(item)
 }
 
 export const removeFromBookmarks = (item) => (dispatch) => {
-  Bookmarks.removeItem(item)
-
   dispatch({
     type   : ItemConstants.REMOVE_FROM_BOOKMARKS,
     payload: item,
   })
+
+  Bookmarks.removeItem(item)
 }
 
 export const markWatched = (item) => (dispatch) => {
-  Watched.markMovie(item)
-
   dispatch({
     type   : ItemConstants.MARK_MOVIE_WATCHED,
     payload: item,
   })
+
+  Watched.markMovie(item)
 }
 
 export const markUnwatched = (item) => (dispatch) => {
-  Watched.removeMovie(item)
-
   dispatch({
     type   : ItemConstants.MARK_MOVIE_UNWATCHED,
     payload: item,
   })
+
+  Watched.removeMovie(item)
 }

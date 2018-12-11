@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
   },
 
   container: {
-    opacity        : 0.8,
+    opacity        : 0.9,
     display        : 'flex',
     justifyContent : 'center',
     alignItems     : 'center',

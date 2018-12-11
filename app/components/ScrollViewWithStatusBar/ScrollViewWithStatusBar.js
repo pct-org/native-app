@@ -50,7 +50,10 @@ export default class ScrollViewWithStatusBar extends React.Component {
           animated
         />
 
-        <ScrollView onScroll={this.handleScroll}>
+        <ScrollView
+          showsHorizontalScrollIndicator={false}
+          showsVerticalScrollIndicator={false}
+          onScroll={this.handleScroll}>
           {children}
         </ScrollView>
       </SafeAreaView>

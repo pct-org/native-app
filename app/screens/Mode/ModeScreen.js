@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { StyleSheet, Text, View, FlatList, StatusBar, TextInput } from 'react-native'
+import { StyleSheet, Text, View, StatusBar, TextInput, Dimensions } from 'react-native'
 import Orientation from 'react-native-orientation'
 import * as Animatable from 'react-native-animatable'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
@@ -8,9 +8,11 @@ import { Constants } from 'popcorn-sdk'
 
 import colors from 'modules/colors'
 
-import Card from 'components/Card'
+import CardList from 'components/CardList'
 import IconButton from 'components/IconButton'
 import FullScreenLoading from 'components/FullScreenLoading'
+
+const { width } = Dimensions.get('window')
 
 const styles = StyleSheet.create({
 
@@ -31,7 +33,8 @@ const styles = StyleSheet.create({
   searchRoot: {
     width         : '100%',
     height        : 50,
-    marginTop     : 40,
+    marginTop     : 36,
+    marginBottom  : 8,
     display       : 'flex',
     justifyContent: 'center',
     alignItems    : 'center',
@@ -39,7 +42,7 @@ const styles = StyleSheet.create({
 
   searchContainer: {
     backgroundColor: colors.BACKGROUND_LIGHTER,
-    width          : '90%',
+    width          : width - 16,
     height         : '100%',
   },
 
@@ -53,7 +56,7 @@ const styles = StyleSheet.create({
   cancelSearch: {
     position: 'absolute',
     right   : 8,
-    top     : 8,
+    top     : 0,
   },
 
   searchIcon: {
@@ -154,13 +157,6 @@ export default class Mode extends React.Component {
     })
   }
 
-  renderCard = ({ item }) => (
-    <Card
-      item={item}
-      onPress={() => this.handleItemOpen(item)}
-    />
-  )
-
   renderSearchBar = () => {
     const { searchText, firstSearch } = this.state
 
@@ -218,17 +214,11 @@ export default class Mode extends React.Component {
         {hasInternet && (
           <React.Fragment>
 
-            <FlatList
-              columnWrapperStyle={styles.listItem}
-              data={items}
-              numColumns={3}
-              initialNumToRender={12}
-              renderItem={this.renderCard}
-              keyExtractor={(item, index) => `${item.id}-${index}`}
-              onEndReachedThreshold={100}
-              onEndReached={this.handleEndReached}
+            <CardList
+              items={items}
+              // ListHeaderComponent={<View style={{ marginTop: 28 }} />}
               ListHeaderComponent={this.renderSearchBar}
-              ListFooterComponent={() => <View style={{ marginBottom: 16 }} />}
+              onEndReached={this.handleEndReached}
             />
 
           </React.Fragment>
