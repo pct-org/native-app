@@ -36,6 +36,7 @@ export const MainCover = ({ item, onPress, children, onLoad }) => {
           style={styles.image}
           source={{ uri: item.images.poster.high }}
           onLoad={onLoad}
+          onError={onLoad}
         />
 
         <CoverGradient />

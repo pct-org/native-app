@@ -1,16 +1,18 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { StyleSheet, View, Image } from 'react-native'
+import { StyleSheet, View, Image, Dimensions } from 'react-native'
 
 import posterHolder from 'images/posterholder.png'
 
 import BaseButton from '../BaseButton'
 
+const { width } = Dimensions.get('window')
+
 const styles = StyleSheet.create({
 
   root: {
     height     : 190,
-    width      : 125,
+    width      : (width - 32) / 3,
     marginLeft : 4,
     marginRight: 4,
     alignSelf  : 'stretch',
