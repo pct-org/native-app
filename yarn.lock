@@ -6913,10 +6913,10 @@ unset-value@^1.0.0:
     has-value "^0.3.1"
     isobject "^3.0.0"
 
-update-react-native-app@1.1.1:
-  version "1.1.1"
-  resolved "https://registry.yarnpkg.com/update-react-native-app/-/update-react-native-app-1.1.1.tgz#2c15ab43ba011a1b3539ae627540cac103957b2f"
-  integrity sha512-RKOiHj1vD86TlzDiVAV2i+ztJbvIVU/UobtfIlPm+qdN6x+yA4rmcoI70hVU+X7amomLFsETnL37zjuZzjsRTw==
+update-react-native-app@1.1.2:
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/update-react-native-app/-/update-react-native-app-1.1.2.tgz#e12f4dea10817dc1e6addd66e76fbbfb6308bb82"
+  integrity sha512-E/cm4F0gtmPbOhOWXBSTFtpQGUHhQW3GQjiTIMdS/L2ydjBWg8lQe4ojOa1cJBgXBvTuCd2Smi59KzEFbVVz6w==
   dependencies:
     react-native-fs "^2.3.3"
 
