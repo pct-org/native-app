@@ -1,14 +1,11 @@
 import { connect } from 'react-redux'
-import { bindActionCreators } from 'redux'
+import Device from 'modules/DeviceDetection'
 
 import * as Actions from './HomeActions'
 import * as Selectors from './HomeSelectors'
 
 import Home from './HomeScreen'
-
-export const mapDispatchToProps = dispatch => ({
-  ...bindActionCreators(Actions, dispatch),
-})
+import HomeTablet from './HomeScreen.tablet'
 
 export const mapStateToProps = state => ({
   modes      : Selectors.getModes(state),
@@ -16,4 +13,4 @@ export const mapStateToProps = state => ({
   hasInternet: Selectors.getHasInternet(state),
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(Home)
+export default connect(mapStateToProps, Actions)(Device.isTablet ? HomeTablet : Home)

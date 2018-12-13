@@ -40,7 +40,7 @@ export function getItem(itemToGet) {
         )))
 
       } else {
-        resolve(Popcorn.getMovie({ ids: { imdb: item.id } }).then(movie => dispatch(fetchedItem(movie))))
+        resolve(Popcorn.getMovie({ ids: { imdb: itemToGet.id } }).then(movie => dispatch(fetchedItem(movie))))
       }
 
     } else if (itemToGet.type === Constants.TYPE_SHOW) {

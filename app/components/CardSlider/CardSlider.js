@@ -5,7 +5,7 @@ import { StyleSheet, View, ScrollView } from 'react-native'
 import Card from '../Card'
 import Typography from '../Typography'
 
-const styles = StyleSheet.create({
+export const styles = StyleSheet.create({
 
   root: {
     height     : 190,
@@ -31,10 +31,10 @@ const styles = StyleSheet.create({
 
   scrollView: {
     margin: 4,
-  }
+  },
 })
 
-export const CardSlider = ({ loading, title, items, onPress, style }) => (
+export const CardSlider = ({ loading, title, items, onPress, style, cardProps }) => (
   <View style={style}>
     <Typography
       style={styles.title}
@@ -48,18 +48,19 @@ export const CardSlider = ({ loading, title, items, onPress, style }) => (
       showsHorizontalScrollIndicator={false}>
       {items.map(item => (
         <Card
-          small
+          variant={'small'}
           key={item.id}
           item={item}
           onPress={() => onPress(item)}
+          {...cardProps}
         />
       ))}
 
       {(loading || items.length === 0) && (
         <React.Fragment>
-          <Card empty />
-          <Card empty />
-          <Card empty />
+          <Card variant={'small'} empty {...cardProps} />
+          <Card variant={'small'} empty {...cardProps} />
+          <Card variant={'small'} empty {...cardProps} />
         </React.Fragment>
       )}
     </ScrollView>
@@ -68,15 +69,17 @@ export const CardSlider = ({ loading, title, items, onPress, style }) => (
 )
 
 CardSlider.propTypes = {
-  title  : PropTypes.string.isRequired,
-  items  : PropTypes.array.isRequired,
-  onPress: PropTypes.func.isRequired,
-  loading: PropTypes.bool.isRequired,
-  style  : PropTypes.object,
+  title    : PropTypes.string.isRequired,
+  items    : PropTypes.array.isRequired,
+  onPress  : PropTypes.func.isRequired,
+  loading  : PropTypes.bool.isRequired,
+  style    : PropTypes.object,
+  cardProps: PropTypes.object,
 }
 
 CardSlider.defaultProps = {
-  style: null,
+  style    : null,
+  cardProps: {},
 }
 
 export default CardSlider

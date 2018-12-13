@@ -1,14 +1,16 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { Image, StyleSheet, View } from 'react-native'
+import { Dimensions, Image, StyleSheet, View } from 'react-native'
 
 import CoverGradient from '../CoverGradient'
 import BaseButton from '../BaseButton'
 
+const { height } = Dimensions.get('window')
+
 const styles = StyleSheet.create({
 
   container: {
-    height   : 600,
+    height   : height * 0.8,
     width    : '100%',
     alignSelf: 'stretch',
     position : 'relative',
