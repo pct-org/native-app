@@ -61,13 +61,19 @@ export const getItems = (mode, page = 1, givenFilters = {}) => (dispatch, getSta
       return Popcorn.getShows(page, filters).then(shows => dispatch(fetchedItems(shows, mode))).catch(catchNoCon)
 
     case Constants.TYPE_BOOKMARK:
+      const existingBookmarks = getState().home.modes.bookmark.items
+
       return Bookmarks.getAll().then((bookmarks) => {
-        Popcorn.checkAdapters('checkMovies')(bookmarks).then(bookmarks => dispatch(
-          fetchedItems(
-            bookmarks,
-            mode,
-          ),
-        ))
+        Popcorn.checkAdapters('checkMovies')(bookmarks).then(bookmarks => {
+
+          dispatch(
+            fetchedItems(
+              // If we already have bookmarks then don't add the existing ones again
+              existingBookmarks.length > 0 ? [] : bookmarks,
+              mode,
+            ),
+          )
+        })
       })
 
     case 'bookmarkSearch':
