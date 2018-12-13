@@ -1,6 +1,8 @@
 import React from 'react'
-import { View, FlatList } from 'react-native'
+import { View, FlatList} from 'react-native'
 import { withNavigation } from 'react-navigation'
+
+import Device from 'modules/DeviceDetection'
 
 import Card from 'components/Card'
 
@@ -31,7 +33,7 @@ export class CardList extends React.Component {
       <FlatList
         columnWrapperStyle={{ margin: 4 }}
         data={items}
-        numColumns={3}
+        numColumns={Device.isTablet ? 4 : 3}
         initialNumToRender={12}
         renderItem={this.renderCard}
         keyExtractor={(item, index) => `${item.id}-${index}`}

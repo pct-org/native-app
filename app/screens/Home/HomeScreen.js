@@ -95,10 +95,78 @@ export default class Home extends React.PureComponent {
     return modes[Constants.TYPE_SHOW].items.filter(show => !show.bookmarked).slice(0, 10)
   }
 
-  render() {
-    const { isLoading, hasInternet } = this.props
+  getMyListCardProps = () => ({})
 
+  getMoviesListCardProps = () => ({})
+
+  getShowListCardProps = () => ({})
+
+  renderMainCover = () => {
+    const { isLoading } = this.props
+
+    return (
+      <MainCover
+        onPress={this.handleItemOpen}
+        loading={isLoading}
+        onLoad={this.handleCoverLoaded}
+        item={this.getMainCover()} />
+    )
+  }
+
+  renderMyList = () => {
+    const { isLoading } = this.props
     const myList = this.getMyList()
+
+    if (!myList || myList.length === 0) {
+      return
+    }
+
+    return (
+      <CardSlider
+        style={{ marginTop: -20, marginBottom: 8 }}
+        onPress={this.handleItemOpen}
+        loading={isLoading}
+        title={i18n.t('My List')}
+        items={myList}
+        cardProps={this.getMyListCardProps()} />
+    )
+  }
+
+  renderMoviesList = () => {
+    const { isLoading } = this.props
+    const myList = this.getMyList()
+
+    return (
+      <CardSlider
+        style={{
+          marginTop   : myList.length > 0 ? 0 : -20,
+          marginBottom: 8,
+        }}
+        onPress={this.handleItemOpen}
+        loading={isLoading}
+        title={i18n.t('Movies')}
+        items={this.getMovies()}
+        cardProps={this.getMoviesListCardProps()} />
+    )
+  }
+
+  renderShowsList = () => {
+    const { isLoading } = this.props
+
+    return (
+      <CardSlider
+        style={{ marginBottom: 16 }}
+        onPress={this.handleItemOpen}
+        loading={isLoading}
+        title={i18n.t('Shows')}
+        items={this.getShows()}
+        cardProps={this.getShowListCardProps()} />
+    )
+  }
+
+  render() {
+    const { hasInternet } = this.props
+
 
     return (
       <View style={styles.root}>
@@ -106,37 +174,13 @@ export default class Home extends React.PureComponent {
         {hasInternet && (
           <ScrollViewWithStatusBar>
 
-            <MainCover
-              onPress={this.handleItemOpen}
-              loading={isLoading}
-              onLoad={this.handleCoverLoaded}
-              item={this.getMainCover()} />
+            {this.renderMainCover()}
 
-            {myList && myList.length > 0 && (
-              <CardSlider
-                style={{ marginTop: -20, marginBottom: 8 }}
-                onPress={this.handleItemOpen}
-                loading={isLoading}
-                title={i18n.t('My List')}
-                items={myList} />
-            )}
+            {this.renderMyList()}
 
-            <CardSlider
-              style={{
-                marginTop   : myList.length > 0 ? 0 : -20,
-                marginBottom: 8,
-              }}
-              onPress={this.handleItemOpen}
-              loading={isLoading}
-              title={i18n.t('Movies')}
-              items={this.getMovies()} />
+            {this.renderMoviesList()}
 
-            <CardSlider
-              style={{ marginBottom: 16 }}
-              onPress={this.handleItemOpen}
-              loading={isLoading}
-              title={i18n.t('Shows')}
-              items={this.getShows()} />
+            {this.renderShowsList()}
 
           </ScrollViewWithStatusBar>
         )}
