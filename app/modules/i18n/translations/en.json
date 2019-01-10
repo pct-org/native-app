@@ -6,9 +6,9 @@
   "Season {{number}}": "Season {{number}}",
   "Buffering": "Buffering...",
   "Connecting": "Connecting...",
-  "progress: {{progress}}": "progress: {{progress}}",
-  "speed: {{downloadSpeed}}": "speed: {{downloadSpeed}}",
-  "seeds: {{seeds}}": "seeds: {{seeds}}",
+  "progress": "progress",
+  "speed": "speed",
+  "seeds": "seeds",
   "complete": "complete",
   "New version available {{version}}": "New version available {{version}}",
   "Downloading {{version}}": "Downloading {{version}}",
@@ -19,5 +19,6 @@
   "Terms of Service": "Terms of Service",
   "Mark Watched": "Mark Watched",
   "Mark Unwatched": "Mark Unwatched",
-  "Trailer": "Trailer"
+  "Trailer": "Trailer",
+  "Controls": "Controls"
 }

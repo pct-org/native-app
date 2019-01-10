@@ -44,7 +44,7 @@ export default class Item extends React.PureComponent {
 
   state = {
     selectFromTorrents: null,
-    episodeToPlay     : {},
+    episodeToPlay     : null,
   }
 
   componentDidMount() {
@@ -116,7 +116,7 @@ export default class Item extends React.PureComponent {
   }
 
   playItem = (magnet) => {
-    const { navigation: { navigate, state: { params: item } } } = this.props
+    const { navigation: { navigate }, item } = this.props
     const { episodeToPlay } = this.state
 
     this.setState({
@@ -127,7 +127,8 @@ export default class Item extends React.PureComponent {
       magnet,
       item: {
         ...item,
-        ...episodeToPlay,
+        ...(episodeToPlay || {}),
+        showTitle: (episodeToPlay ? item.title : null),
       },
     })
   }
