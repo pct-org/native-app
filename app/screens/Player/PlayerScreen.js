@@ -1,41 +1,30 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { StatusBar, StyleSheet, ActivityIndicator, TouchableOpacity, View } from 'react-native'
+import {
+  StatusBar,
+  StyleSheet,
+  ActivityIndicator,
+  View,
+} from 'react-native'
 import RNFS from 'react-native-fs'
 import GoogleCast, { CastButton } from 'react-native-google-cast'
 import StaticServer from 'react-native-static-server'
 import TorrentStreamer from 'react-native-torrent-streamer'
-import Video from 'react-native-video'
-import * as Animatable from 'react-native-animatable'
-import Orientation from 'react-native-orientation'
 import { utils } from 'popcorn-sdk'
+import Orientation from 'react-native-orientation'
 
 import i18n from 'modules/i18n'
 
 import Typography from 'components/Typography'
+import Button from 'components/Button'
+
+import VideoAndControls from './VideoAndControls'
 
 export default class VideoPlayer extends React.Component {
 
   static propTypes = {
     navigation: PropTypes.object.isRequired,
   }
-
-  state = {
-    muted      : false,
-    duration   : 0.0,
-    currentTime: 0.0,
-    paused     : false,
-    loading    : true,
-    casting    : false,
-
-    progress     : 0,
-    buffer       : 0,
-    downloadSpeed: 0,
-    doneBuffering: false,
-    seeds        : 0,
-  }
-
-  videoRef
 
   staticServer = null
 
@@ -48,14 +37,31 @@ export default class VideoPlayer extends React.Component {
 
     this.serverDirectory = RNFS.CachesDirectoryPath
 
-    TorrentStreamer.setup(this.serverDirectory, true)
+    TorrentStreamer.setup(this.serverDirectory, false)
     this.staticServer = new StaticServer(0, this.serverDirectory, { keepAlive: true })
+
+    const { navigation: { state: { params: { item } } } } = props
+
+    this.state = {
+      item,
+      duration   : 0.0,
+      currentTime: 0.0,
+      paused     : false,
+      loading    : true,
+      casting    : false,
+
+      progress     : 0,
+      buffer       : 0,
+      downloadSpeed: 0,
+      doneBuffering: false,
+      seeds        : 0,
+
+      loadedMagnet: null,
+    }
   }
 
   componentDidMount() {
     const { navigation: { state: { params: { magnet } } } } = this.props
-
-    Orientation.addOrientationListener(this.handleOrientationChange)
 
     GoogleCast.EventEmitter.addListener(GoogleCast.MEDIA_STATUS_UPDATED, this.handleCastMediaUpdate)
     GoogleCast.EventEmitter.addListener(GoogleCast.SESSION_STARTED, this.handleCastSessionStarted)
@@ -69,8 +75,22 @@ export default class VideoPlayer extends React.Component {
     TorrentStreamer.start(magnet.url)
   }
 
+  playItem = (magnet = null, url = null, item = null) => {
+    const { navigation: { state: { params: { magnet: propsMagnet, item: propsItem } } } } = this.props
+
+    this.setState({
+      item         : item || propsItem,
+      url          : url,
+      buffer       : 0,
+      doneBuffering: false,
+      loading      : true,
+      loadedMagnet : magnet || propsMagnet,
+    }, () => {
+      TorrentStreamer.start(magnet.url)
+    })
+  }
+
   componentWillUnmount() {
-    Orientation.removeOrientationListener(this.handleOrientationChange)
     Orientation.lockToPortrait()
 
     GoogleCast.EventEmitter.removeAllListeners(GoogleCast.MEDIA_STATUS_UPDATED)
@@ -84,18 +104,8 @@ export default class VideoPlayer extends React.Component {
     TorrentStreamer.stop()
 
     this.staticServer.kill()
-
-    GoogleCast.endSession(true)
   }
 
-  handleOrientationChange = (orientation) => {
-    if (orientation === 'LANDSCAPE' && this.videoRef) {
-      this.videoRef.presentFullscreenPlayer()
-
-    } else if (orientation === 'PORTRAIT' && this.videoRef) {
-      this.videoRef.dismissFullscreenPlayer()
-    }
-  }
 
   handleCastSessionStarted = () => {
     const { url, doneBuffering } = this.state
@@ -105,7 +115,7 @@ export default class VideoPlayer extends React.Component {
     }
   }
 
-  handleCastMediaUpdate = ({ mediaStatus }) => {
+  handleCastMediaUpdate = ({ mediaStatus, ...rest }) => {
     if (mediaStatus.streamPosition > 0) {
       this.setState({
         currentTime: mediaStatus.streamPosition,
@@ -139,7 +149,7 @@ export default class VideoPlayer extends React.Component {
     const castState = await GoogleCast.getCastState()
 
     if (castState.toLowerCase() === 'connected') {
-      this.startCasting(data.url)
+      await this.startCasting(data.url)
 
     } else {
       this.setState({
@@ -151,48 +161,9 @@ export default class VideoPlayer extends React.Component {
     }
   }
 
-  handleVideoPressed = () => {
-    const { paused } = this.state
-
-    this.setState({
-      paused: !paused,
-    })
-  }
-
-  handleVideoPause = () => {
-    this.setState({
-      paused: true,
-    })
-  }
-
   handleTorrentError = (e) => {
     // eslint-disable-next-line no-console
     console.log('error', e)
-  }
-
-  handleVideoLoad = (data) => {
-    const { currentTime } = this.state
-
-    this.setState({
-      duration: data.duration,
-      loading : false,
-    }, () => {
-      if (currentTime > 0) {
-        this.videoRef.seek(currentTime)
-      }
-
-      Orientation.unlockAllOrientations()
-    })
-  }
-
-  handleVideoProgress = (data) => {
-    this.setState({ currentTime: data.currentTime })
-  }
-
-  handleVideoEnd = () => {
-    this.handleVideoPause()
-
-    this.videoRef.seek(0)
   }
 
   showCastingControls = () => {
@@ -232,20 +203,58 @@ export default class VideoPlayer extends React.Component {
     })
   }
 
-  getCurrentTimePercentage() {
-    const { currentTime, duration } = this.state
+  getItemTitle = () => {
+    const { item } = this.state
 
-    if (currentTime > 0) {
-      return parseFloat(currentTime) / parseFloat(duration)
+    if (item.showTitle) {
+      return `${item.showTitle} - ${item.episode}. ${item.title}`
     }
 
-    return 0
+    return item.title
+  }
+
+  renderAdditionalControls = () => {
+    const { progress, downloadSpeed, seeds } = this.state
+
+    return (
+      <React.Fragment>
+        <View style={styles.castButton} pointerEvents={'box-none'}>
+          <CastButton style={{ width: 30, height: 30, tintColor: 'white' }} />
+        </View>
+
+        <View style={styles.stats}>
+          {progress !== 100 && (
+            <React.Fragment>
+              <View style={styles.statItem}>
+                <Typography>{i18n.t('progress')}</Typography>
+                <Typography>{progress.toFixed(2)}</Typography>
+              </View>
+
+              <View style={styles.statItem}>
+                <Typography>{i18n.t('speed')}</Typography>
+                <Typography>{downloadSpeed.toString()}</Typography>
+              </View>
+
+              <View style={styles.statItem}>
+                <Typography>{i18n.t('seeds')}</Typography>
+                <Typography>{seeds.toString()}</Typography>
+              </View>
+            </React.Fragment>
+          )}
+
+          {progress === 100 && (
+            <Typography>
+              {i18n.t('complete')}
+            </Typography>
+          )}
+        </View>
+      </React.Fragment>
+    )
   }
 
   render() {
-    const { navigation: { state: { params: { item } } } } = this.props
-    const { url, casting, paused, muted, loading } = this.state
-    const { progress, doneBuffering, buffer, downloadSpeed, seeds } = this.state
+    const { url, casting, paused, loading, showControls, item } = this.state
+    const { doneBuffering, buffer, downloadSpeed } = this.state
 
     return (
       <View style={styles.container}>
@@ -260,16 +269,25 @@ export default class VideoPlayer extends React.Component {
             )}
 
             <Typography
-              style={{ marginTop: 10 }}
+              style={{ marginTop: 10, marginBottom: 20 }}
               variant={'title'}>
-              {item.title}
+              {this.getItemTitle()}
             </Typography>
+
+            {loading || casting && (
+              <Button
+                variant={'primary'}
+                onPress={this.showCastingControls}>
+                {i18n.t('Controls')}
+              </Button>
+            )}
 
             {buffer !== 0 && !doneBuffering && (
               <React.Fragment>
                 <Typography style={{ marginTop: 10 }}>
                   {i18n.t('Buffering')}
                 </Typography>
+
                 <Typography variant={'body2'} style={{ marginTop: 5 }}>
                   {buffer}% / {downloadSpeed}
                 </Typography>
@@ -285,62 +303,25 @@ export default class VideoPlayer extends React.Component {
           </View>
         )}
 
-        {!loading && !casting && doneBuffering && (
-          <TouchableOpacity
-            style={styles.fullScreen}
-            onPress={this.handleVideoPressed}>
-            {(url && !casting && !loading) && (
-              <Video
-                ref={(ref) => { this.videoRef = ref }}
-                source={{ uri: url }}
-                style={styles.fullScreen}
-                paused={paused}
-                volume={1}
-                rate={1}
-                muted={muted}
-                resizeMode={'contain'}
-                onLoad={this.handleVideoLoad}
-                onProgress={this.handleVideoProgress}
-                onEnd={this.handleVideoEnd}
-                onError={this.handleTorrentError}
-                onAudioBecomingNoisy={this.handleVideoPause}
-                repeat={false}
-              />
-            )}
-          </TouchableOpacity>
+        {!loading && !casting && (
+          <React.Fragment>
+
+            <VideoAndControls
+              item={item}
+              url={url}
+              toggleControls={this.toggleControls}
+              toggleControlsOff={this.toggleControlsOff}
+              playItem={this.playItem}
+              showControls={showControls}>
+
+              {this.renderAdditionalControls()}
+
+            </VideoAndControls>
+
+          </React.Fragment>
         )}
 
-        <View style={styles.controlsTopBar}>
-          <Animatable.View
-            animation={paused || loading || casting ? 'fadeInDown' : 'fadeOutUp'}
-            useNativeDriver
-            style={styles.castButton}>
-            <CastButton style={{ width: 30, height: 30, tintColor: 'white' }} />
-          </Animatable.View>
-        </View>
-
-        {buffer !== 0 && (
-          <Animatable.View
-            style={styles.controlsBottom}
-            animation={paused || casting ? 'fadeInUp' : 'fadeOutDown'}
-            useNativeDriver>
-            <View style={styles.stats}>
-              {progress !== 100 && (
-                <React.Fragment>
-                  <Typography>{i18n.t('progress: {{progress}}', { progress: progress.toFixed(2) })}</Typography>
-                  <Typography>{i18n.t('speed: {{downloadSpeed}}', { downloadSpeed })}</Typography>
-                  <Typography>{i18n.t('seeds: {{seeds}}', { seeds })}</Typography>
-                </React.Fragment>
-              )}
-
-              {progress === 100 && (
-                <Typography>
-                  {i18n.t('complete')}
-                </Typography>
-              )}
-            </View>
-          </Animatable.View>
-        )}
+        {casting && this.renderAdditionalControls()}
 
       </View>
     )
@@ -368,27 +349,37 @@ const styles = StyleSheet.create({
     alignItems    : 'center',
   },
 
-  controlsTopBar: {},
+  slider: {
+    position: 'absolute',
+    bottom  : 24,
+    width   : '100%',
+  },
 
   castButton: {
     position: 'absolute',
     right   : 24,
     top     : 24,
-  },
+    width   : 30,
+    height  : 30,
 
-  controlsCenter: {},
-
-  controlsBottom: {
-    position: 'absolute',
-    bottom  : 0,
-    width   : '100%',
+    zIndex: 1001,
   },
 
   stats: {
     display       : 'flex',
     flexDirection : 'row',
     justifyContent: 'space-between',
-    margin        : 24,
+
+    position: 'absolute',
+    bottom  : 24,
+    left    : 16,
+    right   : 16,
+  },
+
+  statItem: {
+    width     : 120,
+    alignItems: 'center',
+    zIndex    : 1001,
   },
 
 })
