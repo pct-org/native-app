@@ -75,14 +75,7 @@ export default class VideoPlayer extends React.Component {
     TorrentStreamer.addEventListener('ready', this.handleTorrentReady)
 
     // Start
-    // TorrentStreamer.start(magnet.url)
-
-    this.setState({
-      url          : 'https://download.blender.org/peach/bigbuckbunny_movies/BigBuckBunny_320x180.mp4',
-      buffer       : '100',
-      doneBuffering: true,
-      loading      : false,
-    })
+    TorrentStreamer.start(magnet.url)
   }
 
   playItem = (magnet = null, url = null, item = null) => {
@@ -96,7 +89,7 @@ export default class VideoPlayer extends React.Component {
       loading      : true,
       loadedMagnet : magnet || propsMagnet,
     }, () => {
-      // TorrentStreamer.start(magnet.url)
+      TorrentStreamer.start(magnet.url)
     })
   }
 
