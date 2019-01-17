@@ -45,18 +45,17 @@ export const styles = StyleSheet.create({
 export default class Episode extends React.Component {
 
   static propTypes = {
-    playItem   : PropTypes.func.isRequired,
-    title      : PropTypes.string.isRequired,
-    images     : PropTypes.object.isRequired,
-    torrents   : PropTypes.object.isRequired,
-    number     : PropTypes.number.isRequired,
-    summary    : PropTypes.string,
-    hasTorrents: PropTypes.bool,
+    playItem: PropTypes.func.isRequired,
+    title   : PropTypes.string.isRequired,
+    images  : PropTypes.object.isRequired,
+    torrents: PropTypes.array.isRequired,
+    number  : PropTypes.number.isRequired,
+    synopsis: PropTypes.string,
   }
 
   static defaultProps = {
-    summary    : null,
-    hasTorrents: false,
+    synopsis: null,
+    torrents: [],
   }
 
   state = {
@@ -70,24 +69,24 @@ export default class Episode extends React.Component {
   }
 
   handlePlayItem = () => {
-    const { playItem, hasTorrents, torrents, ...episode } = this.props
+    const { playItem, torrents, ...episode } = this.props
 
-    if (hasTorrents) {
+    if (torrents.length > 0) {
       playItem(torrents, episode)
     }
   }
 
   getAirsDate = () => {
-    const { aired } = this.props
+    const { first_aired } = this.props
 
     const airs = new Date()
-    airs.setTime(aired)
+    airs.setTime(first_aired * 1000)
 
     return `${airs.getDate()}-${(airs.getMonth() + 1)}-${airs.getFullYear()}`
   }
 
   render() {
-    const { hasTorrents, title, summary, number, images, hasAired } = this.props
+    const { title, synopsis, number, images, hasAired, torrents } = this.props
     const { showPlaceholder } = this.props
 
     return (
@@ -99,8 +98,8 @@ export default class Episode extends React.Component {
               <Image
                 onError={this.handleImageError}
                 defaultSource={posterHolderImage}
-                source={images.poster.thumb && !showPlaceholder
-                  ? { uri: images.poster.thumb }
+                source={images.thumb && !showPlaceholder
+                  ? { uri: images.thumb }
                   : posterHolderImage
                 }
                 style={{ width: 150, height: 100 }} />
@@ -113,8 +112,8 @@ export default class Episode extends React.Component {
                     iconStyle={{ margin: 0 }}
                     backgroundColor={'transparent'}
                     borderRadius={0}
-                    name={hasTorrents ? 'play-circle-outline' : 'cancel'}
-                    color={hasTorrents ? '#FFF' : 'red'}
+                    name={torrents.length > 0 ? 'play-circle-outline' : 'cancel'}
+                    color={torrents.length > 0 ? '#FFF' : 'red'}
                     size={60} />
                 )}
 
@@ -132,8 +131,8 @@ export default class Episode extends React.Component {
           </Typography>
         </View>
 
-        <Typography style={styles.summary} variant={'caption'}>
-          {summary}
+        <Typography style={styles.synopsis} variant={'caption'}>
+          {synopsis}
         </Typography>
 
       </View>

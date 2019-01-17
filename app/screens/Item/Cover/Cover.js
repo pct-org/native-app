@@ -53,7 +53,7 @@ export const Cover = ({ item, playMovie }) => (
       style={styles.mainImage}
       source={{
         uri: item
-          ? item.images.fanart.high
+          ? item.images.backdrop.high
           : null,
       }}
     />
