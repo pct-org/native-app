@@ -89,7 +89,7 @@ export default class SeasonsAndEpisodes extends React.PureComponent {
   }
 
   render() {
-    const { playItem, item } = this.props
+    const { playItem } = this.props
     const { activeSeason } = this.state
 
     return (
@@ -112,7 +112,7 @@ export default class SeasonsAndEpisodes extends React.PureComponent {
 
         {this.getEpisodes().map(episode => (
           <Episode
-            key={episode._id}
+            key={episode.key}
             playItem={playItem}
             hasAired={episode.aired < this.today}
             {...episode} />

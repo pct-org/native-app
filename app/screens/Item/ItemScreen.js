@@ -47,8 +47,6 @@ export default class Item extends React.PureComponent {
     episodeToPlay     : null,
   }
 
-  qualitySelectorRef
-
   componentDidMount() {
     Orientation.lockToPortrait()
 
@@ -65,9 +63,9 @@ export default class Item extends React.PureComponent {
     const { selectFromTorrents } = this.state
 
     if (selectFromTorrents !== null) {
-      if (this.qualitySelectorRef) {
-        this.qualitySelectorRef.handleCancel()
-      }
+      this.setState({
+        selectFromTorrents: null,
+      })
 
       return true
     }
@@ -160,9 +158,9 @@ export default class Item extends React.PureComponent {
 
           <Cover item={item} playMovie={this.selectQuality} />
 
-          {item && item.synopsis && (
+          {item && item.summary && (
             <View style={styles.container}>
-              <Typography variant={'body1'}>{item.synopsis}</Typography>
+              <Typography variant={'body1'}>{item.summary}</Typography>
             </View>
           )}
 
@@ -225,7 +223,6 @@ export default class Item extends React.PureComponent {
         </ScrollViewWithStatusBar>
 
         <QualitySelector
-          ref={ref => this.qualitySelectorRef = ref}
           cancel={this.cancelQualitySelect}
           torrents={selectFromTorrents}
           playItem={this.playItem} />

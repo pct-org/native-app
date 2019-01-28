@@ -1,5 +1,5 @@
 import React from 'react'
-import { StyleSheet, View, Text, BackHandler } from 'react-native'
+import { StyleSheet, View, Text } from 'react-native'
 import * as Animatable from 'react-native-animatable'
 import { material } from 'react-native-typography'
 
@@ -42,38 +42,32 @@ const styles = StyleSheet.create({
 
 export default class QualitySelector extends React.Component {
 
-  state = {
-    hidden   : true,
-    animation: 'fadeIn',
+  static getDerivedStateFromProps(props) {
+    if (props.torrents) {
+      return {
+        qualities: Object.keys(props.torrents).filter(quality => !!props.torrents[quality]),
+      }
+    }
+
+    return {}
   }
 
-  handleCancel = () => {
-    this.setState({
-      animation: 'fadeOut',
-    })
+  state = {
+    hidden   : false,
+    qualities: null,
   }
 
   playQuality = (quality) => {
     const { playItem, torrents } = this.props
 
-    playItem(torrents.find(torrent => torrent.quality === quality))
+    playItem(torrents[quality])
   }
 
   handleAnimationEnd = () => {
     const { torrents } = this.props
-    const { animation } = this.state
-
-    const hidden = !torrents || animation === 'fadeOut'
 
     this.setState({
-      hidden,
-      animation: 'fadeIn',
-    }, () => {
-      if (hidden) {
-        const { cancel } = this.props
-
-        cancel()
-      }
+      hidden: !torrents,
     })
   }
 
@@ -84,36 +78,39 @@ export default class QualitySelector extends React.Component {
   }
 
   render() {
-    const { torrents } = this.props
-    const { animation } = this.state
+    const { torrents, cancel } = this.props
+    const { hidden, qualities } = this.state
+
+    if (hidden && !torrents) {
+      return null
+    }
 
     return (
       <Animatable.View
-        animation={torrents && torrents.length > 0 ? animation : null}
+        animation={torrents ? 'fadeIn' : 'fadeOut'}
         duration={200}
         style={[styles.root]}
-        pointerEvents={!torrents ? 'none' : null}
         onAnimationBegin={this.handleAnimationBegin}
         onAnimationEnd={this.handleAnimationEnd}
         useNativeDriver>
 
-        {torrents && torrents.length > 0 && (
+        {qualities && (
           <View style={[styles.root, styles.container]}>
             <View style={styles.closeIcon}>
               <IconButton
-                onPress={this.handleCancel}
+                onPress={cancel}
                 name={'close'}
                 color={'#FFF'}
                 size={40}
               />
             </View>
 
-            {torrents.map((torrent) => (
+            {qualities.map((quality) => (
               <BaseButton
-                key={torrent._id}
-                onPress={() => this.playQuality(torrent.quality)}>
+                key={quality}
+                onPress={() => this.playQuality(quality)}>
                 <Text style={styles.quality}>
-                  {torrent.quality}
+                  {quality}
                 </Text>
               </BaseButton>
             ))}
