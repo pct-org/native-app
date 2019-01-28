@@ -2,7 +2,7 @@
 
 import React from 'react'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
-import { createStackNavigator, createBottomTabNavigator } from 'react-navigation'
+import { createStackNavigator, createBottomTabNavigator, createAppContainer } from 'react-navigation'
 import { Constants } from 'popcorn-sdk'
 
 import i18n from 'modules/i18n'
@@ -13,7 +13,7 @@ import ItemScreen from './Item'
 import PlayerScreen from './Player'
 import ModeScreen from './Mode'
 
-export default createStackNavigator({
+export const AppNavigator = createStackNavigator({
   Main: {
     screen: createBottomTabNavigator({
       Home: {
@@ -97,3 +97,6 @@ export default createStackNavigator({
 }, {
   headerMode: 'none',
 })
+
+
+export default createAppContainer(AppNavigator)
