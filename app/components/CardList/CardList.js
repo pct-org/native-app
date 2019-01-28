@@ -1,10 +1,12 @@
 import React from 'react'
-import { View, FlatList} from 'react-native'
+import { View, FlatList, Animated } from 'react-native'
 import { withNavigation } from 'react-navigation'
 
 import Device from 'modules/DeviceDetection'
 
 import Card from 'components/Card'
+
+const AnimatedFlatList = Animated.createAnimatedComponent(FlatList)
 
 export class CardList extends React.Component {
 
@@ -27,10 +29,12 @@ export class CardList extends React.Component {
   )
 
   render() {
-    const { items, handleItemOpen, ...props } = this.props
+    const { items, component, handleItemOpen, ...props } = this.props
+
+    const Component = component || AnimatedFlatList
 
     return (
-      <FlatList
+      <Component
         columnWrapperStyle={{ margin: 4 }}
         data={items}
         numColumns={Device.isTablet ? 4 : 3}

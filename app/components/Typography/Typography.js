@@ -7,7 +7,7 @@ import capitalizeFirstLetter from 'modules/utils/capitalizeFirstLetter'
 
 export const Typography = ({ variant, style, color, children }) => (
   <Text
-    style={[material[`${variant}${capitalizeFirstLetter(color)}`], style]}>
+    style={[material[`${variant}${color !== 'black' ? capitalizeFirstLetter(color) : ''}`], style]}>
     {children}
   </Text>
 )
@@ -24,7 +24,7 @@ Typography.propTypes = {
     'button',
   ]),
 
-  color: PropTypes.oneOf(['white', '']),
+  color: PropTypes.oneOf(['white', 'black']),
 
   style: PropTypes.oneOfType([
     PropTypes.number,
