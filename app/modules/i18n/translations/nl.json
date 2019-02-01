@@ -14,12 +14,16 @@
   "Downloading {{version}}": "Downloaden {{version}}",
   "cancel": "annuleren",
   "update": "updaten",
-  "i accept": "accepteren",
-  "leave": "afsluiten",
+  "I Accept": "Accepteren",
+  "Leave": "Afsluiten",
   "Terms of Service": "Gebruiksvoorwaarden",
   "Mark Watched": "Markeer bekeken",
   "Mark Unwatched": "Markeer onbekeken",
   "Trailer": "Trailer",
   "Controls": "Controls",
-  "Search": "Zoeken"
+  "Search": "Zoeken",
+  "Genres": "Genres",
+  "Episodes": "Afleveringen",
+  "More like this": "Meer zoals dit",
+  "Movies or shows": "Films of series"
 }

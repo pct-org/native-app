@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { StyleSheet, View, ScrollView } from 'react-native'
+import { StyleSheet, View, ScrollView, FlatList } from 'react-native'
 
 import Card from '../Card'
 import Typography from '../Typography'
@@ -34,39 +34,41 @@ export const styles = StyleSheet.create({
   },
 })
 
-export const CardSlider = ({ loading, title, items, onPress, style, cardProps }) => (
-  <View style={style}>
-    <Typography
-      style={styles.title}
-      variant={'title'}>
-      {title}
-    </Typography>
+export const CardSlider = ({ loading, title, items, onPress, style, cardProps }) => {
+  const renderCard = ({ item }) => (
+    <Card
+      variant={'small'}
+      empty={!item}
+      item={item}
+      onPress={() => onPress(item)}
+      {...cardProps}
+    />
+  )
 
-    <ScrollView
-      horizontal
-      style={styles.scrollView}
-      showsHorizontalScrollIndicator={false}>
-      {items.map(item => (
-        <Card
-          variant={'small'}
-          key={item.id}
-          item={item}
-          onPress={() => onPress(item)}
-          {...cardProps}
-        />
-      ))}
+  return (
+    <View style={style}>
+      <Typography
+        style={styles.title}
+        variant={'title'}
+        fontWeight={'bold'}>
+        {title}
+      </Typography>
 
-      {(loading || items.length === 0) && (
-        <React.Fragment>
-          <Card variant={'small'} empty {...cardProps} />
-          <Card variant={'small'} empty {...cardProps} />
-          <Card variant={'small'} empty {...cardProps} />
-        </React.Fragment>
-      )}
-    </ScrollView>
+      <FlatList
+        horizontal
+        removeClippedSubviews
+        style={styles.scrollView}
+        data={items.length === 0 ? Array(4).fill() : items}
+        initialNumToRender={4}
+        windowSize={8}
+        renderItem={renderCard}
+        keyExtractor={(item, index) => item ? item.id : `${index}`}
+        showsHorizontalScrollIndicator={false}
+      />
 
-  </View>
-)
+    </View>
+  )
+}
 
 CardSlider.propTypes = {
   title    : PropTypes.string.isRequired,

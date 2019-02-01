@@ -7,10 +7,10 @@ export const INITIAL_STATE = {
     bookmark      : { items: [] },
     bookmarkSearch: { items: [] },
 
-    movie         : { page: 1, items: [], filters: { limit: 50, sort: 'trending' } },
+    movie         : { page: 1, items: [], filters: { sort: 'trending' } },
     movieSearch   : { page: 1, items: [], filters: {} },
 
-    show          : { page: 1, items: [], filters: { limit: 50, sort: 'trending' } },
+    show          : { page: 1, items: [], filters: { sort: 'trending' } },
     showSearch    : { page: 1, items: [], filters: {} },
   },
 }

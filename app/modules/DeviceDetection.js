@@ -3,6 +3,7 @@ import React, { PixelRatio, Dimensions } from 'react-native'
 const windowSize = Dimensions.get('window')
 
 export default new (class DetectDeviceService {
+
   constructor() {
     this.pixelDensity = PixelRatio.get()
     this.width = windowSize.width

@@ -14,12 +14,16 @@
   "Downloading {{version}}": "Downloading {{version}}",
   "cancel": "cancel",
   "update": "update",
-  "i accept": "i accept",
-  "leave": "leave",
+  "I Accept": "I Accept",
+  "Leave": "Leave",
   "Terms of Service": "Terms of Service",
   "Mark Watched": "Mark Watched",
   "Mark Unwatched": "Mark Unwatched",
   "Trailer": "Trailer",
   "Controls": "Controls",
-  "Search": "Search"
+  "Search": "Search",
+  "Genres": "Genres",
+  "Episodes": "Episodes",
+  "More like this": "More like this",
+  "Movies or shows": "Movies or shows"
 }

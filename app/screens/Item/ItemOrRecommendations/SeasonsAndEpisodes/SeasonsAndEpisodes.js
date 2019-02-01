@@ -13,7 +13,11 @@ export const styles = StyleSheet.create({
 
     height         : 50,
     width          : 150,
-    backgroundColor: colors.BACKGROUND_LIGHTER,
+    backgroundColor: colors.ITEM_DROPDOWN_BACKGROUND,
+  },
+
+  dropDownItem: {
+    width: 150,
   },
 
 })
@@ -98,8 +102,10 @@ export default class SeasonsAndEpisodes extends React.PureComponent {
           mode={'dropdown'}
           selectedValue={activeSeason}
           style={styles.dropDown}
+          itemStyle={styles.dropDownItem}
           onValueChange={(itemValue) => this.setState({ activeSeason: itemValue })}>
 
+          {/* TODO:: Fix this so it looks a little better */}
           {this.getSeasons().map(season => (
             <Picker.Item
               color={'#FFF'}

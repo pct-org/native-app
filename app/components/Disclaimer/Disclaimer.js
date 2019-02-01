@@ -1,11 +1,8 @@
-/* eslint max-len: 0 */
-
 import React from 'react'
 import PropTypes from 'prop-types'
 import { StyleSheet, BackHandler, View, ScrollView, StatusBar } from 'react-native'
 import * as Animatable from 'react-native-animatable'
 import Markdown from 'react-native-markdown-renderer'
-import { material } from 'react-native-typography'
 import SplashScreen from 'react-native-splash-screen'
 
 import i18n from 'modules/i18n'
@@ -66,13 +63,25 @@ export const styles = StyleSheet.create({
     right   : 0,
     left    : 0,
   },
+
+  action: {
+    margin: 4,
+  },
 })
 
 export const mdStyle = StyleSheet.create({
 
-  heading2: material.titleWhiteObject,
+  heading2: Typography.getTextStyle({
+    variant   : 'title',
+    fontWeight: 'bold',
+    asObject  : true,
+  }),
 
-  text: material.body1WhiteObject,
+  text: Typography.getTextStyle({
+    variant: 'body1',
+
+    asObject: true,
+  }),
 
 })
 
@@ -141,7 +150,7 @@ export default class CheckForUpdates extends React.Component {
 
             <StatusBar backgroundColor={colors.BACKGROUND} animated translucent />
 
-            <Typography variant={'headline'} style={styles.title}>
+            <Typography variant={'display1'} fontWeight={'black'} style={styles.title}>
               {i18n.t('Terms of Service')}
             </Typography>
 
@@ -170,14 +179,16 @@ By using Popcorn Time or accessing this site you affirm that you are either more
 
             <View style={styles.actions}>
               <Button
+                style={styles.action}
                 onPress={this.handleLeave}>
-                {i18n.t('leave')}
+                {i18n.t('Leave')}
               </Button>
 
               <Button
+                style={styles.action}
                 variant={'primary'}
                 onPress={this.handleAccept}>
-                {i18n.t('i accept')}
+                {i18n.t('I Accept')}
               </Button>
             </View>
 

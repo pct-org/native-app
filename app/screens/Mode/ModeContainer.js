@@ -11,4 +11,4 @@ export const mapStateToProps = state => ({
   hasInternet: HomeSelectors.getHasInternet(state),
 })
 
-export default connect(mapStateToProps, { ...HomeActions })(ModeScreen)
+export default connect(mapStateToProps, HomeActions)(ModeScreen)

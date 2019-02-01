@@ -79,7 +79,8 @@ export const Cover = ({ item, playMovie }) => (
     {item && (
       <Typography
         style={styles.title}
-        variant={'title'}>
+        variant={'title'}
+        fontWeight={'black'}>
         {item.title}
       </Typography>
     )}

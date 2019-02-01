@@ -160,7 +160,9 @@ export default class Item extends React.PureComponent {
 
           {item && item.summary && (
             <View style={styles.container}>
-              <Typography variant={'body1'}>{item.summary}</Typography>
+              <Typography variant={'body2'}>
+                {item.summary}
+              </Typography>
             </View>
           )}
 

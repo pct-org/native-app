@@ -1,46 +1,108 @@
-import React from 'react'
-import PropTypes from 'prop-types'
+import React, { Component } from 'react'
 import { Text } from 'react-native'
-import { material } from 'react-native-typography'
+import PropTypes from 'prop-types'
 
 import capitalizeFirstLetter from 'modules/utils/capitalizeFirstLetter'
 
-export const Typography = ({ variant, style, color, children }) => (
-  <Text
-    style={[material[`${variant}${color !== 'black' ? capitalizeFirstLetter(color) : ''}`], style]}>
-    {children}
-  </Text>
-)
+import styles from './Typography.styles'
 
-Typography.propTypes = {
-  variant: PropTypes.oneOf([
-    'display1',
-    'headline',
-    'title',
-    'subheading',
-    'body1',
-    'body2',
-    'caption',
-    'button',
-  ]),
+export default class Typography extends Component {
 
-  color: PropTypes.oneOf(['white', 'black']),
+  static propTypes = {
+    textProps: PropTypes.object,
 
-  style: PropTypes.oneOfType([
-    PropTypes.number,
-    PropTypes.object,
-  ]),
+    variant: PropTypes.oneOf([
+      'default',
+      'display1',
+      'display2',
+      'display3',
+      'display4',
+      'headline',
+      'title',
+      'subheading',
+      'body2',
+      'body1',
+      'caption',
+      'button',
+    ]),
 
-  children: PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.arrayOf(PropTypes.string),
-  ]).isRequired,
+    color: PropTypes.oneOf([
+      'white',
+      'black',
+    ]),
+
+    fontWeight: PropTypes.oneOf([
+      'thin',
+      'extraLight',
+      'light',
+      'regular',
+      'medium',
+      'bold',
+      'black',
+    ]),
+
+    children: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.node,
+      PropTypes.func,
+    ]),
+
+    component: PropTypes.oneOfType([
+      PropTypes.func,
+      PropTypes.instanceOf(Component),
+    ]),
+
+    style: PropTypes.object,
+  }
+
+  static defaultProps = {
+    color     : 'white',
+    variant   : 'default',
+    fontWeight: 'regular',
+    textProps : {},
+    component : null,
+    children  : null,
+    style     : null,
+  }
+
+  static getTextStyle = ({
+    variant = Typography.defaultProps.variant,
+    fontWeight = Typography.defaultProps.fontWeight,
+    color = Typography.defaultProps.color,
+    style: styleProp = {},
+    asObject = false,
+  }) => {
+    const styledColor = styles[`color${capitalizeFirstLetter(color)}`]
+    const styledFont = styles[`fontFamily${capitalizeFirstLetter(fontWeight)}`]
+
+    const textStyles = [styledColor, styles[variant], styledFont, styleProp]
+
+    if (asObject) {
+      let objectStyle = {}
+
+      textStyles.forEach(style => objectStyle = {
+        ...objectStyle,
+        ...style,
+      })
+
+      return objectStyle
+    }
+
+    return textStyles
+  }
+
+  render() {
+    const { children, component, textProps } = this.props
+
+    const StyledComponent = component || Text
+
+    return (
+      <StyledComponent
+        style={Typography.getTextStyle(this.props)}
+        {...textProps}>
+        {children}
+      </StyledComponent>
+    )
+  }
 }
 
-Typography.defaultProps = {
-  variant: 'body1',
-  color  : 'white',
-  style  : null,
-}
-
-export default Typography

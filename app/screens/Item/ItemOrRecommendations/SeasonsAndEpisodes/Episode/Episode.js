@@ -127,12 +127,17 @@ export default class Episode extends React.Component {
             </View>
           </BaseButton>
 
-          <Typography style={styles.title}>
+          <Typography
+            style={styles.title}
+            variant={'body1'}
+            fontWeight={'bold'}>
             {`${number}. ${title}`}
           </Typography>
         </View>
 
-        <Typography style={styles.summary} variant={'caption'}>
+        <Typography
+          style={styles.summary}
+          variant={'body1'}>
           {summary}
         </Typography>
 

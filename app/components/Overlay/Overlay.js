@@ -10,7 +10,7 @@ export const styles = StyleSheet.create({
     bottom         : 0,
     left           : 0,
     backgroundColor: 'black',
-    opacity        : 0.3,
+    opacity        : 0.2,
   },
 
 })
