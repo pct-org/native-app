@@ -1,11 +1,11 @@
 import React from 'react'
 import { StyleSheet, View, StatusBar, Image, Dimensions, FlatList, BackHandler, RefreshControl } from 'react-native'
 import Orientation from 'react-native-orientation'
-import { Constants } from 'popcorn-sdk'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import { withNavigationFocus } from 'react-navigation'
 
 import colors from 'modules/colors'
+import i18n from 'modules/i18n'
 
 import BaseButton from 'components/BaseButton'
 import Typography from 'components/Typography'
@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
 
   episodeTitle: {
     margin      : 8,
-    marginBottom: 16,
+    marginBottom: 0,
   },
 
   noEpisodesText: {
@@ -132,6 +132,13 @@ export class MyEpisodes extends React.PureComponent {
     })
   }
 
+  getAiredDate = (aired) => {
+    const airs = new Date()
+    airs.setTime(aired)
+
+    return `${airs.getDate()}-${(airs.getMonth() + 1)}-${airs.getFullYear()}`
+  }
+
   renderEpisode = ({ item }) => (
     <View>
       <BaseButton onPress={() => this.selectQuality(item)}>
@@ -152,7 +159,13 @@ export class MyEpisodes extends React.PureComponent {
               style={styles.episodeTitle}
               fontWeight={'bold'}
               variant={'subheading'}>
-              {item.show.title} - {item.title}
+              {`${item.show.title} - ${item.title}`}
+            </Typography>
+
+            <Typography
+              fontWeight={'bold'}
+              variant={'caption'}>
+              {`S${item.season} E${item.number} / ${this.getAiredDate(item.aired)}`}
             </Typography>
           </View>
 
@@ -209,7 +222,7 @@ export class MyEpisodes extends React.PureComponent {
             <Typography
               style={styles.noEpisodesText}
               variant={'title'}>
-              Episodes aired within the last 7 days from shows you follow will appear here
+              {i18n.t('Episodes aired within the last 7 days from shows you follow will appear here')}
             </Typography>
 
           </View>
