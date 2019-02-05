@@ -1,10 +1,10 @@
 import React from 'react'
-import { View, Text, StyleSheet } from 'react-native'
-import PropTypes from 'prop-types'
-import { material, systemWeights } from 'react-native-typography'
-import Popcorn from 'modules/PopcornSDK'
+import { View, StyleSheet } from 'react-native'
 
-import BaseButton from 'components/BaseButton'
+import i18n from 'modules/i18n'
+import colors from 'modules/colors'
+
+import TextButton from 'components/TextButton'
 
 import SeasonsAndEpisodes from './SeasonsAndEpisodes'
 import Recommendations from './Recommendations'
@@ -22,8 +22,6 @@ export const styles = StyleSheet.create({
   },
 
   buttons: {
-    ...material.subheadingWhiteObject,
-    ...systemWeights.light,
     marginRight : 8,
     paddingLeft : 8,
     paddingRight: 8,
@@ -33,9 +31,7 @@ export const styles = StyleSheet.create({
 
   buttonActive: {
     borderTopWidth: 2,
-    borderTopColor: '#fff',
-    ...material.subheadingWhiteObject,
-    ...systemWeights.bold,
+    borderTopColor: colors.ITEM_ACTIVE_TAB_INDICATOR,
   },
 
 })
@@ -82,17 +78,19 @@ export default class ItemOrRecommendations extends React.PureComponent {
     return (
       <React.Fragment>
         <View style={styles.buttonContainer}>
-          <BaseButton onPress={() => this.handleViewRecommendation(false)}>
-            <Text style={this.getStyles(false)}>
-              EPISODES
-            </Text>
-          </BaseButton>
+          <TextButton
+            onPress={() => this.handleViewRecommendation(false)}
+            fontWeight={recommendationActive ? 'regular' : 'bold'}
+            style={this.getStyles(false)}>
+            {i18n.t('Episodes')}
+          </TextButton>
 
-          <BaseButton onPress={() => this.handleViewRecommendation(true)}>
-            <Text style={this.getStyles(true)}>
-              MORE LIKE THIS
-            </Text>
-          </BaseButton>
+          <TextButton
+            onPress={() => this.handleViewRecommendation(true)}
+            fontWeight={recommendationActive ? 'bold' : 'regular'}
+            style={this.getStyles(true)}>
+            {i18n.t('More like this')}
+          </TextButton>
         </View>
 
         {!recommendationActive && (

@@ -50,9 +50,12 @@ export default class VideoPlayer extends React.Component {
       loading    : true,
       casting    : false,
 
-      progress     : 0,
-      buffer       : 0,
-      downloadSpeed: 0,
+      progress: 0,
+      buffer  : 0,
+
+      downloadSpeed         : 0,
+      downloadSpeedFormatted: '',
+
       doneBuffering: false,
       seeds        : 0,
 
@@ -73,6 +76,13 @@ export default class VideoPlayer extends React.Component {
 
     // Start
     TorrentStreamer.start(magnet.url)
+
+    // this.setState({
+    //   url          : 'https://download.blender.org/peach/bigbuckbunny_movies/BigBuckBunny_320x180.mp4',
+    //   buffer       : '100',
+    //   doneBuffering: true,
+    //   loading      : false,
+    // })
   }
 
   playItem = (magnet = null, url = null, item = null) => {
@@ -104,8 +114,9 @@ export default class VideoPlayer extends React.Component {
     TorrentStreamer.stop()
 
     this.staticServer.kill()
-  }
 
+    GoogleCast.endSession()
+  }
 
   handleCastSessionStarted = () => {
     const { url, doneBuffering } = this.state
@@ -131,16 +142,16 @@ export default class VideoPlayer extends React.Component {
   }
 
   handleTorrentStatus = (status) => {
-    const { buffer, progress } = this.state
-
     const nProgress = parseFloat(status.progress)
 
-    if (status.buffer !== buffer || (nProgress > (progress + 1)) || nProgress > 99) {
+    if (this.shouldUpdateStatus(status, nProgress)) {
       this.setState({
         ...status,
         progress     : nProgress > 99 ? 100 : nProgress,
-        downloadSpeed: utils.formatKbToString(status.downloadSpeed),
         doneBuffering: status.buffer === '100',
+        downloadSpeed: status.downloadSpeed,
+
+        downloadSpeedFormatted: utils.formatKbToString(status.downloadSpeed),
       })
     }
   }
@@ -164,6 +175,21 @@ export default class VideoPlayer extends React.Component {
   handleTorrentError = (e) => {
     // eslint-disable-next-line no-console
     console.log('error', e)
+  }
+
+  shouldUpdateStatus = (status, nProgress) => {
+    const { buffer, progress } = this.state
+
+    if (status.buffer !== buffer) {
+      return true
+    }
+
+    if (nProgress > (progress + 0.20) || nProgress > 99) {
+      return true
+    }
+
+    // TODO:: Also check if download speed differ
+    return false
   }
 
   showCastingControls = () => {
@@ -207,14 +233,19 @@ export default class VideoPlayer extends React.Component {
     const { item } = this.state
 
     if (item.showTitle) {
-      return `${item.showTitle} - ${item.episode}. ${item.title}`
+      return `${item.showTitle} - ${item.title}`
     }
 
     return item.title
   }
 
-  renderAdditionalControls = () => {
-    const { progress, downloadSpeed, seeds } = this.state
+  /**
+   * @param castButtonOnly We only show the cast button when everything is still loading
+   *
+   * @returns {*}
+   */
+  renderAdditionalControls = (castButtonOnly) => {
+    const { progress, downloadSpeedFormatted, seeds } = this.state
 
     return (
       <React.Fragment>
@@ -222,44 +253,46 @@ export default class VideoPlayer extends React.Component {
           <CastButton style={{ width: 30, height: 30, tintColor: 'white' }} />
         </View>
 
-        <View style={styles.stats}>
-          {progress !== 100 && (
-            <React.Fragment>
-              <View style={styles.statItem}>
-                <Typography>{i18n.t('progress')}</Typography>
-                <Typography>{progress.toFixed(2)}</Typography>
-              </View>
+        {!castButtonOnly && (
+          <View style={styles.stats}>
+            {progress !== 100 && (
+              <React.Fragment>
+                <View style={styles.statItem}>
+                  <Typography>{i18n.t('progress')}</Typography>
+                  <Typography>{progress.toFixed(2)}</Typography>
+                </View>
 
-              <View style={styles.statItem}>
-                <Typography>{i18n.t('speed')}</Typography>
-                <Typography>{downloadSpeed.toString()}</Typography>
-              </View>
+                <View style={styles.statItem}>
+                  <Typography>{i18n.t('speed')}</Typography>
+                  <Typography>{downloadSpeedFormatted.toString()}</Typography>
+                </View>
 
-              <View style={styles.statItem}>
-                <Typography>{i18n.t('seeds')}</Typography>
-                <Typography>{seeds.toString()}</Typography>
-              </View>
-            </React.Fragment>
-          )}
+                <View style={styles.statItem}>
+                  <Typography>{i18n.t('seeds')}</Typography>
+                  <Typography>{seeds.toString()}</Typography>
+                </View>
+              </React.Fragment>
+            )}
 
-          {progress === 100 && (
-            <Typography>
-              {i18n.t('complete')}
-            </Typography>
-          )}
-        </View>
+            {progress === 100 && (
+              <Typography>
+                {i18n.t('complete')}
+              </Typography>
+            )}
+          </View>
+        )}
       </React.Fragment>
     )
   }
 
   render() {
     const { url, casting, paused, loading, showControls, item } = this.state
-    const { doneBuffering, buffer, downloadSpeed } = this.state
+    const { doneBuffering, buffer, downloadSpeedFormatted } = this.state
 
     return (
       <View style={styles.container}>
 
-        <StatusBar hidden={!paused && !casting && doneBuffering} animated />
+        <StatusBar hidden={!paused && casting && doneBuffering} animated />
 
         {(loading || casting) && (
           <View style={[styles.fullScreen, styles.loadingContainer]}>
@@ -289,7 +322,7 @@ export default class VideoPlayer extends React.Component {
                 </Typography>
 
                 <Typography variant={'body2'} style={{ marginTop: 5 }}>
-                  {buffer}% / {downloadSpeed}
+                  {buffer}% / {downloadSpeedFormatted}
                 </Typography>
               </React.Fragment>
             )}
@@ -321,7 +354,7 @@ export default class VideoPlayer extends React.Component {
           </React.Fragment>
         )}
 
-        {casting && this.renderAdditionalControls()}
+        {casting || loading && this.renderAdditionalControls(loading)}
 
       </View>
     )

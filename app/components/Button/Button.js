@@ -1,49 +1,57 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { StyleSheet, Text } from 'react-native'
-
-import { material } from 'react-native-typography'
+import { StyleSheet } from 'react-native'
 
 import colors from 'modules/colors'
 
-import BaseButton from '../BaseButton'
+import TextButton from '../TextButton'
+
+const defaultPadding = {
+  paddingLeft  : 16,
+  paddingRight : 16,
+  paddingTop   : 8,
+  paddingBottom: 8,
+  borderRadius : 4,
+}
 
 export const styles = StyleSheet.create({
 
-  base: {
-    ...material.buttonWhiteObject,
+  default: {
+    ...defaultPadding,
 
-    paddingLeft  : 16,
-    paddingRight : 16,
-    paddingTop   : 8,
-    paddingBottom: 8,
-    borderRadius : 4,
+    backgroundColor: colors.BUTTON_PRIMARY,
   },
 
   primary: {
-    backgroundColor: colors.BACKGROUND_LIGHTER,
+    ...defaultPadding,
+
+    backgroundColor: colors.BUTTON_PRIMARY,
   },
 
 })
 
-export const Button = ({ children, onPress, variant }) => (
-  <BaseButton onPress={onPress}>
-
-    <Text style={[styles.base, styles[variant]]}>
-      {children.toUpperCase()}
-    </Text>
-
-  </BaseButton>
+export const Button = ({ children, onPress, variant, style, ...rest }) => (
+  <TextButton
+    onPress={onPress}
+    style={{
+      ...styles[variant],
+      ...style,
+    }}
+    fontWeight={'bold'}
+    {...rest}>
+    {children}
+  </TextButton>
 )
 
 Button.propTypes = {
-  onPress: PropTypes.func.isRequired,
+  onPress : PropTypes.func.isRequired,
   children: PropTypes.string.isRequired,
-  variant: PropTypes.oneOf(['default', 'primary']),
+  variant : PropTypes.oneOf(['default', 'primary']),
 }
 
 Button.defaultProps = {
   variant: 'default',
+  style  : {},
 }
 
 export default Button

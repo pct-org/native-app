@@ -197,7 +197,7 @@ export class EpisodesBar extends React.Component {
 
     this.setState({
       currentTime,
-      progress: parseFloat(currentTime) / parseFloat(duration),
+      progress: parseInt((parseInt(currentTime) / parseInt(duration)) * 100),
     })
   }
 
@@ -236,7 +236,7 @@ export class EpisodesBar extends React.Component {
       this.setState({
         showControls: false,
       })
-    }, 1700)
+    }, 2200)
   }
 
   render() {
@@ -298,12 +298,12 @@ export class EpisodesBar extends React.Component {
             showsVerticalScrollIndicator={false}
             contentContainerStyle={{
               flexGrow: 1,
-              flex           : 1,
+              flex    : 1,
               position: 'absolute',
               top     : 0,
-              bottom: 0,
-              left: 0,
-              right: 0,
+              bottom  : 0,
+              left    : 0,
+              right   : 0,
 
             }}
             onScroll={this.toggleControls}
@@ -357,7 +357,7 @@ const styles = StyleSheet.create({
     left    : 0,
     bottom  : 0,
     right   : 0,
-    zIndex: 1000,
+    zIndex  : 1000,
   },
 
   overlay: {

@@ -2,6 +2,7 @@ import { Constants } from 'popcorn-sdk'
 import Popcorn from 'modules/PopcornSDK'
 
 import Bookmarks from 'modules/db/Bookmarks'
+import sortHighLow from 'modules/utils/sortHighLow'
 
 import * as HomeConstants from './HomeConstants'
 import * as HomeSelectors from './HomeSelectors'
@@ -64,7 +65,7 @@ export const getItems = (mode, page = 1, givenFilters = {}) => (dispatch, getSta
       const existingBookmarks = getState().home.modes.bookmark.items
 
       return Bookmarks.getAll().then((bookmarks) => {
-        Popcorn.checkAdapters('checkMovies')(bookmarks).then(bookmarks => {
+        Popcorn.checkAdapters('checkMovies')(bookmarks).then(async bookmarks => {
 
           dispatch(
             fetchedItems(
@@ -73,6 +74,9 @@ export const getItems = (mode, page = 1, givenFilters = {}) => (dispatch, getSta
               mode,
             ),
           )
+
+          // Update my episodes section
+          updateMyEpisodes(false)(dispatch)
         })
       })
 
@@ -88,3 +92,55 @@ export const getItems = (mode, page = 1, givenFilters = {}) => (dispatch, getSta
       return null
   }
 }
+
+export const updateMyEpisodes = (force = false) => (dispatch) => new Promise(async(resolve) => {
+  dispatch({
+    type: force
+      ? HomeConstants.REFRESH_MY_EPISODES
+      : HomeConstants.FETCH_MY_EPISODES,
+  })
+
+  const threeDaysAgo = new Date(new Date().getTime() - (3 * 24 * 60 * 60 * 1000)).getTime()
+  const zevenDaysAgo = new Date(new Date().getTime() - (7 * 24 * 60 * 60 * 1000)).getTime()
+
+  const showBookmarks = await Bookmarks.getAllShows()
+  const myEpisodes = []
+  let bookmarksUpdated = 0
+
+  showBookmarks.forEach(async(showBookmark) => {
+    // Check if the bookmark is last updated three days ago or it is a force
+    if (!showBookmark.updatedAt || showBookmark.updatedAt < threeDaysAgo || force) {
+      const showBasic = await Popcorn.getShowBasic(showBookmark.id)
+      const pctSeason = showBasic.seasons[showBasic.seasons.length - 1]
+
+      // Only fetch the last season
+      showBookmark.lastSeason = await Popcorn.metadataAdapter.getAdditionalSeasonAndEpisodesInfo(
+        pctSeason.number,
+        pctSeason,
+        showBookmark,
+      )
+
+      // Update the bookmark in the DB
+      Bookmarks.updateItem(showBookmark)
+    }
+
+    showBookmark.lastSeason.episodes.forEach((episode) => {
+      if (episode.hasTorrents && episode.aired > zevenDaysAgo && !episode.watched.complete) {
+        myEpisodes.push({
+          show: showBookmark,
+          ...episode,
+        })
+      }
+    })
+
+    bookmarksUpdated = bookmarksUpdated + 1
+
+    if (bookmarksUpdated === showBookmarks.length) {
+      // Dispatch the updated bookmark
+      resolve(dispatch({
+        type   : HomeConstants.FETCHED_MY_EPISODES,
+        payload: myEpisodes.sort(sortHighLow('aired')),
+      }))
+    }
+  })
+})

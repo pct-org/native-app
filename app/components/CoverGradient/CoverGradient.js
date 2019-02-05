@@ -14,6 +14,7 @@ const styles = StyleSheet.create({
     bottom  : 0,
     left    : 0,
   },
+
 })
 
 export const CoverGradient = ({ start, end }) => (

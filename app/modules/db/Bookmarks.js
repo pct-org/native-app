@@ -35,19 +35,43 @@ export default new (class BookmarksDB extends Base {
     return this.bookmarks.filter(bookmark => bookmark.type === Constants.TYPE_SHOW)
   }
 
-  addItem = ({ id, title, type, images }) => {
-    this.bookmarks.push({
-      id,
-      title,
-      type,
-      images,
-    })
+  createBookMarkItem = ({ id, ids, title, type, images, seasons }) => ({
+    id,
+    ids,
+    title,
+    type,
+    images,
+    updatedAt : Date.now(),
+    lastSeason: seasons ? seasons[seasons.length - 1] : null,
+    watched   : {
+      complete: false,
+    },
+  })
+
+  addItem = (item) => {
+    this.bookmarks.push(item)
 
     this.setItem(this.KEY_BOOKMARKS, JSON.stringify(this.bookmarks))
   }
 
   removeItem = ({ id }) => {
     this.bookmarks = this.bookmarks.filter(bookmark => bookmark.id !== id)
+
+    this.setItem(this.KEY_BOOKMARKS, JSON.stringify(this.bookmarks))
+  }
+
+  updateItem = ({ id, ...rest }) => {
+    this.bookmarks = this.bookmarks.map(bookmark => {
+      if (bookmark.id !== id) {
+        return bookmark
+      }
+
+      return {
+        ...bookmark,
+        ...rest,
+        updatedAt: Date.now(),
+      }
+    })
 
     this.setItem(this.KEY_BOOKMARKS, JSON.stringify(this.bookmarks))
   }

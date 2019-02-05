@@ -1,12 +1,12 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { Image, StyleSheet, View } from 'react-native'
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import { Constants } from 'popcorn-sdk'
 
 import CoverGradient from 'components/CoverGradient'
 import Typography from 'components/Typography'
 import Overlay from 'components/Overlay'
+import IconButton from 'components/IconButton'
 
 const styles = StyleSheet.create({
 
@@ -64,22 +64,19 @@ export const Cover = ({ item, playMovie }) => (
 
     {item && item.type === Constants.TYPE_MOVIE && (
       <View style={styles.playContainer}>
-        <Icon.Button
-          activeOpacity={0.1}
+        <IconButton
           onPress={() => playMovie(item.torrents)}
-          iconStyle={{ margin: 0 }}
-          backgroundColor={'transparent'}
-          borderRadius={0}
           name={'play-circle-outline'}
           color={'#FFF'}
-          size={80} />
+          size={80}/>
       </View>
     )}
 
     {item && (
       <Typography
         style={styles.title}
-        variant={'title'}>
+        variant={'title'}
+        fontWeight={'black'}>
         {item.title}
       </Typography>
     )}

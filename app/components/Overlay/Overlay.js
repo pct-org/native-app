@@ -10,13 +10,17 @@ export const styles = StyleSheet.create({
     bottom         : 0,
     left           : 0,
     backgroundColor: 'black',
-    opacity        : 0.3,
+    opacity        : 0.2,
   },
 
 })
 
-export const Overlay = () => (
-  <View style={styles.root} />
+export const Overlay = ({ style }) => (
+  <View style={[styles.root, style]} />
 )
+
+Overlay.defaultProps = {
+  style: {},
+}
 
 export default Overlay

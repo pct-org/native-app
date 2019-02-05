@@ -1,8 +1,20 @@
 {
   "presets": [
-    "babel-preset-react-native-stage-0/decorator-support"
+    "module:metro-react-native-babel-preset",
+    "@babel/preset-react"
   ],
   "plugins": [
+    "@babel/plugin-transform-runtime",
+    "@babel/plugin-transform-flow-strip-types",
+    "@babel/plugin-proposal-export-namespace-from",
+    "@babel/plugin-proposal-class-properties",
+    "@babel/plugin-proposal-object-rest-spread",
+    [
+      "@babel/plugin-proposal-decorators",
+      {
+        "legacy": true
+      }
+    ],
     [
       "module-resolver",
       {
@@ -12,11 +24,5 @@
       }
     ]
   ],
-  "env": {
-    "development": {
-      "plugins": [
-        "transform-react-jsx-source"
-      ]
-    }
-  }
+  "sourceMaps": true
 }

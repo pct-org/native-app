@@ -25,71 +25,71 @@ export function partlyFetchedItem(item) {
   }
 }
 
-export function getItem(itemToGet) {
-  return (dispatch, getState) => new Promise(async(resolve) => {
-    dispatch({
-      type: ItemConstants.FETCH_ITEM,
-    })
+export const getItem = (itemToGet) => (dispatch, getState) => new Promise(async(resolve) => {
+  dispatch({
+    type: ItemConstants.FETCH_ITEM,
+  })
 
-    const item = hasItem(itemToGet.id, itemToGet.type, getState())
+  const item = hasItem(itemToGet.id, itemToGet.type, getState())
 
-    if (itemToGet.type === Constants.TYPE_MOVIE) {
-      if (item) {
-        resolve(dispatch(fetchedItem(
-          await Popcorn.checkAdapters('checkMovie')(item),
-        )))
+  if (itemToGet.type === Constants.TYPE_MOVIE) {
+    if (item) {
+      resolve(dispatch(fetchedItem(
+        await Popcorn.checkAdapters('checkMovie')(item),
+      )))
 
-      } else {
-        resolve(Popcorn.getMovie({ ids: { imdb: itemToGet.id } }).then(movie => dispatch(fetchedItem(movie))))
-      }
-
-    } else if (itemToGet.type === Constants.TYPE_SHOW) {
-      if (item) {
-        resolve(dispatch(partlyFetchedItem(
-          await Popcorn.checkAdapters('checkShow')(item),
-        )))
-
-        const basicShow = await Popcorn.getShowBasic(item.id)
-        dispatch(partlyFetchedItem(basicShow))
-
-        dispatch(fetchedItem(
-          await Popcorn.getShowMeta(basicShow),
-        ))
-
-      } else if (itemToGet.id || itemToGet.ids.tmdb) {
-        // Okay, we don't have any thing yet so we have to partly to it in steps
-
-        const showWithIds = await Popcorn.getShowIds(itemToGet)
-        const basicShow = await Popcorn.getShowBasic(showWithIds.id)
-
-        const show = {
-          ...showWithIds,
-          ...basicShow,
-          ids: {
-            ...basicShow.ids,
-            ...showWithIds.ids,
-          },
-        }
-
-        resolve(dispatch(partlyFetchedItem(show)))
-
-        dispatch(fetchedItem(
-          await Popcorn.getShowSeasonsMeta(show),
-        ))
-      }
+    } else {
+      resolve(Popcorn.getMovie({ ids: { imdb: itemToGet.id } }).then(movie => dispatch(fetchedItem(movie))))
     }
 
-    return null
-  })
-}
+  } else if (itemToGet.type === Constants.TYPE_SHOW) {
+    if (item) {
+      resolve(dispatch(partlyFetchedItem(
+        await Popcorn.checkAdapters('checkShow')(item),
+      )))
+
+      const basicShow = await Popcorn.getShowBasic(item.id)
+      dispatch(partlyFetchedItem(basicShow))
+
+      dispatch(fetchedItem(
+        await Popcorn.getShowMeta(basicShow),
+      ))
+
+    } else if (itemToGet.id || itemToGet.ids.tmdb) {
+      // Okay, we don't have any thing yet so we have to partly to it in steps
+
+      const showWithIds = await Popcorn.getShowIds(itemToGet)
+      const basicShow = await Popcorn.getShowBasic(showWithIds.id)
+
+      const show = {
+        ...showWithIds,
+        ...basicShow,
+        ids: {
+          ...basicShow.ids,
+          ...showWithIds.ids,
+        },
+      }
+
+      resolve(dispatch(partlyFetchedItem(show)))
+
+      dispatch(fetchedItem(
+        await Popcorn.getShowSeasonsMeta(show),
+      ))
+    }
+  }
+
+  return null
+})
 
 export const addToBookmarks = (item) => (dispatch) => {
+  const bookmarkItem = Bookmarks.createBookMarkItem(item)
+
   dispatch({
     type   : ItemConstants.ADD_TO_BOOKMARKS,
-    payload: item,
+    payload: bookmarkItem,
   })
 
-  Bookmarks.addItem(item)
+  Bookmarks.addItem(bookmarkItem)
 }
 
 export const removeFromBookmarks = (item) => (dispatch) => {

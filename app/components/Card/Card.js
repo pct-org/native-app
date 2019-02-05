@@ -9,6 +9,11 @@ import BaseButton from '../BaseButton'
 
 const { width, height } = Dimensions.get('window')
 
+const smallHeight = height / 4
+const smallWidth = (width - 40) / 3.1
+const mediumHeight = height / 3.3
+const mediumWidth = (width - 40) / 3.5
+
 const rootWidth = (width - (Device.isTablet ? 40 : 32)) / (Device.isTablet ? 4 : 3)
 
 const styles = StyleSheet.create({
@@ -25,19 +30,19 @@ const styles = StyleSheet.create({
   default: {},
 
   small: {
-    height: 180,
-    width : 115,
+    height: smallHeight,
+    width : smallWidth,
   },
 
   // For now is this only correct for Tablet
   medium: {
-    height: height / 3.3,
-    width : (width - 40) / 3.5,
+    height: mediumHeight,
+    width : mediumWidth,
   },
 
   image: {
-    height    : '100%',
-    width     : '100%',
+    height: '100%',
+    width : '100%',
   },
 
   overlay: {
@@ -53,7 +58,7 @@ const styles = StyleSheet.create({
 
 })
 
-export default class Card extends React.Component {
+export default class Card extends React.PureComponent {
 
   static propTypes = {
     item   : PropTypes.object,
