@@ -32,23 +32,43 @@ export default (state = HomeConstants.INITIAL_STATE, action) => {
         },
       }
 
-    case HomeConstants.UPDATE_ITEM:
+    case HomeConstants.FETCH_MY_EPISODES:
       return {
         ...state,
         isLoading: false,
         modes    : {
           ...state.modes,
-          [action.payload.mode]: {
-            items: state.modes[action.payload.mode].items.map((item) => {
-              if (item.id !== action.payload.item.id) {
-                return item
-              }
+          myEpisodes: {
+            ...state.modes.myEpisodes,
+            fetching: true,
+          },
+        },
+      }
 
-              return {
-                ...item,
-                ...action.payload.item,
-              }
-            }),
+    case HomeConstants.REFRESH_MY_EPISODES:
+      return {
+        ...state,
+        isLoading: false,
+        modes    : {
+          ...state.modes,
+          myEpisodes: {
+            ...state.modes.myEpisodes,
+            refreshing: true,
+          },
+        },
+      }
+
+    case HomeConstants.FETCHED_MY_EPISODES:
+      return {
+        ...state,
+        isLoading: false,
+        modes    : {
+          ...state.modes,
+          myEpisodes: {
+            ...state.modes.myEpisodes,
+            fetching  : false,
+            refreshing: false,
+            items     : action.payload,
           },
         },
       }

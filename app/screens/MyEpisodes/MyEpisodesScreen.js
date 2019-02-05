@@ -1,12 +1,11 @@
 import React from 'react'
-import { StyleSheet, View, StatusBar, Image, Dimensions, FlatList, BackHandler } from 'react-native'
+import { StyleSheet, View, StatusBar, Image, Dimensions, FlatList, BackHandler, RefreshControl } from 'react-native'
 import Orientation from 'react-native-orientation'
 import { Constants } from 'popcorn-sdk'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import { withNavigationFocus } from 'react-navigation'
 
 import colors from 'modules/colors'
-import sortHighLow from 'modules/utils/sortHighLow'
 
 import BaseButton from 'components/BaseButton'
 import Typography from 'components/Typography'
@@ -67,19 +66,9 @@ export class MyEpisodes extends React.PureComponent {
     return {}
   }
 
-  zevenDaysAgo = null
-
   state = {
     selectFromTorrents: null,
     episodeToPlay     : null,
-
-    hasOldBookmarks: false,
-  }
-
-  constructor(props) {
-    super(props)
-
-    this.zevenDaysAgo = new Date(new Date().getTime() - (7 * 24 * 60 * 60 * 1000)).getTime()
   }
 
   componentDidMount() {
@@ -106,32 +95,10 @@ export class MyEpisodes extends React.PureComponent {
     return false
   }
 
-  getItems = () => {
-    const { modes: { [[Constants.TYPE_BOOKMARK]]: { items } } } = this.props
-    const { hasOldBookmarks } = this.state
+  handleRefresh = () => {
+    const { updateMyEpisodes } = this.props
 
-    const episodes = []
-
-    items.forEach(show => {
-      if (show.type === Constants.TYPE_SHOW) {
-        if (show.lastSeason) {
-          show.lastSeason.episodes.forEach((episode) => {
-            if (episode.hasTorrents && episode.aired > this.zevenDaysAgo && !episode.watched.complete) {
-              episodes.push({
-                show,
-                ...episode,
-              })
-            }
-          })
-        } else if (!hasOldBookmarks) {
-          this.setState({
-            hasOldBookmarks: true,
-          })
-        }
-      }
-    })
-
-    return episodes.sort(sortHighLow('aired'))
+    updateMyEpisodes(true)
   }
 
   selectQuality = (item) => {
@@ -201,21 +168,25 @@ export class MyEpisodes extends React.PureComponent {
   )
 
   render() {
-    const { isLoading } = this.props
-    const { selectFromTorrents, hasOldBookmarks } = this.state
-
-    const items = this.getItems()
+    const { modes: { myEpisodes: { items, refreshing, fetching } } } = this.props
+    const { selectFromTorrents } = this.state
 
     return (
       <View style={styles.root}>
 
         <StatusBar backgroundColor={'rgba(0, 0, 0, 0.20)'} animated />
 
-        <FullScreenLoading enabled={isLoading && items.length === 0} />
+        <FullScreenLoading enabled={fetching && items.length === 0} />
 
         {items.length > 0 && (
           <React.Fragment>
             <FlatList
+              refreshControl={
+                <RefreshControl
+                  refreshing={refreshing}
+                  onRefresh={this.handleRefresh}
+                />
+              }
               removeClippedSubviews
               data={items}
               initialNumToRender={4}
@@ -235,21 +206,11 @@ export class MyEpisodes extends React.PureComponent {
         {items.length === 0 && (
           <View style={styles.episodeContainer}>
 
-            {!hasOldBookmarks && (
-              <Typography
-                style={styles.noEpisodesText}
-                variant={'title'}>
-                Episodes aired within the last 7 days from shows you follow will appear here
-              </Typography>
-            )}
-
-            {hasOldBookmarks && (
-              <Typography
-                style={styles.noEpisodesText}
-                variant={'title'}>
-                Old bookmarks have been found! Plz readd the shows so they will be saved in the new format
-              </Typography>
-            )}
+            <Typography
+              style={styles.noEpisodesText}
+              variant={'title'}>
+              Episodes aired within the last 7 days from shows you follow will appear here
+            </Typography>
 
           </View>
         )}
