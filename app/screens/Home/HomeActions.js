@@ -113,6 +113,11 @@ export const updateMyEpisodes = (force = false) => (dispatch) => new Promise(asy
       const showBasic = await Popcorn.getShowBasic(showBookmark.id)
       const pctSeason = showBasic.seasons[showBasic.seasons.length - 1]
 
+      // Older versions of bookmarks did not save ids
+      if (!showBookmark.ids) {
+        showBookmark = await Popcorn.getShowIds(showBasic)
+      }
+
       // Only fetch the last season
       showBookmark.lastSeason = await Popcorn.metadataAdapter.getAdditionalSeasonAndEpisodesInfo(
         pctSeason.number,

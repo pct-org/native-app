@@ -189,7 +189,7 @@ export class MyEpisodes extends React.PureComponent {
 
         <StatusBar backgroundColor={'rgba(0, 0, 0, 0.20)'} animated />
 
-        <FullScreenLoading enabled={fetching && items.length === 0} />
+        <FullScreenLoading enabled={fetching} />
 
         {items.length > 0 && (
           <React.Fragment>
