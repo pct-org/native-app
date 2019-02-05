@@ -39,7 +39,6 @@ export class CardList extends React.PureComponent {
         windowSize={32}
         renderItem={this.renderCard}
         keyExtractor={(item, index) => `${item.id}-${index}`}
-        onEndReachedThreshold={100}
         ListFooterComponent={() => <View style={{ marginBottom: 16 }} />}
         {...props}
       />

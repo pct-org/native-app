@@ -32,6 +32,27 @@ export default (state = HomeConstants.INITIAL_STATE, action) => {
         },
       }
 
+    case HomeConstants.UPDATE_ITEM:
+      return {
+        ...state,
+        isLoading: false,
+        modes    : {
+          ...state.modes,
+          [action.payload.mode]: {
+            items: state.modes[action.payload.mode].items.map((item) => {
+              if (item.id !== action.payload.item.id) {
+                return item
+              }
+
+              return {
+                ...item,
+                ...action.payload.item,
+              }
+            }),
+          },
+        },
+      }
+
     case HomeConstants.CLEAR_ITEMS:
       return {
         ...state,

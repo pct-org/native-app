@@ -5,6 +5,7 @@ import Orientation from 'react-native-orientation'
 import * as Animatable from 'react-native-animatable'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import { Constants } from 'popcorn-sdk'
+import { withNavigationFocus } from 'react-navigation'
 
 import colors from 'modules/colors'
 
@@ -67,7 +68,7 @@ const styles = StyleSheet.create({
 
 })
 
-export default class Mode extends React.Component {
+export class Mode extends React.Component {
 
   static propTypes = {
     isLoading  : PropTypes.bool,
@@ -139,10 +140,10 @@ export default class Mode extends React.Component {
   handleTextChange = text => this.setState({ searchText: text, firstSearch: false })
 
   handleEndReached = () => {
-    const { isLoading, getItems, mode } = this.props
+    const { isLoading, getItems, mode, isFocused } = this.props
     const { page } = this.state
 
-    if (mode === Constants.TYPE_BOOKMARK) {
+    if (mode === Constants.TYPE_BOOKMARK || isLoading || !isFocused) {
       return
     }
 
@@ -233,3 +234,5 @@ export default class Mode extends React.Component {
   }
 
 }
+
+export default withNavigationFocus(Mode)

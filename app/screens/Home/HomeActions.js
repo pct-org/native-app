@@ -18,6 +18,14 @@ export const fetchedItems = (items, mode) => ({
   },
 })
 
+export const updateItem = (item, mode) => ({
+  type   : HomeConstants.FETCHED_ITEMS,
+  payload: {
+    item,
+    mode,
+  },
+})
+
 export const clearItems = mode => ({
   type   : HomeConstants.CLEAR_ITEMS,
   payload: mode,
@@ -64,7 +72,7 @@ export const getItems = (mode, page = 1, givenFilters = {}) => (dispatch, getSta
       const existingBookmarks = getState().home.modes.bookmark.items
 
       return Bookmarks.getAll().then((bookmarks) => {
-        Popcorn.checkAdapters('checkMovies')(bookmarks).then(bookmarks => {
+        Popcorn.checkAdapters('checkMovies')(bookmarks).then(async bookmarks => {
 
           dispatch(
             fetchedItems(
@@ -73,6 +81,41 @@ export const getItems = (mode, page = 1, givenFilters = {}) => (dispatch, getSta
               mode,
             ),
           )
+
+          const showBookmarks = await Bookmarks.getAllShows()
+
+          showBookmarks.forEach(async(showBookmark) => {
+
+            // TODO:: Check if updateAt is < 3 days
+            // TODO:: Separate this somewhere cause we also want a force full update
+
+            const showBasic = await Popcorn.getShowBasic(showBookmark.id)
+            const pctSeason = showBasic.seasons[showBasic.seasons.length - 1]
+
+            // Only fetch the last season
+            const lastSeasonInfo = await Popcorn.metadataAdapter.getAdditionalSeasonAndEpisodesInfo(
+              pctSeason.number,
+              pctSeason,
+              showBookmark,
+            )
+
+            // Create the updated bookmark
+            const updateBookmark = {
+              id        : showBookmark.id,
+              lastSeason: lastSeasonInfo,
+            }
+
+            // Update the bookmark in the DB
+            Bookmarks.updateItem(updateBookmark)
+
+            // Dispatch the updated bookmark
+            dispatch(
+              updateItem(
+                updateBookmark,
+                mode,
+              ),
+            )
+          })
         })
       })
 

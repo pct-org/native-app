@@ -17,5 +17,6 @@ export const INITIAL_STATE = {
 
 export const FETCH_ITEMS = `${REDUCER_NAME}.fetch.items`
 export const FETCHED_ITEMS = `${REDUCER_NAME}.fetched.items`
+export const UPDATE_ITEM = `${REDUCER_NAME}.update.item`
 export const CLEAR_ITEMS = `${REDUCER_NAME}.clear.items`
 export const ERROR_NO_CON = `${REDUCER_NAME}.error.no.internet`

@@ -239,7 +239,12 @@ export default class VideoPlayer extends React.Component {
     return item.title
   }
 
-  renderAdditionalControls = () => {
+  /**
+   * @param castButtonOnly We only show the cast button when everything is still loading
+   *
+   * @returns {*}
+   */
+  renderAdditionalControls = (castButtonOnly) => {
     const { progress, downloadSpeedFormatted, seeds } = this.state
 
     return (
@@ -248,32 +253,34 @@ export default class VideoPlayer extends React.Component {
           <CastButton style={{ width: 30, height: 30, tintColor: 'white' }} />
         </View>
 
-        <View style={styles.stats}>
-          {progress !== 100 && (
-            <React.Fragment>
-              <View style={styles.statItem}>
-                <Typography>{i18n.t('progress')}</Typography>
-                <Typography>{progress.toFixed(2)}</Typography>
-              </View>
+        {!castButtonOnly && (
+          <View style={styles.stats}>
+            {progress !== 100 && (
+              <React.Fragment>
+                <View style={styles.statItem}>
+                  <Typography>{i18n.t('progress')}</Typography>
+                  <Typography>{progress.toFixed(2)}</Typography>
+                </View>
 
-              <View style={styles.statItem}>
-                <Typography>{i18n.t('speed')}</Typography>
-                <Typography>{downloadSpeedFormatted.toString()}</Typography>
-              </View>
+                <View style={styles.statItem}>
+                  <Typography>{i18n.t('speed')}</Typography>
+                  <Typography>{downloadSpeedFormatted.toString()}</Typography>
+                </View>
 
-              <View style={styles.statItem}>
-                <Typography>{i18n.t('seeds')}</Typography>
-                <Typography>{seeds.toString()}</Typography>
-              </View>
-            </React.Fragment>
-          )}
+                <View style={styles.statItem}>
+                  <Typography>{i18n.t('seeds')}</Typography>
+                  <Typography>{seeds.toString()}</Typography>
+                </View>
+              </React.Fragment>
+            )}
 
-          {progress === 100 && (
-            <Typography>
-              {i18n.t('complete')}
-            </Typography>
-          )}
-        </View>
+            {progress === 100 && (
+              <Typography>
+                {i18n.t('complete')}
+              </Typography>
+            )}
+          </View>
+        )}
       </React.Fragment>
     )
   }
@@ -285,7 +292,7 @@ export default class VideoPlayer extends React.Component {
     return (
       <View style={styles.container}>
 
-        <StatusBar hidden={!paused && !casting && doneBuffering} animated />
+        <StatusBar hidden={!paused && casting && doneBuffering} animated />
 
         {(loading || casting) && (
           <View style={[styles.fullScreen, styles.loadingContainer]}>
@@ -347,7 +354,7 @@ export default class VideoPlayer extends React.Component {
           </React.Fragment>
         )}
 
-        {casting && this.renderAdditionalControls()}
+        {casting || loading && this.renderAdditionalControls(loading)}
 
       </View>
     )

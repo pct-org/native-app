@@ -12,6 +12,7 @@ import HomeScreen from './Home'
 import ItemScreen from './Item'
 import PlayerScreen from './Player'
 import ModeScreen from './Mode'
+import MyEpisodesScreen from './MyEpisodes'
 
 export const AppNavigator = createStackNavigator({
   Main: {
@@ -38,6 +39,21 @@ export const AppNavigator = createStackNavigator({
           tabBarIcon : ({ tintColor }) => (
             <Icon
               name={'bookmark'}
+              color={tintColor}
+              size={25}
+            />
+          ),
+        },
+      },
+
+      MyEpisodes: {
+        screen: MyEpisodesScreen,
+
+        navigationOptions: {
+          tabBarLabel: i18n.t('My Episodes'),
+          tabBarIcon : ({ tintColor }) => (
+            <Icon
+              name={'play-network'}
               color={tintColor}
               size={25}
             />
@@ -77,8 +93,8 @@ export const AppNavigator = createStackNavigator({
     }, {
       initialRouteName: 'Home',
       tabBarOptions   : {
-        inactiveTintColor: '#acacac',
-        activeTintColor  : '#FFF',
+        inactiveTintColor: colors.BOTTOM_BAR_INACTIVE_TINT,
+        activeTintColor  : colors.BOTTOM_BAR_ACTIVE_TINT,
 
         style: {
           backgroundColor: colors.BACKGROUND,

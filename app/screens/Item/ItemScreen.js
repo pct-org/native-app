@@ -11,7 +11,7 @@ import Typography from 'components/Typography'
 import IconButton from 'components/IconButton'
 
 import Cover from './Cover'
-import QualitySelector from './QualitySelector'
+import QualitySelector from 'components/QualitySelector'
 import ItemOrRecommendations from './ItemOrRecommendations'
 
 const styles = StyleSheet.create({
@@ -31,6 +31,8 @@ const styles = StyleSheet.create({
   iconsContainer: {
     marginTop   : 24,
     marginBottom: 24,
+
+    minHeight: 70
   },
 
   icon: {
@@ -168,17 +170,19 @@ export default class Item extends React.PureComponent {
 
           {item && (
             <View style={[styles.container, styles.iconsContainer]}>
-              <IconButton
-                animatable={{
-                  animation: 'fadeIn',
-                }}
-                style={styles.icon}
-                onPress={this.handleToggleBookmarks}
-                name={item.bookmarked ? 'check' : 'plus'}
-                color={'#FFF'}
-                size={40}>
-                {i18n.t('My List')}
-              </IconButton>
+              {!isLoading && (
+                <IconButton
+                  animatable={{
+                    animation: 'fadeIn',
+                  }}
+                  style={styles.icon}
+                  onPress={this.handleToggleBookmarks}
+                  name={item.bookmarked ? 'check' : 'plus'}
+                  color={'#FFF'}
+                  size={40}>
+                  {i18n.t('My List')}
+                </IconButton>
+              )}
 
               {item && item.type === Constants.TYPE_MOVIE && (
                 <IconButton

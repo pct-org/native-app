@@ -1,6 +1,7 @@
 {
   "Home": "Home",
   "My List": "My List",
+  "My Episodes": "My Episodes",
   "Movies": "Movies",
   "Shows": "Shows",
   "Season {{number}}": "Season {{number}}",
@@ -25,5 +26,7 @@
   "Genres": "Genres",
   "Episodes": "Episodes",
   "More like this": "More like this",
-  "Movies or shows": "Movies or shows"
+  "Movies or shows": "Movies or shows",
+  "Episodes aired within the last 7 days from shows you follow will appear here": "Episodes aired within the last 7 days from shows you follow will appear here",
+  "Old bookmarks have been found! Plz readd the shows so they will be saved in the new format": "Old bookmarks have been found! Plz readd the shows so they will be saved in the new format"
 }

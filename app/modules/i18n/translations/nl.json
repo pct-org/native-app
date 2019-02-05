@@ -1,6 +1,7 @@
 {
   "Home": "Home",
   "My List": "Mijn Lijst",
+  "My Episodes": "Mijn Afleveringen",
   "Movies": "Films",
   "Shows": "Series",
   "Season {{number}}": "Seizoen {{number}}",
@@ -25,5 +26,7 @@
   "Genres": "Genres",
   "Episodes": "Afleveringen",
   "More like this": "Meer zoals dit",
-  "Movies or shows": "Films of series"
+  "Movies or shows": "Films of series",
+  "Episodes aired within the last 7 days from shows you follow will appear here": "Afleveringen die de afgelopen 7 dagen uitgekomen zijn van series die je volgt komen hier",
+  "Old bookmarks have been found! Plz readd the shows so they will be saved in the new format": "Oud format van mijn lijst gevonden! Voeg de shows die je volgt opnieuw toe om ze hier te zien"
 }
