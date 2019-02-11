@@ -6,7 +6,7 @@ import Device from 'modules/DeviceDetection'
 
 import Card from 'components/Card'
 
-export class CardList extends React.PureComponent {
+export class CardList extends React.Component {
 
   handleItemOpen = (item) => {
     const { handleItemOpen, navigation } = this.props
