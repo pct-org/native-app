@@ -212,8 +212,8 @@ export default class VideoPlayer extends React.Component {
 
       mediaUrl: this.serverUrl + url.replace(this.serverDirectory, ''),
 
-      imageUrl : item.images.fanart.high,
-      posterUrl: item.images.poster.high,
+      imageUrl : this.getItemImage('fanart'),
+      posterUrl: this.getItemImage(),
     })
 
     this.setState({
@@ -235,6 +235,23 @@ export default class VideoPlayer extends React.Component {
     }
 
     return item.title
+  }
+
+  getItemImage = (type = 'poster') => {
+    const { item } = this.state
+
+    // If it's the poster then always return the cover
+    if (type === 'poster' && item.show) {
+      return item.show.images[type].high
+    }
+
+    // If it's a show and the item itself does not have the image then use the shows
+    if (item.show && !item.images[type].high) {
+      return item.show.images[type].high
+    }
+
+    // Return the image of the image
+    return item.images[type].high
   }
 
   /**
