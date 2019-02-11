@@ -46,7 +46,6 @@ export default class VideoPlayer extends React.Component {
       item,
       duration   : 0.0,
       currentTime: 0.0,
-      paused     : false,
       loading    : true,
       casting    : false,
 
@@ -136,7 +135,6 @@ export default class VideoPlayer extends React.Component {
 
   handleCastSessionEnded = () => {
     this.setState({
-      paused : false,
       casting: false,
     })
   }
@@ -205,7 +203,7 @@ export default class VideoPlayer extends React.Component {
     }
 
     GoogleCast.castMedia({
-      title   : item.title,
+      title   : this.getItemTitle(),
       subtitle: item.summary,
       // studio: video.studio,
       // duration: video.duration,
@@ -286,13 +284,13 @@ export default class VideoPlayer extends React.Component {
   }
 
   render() {
-    const { url, casting, paused, loading, showControls, item } = this.state
+    const { url, casting, loading, showControls, item } = this.state
     const { doneBuffering, buffer, downloadSpeedFormatted } = this.state
 
     return (
       <View style={styles.container}>
 
-        <StatusBar hidden={!paused && casting && doneBuffering} animated />
+        <StatusBar hidden={false} animated />
 
         {(loading || casting) && (
           <View style={[styles.fullScreen, styles.loadingContainer]}>
@@ -302,7 +300,7 @@ export default class VideoPlayer extends React.Component {
             )}
 
             <Typography
-              style={{ marginTop: 10, marginBottom: 20 }}
+              style={{ marginTop: 10, marginBottom: 20, textAlign: 'center' }}
               variant={'title'}>
               {this.getItemTitle()}
             </Typography>

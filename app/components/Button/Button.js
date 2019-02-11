@@ -19,7 +19,7 @@ export const styles = StyleSheet.create({
   default: {
     ...defaultPadding,
 
-    backgroundColor: colors.BUTTON_PRIMARY,
+    backgroundColor: colors.BUTTON_DEFAULT,
   },
 
   primary: {

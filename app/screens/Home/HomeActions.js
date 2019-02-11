@@ -107,6 +107,13 @@ export const updateMyEpisodes = (force = false) => (dispatch) => new Promise(asy
   const myEpisodes = []
   let bookmarksUpdated = 0
 
+  if (showBookmarks.length === 0) {
+    return resolve(dispatch({
+      type   : HomeConstants.FETCHED_MY_EPISODES,
+      payload: [],
+    }))
+  }
+
   showBookmarks.forEach(async(showBookmark) => {
     // Check if the bookmark is last updated three days ago or it is a force
     if (!showBookmark.updatedAt || showBookmark.updatedAt < threeDaysAgo || force) {

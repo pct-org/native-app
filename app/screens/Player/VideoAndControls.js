@@ -1,5 +1,5 @@
 import React from 'react'
-import { Dimensions, Slider } from 'react-native'
+import { Dimensions, Slider, StatusBar } from 'react-native'
 import RNVideo from 'react-native-video'
 import { withNavigation } from 'react-navigation'
 import {
@@ -241,10 +241,15 @@ export class EpisodesBar extends React.Component {
 
   render() {
     const { url, item, children } = this.props
-    const { showControls, paused, isPortrait, resizeMode, progress } = this.state
+    const { isPortrait, resizeMode, progress } = this.state
+    const { showControls, paused } = this.state
 
     return (
       <React.Fragment>
+        <StatusBar
+          hidden={!paused && !isPortrait}
+          animated />
+
         {url && (
           <RNVideo
             ref={(ref) => { this.videoRef = ref }}
