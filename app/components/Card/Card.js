@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { StyleSheet, View, Image, Dimensions } from 'react-native'
 import Device from 'modules/DeviceDetection'
 
-import posterHolder from 'images/posterholder.png'
+import posterHolderImage from 'images/posterholder.png'
 
 import BaseButton from '../BaseButton'
 
@@ -97,7 +97,7 @@ export default class Card extends React.PureComponent {
     const { showPlaceholder } = this.state
 
     if (showPlaceholder || empty) {
-      return posterHolder
+      return posterHolderImage
     }
 
     return { uri: item.images.poster.thumb }
@@ -114,7 +114,7 @@ export default class Card extends React.PureComponent {
         <View style={[styles.root, styles[variant]]}>
           <Image
             style={styles.image}
-            defaultSource={posterHolder}
+            defaultSource={posterHolderImage}
             onError={this.handleImageError}
             source={this.getImage()}
           />

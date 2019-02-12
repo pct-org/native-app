@@ -43,12 +43,16 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
   },
 
-  bodyContainer: {
+  bodyScroll: {
     width    : '100%',
-    maxHeight: '80%',
+    maxHeight: '100%',
 
     paddingLeft : 16,
     paddingRight: 16,
+  },
+
+  bodyContainer: {
+    paddingBottom: 48,
   },
 
   actions: {
@@ -59,7 +63,7 @@ export const styles = StyleSheet.create({
     flexDirection : 'row',
 
     position: 'absolute',
-    bottom  : 16,
+    bottom  : 8,
     right   : 0,
     left    : 0,
   },
@@ -154,9 +158,10 @@ export default class CheckForUpdates extends React.Component {
               {i18n.t('Terms of Service')}
             </Typography>
 
-            <ScrollView style={styles.bodyContainer}>
-              <Markdown style={mdStyle}>
-                {`## Your Acceptance
+            <ScrollView style={styles.bodyScroll}>
+              <View style={styles.bodyContainer}>
+                <Markdown style={mdStyle}>
+                  {`## Your Acceptance
 By using the Popcorn Time app you signify your agreement to (1) these terms and conditions (the 'Terms of Service').
 
 ## Privacy Policy.
@@ -174,7 +179,8 @@ ALL MOVIES ARE NOT HOSTED ON ANY SERVER AND ARE STREAMED USING THE P2P BIT TORRE
 ## Ability to Accept Terms of Service
 By using Popcorn Time or accessing this site you affirm that you are either more than 18 years of age, or an emancipated minor, or possess legal parental or guardian consent, and are fully able and competent to enter into the terms, conditions, obligations, affirmations, representations, and warranties set forth in these Terms of Service, and to abide by and comply with these Terms of Service. In any case, you affirm that you are over the age of 13, as the Service is not intended for children under 13. If you are under 13 years of age, then please do not use the Service. There are lots of other great web sites for you. Talk to your parents about what sites are appropriate for you.
 `}
-              </Markdown>
+                </Markdown>
+              </View>
             </ScrollView>
 
             <View style={styles.actions}>

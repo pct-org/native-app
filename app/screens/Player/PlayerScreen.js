@@ -1,11 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import {
-  StatusBar,
-  StyleSheet,
-  ActivityIndicator,
-  View,
-} from 'react-native'
+import { StatusBar, StyleSheet, ActivityIndicator, View } from 'react-native'
 import RNFS from 'react-native-fs'
 import GoogleCast, { CastButton } from 'react-native-google-cast'
 import StaticServer from 'react-native-static-server'
@@ -46,7 +41,6 @@ export default class VideoPlayer extends React.Component {
       item,
       duration   : 0.0,
       currentTime: 0.0,
-      paused     : false,
       loading    : true,
       casting    : false,
 
@@ -136,7 +130,6 @@ export default class VideoPlayer extends React.Component {
 
   handleCastSessionEnded = () => {
     this.setState({
-      paused : false,
       casting: false,
     })
   }
@@ -159,17 +152,21 @@ export default class VideoPlayer extends React.Component {
   handleTorrentReady = async(data) => {
     const castState = await GoogleCast.getCastState()
 
+    let newState = {
+      url          : null,
+      buffer       : '100',
+      doneBuffering: true,
+      loading      : false,
+    }
+
     if (castState.toLowerCase() === 'connected') {
       await this.startCasting(data.url)
 
     } else {
-      this.setState({
-        url          : data.url,
-        buffer       : '100',
-        doneBuffering: true,
-        loading      : false,
-      })
+      newState.url = data.url
     }
+
+    this.setState(newState)
   }
 
   handleTorrentError = (e) => {
@@ -205,7 +202,7 @@ export default class VideoPlayer extends React.Component {
     }
 
     GoogleCast.castMedia({
-      title   : item.title,
+      title   : this.getItemTitle(),
       subtitle: item.summary,
       // studio: video.studio,
       // duration: video.duration,
@@ -214,8 +211,8 @@ export default class VideoPlayer extends React.Component {
 
       mediaUrl: this.serverUrl + url.replace(this.serverDirectory, ''),
 
-      imageUrl : item.images.fanart.high,
-      posterUrl: item.images.poster.high,
+      imageUrl : this.getItemImage('fanart'),
+      posterUrl: this.getItemImage('poster'),
     })
 
     this.setState({
@@ -237,6 +234,23 @@ export default class VideoPlayer extends React.Component {
     }
 
     return item.title
+  }
+
+  getItemImage = (type) => {
+    const { item } = this.state
+
+    // If it's the poster then always return the cover
+    if (type === 'poster' && item.show) {
+      return item.show.images[type].high
+    }
+
+    // If it's a show and the item itself does not have the image then use the shows
+    if (item.show && !item.images[type].high) {
+      return item.show.images[type].high
+    }
+
+    // Return the image of the image
+    return item.images[type].high
   }
 
   /**
@@ -286,13 +300,13 @@ export default class VideoPlayer extends React.Component {
   }
 
   render() {
-    const { url, casting, paused, loading, showControls, item } = this.state
+    const { url, casting, loading, showControls, item } = this.state
     const { doneBuffering, buffer, downloadSpeedFormatted } = this.state
 
     return (
       <View style={styles.container}>
 
-        <StatusBar hidden={!paused && casting && doneBuffering} animated />
+        <StatusBar hidden={false} animated />
 
         {(loading || casting) && (
           <View style={[styles.fullScreen, styles.loadingContainer]}>
@@ -302,7 +316,7 @@ export default class VideoPlayer extends React.Component {
             )}
 
             <Typography
-              style={{ marginTop: 10, marginBottom: 20 }}
+              style={{ marginTop: 10, marginBottom: 20, textAlign: 'center' }}
               variant={'title'}>
               {this.getItemTitle()}
             </Typography>
