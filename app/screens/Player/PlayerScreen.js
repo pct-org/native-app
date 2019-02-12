@@ -1,11 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import {
-  StatusBar,
-  StyleSheet,
-  ActivityIndicator,
-  View,
-} from 'react-native'
+import { StatusBar, StyleSheet, ActivityIndicator, View } from 'react-native'
 import RNFS from 'react-native-fs'
 import GoogleCast, { CastButton } from 'react-native-google-cast'
 import StaticServer from 'react-native-static-server'
