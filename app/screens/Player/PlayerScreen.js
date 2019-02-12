@@ -157,17 +157,21 @@ export default class VideoPlayer extends React.Component {
   handleTorrentReady = async(data) => {
     const castState = await GoogleCast.getCastState()
 
+    let newState = {
+      url          : null,
+      buffer       : '100',
+      doneBuffering: true,
+      loading      : false,
+    }
+
     if (castState.toLowerCase() === 'connected') {
       await this.startCasting(data.url)
 
     } else {
-      this.setState({
-        url          : data.url,
-        buffer       : '100',
-        doneBuffering: true,
-        loading      : false,
-      })
+      newState.url = data.url
     }
+
+    this.setState(newState)
   }
 
   handleTorrentError = (e) => {
@@ -213,7 +217,7 @@ export default class VideoPlayer extends React.Component {
       mediaUrl: this.serverUrl + url.replace(this.serverDirectory, ''),
 
       imageUrl : this.getItemImage('fanart'),
-      posterUrl: this.getItemImage(),
+      posterUrl: this.getItemImage('poster'),
     })
 
     this.setState({
@@ -237,7 +241,7 @@ export default class VideoPlayer extends React.Component {
     return item.title
   }
 
-  getItemImage = (type = 'poster') => {
+  getItemImage = (type) => {
     const { item } = this.state
 
     // If it's the poster then always return the cover
