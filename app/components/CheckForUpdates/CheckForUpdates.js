@@ -64,6 +64,10 @@ export const styles = StyleSheet.create({
     right   : 0,
     left    : 0,
   },
+
+  action: {
+    margin: 4,
+  },
 })
 
 export const mdStyle = StyleSheet.create({
@@ -192,11 +196,13 @@ export default class CheckForUpdates extends React.Component {
         {!updating && (
           <View style={styles.actions}>
             <Button
+              style={styles.action}
               onPress={this.handleCancelUpdate}>
               {i18n.t('cancel')}
             </Button>
 
             <Button
+              style={styles.action}
               variant={'primary'}
               onPress={update}>
               {i18n.t('update')}

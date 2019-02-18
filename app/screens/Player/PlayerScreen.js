@@ -9,9 +9,11 @@ import { utils } from 'popcorn-sdk'
 import Orientation from 'react-native-orientation'
 
 import i18n from 'modules/i18n'
+import PopcornSDK from 'modules/PopcornSDK'
 
 import Typography from 'components/Typography'
 import Button from 'components/Button'
+import IconButton from 'components/IconButton'
 
 import VideoAndControls from './VideoAndControls'
 
@@ -54,11 +56,13 @@ export default class VideoPlayer extends React.Component {
       seeds        : 0,
 
       loadedMagnet: null,
+
+      subs: null,
     }
   }
 
   componentDidMount() {
-    const { navigation: { state: { params: { magnet } } } } = this.props
+    const { navigation: { state: { params: { magnet, item } } } } = this.props
 
     GoogleCast.EventEmitter.addListener(GoogleCast.MEDIA_STATUS_UPDATED, this.handleCastMediaUpdate)
     GoogleCast.EventEmitter.addListener(GoogleCast.SESSION_STARTED, this.handleCastSessionStarted)
@@ -77,6 +81,18 @@ export default class VideoPlayer extends React.Component {
     //   doneBuffering: true,
     //   loading      : false,
     // })
+    // Fetch subs
+    PopcornSDK.searchForSubtitles(item).then((response) => {
+      console.log('searched subs', response)
+
+      this.setState({
+        subs: response,
+      })
+
+      Object.keys(response).forEach(lang => {
+        console.log(response[lang])
+      })
+    })
   }
 
   playItem = (magnet = null, url = null, item = null) => {
@@ -259,10 +275,24 @@ export default class VideoPlayer extends React.Component {
    * @returns {*}
    */
   renderAdditionalControls = (castButtonOnly) => {
-    const { progress, downloadSpeedFormatted, seeds } = this.state
+    const { progress, downloadSpeedFormatted, seeds, subs } = this.state
 
     return (
       <React.Fragment>
+        {subs && (
+          <View style={styles.subsButton} pointerEvents={'box-none'}>
+            <IconButton
+              animatable={{
+                animation: 'fadeIn',
+              }}
+              style={styles.icon}
+              onPress={() => console.log('press')}
+              name={'subtitles-outline'}
+              color={'#FFF'}
+              size={30} />
+          </View>
+        )}
+
         <View style={styles.castButton} pointerEvents={'box-none'}>
           <CastButton style={{ width: 30, height: 30, tintColor: 'white' }} />
         </View>
@@ -406,8 +436,18 @@ const styles = StyleSheet.create({
     position: 'absolute',
     right   : 24,
     top     : 24,
-    width   : 30,
-    height  : 30,
+    width   : 50,
+    height  : 50,
+
+    zIndex: 1001,
+  },
+
+  subsButton: {
+    position: 'absolute',
+    left    : 18,
+    top     : 24,
+    width   : 50,
+    height  : 50,
 
     zIndex: 1001,
   },

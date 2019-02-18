@@ -6,7 +6,7 @@
 
         <item name="android:spinnerItemStyle">@style/SpinnerItem</item>
         <item name="android:spinnerDropDownItemStyle">@style/SpinnerDropDownItem</item>
-        <item name="android:navigationBarColor">@color/background</item>
+        <item name="android:navigationBarColor">@color/background_secondary</item>
     </style>
 
     <style name="SplashTheme" parent="Theme.AppCompat.Light.NoActionBar">
@@ -15,14 +15,14 @@
     </style>
 
     <style name="SpinnerItem" parent="Theme.AppCompat.Light.NoActionBar">>
-        <item name="android:textColor">#ffffff</item>
+        <item name="android:textColor">#FAFAFA</item>
         <item name="android:textSize">18dp</item>
         <item name="android:fontFamily">Roboto-Bold</item>
         <item name="android:gravity">center</item>
     </style>
 
     <style name="SpinnerDropDownItem" parent="Theme.AppCompat.Light.NoActionBar">>
-        <item name="android:textColor">#ffffff</item>
+        <item name="android:textColor">#FAFAFA</item>
         <item name="android:textSize">18dp</item>
         <item name="android:fontFamily">Roboto-Bold</item>
         <item name="android:background">@color/dropdown_background</item>

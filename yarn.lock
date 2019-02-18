@@ -5508,7 +5508,7 @@ react-native-static-server@0.4.1:
   resolved "https://registry.yarnpkg.com/react-native-static-server/-/react-native-static-server-0.4.1.tgz#ed66438bf1ed8fb7ea9246815689761eec319d40"
   integrity sha512-Zpq2KcVmPSuejLAVvHBphGCcSZRbst6t7T/DIeV2QV8b6qBL3JdKB56MYyoxiWiEGaoM53ust2WweTrW8dV7Yg==
 
-react-native-tab-view@^1.0.0, react-native-tab-view@^1.2.0, react-native-tab-view@^1.3.1:
+react-native-tab-view@^1.0.0, react-native-tab-view@^1.2.0:
   version "1.3.1"
   resolved "https://registry.yarnpkg.com/react-native-tab-view/-/react-native-tab-view-1.3.1.tgz#f9932d6bd5ba7dad75ef9335a68f13d85ba5bd56"
   integrity sha512-QNt6VkEW8SP1UJ7yjD5P4bOTWwHQfoIMD5CqnA06pcubdNwHR1NmjiNZsVnIvp5wAEVbW6yTHjLXOh1fzab4xg==
