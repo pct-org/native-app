@@ -1,6 +1,6 @@
 import React from 'react'
 import { Dimensions, Slider, StatusBar } from 'react-native'
-import RNVideo from 'react-native-video'
+import RNVideo, { TextTrackType } from 'react-native-video'
 import { withNavigation } from 'react-navigation'
 import {
   StyleSheet,
@@ -240,7 +240,7 @@ export class EpisodesBar extends React.Component {
   }
 
   render() {
-    const { url, item, children } = this.props
+    const { url, item, children, subs, activeSub, forcePaused } = this.props
     const { isPortrait, resizeMode, progress } = this.state
     const { showControls, paused } = this.state
 
@@ -255,7 +255,7 @@ export class EpisodesBar extends React.Component {
             ref={(ref) => { this.videoRef = ref }}
             source={{ uri: url }}
             style={styles.video}
-            paused={paused}
+            paused={paused || forcePaused}
             volume={1}
             rate={1}
             muted={false}
@@ -265,9 +265,15 @@ export class EpisodesBar extends React.Component {
             onAudioBecomingNoisy={this.handlePauseVideo}
             onSeek={this.handlePlayVideo}
             repeat={false}
-            selectedTextTrack={{
-              type: 'disabled',
-            }}
+            textTracks={subs}
+            selectedTextTrack={
+              activeSub
+                ? {
+                  type : 'language',
+                  value: activeSub,
+                }
+                : null
+            }
           />
         )}
 
@@ -301,16 +307,7 @@ export class EpisodesBar extends React.Component {
             ref={ref => this.scrollViewRef = ref}
             showsHorizontalScrollIndicator={false}
             showsVerticalScrollIndicator={false}
-            contentContainerStyle={{
-              flexGrow: 1,
-              flex    : 1,
-              position: 'absolute',
-              top     : 0,
-              bottom  : 0,
-              left    : 0,
-              right   : 0,
-
-            }}
+            contentContainerStyle={styles.contentContainerStyle}
             onScroll={this.toggleControls}
             scrollEnabled={showControls}
             onScrollEndDrag={this.positionScroller}
@@ -375,6 +372,16 @@ const styles = StyleSheet.create({
     flex    : 1,
 
     backgroundColor: '#000',
+  },
+
+  contentContainerStyle: {
+    flexGrow: 1,
+    flex    : 1,
+    position: 'absolute',
+    top     : 0,
+    bottom  : 0,
+    left    : 0,
+    right   : 0,
   },
 
   video: {

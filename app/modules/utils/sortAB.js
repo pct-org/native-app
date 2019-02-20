@@ -1,2 +1,1 @@
-export default prop => (a, b) => b[prop] - a[prop]
-
+export default prop => (a, b) => a[prop].localeCompare(b[prop])

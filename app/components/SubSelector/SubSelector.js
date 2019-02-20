@@ -7,6 +7,8 @@ import BaseButton from 'components/BaseButton'
 import IconButton from 'components/IconButton'
 
 import colors from 'modules/colors'
+import i18n from 'modules/i18n'
+import sortAB from 'modules/utils/sortAB'
 
 const styles = StyleSheet.create({
 
@@ -17,6 +19,7 @@ const styles = StyleSheet.create({
     left    : 0,
     width   : '100%',
     height  : '100%',
+    zIndex  : 1100,
   },
 
   container: {
@@ -25,6 +28,7 @@ const styles = StyleSheet.create({
     justifyContent : 'center',
     alignItems     : 'center',
     backgroundColor: colors.BACKGROUND,
+    zIndex         : 1100,
   },
 
   closeIcon: {
@@ -33,41 +37,25 @@ const styles = StyleSheet.create({
     right   : 14,
   },
 
-  quality: {
+  sub: {
     ...material.titleWhiteObject,
     margin: 8,
   },
 
 })
 
-export default class QualitySelector extends React.Component {
-
-  static getDerivedStateFromProps(props) {
-    if (props.torrents) {
-      return {
-        qualities: Object.keys(props.torrents).filter(quality => !!props.torrents[quality]),
-      }
-    }
-
-    return {}
-  }
+export default class SubSelector extends React.Component {
 
   state = {
-    hidden   : false,
-    qualities: null,
-  }
-
-  playQuality = (quality) => {
-    const { playItem, torrents } = this.props
-
-    playItem(torrents[quality])
+    hidden: false,
+    subs  : null,
   }
 
   handleAnimationEnd = () => {
-    const { torrents } = this.props
+    const { show } = this.props
 
     this.setState({
-      hidden: !torrents,
+      hidden: !show,
     })
   }
 
@@ -78,23 +66,23 @@ export default class QualitySelector extends React.Component {
   }
 
   render() {
-    const { torrents, cancel } = this.props
-    const { hidden, qualities } = this.state
+    const { show, cancel, subs, selectSub } = this.props
+    const { hidden } = this.state
 
-    if (hidden && !torrents) {
+    if (hidden && !show) {
       return null
     }
 
     return (
       <Animatable.View
-        animation={torrents ? 'fadeIn' : 'fadeOut'}
+        animation={show ? 'fadeIn' : 'fadeOut'}
         duration={200}
         style={[styles.root]}
         onAnimationBegin={this.handleAnimationBegin}
         onAnimationEnd={this.handleAnimationEnd}
         useNativeDriver>
 
-        {qualities && (
+        {subs && (
           <View style={[styles.root, styles.container]}>
             <View style={styles.closeIcon}>
               <IconButton
@@ -105,15 +93,21 @@ export default class QualitySelector extends React.Component {
               />
             </View>
 
-            {qualities.map((quality) => (
+            {subs.sort(sortAB('title')).map((sub) => (
               <BaseButton
-                key={quality}
-                onPress={() => this.playQuality(quality)}>
-                <Text style={styles.quality}>
-                  {quality}
+                key={sub.language}
+                onPress={() => selectSub(sub)}>
+                <Text style={styles.sub}>
+                  {sub.title}
                 </Text>
               </BaseButton>
             ))}
+
+            <BaseButton onPress={() => selectSub(null)}>
+              <Text style={styles.sub}>
+                {i18n.t('None')}
+              </Text>
+            </BaseButton>
           </View>
         )}
 

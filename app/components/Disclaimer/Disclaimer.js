@@ -29,7 +29,10 @@ export const styles = StyleSheet.create({
   },
 
   title: {
-    marginBottom: 16,
+    minHeight: 70,
+
+    paddingTop: 24,
+    padding   : 8,
   },
 
   logo: {

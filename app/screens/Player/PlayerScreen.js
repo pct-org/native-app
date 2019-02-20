@@ -5,8 +5,9 @@ import RNFS from 'react-native-fs'
 import GoogleCast, { CastButton } from 'react-native-google-cast'
 import StaticServer from 'react-native-static-server'
 import TorrentStreamer from 'react-native-torrent-streamer'
-import { utils } from 'popcorn-sdk'
+import { Constants, utils } from 'popcorn-sdk'
 import Orientation from 'react-native-orientation'
+import { TextTrackType } from 'react-native-video'
 
 import i18n from 'modules/i18n'
 import PopcornSDK from 'modules/PopcornSDK'
@@ -14,6 +15,7 @@ import PopcornSDK from 'modules/PopcornSDK'
 import Typography from 'components/Typography'
 import Button from 'components/Button'
 import IconButton from 'components/IconButton'
+import SubSelector from 'components/SubSelector'
 
 import VideoAndControls from './VideoAndControls'
 
@@ -57,14 +59,17 @@ export default class VideoPlayer extends React.Component {
 
       loadedMagnet: null,
 
-      subs: null,
+      showSubSelector: false,
+      activeSub      : null,
+      subsPlayer     : null,
+      subsCasting    : null,
     }
   }
 
   componentDidMount() {
     const { navigation: { state: { params: { magnet, item } } } } = this.props
 
-    GoogleCast.EventEmitter.addListener(GoogleCast.MEDIA_STATUS_UPDATED, this.handleCastMediaUpdate)
+    GoogleCast.EventEmitter.addListener(GoogleCast.MEDIA_PROGRESS_UPDATED, this.handleCastMediaProgressUpdate)
     GoogleCast.EventEmitter.addListener(GoogleCast.SESSION_STARTED, this.handleCastSessionStarted)
     GoogleCast.EventEmitter.addListener(GoogleCast.SESSION_ENDED, this.handleCastSessionEnded)
 
@@ -73,25 +78,39 @@ export default class VideoPlayer extends React.Component {
     TorrentStreamer.addEventListener('ready', this.handleTorrentReady)
 
     // Start
-    TorrentStreamer.start(magnet.url)
+    // TorrentStreamer.start(magnet.url)
 
-    // this.setState({
-    //   url          : 'https://download.blender.org/peach/bigbuckbunny_movies/BigBuckBunny_320x180.mp4',
-    //   buffer       : '100',
-    //   doneBuffering: true,
-    //   loading      : false,
-    // })
     // Fetch subs
-    PopcornSDK.searchForSubtitles(item).then((response) => {
-      console.log('searched subs', response)
+    if (item.type === Constants.TYPE_MOVIE) {
+      PopcornSDK.searchForSubtitles(item).then((response) => {
+        const subsPlayer = []
+        const subsCasting = []
 
-      this.setState({
-        subs: response,
-      })
+        Object.keys(response).forEach((langCode) => {
+          const sub = response[langCode]
 
-      Object.keys(response).forEach(lang => {
-        console.log(response[lang])
+          subsPlayer.push({
+            title   : sub.lang,
+            language: sub.langcode,
+            type    : TextTrackType.VTT, // "text/vtt"
+            uri     : sub.vtt,
+          })
+
+          subsCasting.push(sub)
+        })
+
+        this.setState({
+          subsPlayer,
+          subsCasting,
+        })
       })
+    }
+
+    this.setState({
+      url          : 'https://download.blender.org/peach/bigbuckbunny_movies/BigBuckBunny_320x180.mp4',
+      buffer       : '100',
+      doneBuffering: true,
+      loading      : false,
     })
   }
 
@@ -106,7 +125,7 @@ export default class VideoPlayer extends React.Component {
       loading      : true,
       loadedMagnet : magnet || propsMagnet,
     }, () => {
-      TorrentStreamer.start(magnet.url)
+      // TorrentStreamer.start(magnet.url)
     })
   }
 
@@ -125,7 +144,8 @@ export default class VideoPlayer extends React.Component {
 
     this.staticServer.kill()
 
-    GoogleCast.endSession()
+    // Stop casting but keep the connection
+    GoogleCast.stop()
   }
 
   handleCastSessionStarted = () => {
@@ -136,12 +156,13 @@ export default class VideoPlayer extends React.Component {
     }
   }
 
-  handleCastMediaUpdate = ({ mediaStatus, ...rest }) => {
-    if (mediaStatus.streamPosition > 0) {
-      this.setState({
-        currentTime: mediaStatus.streamPosition,
-      })
-    }
+  handleCastMediaProgressUpdate = ({ mediaProgress }) => {
+    // if (mediaProgress.progress > 0) {
+    //   this.setState({
+    //     duration   : mediaProgress.duration
+    //     currentTime: mediaProgress.progress,
+    //   })
+    // }
   }
 
   handleCastSessionEnded = () => {
@@ -190,6 +211,21 @@ export default class VideoPlayer extends React.Component {
     console.log('error', e)
   }
 
+  handleSelectSub = (forceTo) => {
+    this.setState({
+      showSubSelector: forceTo,
+    })
+  }
+
+  handleSubChange = (sub) => {
+    this.setState({
+      showSubSelector: false,
+      activeSub      : sub
+        ? sub.language
+        : null,
+    })
+  }
+
   shouldUpdateStatus = (status, nProgress) => {
     const { buffer, progress } = this.state
 
@@ -225,7 +261,8 @@ export default class VideoPlayer extends React.Component {
 
       // playPosition: currentTime,
 
-      mediaUrl: this.serverUrl + url.replace(this.serverDirectory, ''),
+      // mediaUrl: this.serverUrl + url.replace(this.serverDirectory, ''),
+      mediaUrl: url,
 
       imageUrl : this.getItemImage('fanart'),
       posterUrl: this.getItemImage('poster'),
@@ -274,20 +311,21 @@ export default class VideoPlayer extends React.Component {
    *
    * @returns {*}
    */
-  renderAdditionalControls = (castButtonOnly) => {
-    const { progress, downloadSpeedFormatted, seeds, subs } = this.state
+  renderAdditionalControls = (castButtonOnly = false) => {
+    const { progress, downloadSpeedFormatted, seeds, subsPlayer, activeSub } = this.state
 
     return (
       <React.Fragment>
-        {subs && (
+
+        {subsPlayer && subsPlayer.length > 0 && (
           <View style={styles.subsButton} pointerEvents={'box-none'}>
             <IconButton
               animatable={{
                 animation: 'fadeIn',
               }}
               style={styles.icon}
-              onPress={() => console.log('press')}
-              name={'subtitles-outline'}
+              onPress={() => this.handleSelectSub(true)}
+              name={activeSub ? 'subtitles' : 'subtitles-outline'}
               color={'#FFF'}
               size={30} />
           </View>
@@ -330,8 +368,8 @@ export default class VideoPlayer extends React.Component {
   }
 
   render() {
-    const { url, casting, loading, showControls, item } = this.state
-    const { doneBuffering, buffer, downloadSpeedFormatted } = this.state
+    const { url, casting, loading, showControls, item, subsPlayer, showSubSelector } = this.state
+    const { doneBuffering, buffer, downloadSpeedFormatted, activeSub } = this.state
 
     return (
       <View style={styles.container}>
@@ -389,16 +427,31 @@ export default class VideoPlayer extends React.Component {
               toggleControls={this.toggleControls}
               toggleControlsOff={this.toggleControlsOff}
               playItem={this.playItem}
-              showControls={showControls}>
+              showControls={showControls}
+              forcePaused={showSubSelector}
+              activeSub={activeSub}
+              subs={subsPlayer}>
 
               {this.renderAdditionalControls()}
 
             </VideoAndControls>
 
+            <SubSelector
+              cancel={() => this.handleSelectSub(false)}
+              selectSub={this.handleSubChange}
+              show={showSubSelector}
+              subs={subsPlayer} />
+
           </React.Fragment>
         )}
 
-        {casting || loading && this.renderAdditionalControls(loading)}
+        {(casting || loading) && (
+          <View
+            pointerEvents={'box-none'}
+            style={styles.castingAdditionalControls}>
+            {this.renderAdditionalControls(loading)}
+          </View>
+        )}
 
       </View>
     )
@@ -435,11 +488,20 @@ const styles = StyleSheet.create({
   castButton: {
     position: 'absolute',
     right   : 24,
-    top     : 24,
+    top     : 32,
     width   : 50,
     height  : 50,
 
     zIndex: 1001,
+  },
+
+  castingAdditionalControls: {
+    position     : 'absolute',
+    top          : 0,
+    left         : 0,
+    bottom       : 0,
+    right        : 0,
+    zIndex       : 1000,
   },
 
   subsButton: {
