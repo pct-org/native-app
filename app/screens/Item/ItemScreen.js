@@ -135,7 +135,7 @@ export default class Item extends React.PureComponent {
     })
   }
 
-  selectQuality = (torrents, episode = {}) => {
+  selectQuality = (torrents, episode = null) => {
     this.setState({
       selectFromTorrents: torrents,
 
