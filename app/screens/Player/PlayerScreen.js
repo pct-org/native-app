@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { StatusBar, StyleSheet, ActivityIndicator, View } from 'react-native'
+import { StatusBar, StyleSheet, ActivityIndicator, View, BackHandler } from 'react-native'
 import RNFS from 'react-native-fs'
 import GoogleCast, { CastButton } from 'react-native-google-cast'
 import StaticServer from 'react-native-static-server'
@@ -73,6 +73,8 @@ export default class VideoPlayer extends React.Component {
     GoogleCast.EventEmitter.addListener(GoogleCast.SESSION_STARTED, this.handleCastSessionStarted)
     GoogleCast.EventEmitter.addListener(GoogleCast.SESSION_ENDED, this.handleCastSessionEnded)
 
+    BackHandler.addEventListener('hardwareBackPress', this.handleBackPress)
+
     TorrentStreamer.addEventListener('error', this.handleTorrentError)
     TorrentStreamer.addEventListener('status', this.handleTorrentStatus)
     TorrentStreamer.addEventListener('ready', this.handleTorrentReady)
@@ -136,6 +138,8 @@ export default class VideoPlayer extends React.Component {
     GoogleCast.EventEmitter.removeAllListeners(GoogleCast.SESSION_STARTED)
     GoogleCast.EventEmitter.removeAllListeners(GoogleCast.SESSION_ENDED)
 
+    BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress)
+
     TorrentStreamer.removeEventListener('error', this.handleTorrentError)
     TorrentStreamer.removeEventListener('status', this.handleTorrentStatus)
     TorrentStreamer.removeEventListener('ready', this.handleTorrentReady)
@@ -146,6 +150,20 @@ export default class VideoPlayer extends React.Component {
 
     // Stop casting but keep the connection
     GoogleCast.stop()
+  }
+
+  handleBackPress = () => {
+    const { showSubSelector } = this.state
+
+    if (showSubSelector) {
+      this.setState({
+        showSubSelector: false,
+      })
+
+      return true
+    }
+
+    return false
   }
 
   handleCastSessionStarted = () => {
@@ -451,6 +469,14 @@ export default class VideoPlayer extends React.Component {
             pointerEvents={'box-none'}
             style={styles.castingAdditionalControls}>
             {this.renderAdditionalControls(loading)}
+
+            {!casting && loading && (
+              <SubSelector
+                cancel={() => this.handleSelectSub(false)}
+                selectSub={this.handleSubChange}
+                show={showSubSelector}
+                subs={subsPlayer} />
+            )}
           </View>
         )}
 
