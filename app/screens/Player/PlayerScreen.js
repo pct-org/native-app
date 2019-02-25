@@ -78,7 +78,7 @@ export default class VideoPlayer extends React.Component {
     TorrentStreamer.addEventListener('ready', this.handleTorrentReady)
 
     // Start
-    // TorrentStreamer.start(magnet.url)
+    TorrentStreamer.start(magnet.url)
 
     // Fetch subs
     if (item.type === Constants.TYPE_MOVIE) {
@@ -106,12 +106,12 @@ export default class VideoPlayer extends React.Component {
       })
     }
 
-    this.setState({
-      url          : 'https://download.blender.org/peach/bigbuckbunny_movies/BigBuckBunny_320x180.mp4',
-      buffer       : '100',
-      doneBuffering: true,
-      loading      : false,
-    })
+    // this.setState({
+    //   url          : 'https://download.blender.org/peach/bigbuckbunny_movies/BigBuckBunny_320x180.mp4',
+    //   buffer       : '100',
+    //   doneBuffering: true,
+    //   loading      : false,
+    // })
   }
 
   playItem = (magnet = null, url = null, item = null) => {
@@ -125,7 +125,7 @@ export default class VideoPlayer extends React.Component {
       loading      : true,
       loadedMagnet : magnet || propsMagnet,
     }, () => {
-      // TorrentStreamer.start(magnet.url)
+      TorrentStreamer.start(magnet.url)
     })
   }
 
@@ -261,8 +261,8 @@ export default class VideoPlayer extends React.Component {
 
       // playPosition: currentTime,
 
-      // mediaUrl: this.serverUrl + url.replace(this.serverDirectory, ''),
-      mediaUrl: url,
+      mediaUrl: this.serverUrl + url.replace(this.serverDirectory, ''),
+      // mediaUrl: url,
 
       imageUrl : this.getItemImage('fanart'),
       posterUrl: this.getItemImage('poster'),
@@ -312,12 +312,13 @@ export default class VideoPlayer extends React.Component {
    * @returns {*}
    */
   renderAdditionalControls = (castButtonOnly = false) => {
-    const { progress, downloadSpeedFormatted, seeds, subsPlayer, activeSub } = this.state
+    const { progress, downloadSpeedFormatted, seeds } = this.state
+    const { casting, subsPlayer, activeSub } = this.state
 
     return (
       <React.Fragment>
 
-        {subsPlayer && subsPlayer.length > 0 && (
+        {!casting && subsPlayer && subsPlayer.length > 0 && (
           <View style={styles.subsButton} pointerEvents={'box-none'}>
             <IconButton
               animatable={{
@@ -496,12 +497,12 @@ const styles = StyleSheet.create({
   },
 
   castingAdditionalControls: {
-    position     : 'absolute',
-    top          : 0,
-    left         : 0,
-    bottom       : 0,
-    right        : 0,
-    zIndex       : 1000,
+    position: 'absolute',
+    top     : 0,
+    left    : 0,
+    bottom  : 0,
+    right   : 0,
+    zIndex  : 1000,
   },
 
   subsButton: {
