@@ -1,5 +1,5 @@
 import React from 'react'
-import { StyleSheet, View, Text } from 'react-native'
+import { StyleSheet, View, Text, FlatList } from 'react-native'
 import * as Animatable from 'react-native-animatable'
 import { material } from 'react-native-typography'
 
@@ -35,11 +35,22 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top     : 34,
     right   : 14,
+    zIndex  : 1001,
+  },
+
+  subsContainer: {
+    width: '100%',
   },
 
   sub: {
     ...material.titleWhiteObject,
-    margin: 8,
+    margin   : 8,
+    textAlign: 'center',
+    zIndex   : 1000,
+  },
+
+  clearSub: {
+    marginBottom: 60,
   },
 
 })
@@ -63,6 +74,18 @@ export default class SubSelector extends React.Component {
     this.setState({
       hidden: false,
     })
+  }
+
+  renderSub = ({ item: sub }) => {
+    const { selectSub } = this.props
+
+    return (
+      <BaseButton onPress={() => selectSub(sub)}>
+        <Text style={styles.sub}>
+          {sub.title}
+        </Text>
+      </BaseButton>
+    )
   }
 
   render() {
@@ -93,21 +116,27 @@ export default class SubSelector extends React.Component {
               />
             </View>
 
-            {subs.sort(sortAB('title')).map((sub) => (
-              <BaseButton
-                key={sub.language}
-                onPress={() => selectSub(sub)}>
-                <Text style={styles.sub}>
-                  {sub.title}
-                </Text>
-              </BaseButton>
-            ))}
+            <FlatList
+              removeClippedSubviews
+              style={styles.subsContainer}
+              data={subs.sort(sortAB('title'))}
+              numColumns={1}
+              initialNumToRender={12}
+              windowSize={32}
+              renderItem={this.renderSub}
+              keyExtractor={item => item.language}
+              ListHeaderComponent={() => <View style={{ marginBottom: 100 }} />}
+              ListFooterComponent={() => (
+                <View style={styles.clearSub}>
+                  <BaseButton onPress={() => selectSub(null)}>
+                    <Text style={styles.sub}>
+                      {i18n.t('None')}
+                    </Text>
+                  </BaseButton>
+                </View>
+              )}
+            />
 
-            <BaseButton onPress={() => selectSub(null)}>
-              <Text style={styles.sub}>
-                {i18n.t('None')}
-              </Text>
-            </BaseButton>
           </View>
         )}
 
