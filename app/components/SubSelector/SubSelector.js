@@ -8,7 +8,6 @@ import IconButton from 'components/IconButton'
 
 import colors from 'modules/colors'
 import i18n from 'modules/i18n'
-import sortAB from 'modules/utils/sortAB'
 
 const styles = StyleSheet.create({
 
@@ -76,11 +75,11 @@ export default class SubSelector extends React.Component {
     })
   }
 
-  renderSub = ({ item: sub }) => {
+  renderSub = ({ item: sub, index }) => {
     const { selectSub } = this.props
 
     return (
-      <BaseButton onPress={() => selectSub(sub)}>
+      <BaseButton onPress={() => selectSub(sub, index)}>
         <Text style={styles.sub}>
           {sub.title}
         </Text>
@@ -105,7 +104,7 @@ export default class SubSelector extends React.Component {
         onAnimationEnd={this.handleAnimationEnd}
         useNativeDriver>
 
-        {subs && (
+        {subs &&  (
           <View style={[styles.root, styles.container]}>
             <View style={styles.closeIcon}>
               <IconButton
@@ -119,16 +118,16 @@ export default class SubSelector extends React.Component {
             <FlatList
               removeClippedSubviews
               style={styles.subsContainer}
-              data={subs.sort(sortAB('title'))}
+              data={subs}
               numColumns={1}
               initialNumToRender={12}
               windowSize={32}
               renderItem={this.renderSub}
-              keyExtractor={item => item.language}
+              keyExtractor={(item, index) => `${item.language}-${index}`}
               ListHeaderComponent={() => <View style={{ marginBottom: 100 }} />}
               ListFooterComponent={() => (
                 <View style={styles.clearSub}>
-                  <BaseButton onPress={() => selectSub(null)}>
+                  <BaseButton onPress={() => selectSub(null, null)}>
                     <Text style={styles.sub}>
                       {i18n.t('None')}
                     </Text>

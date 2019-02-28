@@ -11,6 +11,7 @@ import { TextTrackType } from 'react-native-video'
 
 import i18n from 'modules/i18n'
 import PopcornSDK from 'modules/PopcornSDK'
+import sortAB from 'modules/utils/sortAB'
 
 import Typography from 'components/Typography'
 import Button from 'components/Button'
@@ -61,8 +62,7 @@ export default class VideoPlayer extends React.Component {
 
       showSubSelector: false,
       activeSub      : null,
-      subsPlayer     : null,
-      subsCasting    : null,
+      subs           : null,
     }
   }
 
@@ -85,25 +85,23 @@ export default class VideoPlayer extends React.Component {
     // Fetch subs
     if (item.type === Constants.TYPE_MOVIE) {
       PopcornSDK.searchForSubtitles(item).then((response) => {
-        const subsPlayer = []
-        const subsCasting = []
+        const subs = []
 
+        console.log('response', response)
         Object.keys(response).forEach((langCode) => {
           const sub = response[langCode]
 
-          subsPlayer.push({
+          subs.push({
             title   : sub.lang,
             language: sub.langcode,
             type    : TextTrackType.VTT, // "text/vtt"
             uri     : sub.vtt,
           })
 
-          subsCasting.push(sub)
         })
 
         this.setState({
-          subsPlayer,
-          subsCasting,
+          subs: subs.sort(sortAB('title')),
         })
       })
     }
@@ -267,6 +265,8 @@ export default class VideoPlayer extends React.Component {
     const { navigation: { state: { params: { item } } } } = this.props
     // const { currentTime } = this.state
 
+    const { subs } = this.state
+
     if (!this.serverUrl) {
       this.serverUrl = await this.staticServer.start()
     }
@@ -274,6 +274,8 @@ export default class VideoPlayer extends React.Component {
     GoogleCast.castMedia({
       title   : this.getItemTitle(),
       subtitle: item.summary,
+
+      tracks: subs,
       // studio: video.studio,
       // duration: video.duration,
 
@@ -282,7 +284,7 @@ export default class VideoPlayer extends React.Component {
       mediaUrl: this.serverUrl + url.replace(this.serverDirectory, ''),
       // mediaUrl: url,
 
-      imageUrl : this.getItemImage('fanart'),
+      // imageUrl : this.getItemImage('fanart'),
       posterUrl: this.getItemImage('poster'),
     })
 
@@ -387,7 +389,7 @@ export default class VideoPlayer extends React.Component {
   }
 
   render() {
-    const { url, casting, loading, showControls, item, subsPlayer, showSubSelector } = this.state
+    const { url, casting, loading, showControls, item, subs, showSubSelector } = this.state
     const { doneBuffering, buffer, downloadSpeedFormatted, activeSub } = this.state
 
     return (
@@ -449,7 +451,7 @@ export default class VideoPlayer extends React.Component {
               showControls={showControls}
               forcePaused={showSubSelector}
               activeSub={activeSub}
-              subs={subsPlayer}>
+              subs={subs}>
 
               {this.renderAdditionalControls()}
 
@@ -459,7 +461,7 @@ export default class VideoPlayer extends React.Component {
               cancel={() => this.handleSelectSub(false)}
               selectSub={this.handleSubChange}
               show={showSubSelector}
-              subs={subsPlayer} />
+              subs={subs} />
 
           </React.Fragment>
         )}
