@@ -11,6 +11,7 @@ import { TextTrackType } from 'react-native-video'
 
 import i18n from 'modules/i18n'
 import PopcornSDK from 'modules/PopcornSDK'
+import SubtitlesManager from 'modules/SubtitlesManager'
 import sortAB from 'modules/utils/sortAB'
 
 import Typography from 'components/Typography'
@@ -84,30 +85,15 @@ export default class VideoPlayer extends React.Component {
 
     // Fetch subs
     if (item.type === Constants.TYPE_MOVIE) {
-      PopcornSDK.searchForSubtitles(item).then((response) => {
-        const subs = []
-
-        console.log('response', response)
-        Object.keys(response).forEach((langCode) => {
-          const sub = response[langCode]
-
-          subs.push({
-            title   : sub.lang,
-            language: sub.langcode,
-            type    : TextTrackType.VTT, // "text/vtt"
-            uri     : sub.vtt,
-          })
-
-        })
-
+      SubtitlesManager.search(item).then((subs) => {
         this.setState({
-          subs: subs.sort(sortAB('title')),
+          subs,
         })
       })
     }
 
     // this.setState({
-    //   url          : 'https://download.blender.org/peach/bigbuckbunny_movies/BigBuckBunny_320x180.mp4',
+    //   url          : 'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/WhatCarCanYouGetForAGrand.mp4',
     //   buffer       : '100',
     //   doneBuffering: true,
     //   loading      : false,
@@ -274,17 +260,14 @@ export default class VideoPlayer extends React.Component {
     GoogleCast.castMedia({
       title   : this.getItemTitle(),
       subtitle: item.summary,
-
-      tracks: subs,
+      tracks  : subs,
       // studio: video.studio,
       // duration: video.duration,
 
       // playPosition: currentTime,
 
-      mediaUrl: this.serverUrl + url.replace(this.serverDirectory, ''),
-      // mediaUrl: url,
-
-      // imageUrl : this.getItemImage('fanart'),
+      mediaUrl : this.serverUrl + url.replace(this.serverDirectory, ''),
+//      imageUrl : this.getItemImage('fanart'),
       posterUrl: this.getItemImage('poster'),
     })
 
@@ -333,12 +316,12 @@ export default class VideoPlayer extends React.Component {
    */
   renderAdditionalControls = (castButtonOnly = false) => {
     const { progress, downloadSpeedFormatted, seeds } = this.state
-    const { casting, subsPlayer, activeSub } = this.state
+    const { casting, subs, activeSub } = this.state
 
     return (
       <React.Fragment>
 
-        {!casting && subsPlayer && subsPlayer.length > 0 && (
+        {!casting && subs && subs.length > 0 && (
           <View style={styles.subsButton} pointerEvents={'box-none'}>
             <IconButton
               animatable={{
@@ -470,15 +453,9 @@ export default class VideoPlayer extends React.Component {
           <View
             pointerEvents={'box-none'}
             style={styles.castingAdditionalControls}>
+
             {this.renderAdditionalControls(loading)}
 
-            {!casting && loading && (
-              <SubSelector
-                cancel={() => this.handleSelectSub(false)}
-                selectSub={this.handleSubChange}
-                show={showSubSelector}
-                subs={subsPlayer} />
-            )}
           </View>
         )}
 
