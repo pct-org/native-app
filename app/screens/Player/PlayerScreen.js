@@ -1,17 +1,23 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { StatusBar, StyleSheet, ActivityIndicator, View } from 'react-native'
+import { StatusBar, StyleSheet, ActivityIndicator, View, BackHandler } from 'react-native'
 import RNFS from 'react-native-fs'
 import GoogleCast, { CastButton } from 'react-native-google-cast'
 import StaticServer from 'react-native-static-server'
 import TorrentStreamer from 'react-native-torrent-streamer'
-import { utils } from 'popcorn-sdk'
+import { Constants, utils } from 'popcorn-sdk'
 import Orientation from 'react-native-orientation'
+import { TextTrackType } from 'react-native-video'
 
 import i18n from 'modules/i18n'
+import PopcornSDK from 'modules/PopcornSDK'
+import SubtitlesManager from 'modules/SubtitlesManager'
+import sortAB from 'modules/utils/sortAB'
 
 import Typography from 'components/Typography'
 import Button from 'components/Button'
+import IconButton from 'components/IconButton'
+import SubSelector from 'components/SubSelector'
 
 import VideoAndControls from './VideoAndControls'
 
@@ -53,34 +59,47 @@ export default class VideoPlayer extends React.Component {
       doneBuffering: false,
       seeds        : 0,
 
-      loadedMagnet: null,
+      loadedTorrent: null,
+
+      showSubSelector: false,
+      activeSub      : null,
+      subs           : null,
     }
   }
 
   componentDidMount() {
-    const { navigation: { state: { params: { magnet } } } } = this.props
+    const { navigation: { state: { params: { torrent, item } } } } = this.props
 
-    GoogleCast.EventEmitter.addListener(GoogleCast.MEDIA_STATUS_UPDATED, this.handleCastMediaUpdate)
+    GoogleCast.EventEmitter.addListener(GoogleCast.MEDIA_PROGRESS_UPDATED, this.handleCastMediaProgressUpdate)
     GoogleCast.EventEmitter.addListener(GoogleCast.SESSION_STARTED, this.handleCastSessionStarted)
     GoogleCast.EventEmitter.addListener(GoogleCast.SESSION_ENDED, this.handleCastSessionEnded)
+
+    BackHandler.addEventListener('hardwareBackPress', this.handleBackPress)
 
     TorrentStreamer.addEventListener('error', this.handleTorrentError)
     TorrentStreamer.addEventListener('status', this.handleTorrentStatus)
     TorrentStreamer.addEventListener('ready', this.handleTorrentReady)
 
     // Start
-    TorrentStreamer.start(magnet.url)
+    TorrentStreamer.start(torrent.url)
+
+    // Fetch subs
+    SubtitlesManager.search(item, torrent).then((subs) => {
+      this.setState({
+        subs,
+      })
+    })
 
     // this.setState({
-    //   url          : 'https://download.blender.org/peach/bigbuckbunny_movies/BigBuckBunny_320x180.mp4',
+    //   url          : 'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/WhatCarCanYouGetForAGrand.mp4',
     //   buffer       : '100',
     //   doneBuffering: true,
     //   loading      : false,
     // })
   }
 
-  playItem = (magnet = null, url = null, item = null) => {
-    const { navigation: { state: { params: { magnet: propsMagnet, item: propsItem } } } } = this.props
+  playItem = (torrent = null, url = null, item = null) => {
+    const { navigation: { state: { params: { torrent: propsTorrent, item: propsItem } } } } = this.props
 
     this.setState({
       item         : item || propsItem,
@@ -88,9 +107,9 @@ export default class VideoPlayer extends React.Component {
       buffer       : 0,
       doneBuffering: false,
       loading      : true,
-      loadedMagnet : magnet || propsMagnet,
+      loadedTorrent: torrent || propsTorrent,
     }, () => {
-      TorrentStreamer.start(magnet.url)
+      TorrentStreamer.start(torrent.url)
     })
   }
 
@@ -101,6 +120,8 @@ export default class VideoPlayer extends React.Component {
     GoogleCast.EventEmitter.removeAllListeners(GoogleCast.SESSION_STARTED)
     GoogleCast.EventEmitter.removeAllListeners(GoogleCast.SESSION_ENDED)
 
+    BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress)
+
     TorrentStreamer.removeEventListener('error', this.handleTorrentError)
     TorrentStreamer.removeEventListener('status', this.handleTorrentStatus)
     TorrentStreamer.removeEventListener('ready', this.handleTorrentReady)
@@ -109,7 +130,22 @@ export default class VideoPlayer extends React.Component {
 
     this.staticServer.kill()
 
-    GoogleCast.endSession()
+    // Stop casting but keep the connection
+    GoogleCast.stop()
+  }
+
+  handleBackPress = () => {
+    const { showSubSelector } = this.state
+
+    if (showSubSelector) {
+      this.setState({
+        showSubSelector: false,
+      })
+
+      return true
+    }
+
+    return false
   }
 
   handleCastSessionStarted = () => {
@@ -120,12 +156,13 @@ export default class VideoPlayer extends React.Component {
     }
   }
 
-  handleCastMediaUpdate = ({ mediaStatus, ...rest }) => {
-    if (mediaStatus.streamPosition > 0) {
-      this.setState({
-        currentTime: mediaStatus.streamPosition,
-      })
-    }
+  handleCastMediaProgressUpdate = ({ mediaProgress }) => {
+    // if (mediaProgress.progress > 0) {
+    //   this.setState({
+    //     duration   : mediaProgress.duration
+    //     currentTime: mediaProgress.progress,
+    //   })
+    // }
   }
 
   handleCastSessionEnded = () => {
@@ -174,6 +211,21 @@ export default class VideoPlayer extends React.Component {
     console.log('error', e)
   }
 
+  handleSelectSub = (forceTo) => {
+    this.setState({
+      showSubSelector: forceTo,
+    })
+  }
+
+  handleSubChange = (sub) => {
+    this.setState({
+      showSubSelector: false,
+      activeSub      : sub
+        ? sub.language
+        : null,
+    })
+  }
+
   shouldUpdateStatus = (status, nProgress) => {
     const { buffer, progress } = this.state
 
@@ -197,6 +249,8 @@ export default class VideoPlayer extends React.Component {
     const { navigation: { state: { params: { item } } } } = this.props
     // const { currentTime } = this.state
 
+    const { subs } = this.state
+
     if (!this.serverUrl) {
       this.serverUrl = await this.staticServer.start()
     }
@@ -204,6 +258,7 @@ export default class VideoPlayer extends React.Component {
     GoogleCast.castMedia({
       title   : this.getItemTitle(),
       subtitle: item.summary,
+      tracks  : subs,
       // studio: video.studio,
       // duration: video.duration,
 
@@ -211,7 +266,7 @@ export default class VideoPlayer extends React.Component {
 
       mediaUrl: this.serverUrl + url.replace(this.serverDirectory, ''),
 
-      imageUrl : this.getItemImage('fanart'),
+      // imageUrl : this.getItemImage('fanart'),
       posterUrl: this.getItemImage('poster'),
     })
 
@@ -229,8 +284,8 @@ export default class VideoPlayer extends React.Component {
   getItemTitle = () => {
     const { item } = this.state
 
-    if (item.showTitle) {
-      return `${item.showTitle} - ${item.title}`
+    if (item.show) {
+      return `${item.show.title} - ${item.title}`
     }
 
     return item.title
@@ -258,11 +313,27 @@ export default class VideoPlayer extends React.Component {
    *
    * @returns {*}
    */
-  renderAdditionalControls = (castButtonOnly) => {
+  renderAdditionalControls = (castButtonOnly = false) => {
     const { progress, downloadSpeedFormatted, seeds } = this.state
+    const { casting, doneBuffering, subs, activeSub } = this.state
 
     return (
       <React.Fragment>
+
+        {!casting && doneBuffering && subs && subs.length > 0 && (
+          <View style={styles.subsButton} pointerEvents={'box-none'}>
+            <IconButton
+              animatable={{
+                animation: 'fadeIn',
+              }}
+              style={styles.icon}
+              onPress={() => this.handleSelectSub(true)}
+              name={activeSub ? 'subtitles' : 'subtitles-outline'}
+              color={'#FFF'}
+              size={30} />
+          </View>
+        )}
+
         <View style={styles.castButton} pointerEvents={'box-none'}>
           <CastButton style={{ width: 30, height: 30, tintColor: 'white' }} />
         </View>
@@ -300,8 +371,8 @@ export default class VideoPlayer extends React.Component {
   }
 
   render() {
-    const { url, casting, loading, showControls, item } = this.state
-    const { doneBuffering, buffer, downloadSpeedFormatted } = this.state
+    const { url, casting, loading, showControls, item, subs, showSubSelector } = this.state
+    const { doneBuffering, buffer, downloadSpeedFormatted, activeSub } = this.state
 
     return (
       <View style={styles.container}>
@@ -359,16 +430,33 @@ export default class VideoPlayer extends React.Component {
               toggleControls={this.toggleControls}
               toggleControlsOff={this.toggleControlsOff}
               playItem={this.playItem}
-              showControls={showControls}>
+              showControls={showControls}
+              forcePaused={showSubSelector}
+              activeSub={activeSub}
+              subs={subs}>
 
               {this.renderAdditionalControls()}
 
             </VideoAndControls>
 
+            <SubSelector
+              cancel={() => this.handleSelectSub(false)}
+              selectSub={this.handleSubChange}
+              show={showSubSelector}
+              subs={subs} />
+
           </React.Fragment>
         )}
 
-        {casting || loading && this.renderAdditionalControls(loading)}
+        {(casting || loading) && (
+          <View
+            pointerEvents={'box-none'}
+            style={styles.castingAdditionalControls}>
+
+            {this.renderAdditionalControls(loading)}
+
+          </View>
+        )}
 
       </View>
     )
@@ -405,9 +493,28 @@ const styles = StyleSheet.create({
   castButton: {
     position: 'absolute',
     right   : 24,
+    top     : 32,
+    width   : 50,
+    height  : 50,
+
+    zIndex: 1001,
+  },
+
+  castingAdditionalControls: {
+    position: 'absolute',
+    top     : 0,
+    left    : 0,
+    bottom  : 0,
+    right   : 0,
+    zIndex  : 1000,
+  },
+
+  subsButton: {
+    position: 'absolute',
+    left    : 18,
     top     : 24,
-    width   : 30,
-    height  : 30,
+    width   : 50,
+    height  : 50,
 
     zIndex: 1001,
   },

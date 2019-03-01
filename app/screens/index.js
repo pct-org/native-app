@@ -97,7 +97,7 @@ export const AppNavigator = createStackNavigator({
         activeTintColor  : colors.BOTTOM_BAR_ACTIVE_TINT,
 
         style: {
-          backgroundColor: colors.BACKGROUND,
+          backgroundColor: colors.TAB_NAVIGATION,
         },
       },
     }),

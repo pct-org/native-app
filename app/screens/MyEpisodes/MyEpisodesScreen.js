@@ -35,6 +35,14 @@ const styles = StyleSheet.create({
     alignItems    : 'center',
   },
 
+  noItemsContainer: {
+    width   : '100%',
+    height  : height,
+
+    justifyContent: 'center',
+    alignItems    : 'center',
+  },
+
   episodeImage: {
     width,
     height: height / 3.5,
@@ -115,7 +123,7 @@ export class MyEpisodes extends React.PureComponent {
     })
   }
 
-  playItem = (magnet) => {
+  playItem = (torrent) => {
     const { navigation: { navigate } } = this.props
     const { episodeToPlay } = this.state
 
@@ -124,11 +132,8 @@ export class MyEpisodes extends React.PureComponent {
     })
 
     navigate('Player', {
-      magnet,
-      item: {
-        ...episodeToPlay,
-        showTitle: episodeToPlay.show.title,
-      },
+      torrent,
+      item: episodeToPlay,
     })
   }
 
@@ -191,42 +196,38 @@ export class MyEpisodes extends React.PureComponent {
 
         <FullScreenLoading enabled={fetching} />
 
-        {items.length > 0 && (
-          <React.Fragment>
-            <FlatList
-              refreshControl={
-                <RefreshControl
-                  refreshing={refreshing}
-                  onRefresh={this.handleRefresh}
-                />
-              }
-              removeClippedSubviews
-              data={items}
-              initialNumToRender={4}
-              windowSize={8}
-              renderItem={this.renderEpisode}
-              keyExtractor={(item, index) => item ? item.key : `${index}`}
-              showsVerticalScrollIndicator={false}
+        <FlatList
+          refreshControl={
+            <RefreshControl
+              refreshing={refreshing}
+              onRefresh={this.handleRefresh}
             />
+          }
+          removeClippedSubviews
+          data={items.length > 0 ? items : null}
+          initialNumToRender={4}
+          windowSize={8}
+          renderItem={this.renderEpisode}
+          keyExtractor={(item, index) => item ? item.key : `${index}`}
+          showsVerticalScrollIndicator={false}
+          ListEmptyComponent={() => (
+            <View style={styles.noItemsContainer}>
 
-            <QualitySelector
-              cancel={this.cancelQualitySelect}
-              torrents={selectFromTorrents}
-              playItem={this.playItem} />
-          </React.Fragment>
-        )}
+              <Typography
+                style={styles.noEpisodesText}
+                variant={'title'}>
+                {i18n.t('Episodes aired within the last 7 days from shows you follow will appear here')}
+              </Typography>
 
-        {items.length === 0 && (
-          <View style={styles.episodeContainer}>
+            </View>
+          )}
+        />
 
-            <Typography
-              style={styles.noEpisodesText}
-              variant={'title'}>
-              {i18n.t('Episodes aired within the last 7 days from shows you follow will appear here')}
-            </Typography>
+        <QualitySelector
+          cancel={this.cancelQualitySelect}
+          torrents={selectFromTorrents}
+          playItem={this.playItem} />
 
-          </View>
-        )}
       </View>
     )
   }
