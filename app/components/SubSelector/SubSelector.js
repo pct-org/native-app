@@ -123,6 +123,8 @@ export default class SubSelector extends React.Component {
               initialNumToRender={12}
               windowSize={32}
               renderItem={this.renderSub}
+              showsHorizontalScrollIndicator={false}
+              showsVerticalScrollIndicator={false}
               keyExtractor={(item, index) => `${item.language}-${index}`}
               ListHeaderComponent={() => <View style={{ marginBottom: 100 }} />}
               ListFooterComponent={() => (
