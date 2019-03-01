@@ -316,12 +316,12 @@ export default class VideoPlayer extends React.Component {
    */
   renderAdditionalControls = (castButtonOnly = false) => {
     const { progress, downloadSpeedFormatted, seeds } = this.state
-    const { casting, subs, activeSub } = this.state
+    const { casting, doneBuffering, subs, activeSub } = this.state
 
     return (
       <React.Fragment>
 
-        {!casting && subs && subs.length > 0 && (
+        {!casting && doneBuffering && subs && subs.length > 0 && (
           <View style={styles.subsButton} pointerEvents={'box-none'}>
             <IconButton
               animatable={{
