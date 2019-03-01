@@ -3,7 +3,10 @@ import { StyleSheet, View, Text } from 'react-native'
 import * as Animatable from 'react-native-animatable'
 import { material } from 'react-native-typography'
 
+import i18n from 'modules/i18n'
+
 import BaseButton from 'components/BaseButton'
+import Button from 'components/Button'
 import IconButton from 'components/IconButton'
 
 import colors from 'modules/colors'
@@ -33,11 +36,24 @@ const styles = StyleSheet.create({
     right   : 14,
   },
 
+  qualityContainer: {
+    display       : 'flex',
+    justifyContent: 'center',
+    alignItems    : 'center',
+    flexDirection : 'row',
+  },
+
   quality: {
     ...material.titleWhiteObject,
     margin: 8,
+
+    borderBottomWidth: 1,
   },
 
+  searchForBetter: {
+    position: 'absolute',
+    bottom  : 20,
+  },
 })
 
 export default class QualitySelector extends React.Component {
@@ -77,6 +93,10 @@ export default class QualitySelector extends React.Component {
     })
   }
 
+  handleSearchForBetter = () => {
+
+  }
+
   render() {
     const { torrents, cancel } = this.props
     const { hidden, qualities } = this.state
@@ -105,11 +125,26 @@ export default class QualitySelector extends React.Component {
               />
             </View>
 
+            {/*<View style={styles.searchForBetter}>*/}
+              {/*<Button*/}
+                {/*onPress={this.handleSearchForBetter}*/}
+                {/*variant={'primary'}>*/}
+                {/*{i18n.t('search for better')}*/}
+              {/*</Button>*/}
+            {/*</View>*/}
+
             {qualities.map((quality) => (
               <BaseButton
                 key={quality}
                 onPress={() => this.playQuality(quality)}>
-                <Text style={styles.quality}>
+                <Text style={[
+                  styles.quality,
+                  {
+                    borderBottomColor: torrents
+                      ? torrents[quality].health.color
+                      : null,
+                  },
+                ]}>
                   {quality}
                 </Text>
               </BaseButton>
