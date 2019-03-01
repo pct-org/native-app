@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { StyleSheet, View, Image, Dimensions } from 'react-native'
+import { StyleSheet, View, Image, Dimensions, StatusBar } from 'react-native'
 import Device from 'modules/DeviceDetection'
 
 import posterHolderImage from 'images/posterholder.png'
@@ -9,9 +9,9 @@ import BaseButton from '../BaseButton'
 
 const { width, height } = Dimensions.get('window')
 
-const smallHeight = height / 4
+const smallHeight = (height - StatusBar.currentHeight) / 4
 const smallWidth = (width - 40) / 3.1
-const mediumHeight = height / 3.3
+const mediumHeight = height - StatusBar.currentHeight / 3.3
 const mediumWidth = (width - 40) / 3.5
 
 const rootWidth = (width - (Device.isTablet ? 40 : 32)) / (Device.isTablet ? 4 : 3)

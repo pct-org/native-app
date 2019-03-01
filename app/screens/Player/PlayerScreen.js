@@ -59,7 +59,7 @@ export default class VideoPlayer extends React.Component {
       doneBuffering: false,
       seeds        : 0,
 
-      loadedMagnet: null,
+      loadedTorrent: null,
 
       showSubSelector: false,
       activeSub      : null,
@@ -68,7 +68,7 @@ export default class VideoPlayer extends React.Component {
   }
 
   componentDidMount() {
-    const { navigation: { state: { params: { magnet, item } } } } = this.props
+    const { navigation: { state: { params: { torrent, item } } } } = this.props
 
     GoogleCast.EventEmitter.addListener(GoogleCast.MEDIA_PROGRESS_UPDATED, this.handleCastMediaProgressUpdate)
     GoogleCast.EventEmitter.addListener(GoogleCast.SESSION_STARTED, this.handleCastSessionStarted)
@@ -81,16 +81,14 @@ export default class VideoPlayer extends React.Component {
     TorrentStreamer.addEventListener('ready', this.handleTorrentReady)
 
     // Start
-    TorrentStreamer.start(magnet.url)
+    TorrentStreamer.start(torrent.url)
 
     // Fetch subs
-    if (item.type === Constants.TYPE_MOVIE) {
-      SubtitlesManager.search(item).then((subs) => {
-        this.setState({
-          subs,
-        })
+    SubtitlesManager.search(item, torrent).then((subs) => {
+      this.setState({
+        subs,
       })
-    }
+    })
 
     // this.setState({
     //   url          : 'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/WhatCarCanYouGetForAGrand.mp4',
@@ -100,8 +98,8 @@ export default class VideoPlayer extends React.Component {
     // })
   }
 
-  playItem = (magnet = null, url = null, item = null) => {
-    const { navigation: { state: { params: { magnet: propsMagnet, item: propsItem } } } } = this.props
+  playItem = (torrent = null, url = null, item = null) => {
+    const { navigation: { state: { params: { torrent: propsTorrent, item: propsItem } } } } = this.props
 
     this.setState({
       item         : item || propsItem,
@@ -109,9 +107,9 @@ export default class VideoPlayer extends React.Component {
       buffer       : 0,
       doneBuffering: false,
       loading      : true,
-      loadedMagnet : magnet || propsMagnet,
+      loadedTorrent: torrent || propsTorrent,
     }, () => {
-      TorrentStreamer.start(magnet.url)
+      TorrentStreamer.start(torrent.url)
     })
   }
 
@@ -266,8 +264,9 @@ export default class VideoPlayer extends React.Component {
 
       // playPosition: currentTime,
 
-      mediaUrl : this.serverUrl + url.replace(this.serverDirectory, ''),
-//      imageUrl : this.getItemImage('fanart'),
+      mediaUrl: this.serverUrl + url.replace(this.serverDirectory, ''),
+
+      // imageUrl : this.getItemImage('fanart'),
       posterUrl: this.getItemImage('poster'),
     })
 
@@ -285,8 +284,8 @@ export default class VideoPlayer extends React.Component {
   getItemTitle = () => {
     const { item } = this.state
 
-    if (item.showTitle) {
-      return `${item.showTitle} - ${item.title}`
+    if (item.show) {
+      return `${item.show.title} - ${item.title}`
     }
 
     return item.title

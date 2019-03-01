@@ -1,15 +1,32 @@
 import { TextTrackType } from 'react-native-video'
+import { Constants } from 'popcorn-sdk'
 
 import PopcornSDK from 'modules/PopcornSDK'
 import sortAB from 'modules/utils/sortAB'
 
 export default new (class SubtitlesManager {
 
-  search = async(item) => {
+  search = async(item, torrent) => {
     const subs = []
 
-    // Fetch subs
-    const foundSubtitles = await PopcornSDK.searchForSubtitles(item)
+    const isShow = item.type === Constants.TYPE_SHOW_EPISODE
+
+    // // Fetch subs
+    const foundSubtitles = await PopcornSDK.searchForSubtitles(
+      isShow
+        ? item.show
+        : item,
+
+      torrent,
+
+      isShow
+        ? item.season
+        : null,
+
+      isShow
+        ? item.number
+        : null,
+    )
 
     Object.keys(foundSubtitles).forEach((langCode) => {
       const sub = foundSubtitles[langCode]

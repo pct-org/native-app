@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
     marginTop   : 24,
     marginBottom: 24,
 
-    minHeight: 70
+    minHeight: 70,
   },
 
   icon: {
@@ -117,7 +117,7 @@ export default class Item extends React.PureComponent {
     }
   }
 
-  playItem = (magnet) => {
+  playItem = (torrent) => {
     const { navigation: { navigate }, item } = this.props
     const { episodeToPlay } = this.state
 
@@ -125,13 +125,18 @@ export default class Item extends React.PureComponent {
       selectFromTorrents: null,
     })
 
+    let playItem = item
+
+    if (episodeToPlay) {
+      playItem = {
+        ...episodeToPlay,
+        show: playItem,
+      }
+    }
+
     navigate('Player', {
-      magnet,
-      item: {
-        ...item,
-        ...(episodeToPlay || {}),
-        showTitle: (episodeToPlay ? item.title : null),
-      },
+      torrent,
+      item: playItem
     })
   }
 
