@@ -63,6 +63,42 @@ export default (state = ItemConstants.INITIAL_STATE, action) => {
         },
       }
 
+    case ItemConstants.FETCHED_BETTER_FOR_MOVIE:
+      return {
+        ...state,
+        item: {
+          ...state.item,
+          torrents: action.payload.newTorrents,
+        },
+      }
+
+    case ItemConstants.FETCHED_BETTER_FOR_EPISODE:
+      return {
+        ...state,
+        item: {
+          ...state.item,
+          seasons: state.item.seasons.map((season) => {
+            if (season.number !== action.payload.season) {
+              return season
+            }
+
+            return {
+              ...season,
+              episodes: season.episodes.map((episode) => {
+                if (episode.number !== action.payload.episode) {
+                  return episode
+                }
+
+                return {
+                  ...episode,
+                  torrents: action.payload.newTorrents,
+                }
+              }),
+            }
+          }),
+        },
+      }
+
     default:
       return state
 

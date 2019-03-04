@@ -36,8 +36,8 @@ const styles = StyleSheet.create({
   },
 
   noItemsContainer: {
-    width   : '100%',
-    height  : height,
+    width : '100%',
+    height: height,
 
     justifyContent: 'center',
     alignItems    : 'center',
@@ -187,7 +187,7 @@ export class MyEpisodes extends React.PureComponent {
 
   render() {
     const { modes: { myEpisodes: { items, refreshing, fetching } } } = this.props
-    const { selectFromTorrents } = this.state
+    const { selectFromTorrents, episodeToPlay } = this.state
 
     return (
       <View style={styles.root}>
@@ -224,6 +224,11 @@ export class MyEpisodes extends React.PureComponent {
         />
 
         <QualitySelector
+          item={episodeToPlay
+            ? episodeToPlay.show
+            : null
+          }
+          episodeToPlay={episodeToPlay}
           cancel={this.cancelQualitySelect}
           torrents={selectFromTorrents}
           playItem={this.playItem} />

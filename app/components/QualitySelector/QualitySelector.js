@@ -4,6 +4,7 @@ import * as Animatable from 'react-native-animatable'
 import { material } from 'react-native-typography'
 
 import i18n from 'modules/i18n'
+import PopcornSDK from 'modules/PopcornSDK'
 
 import BaseButton from 'components/BaseButton'
 import Button from 'components/Button'
@@ -94,7 +95,15 @@ export default class QualitySelector extends React.Component {
   }
 
   handleSearchForBetter = () => {
+    const { fetchedBetterOnes, item, episodeToPlay } = this.props
 
+    fetchedBetterOnes(
+      item.show
+        ? item.show
+        : item,
+
+      episodeToPlay,
+    )
   }
 
   render() {
@@ -125,13 +134,13 @@ export default class QualitySelector extends React.Component {
               />
             </View>
 
-            {/*<View style={styles.searchForBetter}>*/}
-              {/*<Button*/}
-                {/*onPress={this.handleSearchForBetter}*/}
-                {/*variant={'primary'}>*/}
-                {/*{i18n.t('search for better')}*/}
-              {/*</Button>*/}
-            {/*</View>*/}
+            <View style={styles.searchForBetter}>
+              <Button
+                onPress={this.handleSearchForBetter}
+                variant={'primary'}>
+                {i18n.t('search for better')}
+              </Button>
+            </View>
 
             {qualities.map((quality) => (
               <BaseButton

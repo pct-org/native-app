@@ -70,10 +70,10 @@ export default class Episode extends React.Component {
   }
 
   handlePlayItem = () => {
-    const { playItem, hasTorrents, torrents, ...episode } = this.props
+    const { playItem, ...episode } = this.props
 
-    if (hasTorrents) {
-      playItem(torrents, episode)
+    if (episode.hasTorrents) {
+      playItem(episode.torrents, this.props)
     }
   }
 

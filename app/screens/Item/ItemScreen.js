@@ -156,7 +156,7 @@ export default class Item extends React.PureComponent {
 
   render() {
     const { item, isLoading } = this.props
-    const { selectFromTorrents } = this.state
+    const { selectFromTorrents, episodeToPlay } = this.state
 
     return (
       <View style={styles.root}>
@@ -234,6 +234,8 @@ export default class Item extends React.PureComponent {
         </ScrollViewWithStatusBar>
 
         <QualitySelector
+          item={item}
+          episodeToPlay={episodeToPlay}
           cancel={this.cancelQualitySelect}
           torrents={selectFromTorrents}
           playItem={this.playItem} />
