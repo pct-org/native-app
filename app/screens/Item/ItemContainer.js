@@ -13,8 +13,6 @@ export const mapDispatchToProps = dispatch => ({
 export const mapStateToProps = state => ({
   item           : Selectors.getItem(state),
   isLoading      : Selectors.getIsLoading(state),
-  selectedSeason : Selectors.getSelectedSeason(state),
-  selectedEpisode: Selectors.getSelectedEpisode(state),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Item)

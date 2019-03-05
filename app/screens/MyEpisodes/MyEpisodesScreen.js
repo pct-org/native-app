@@ -229,6 +229,7 @@ export class MyEpisodes extends React.PureComponent {
             : null
           }
           episodeToPlay={episodeToPlay}
+          myEpisodesScreen
           cancel={this.cancelQualitySelect}
           torrents={selectFromTorrents}
           playItem={this.playItem} />

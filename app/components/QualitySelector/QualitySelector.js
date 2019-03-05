@@ -1,10 +1,9 @@
 import React from 'react'
-import { StyleSheet, View, Text } from 'react-native'
+import { StyleSheet, View, Text, ActivityIndicator } from 'react-native'
 import * as Animatable from 'react-native-animatable'
 import { material } from 'react-native-typography'
 
 import i18n from 'modules/i18n'
-import PopcornSDK from 'modules/PopcornSDK'
 
 import BaseButton from 'components/BaseButton'
 import Button from 'components/Button'
@@ -55,6 +54,11 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom  : 20,
   },
+
+  fetchingBetter: {
+    position: 'absolute',
+    top     : 100,
+  },
 })
 
 export default class QualitySelector extends React.Component {
@@ -69,15 +73,21 @@ export default class QualitySelector extends React.Component {
     return {}
   }
 
+  static defaultProps = {
+    myEpisodesScreen:false,
+  }
+
   state = {
     hidden   : false,
     qualities: null,
   }
 
   playQuality = (quality) => {
-    const { playItem, torrents } = this.props
+    const { playItem, torrents, fetchingBetter } = this.props
 
-    playItem(torrents[quality])
+    if (!fetchingBetter) {
+      playItem(torrents[quality])
+    }
   }
 
   handleAnimationEnd = () => {
@@ -95,7 +105,7 @@ export default class QualitySelector extends React.Component {
   }
 
   handleSearchForBetter = () => {
-    const { fetchedBetterOnes, item, episodeToPlay } = this.props
+    const { fetchedBetterOnes, item, episodeToPlay, myEpisodesScreen } = this.props
 
     fetchedBetterOnes(
       item.show
@@ -103,11 +113,12 @@ export default class QualitySelector extends React.Component {
         : item,
 
       episodeToPlay,
+      myEpisodesScreen
     )
   }
 
   render() {
-    const { torrents, cancel } = this.props
+    const { torrents, cancel, fetchingBetter } = this.props
     const { hidden, qualities } = this.state
 
     if (hidden && !torrents) {
@@ -133,6 +144,18 @@ export default class QualitySelector extends React.Component {
                 size={40}
               />
             </View>
+
+            {fetchingBetter && (
+              <Animatable.View
+                animation={'fadeIn'}
+                duration={200}
+                style={styles.fetchingBetter}
+                useNativeDriver>
+                <ActivityIndicator
+                  size={60}
+                  color={'#FFF'} />
+              </Animatable.View>
+            )}
 
             <View style={styles.searchForBetter}>
               <Button

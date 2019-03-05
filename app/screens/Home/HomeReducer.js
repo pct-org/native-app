@@ -45,6 +45,28 @@ export default (state = HomeConstants.INITIAL_STATE, action) => {
         },
       }
 
+    case HomeConstants.FETCHED_BETTER_FOR_MY_EPISODE:
+      return {
+        ...state,
+        isLoading: false,
+        modes    : {
+          ...state.modes,
+          myEpisodes: {
+            ...state.modes.myEpisodes,
+            items: state.modes.myEpisodes.items.map((item) => {
+              if (item.id !== action.payload.episodeId) {
+                return item
+              }
+
+              return {
+                ...item,
+                torrents: action.payload.newTorrents,
+              }
+            }),
+          },
+        },
+      }
+
     case HomeConstants.REFRESH_MY_EPISODES:
       return {
         ...state,
