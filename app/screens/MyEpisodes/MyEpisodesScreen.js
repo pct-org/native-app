@@ -62,12 +62,24 @@ const styles = StyleSheet.create({
 
 export class MyEpisodes extends React.PureComponent {
 
-  static getDerivedStateFromProps(props) {
+  static getDerivedStateFromProps(props, state) {
     // If we are not focused cancel the quality selector
     if (!props.isFocused) {
       return {
         selectFromTorrents: null,
         episodeToPlay     : null,
+      }
+    }
+
+    const { episodeToPlay, selectFromTorrents } = state
+
+    if (episodeToPlay && selectFromTorrents) {
+      const { myEpisodes: { items } } = props
+
+      const newEpisode = items.find(item => item.id === episodeToPlay.id)
+      
+      return {
+        selectFromTorrents: newEpisode ? newEpisode.torrents : selectFromTorrents,
       }
     }
 
@@ -186,7 +198,7 @@ export class MyEpisodes extends React.PureComponent {
   )
 
   render() {
-    const { modes: { myEpisodes: { items, refreshing, fetching } } } = this.props
+    const { myEpisodes: { items, refreshing, fetching } } = this.props
     const { selectFromTorrents, episodeToPlay } = this.state
 
     return (
