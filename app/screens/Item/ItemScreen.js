@@ -49,6 +49,23 @@ export default class Item extends React.PureComponent {
     episodeToPlay     : null,
   }
 
+  static getDerivedStateFromProps(props, state) {
+    const { episodeToPlay, selectFromTorrents } = state
+
+    if (episodeToPlay && selectFromTorrents) {
+      const { item } = props
+
+      const season = item.seasons.find(season => season.number === episodeToPlay.season)
+      const newEpisode = season.episodes.find(episode => episode.number === episodeToPlay.number)
+
+      return {
+        selectFromTorrents: newEpisode ? newEpisode.torrents : selectFromTorrents,
+      }
+    }
+
+    return {}
+  }
+
   componentDidMount() {
     Orientation.lockToPortrait()
 
@@ -136,7 +153,7 @@ export default class Item extends React.PureComponent {
 
     navigate('Player', {
       torrent,
-      item: playItem
+      item: playItem,
     })
   }
 

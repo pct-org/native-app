@@ -8,6 +8,7 @@ import i18n from 'modules/i18n'
 import BaseButton from 'components/BaseButton'
 import Button from 'components/Button'
 import IconButton from 'components/IconButton'
+import Typography from 'components/Typography'
 
 import colors from 'modules/colors'
 
@@ -74,7 +75,7 @@ export default class QualitySelector extends React.Component {
   }
 
   static defaultProps = {
-    myEpisodesScreen:false,
+    myEpisodesScreen: false,
   }
 
   state = {
@@ -113,7 +114,7 @@ export default class QualitySelector extends React.Component {
         : item,
 
       episodeToPlay,
-      myEpisodesScreen
+      myEpisodesScreen,
     )
   }
 
@@ -161,25 +162,38 @@ export default class QualitySelector extends React.Component {
               <Button
                 onPress={this.handleSearchForBetter}
                 variant={'primary'}>
-                {i18n.t('search for better')}
+                {qualities.length > 0
+                  ? i18n.t('search for better')
+                  : i18n.t('search for qualities')
+                }
               </Button>
             </View>
 
+            {qualities.length === 0 && (
+              <Typography variant={'title'}>
+                {i18n.t('No qualities available! Try to search')}
+              </Typography>
+            )}
+
             {qualities.map((quality) => (
-              <BaseButton
+              <Animatable.View
                 key={quality}
-                onPress={() => this.playQuality(quality)}>
-                <Text style={[
-                  styles.quality,
-                  {
-                    borderBottomColor: torrents
-                      ? torrents[quality].health.color
-                      : null,
-                  },
-                ]}>
-                  {quality}
-                </Text>
-              </BaseButton>
+                animation={'fadeIn'}
+                duration={200}
+                useNativeDriver>
+                <BaseButton onPress={() => this.playQuality(quality)}>
+                  <Text style={[
+                    styles.quality,
+                    {
+                      borderBottomColor: torrents
+                        ? torrents[quality].health.color
+                        : null,
+                    },
+                  ]}>
+                    {quality}
+                  </Text>
+                </BaseButton>
+              </Animatable.View>
             ))}
           </View>
         )}

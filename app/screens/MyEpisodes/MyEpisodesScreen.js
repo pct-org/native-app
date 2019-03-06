@@ -77,7 +77,7 @@ export class MyEpisodes extends React.PureComponent {
       const { myEpisodes: { items } } = props
 
       const newEpisode = items.find(item => item.id === episodeToPlay.id)
-      
+
       return {
         selectFromTorrents: newEpisode ? newEpisode.torrents : selectFromTorrents,
       }
