@@ -6,7 +6,7 @@ import * as HomeSelectors from '../Home/HomeSelectors'
 import MyEpisodes from './MyEpisodesScreen'
 
 export const mapStateToProps = state => ({
-  modes: HomeSelectors.getModes(state),
+  myEpisodes: HomeSelectors.getModes(state).myEpisodes,
 })
 
 export default connect(mapStateToProps, HomeActions)(MyEpisodes)

@@ -1,1 +1,1 @@
-export { default } from './QualitySelector'
+export { default } from './QualitySelectorContainer'

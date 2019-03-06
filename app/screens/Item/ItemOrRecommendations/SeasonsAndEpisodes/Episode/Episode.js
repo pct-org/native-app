@@ -70,11 +70,9 @@ export default class Episode extends React.Component {
   }
 
   handlePlayItem = () => {
-    const { playItem, hasTorrents, torrents, ...episode } = this.props
+    const { playItem, ...episode } = this.props
 
-    if (hasTorrents) {
-      playItem(torrents, episode)
-    }
+    playItem(episode.torrents, this.props)
   }
 
   getAirsDate = () => {
@@ -87,7 +85,7 @@ export default class Episode extends React.Component {
   }
 
   render() {
-    const { hasTorrents, title, summary, number, images, hasAired } = this.props
+    const { title, summary, number, images, hasAired } = this.props
     const { showPlaceholder } = this.props
 
     return (
@@ -113,8 +111,8 @@ export default class Episode extends React.Component {
                     iconStyle={{ margin: 0 }}
                     backgroundColor={'transparent'}
                     borderRadius={0}
-                    name={hasTorrents ? 'play-circle-outline' : 'cancel'}
-                    color={hasTorrents ? '#FFF' : 'red'}
+                    name={'play-circle-outline'}
+                    color={'#FFF'}
                     size={60} />
                 )}
 

@@ -24,3 +24,5 @@ export const REFRESH_MY_EPISODES = `${REDUCER_NAME}.refresh.my.episodes`
 export const FETCHED_MY_EPISODES = `${REDUCER_NAME}.fetched.my.episodes`
 export const CLEAR_ITEMS = `${REDUCER_NAME}.clear.items`
 export const ERROR_NO_CON = `${REDUCER_NAME}.error.no.internet`
+
+export const FETCHED_BETTER_FOR_MY_EPISODE = `${REDUCER_NAME}.fetched.better.for.my.episode`

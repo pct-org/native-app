@@ -1,5 +1,5 @@
 import React from 'react'
-import { StyleSheet, View, Text } from 'react-native'
+import { StyleSheet, View, Text, ActivityIndicator } from 'react-native'
 import * as Animatable from 'react-native-animatable'
 import { material } from 'react-native-typography'
 
@@ -8,6 +8,7 @@ import i18n from 'modules/i18n'
 import BaseButton from 'components/BaseButton'
 import Button from 'components/Button'
 import IconButton from 'components/IconButton'
+import Typography from 'components/Typography'
 
 import colors from 'modules/colors'
 
@@ -54,6 +55,11 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom  : 20,
   },
+
+  fetchingBetter: {
+    position: 'absolute',
+    top     : 100,
+  },
 })
 
 export default class QualitySelector extends React.Component {
@@ -68,15 +74,21 @@ export default class QualitySelector extends React.Component {
     return {}
   }
 
+  static defaultProps = {
+    myEpisodesScreen: false,
+  }
+
   state = {
     hidden   : false,
     qualities: null,
   }
 
   playQuality = (quality) => {
-    const { playItem, torrents } = this.props
+    const { playItem, torrents, fetchingBetter } = this.props
 
-    playItem(torrents[quality])
+    if (!fetchingBetter) {
+      playItem(torrents[quality])
+    }
   }
 
   handleAnimationEnd = () => {
@@ -94,11 +106,20 @@ export default class QualitySelector extends React.Component {
   }
 
   handleSearchForBetter = () => {
+    const { fetchedBetterOnes, item, episodeToPlay, myEpisodesScreen } = this.props
 
+    fetchedBetterOnes(
+      item.show
+        ? item.show
+        : item,
+
+      episodeToPlay,
+      myEpisodesScreen,
+    )
   }
 
   render() {
-    const { torrents, cancel } = this.props
+    const { torrents, cancel, fetchingBetter } = this.props
     const { hidden, qualities } = this.state
 
     if (hidden && !torrents) {
@@ -125,29 +146,54 @@ export default class QualitySelector extends React.Component {
               />
             </View>
 
-            {/*<View style={styles.searchForBetter}>*/}
-              {/*<Button*/}
-                {/*onPress={this.handleSearchForBetter}*/}
-                {/*variant={'primary'}>*/}
-                {/*{i18n.t('search for better')}*/}
-              {/*</Button>*/}
-            {/*</View>*/}
+            {fetchingBetter && (
+              <Animatable.View
+                animation={'fadeIn'}
+                duration={200}
+                style={styles.fetchingBetter}
+                useNativeDriver>
+                <ActivityIndicator
+                  size={60}
+                  color={'#FFF'} />
+              </Animatable.View>
+            )}
+
+            <View style={styles.searchForBetter}>
+              <Button
+                onPress={this.handleSearchForBetter}
+                variant={'primary'}>
+                {qualities.length > 0
+                  ? i18n.t('search for better')
+                  : i18n.t('search for qualities')
+                }
+              </Button>
+            </View>
+
+            {qualities.length === 0 && (
+              <Typography variant={'title'}>
+                {i18n.t('No qualities available! Try to search')}
+              </Typography>
+            )}
 
             {qualities.map((quality) => (
-              <BaseButton
+              <Animatable.View
                 key={quality}
-                onPress={() => this.playQuality(quality)}>
-                <Text style={[
-                  styles.quality,
-                  {
-                    borderBottomColor: torrents
-                      ? torrents[quality].health.color
-                      : null,
-                  },
-                ]}>
-                  {quality}
-                </Text>
-              </BaseButton>
+                animation={'fadeIn'}
+                duration={200}
+                useNativeDriver>
+                <BaseButton onPress={() => this.playQuality(quality)}>
+                  <Text style={[
+                    styles.quality,
+                    {
+                      borderBottomColor: torrents
+                        ? torrents[quality].health.color
+                        : null,
+                    },
+                  ]}>
+                    {quality}
+                  </Text>
+                </BaseButton>
+              </Animatable.View>
             ))}
           </View>
         )}

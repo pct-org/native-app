@@ -122,8 +122,8 @@ android {
         applicationId "com.popcorn"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 19
-        versionName "v0.14.0"
+        versionCode 20
+        versionName "v0.15.0"
         ndk {
             abiFilters "armeabi-v7a", "x86"
         }

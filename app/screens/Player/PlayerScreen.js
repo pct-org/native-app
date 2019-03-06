@@ -5,14 +5,11 @@ import RNFS from 'react-native-fs'
 import GoogleCast, { CastButton } from 'react-native-google-cast'
 import StaticServer from 'react-native-static-server'
 import TorrentStreamer from 'react-native-torrent-streamer'
-import { Constants, utils } from 'popcorn-sdk'
+import { utils } from 'popcorn-sdk'
 import Orientation from 'react-native-orientation'
-import { TextTrackType } from 'react-native-video'
 
 import i18n from 'modules/i18n'
-import PopcornSDK from 'modules/PopcornSDK'
 import SubtitlesManager from 'modules/SubtitlesManager'
-import sortAB from 'modules/utils/sortAB'
 
 import Typography from 'components/Typography'
 import Button from 'components/Button'
@@ -194,9 +191,10 @@ export default class VideoPlayer extends React.Component {
       buffer       : '100',
       doneBuffering: true,
       loading      : false,
+      casting      : castState.toLowerCase() === 'connected',
     }
 
-    if (castState.toLowerCase() === 'connected') {
+    if (newState.casting) {
       await this.startCasting(data.url)
 
     } else {

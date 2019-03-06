@@ -49,6 +49,23 @@ export default class Item extends React.PureComponent {
     episodeToPlay     : null,
   }
 
+  static getDerivedStateFromProps(props, state) {
+    const { episodeToPlay, selectFromTorrents } = state
+
+    if (episodeToPlay && selectFromTorrents) {
+      const { item } = props
+
+      const season = item.seasons.find(season => season.number === episodeToPlay.season)
+      const newEpisode = season.episodes.find(episode => episode.number === episodeToPlay.number)
+
+      return {
+        selectFromTorrents: newEpisode ? newEpisode.torrents : selectFromTorrents,
+      }
+    }
+
+    return {}
+  }
+
   componentDidMount() {
     Orientation.lockToPortrait()
 
@@ -136,7 +153,7 @@ export default class Item extends React.PureComponent {
 
     navigate('Player', {
       torrent,
-      item: playItem
+      item: playItem,
     })
   }
 
@@ -156,7 +173,7 @@ export default class Item extends React.PureComponent {
 
   render() {
     const { item, isLoading } = this.props
-    const { selectFromTorrents } = this.state
+    const { selectFromTorrents, episodeToPlay } = this.state
 
     return (
       <View style={styles.root}>
@@ -234,6 +251,8 @@ export default class Item extends React.PureComponent {
         </ScrollViewWithStatusBar>
 
         <QualitySelector
+          item={item}
+          episodeToPlay={episodeToPlay}
           cancel={this.cancelQualitySelect}
           torrents={selectFromTorrents}
           playItem={this.playItem} />
