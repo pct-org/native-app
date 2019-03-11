@@ -1,12 +1,23 @@
+import { material } from 'react-native-typography'
+
 export const fontName = 'Roboto'
+
+import colors from 'modules/colors'
 
 export default {
 
   root: {},
 
+  display6: {
+    fontSize  : 20,
+    lineHeight: 24,
+    letterSpacing: 0.25,
+  },
+
   display4: {
-    fontSize  : 112,
-    lineHeight: 128,
+    fontSize  : 26,
+    lineHeight: 30,
+    letterSpacing: 0.19,
   },
 
   display3: {
@@ -40,8 +51,9 @@ export default {
   },
 
   body2: {
-    fontSize  : 14,
-    lineHeight: 24,
+    fontSize  : 12,
+    lineHeight: 15,
+    letterSpacing: 0.21
   },
 
   body1: {
@@ -50,8 +62,9 @@ export default {
   },
 
   caption: {
-    fontSize  : 12,
-    lineHeight: 16,
+    fontSize     : 12,
+    lineHeight   : 16,
+    letterSpacing: 0.4,
   },
 
   button: {
@@ -88,10 +101,16 @@ export default {
   },
 
   colorWhite: {
-    color: 'white',
+    color: colors.TEXT_COLOR,
   },
 
   colorBlack: {
     color: 'black',
+  },
+
+  emphasisHigh: {},
+
+  emphasisMedium: {
+    opacity: 0.6,
   },
 }

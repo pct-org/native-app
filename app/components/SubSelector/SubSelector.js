@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
     zIndex  : 1100,
   },
 
-  container: {
+  listContainer: {
     opacity        : 0.9,
     display        : 'flex',
     justifyContent : 'center',
@@ -105,7 +105,7 @@ export default class SubSelector extends React.Component {
         useNativeDriver>
 
         {subs &&  (
-          <View style={[styles.root, styles.container]}>
+          <View style={[styles.root, styles.listContainer]}>
             <View style={styles.closeIcon}>
               <IconButton
                 onPress={cancel}

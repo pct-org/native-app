@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
     position       : 'relative',
   },
 
-  container: {
+  listContainer: {
     flexDirection: 'column',
   },
 

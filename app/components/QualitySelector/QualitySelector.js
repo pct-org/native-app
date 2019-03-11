@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
     height  : '100%',
   },
 
-  container: {
+  listContainer: {
     opacity        : 0.9,
     display        : 'flex',
     justifyContent : 'center',
@@ -136,7 +136,7 @@ export default class QualitySelector extends React.Component {
         useNativeDriver>
 
         {qualities && (
-          <View style={[styles.root, styles.container]}>
+          <View style={[styles.root, styles.listContainer]}>
             <View style={styles.closeIcon}>
               <IconButton
                 onPress={cancel}

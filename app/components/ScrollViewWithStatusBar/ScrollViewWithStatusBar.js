@@ -56,6 +56,7 @@ export default class ScrollViewWithStatusBar extends React.Component {
           onScroll={this.handleScroll}>
           {children}
         </ScrollView>
+
       </SafeAreaView>
     )
   }

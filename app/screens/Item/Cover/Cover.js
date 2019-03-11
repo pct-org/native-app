@@ -10,7 +10,7 @@ import IconButton from 'components/IconButton'
 
 const styles = StyleSheet.create({
 
-  container: {
+  listContainer: {
     height   : 400,
     width    : '100%',
     alignSelf: 'stretch',
@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
 })
 
 export const Cover = ({ item, playMovie }) => (
-  <View style={styles.container}>
+  <View style={styles.listContainer}>
     <Image
       style={styles.mainImage}
       source={{

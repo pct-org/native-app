@@ -7,10 +7,8 @@ import SplashScreen from 'react-native-splash-screen'
 
 import i18n from 'modules/i18n'
 import colors from 'modules/colors'
-import dimensions from 'modules/dimensions'
 
 import CardSlider from 'components/CardSlider'
-import MyEpisodesSlider from 'components/MyEpisodesSlider'
 import MainCover from 'components/MainCover'
 import ScrollViewWithStatusBar from 'components/ScrollViewWithStatusBar'
 
@@ -22,13 +20,7 @@ const styles = StyleSheet.create({
     position       : 'relative',
   },
 
-  section: {
-    marginTop   : dimensions.UNIT * 2,
-    marginBottom: dimensions.UNIT * 2,
-  },
-
 })
-
 
 export default class Home extends React.PureComponent {
 
@@ -59,8 +51,6 @@ export default class Home extends React.PureComponent {
   }
 
   handleItemOpen = (item) => {
-    console.log('open', item)
-    return
     const { navigation } = this.props
 
     navigation.navigate('Item', item)
@@ -83,13 +73,7 @@ export default class Home extends React.PureComponent {
   getMyList = () => {
     const { modes } = this.props
 
-    return modes[Constants.TYPE_BOOKMARK].items.filter(movie => !movie.watched.complete)
-  }
-
-  getMyEpisodes = () => {
-    const { modes } = this.props
-
-    return modes.myEpisodes.items
+    return modes[Constants.TYPE_BOOKMARK].items.filter(movie => !movie.watched.complete).slice(0, 10)
   }
 
   getMovies = (withSlice = true) => {
@@ -110,6 +94,12 @@ export default class Home extends React.PureComponent {
 
     return modes[Constants.TYPE_SHOW].items.filter(show => !show.bookmarked).slice(0, 10)
   }
+
+  getMyListCardProps = () => ({})
+
+  getMoviesListCardProps = () => ({})
+
+  getShowListCardProps = () => ({})
 
   renderMainCover = () => {
     const { isLoading } = this.props
@@ -133,46 +123,30 @@ export default class Home extends React.PureComponent {
 
     return (
       <CardSlider
-        style={styles.section}
+        style={{ marginTop: -20, marginBottom: 8 }}
         onPress={this.handleItemOpen}
         loading={isLoading}
         title={i18n.t('My List')}
-        items={myList} />
-    )
-  }
-
-  renderMyEpisodes = () => {
-    const { isLoading } = this.props
-    const myEpisodes = this.getMyEpisodes()
-
-    console.log('myEpisodes', myEpisodes)
-
-    if (!myEpisodes || myEpisodes.length === 0) {
-      return
-    }
-
-    return (
-      <MyEpisodesSlider
-        style={styles.section}
-        onPress={this.handleItemOpen}
-        loading={isLoading}
-        title={i18n.t('My Episodes')}
-        items={myEpisodes} />
+        items={myList}
+        cardProps={this.getMyListCardProps()} />
     )
   }
 
   renderMoviesList = () => {
     const { isLoading } = this.props
+    const myList = this.getMyList()
 
     return (
       <CardSlider
-        style={styles.section}
+        style={{
+          marginTop   : myList.length > 0 ? 0 : -20,
+          marginBottom: 8,
+        }}
         onPress={this.handleItemOpen}
-        // loading={isLoading}
-        loading={true}
+        loading={isLoading}
         title={i18n.t('Movies')}
-        // items={this.getMovies()} />
-        items={[]} />
+        items={this.getMovies()}
+        cardProps={this.getMoviesListCardProps()} />
     )
   }
 
@@ -185,7 +159,8 @@ export default class Home extends React.PureComponent {
         onPress={this.handleItemOpen}
         loading={isLoading}
         title={i18n.t('Shows')}
-        items={this.getShows()} />
+        items={this.getShows()}
+        cardProps={this.getShowListCardProps()} />
     )
   }
 
@@ -203,9 +178,9 @@ export default class Home extends React.PureComponent {
 
             {this.renderMyList()}
 
-            {this.renderMyEpisodes()}
-
             {this.renderMoviesList()}
+
+            {this.renderShowsList()}
 
           </ScrollViewWithStatusBar>
         )}

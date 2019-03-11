@@ -278,7 +278,7 @@ export class EpisodesBar extends React.Component {
         )}
 
         <Animatable.View
-          style={[styles.container]}
+          style={[styles.listContainer]}
           animation={showControls ? 'fadeIn' : 'fadeOut'}
           pointerEvents={'box-none'}
           useNativeDriver>
@@ -353,7 +353,7 @@ export class EpisodesBar extends React.Component {
 
 const styles = StyleSheet.create({
 
-  container: {
+  listContainer: {
     position: 'absolute',
     top     : 0,
     left    : 0,

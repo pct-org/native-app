@@ -10,7 +10,7 @@ import Typography from '../Typography'
 
 export const styles = StyleSheet.create({
 
-  container: {
+  listContainer: {
     display       : 'flex',
     justifyContent: 'center',
     alignItems    : 'center',
@@ -22,7 +22,7 @@ export const styles = StyleSheet.create({
 
 export const IconButton = ({ onPress, animatable, buttonProps, children, ...rest }) => (
   <BaseButton onPress={onPress} {...buttonProps}>
-    <Animatable.View {...animatable} style={styles.container}>
+    <Animatable.View {...animatable} style={styles.listContainer}>
       <Icon
         {...rest}
       />

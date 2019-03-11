@@ -1,11 +1,10 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 import { StyleSheet, View, FlatList } from 'react-native'
 
-import dimensions from 'modules/dimensions'
+import Typography from 'components/Typography'
+import MyEpisode from 'components/MyEpisode'
 
-import Card from '../Card'
-import Typography from '../Typography'
+import dimensions from 'modules/dimensions'
 
 export const styles = StyleSheet.create({
 
@@ -26,10 +25,9 @@ export const styles = StyleSheet.create({
 
 })
 
-export const CardSlider = ({ loading, title, items, onPress, style }) => {
-  const renderCard = ({ item }) => (
-    <Card
-      variant={'medium'}
+export const MyEpisodesSlider = ({ loading, title, items, onPress, style }) => {
+  const renderEpisode = ({ item }) => (
+    <MyEpisode
       empty={!item}
       item={item}
       onPress={() => onPress(item)}
@@ -38,7 +36,6 @@ export const CardSlider = ({ loading, title, items, onPress, style }) => {
 
   return (
     <View style={style}>
-
       <Typography
         style={styles.title}
         variant={'display6'}
@@ -50,20 +47,23 @@ export const CardSlider = ({ loading, title, items, onPress, style }) => {
         horizontal
         removeClippedSubviews
         contentContainerStyle={styles.container}
-        data={items.length === 0 ? Array(4).fill() : items}
+        data={items.length === 0 ? Array(2).fill() : items}
         initialNumToRender={4}
         windowSize={5}
-        renderItem={renderCard}
+        renderItem={renderEpisode}
         ItemSeparatorComponent={() => <View style={{ width: dimensions.UNIT }} />}
         ListFooterComponent={() => <View style={{ width: dimensions.UNIT * 5 }} />}
-        keyExtractor={(item, index) => item ? item.id : `${index}`}
+        keyExtractor={(item, index) => item ? `${item.id}` : `${index}`}
         showsHorizontalScrollIndicator={false}
-        snapToInterval={dimensions.CARD_MEDIUM_WIDTH + dimensions.UNIT}
-        snapToAlignment={'center'}
+        snapToInterval={dimensions.MY_EPISODE_CARD_WIDTH + dimensions.UNIT}
+        snapToAlignment={
+          items.length > 2
+            ? 'center'
+            : 'end'
+        }
       />
-
     </View>
   )
 }
 
-export default CardSlider
+export default MyEpisodesSlider

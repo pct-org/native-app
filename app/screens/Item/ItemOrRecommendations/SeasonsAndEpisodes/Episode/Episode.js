@@ -11,7 +11,7 @@ import BaseButton from 'components/BaseButton'
 
 export const styles = StyleSheet.create({
 
-  container: {
+  listContainer: {
     display: 'flex',
     margin : 8,
   },
@@ -89,7 +89,7 @@ export default class Episode extends React.Component {
     const { showPlaceholder } = this.props
 
     return (
-      <View style={styles.container}>
+      <View style={styles.listContainer}>
 
         <View style={styles.posterWithTitle}>
           <BaseButton onPress={this.handlePlayItem}>

@@ -1,43 +1,43 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { StyleSheet, View, Image, Dimensions, StatusBar } from 'react-native'
+import { StyleSheet, View, Image, Dimensions } from 'react-native'
 import Device from 'modules/DeviceDetection'
 
 import posterHolderImage from 'images/posterholder.png'
 
+import colors from 'modules/colors'
+import dimensions from 'modules/dimensions'
+
 import BaseButton from '../BaseButton'
+import Overlay from '../Overlay'
 
-const { width, height } = Dimensions.get('window')
-
-const smallHeight = (height - StatusBar.currentHeight) / 4
-const smallWidth = (width - 40) / 3.1
-const mediumHeight = height - StatusBar.currentHeight / 3.3
-const mediumWidth = (width - 40) / 3.5
+const { width } = Dimensions.get('window')
 
 const rootWidth = (width - (Device.isTablet ? 40 : 32)) / (Device.isTablet ? 4 : 3)
 
 const styles = StyleSheet.create({
 
   root: {
-    height     : (rootWidth * 1.5),
-    width      : rootWidth,
-    marginLeft : 4,
-    marginRight: 4,
-    alignSelf  : 'stretch',
-    position   : 'relative',
+    height      : (rootWidth * 1.5),
+    width       : rootWidth,
+    alignSelf   : 'stretch',
+    position    : 'relative',
+    borderRadius: dimensions.BORDER_RADIUS,
+    overflow    : 'hidden',
+    backgroundColor: colors.BACKGROUND_LIGHTER,
   },
 
   default: {},
 
   small: {
-    height: smallHeight,
-    width : smallWidth,
+    //   height: smallHeight,
+//    width : smallWidth,
   },
 
   // For now is this only correct for Tablet
   medium: {
-    height: mediumHeight,
-    width : mediumWidth,
+    height: dimensions.CARD_MEDIUM_HEIGHT,
+    width : dimensions.CARD_MEDIUM_WIDTH,
   },
 
   image: {
@@ -45,18 +45,9 @@ const styles = StyleSheet.create({
     width : '100%',
   },
 
-  overlay: {
-    position: 'absolute',
-    top     : 0,
-    left    : 0,
-    height  : '100%',
-    width   : '100%',
-    opacity : 0.8,
-
-    backgroundColor: '#000',
-  },
-
 })
+
+// TODO:: When card is empty then animate a gray?
 
 export default class Card extends React.PureComponent {
 
@@ -120,7 +111,7 @@ export default class Card extends React.PureComponent {
           />
 
           {item && item.watched && item.watched.complete && (
-            <View style={styles.overlay} />
+            <Overlay />
           )}
 
         </View>

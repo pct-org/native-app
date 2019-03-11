@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.BACKGROUND,
   },
 
-  container: {
+  listContainer: {
     display      : 'flex',
     flexDirection: 'row',
     marginLeft   : 8,
@@ -183,7 +183,7 @@ export default class Item extends React.PureComponent {
           <Cover item={item} playMovie={this.selectQuality} />
 
           {item && item.summary && (
-            <View style={styles.container}>
+            <View style={styles.listContainer}>
               <Typography variant={'body2'}>
                 {item.summary}
               </Typography>
@@ -191,7 +191,7 @@ export default class Item extends React.PureComponent {
           )}
 
           {item && (
-            <View style={[styles.container, styles.iconsContainer]}>
+            <View style={[styles.listContainer, styles.iconsContainer]}>
               {!isLoading && (
                 <IconButton
                   animatable={{
