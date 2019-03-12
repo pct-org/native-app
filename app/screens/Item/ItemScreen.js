@@ -1,10 +1,11 @@
 import React from 'react'
-import { StyleSheet, View, ActivityIndicator, Linking, BackHandler } from 'react-native'
+import { StyleSheet, View, ActivityIndicator, Linking, BackHandler, InteractionManager } from 'react-native'
 import Orientation from 'react-native-orientation'
 import { Constants } from 'popcorn-sdk'
 
 import i18n from 'modules/i18n'
 import colors from 'modules/colors'
+import dimensions from 'modules/dimensions'
 
 import ScrollViewWithStatusBar from 'components/ScrollViewWithStatusBar'
 import Typography from 'components/Typography'
@@ -24,8 +25,9 @@ const styles = StyleSheet.create({
   listContainer: {
     display      : 'flex',
     flexDirection: 'row',
-    marginLeft   : 8,
-    marginTop    : 8,
+    marginLeft   : dimensions.UNIT * 2,
+    marginRight  : dimensions.UNIT * 2,
+    marginTop    : dimensions.UNIT / 2,
   },
 
   iconsContainer: {
@@ -71,7 +73,10 @@ export default class Item extends React.PureComponent {
 
     BackHandler.addEventListener('hardwareBackPress', this.handleBackPress)
 
-    this.getItem()
+    // Fetch data after the component is done navigation
+    InteractionManager.runAfterInteractions(() => {
+      this.getItem()
+    })
   }
 
   componentWillUnmount() {
@@ -180,15 +185,7 @@ export default class Item extends React.PureComponent {
 
         <ScrollViewWithStatusBar>
 
-          <Cover item={item} playMovie={this.selectQuality} />
-
-          {item && item.summary && (
-            <View style={styles.listContainer}>
-              <Typography variant={'body2'}>
-                {item.summary}
-              </Typography>
-            </View>
-          )}
+          <Cover item={item} onPlay={this.selectQuality} />
 
           {item && (
             <View style={[styles.listContainer, styles.iconsContainer]}>

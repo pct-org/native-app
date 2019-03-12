@@ -1,15 +1,16 @@
-import Typography from 'components/Typography'
 import React from 'react'
 import PropTypes from 'prop-types'
 import { Text } from 'react-native'
 
+import Typography from 'components/Typography'
+
 import BaseButton from '../BaseButton'
 
-export const TextButton = ({ children, onPress, ...rest }) => (
+export const TextButton = ({ children, onPress, upperCase, ...rest }) => (
   <BaseButton onPress={onPress}>
 
     <Text style={Typography.getTextStyle(rest)}>
-      {children.toUpperCase()}
+      {upperCase ? children.toUpperCase() : children}
     </Text>
 
   </BaseButton>
@@ -21,9 +22,11 @@ TextButton.propTypes = {
 }
 
 TextButton.defaultProps = {
+  upperCase : true,
   variant   : 'button',
   color     : 'white',
   fontWeight: 'bold',
+  emphasis  : 'high',
 }
 
 export default TextButton

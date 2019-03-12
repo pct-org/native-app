@@ -1,5 +1,3 @@
-import { material } from 'react-native-typography'
-
 export const fontName = 'Roboto'
 
 import colors from 'modules/colors'
@@ -10,6 +8,12 @@ export default {
 
   display6: {
     fontSize  : 20,
+    lineHeight: 24,
+    letterSpacing: 0.25,
+  },
+
+  display5: {
+    fontSize  : 22,
     lineHeight: 24,
     letterSpacing: 0.25,
   },

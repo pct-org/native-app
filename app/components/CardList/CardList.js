@@ -3,8 +3,23 @@ import { View, FlatList } from 'react-native'
 import { withNavigation } from 'react-navigation'
 
 import Device from 'modules/DeviceDetection'
+import dimensions from 'modules/dimensions'
 
 import Card from 'components/Card'
+
+export const styles = {
+
+  container: {
+    marginLeft: dimensions.UNIT,
+    marginRight: dimensions.UNIT,
+  },
+
+  cardContainer: {
+    marginLeft  : dimensions.UNIT / 2,
+    marginRight : dimensions.UNIT / 2,
+    marginBottom: dimensions.UNIT / 2,
+  },
+}
 
 export class CardList extends React.Component {
 
@@ -20,10 +35,13 @@ export class CardList extends React.Component {
   }
 
   renderCard = ({ item }) => (
-    <Card
-      item={item}
-      onPress={() => this.handleItemOpen(item)}
-    />
+    <View style={{ margin: dimensions.UNIT / 2 }}>
+      <Card
+        variant={'medium'}
+        item={item}
+        onPress={() => this.handleItemOpen(item)}
+      />
+    </View>
   )
 
   render() {
@@ -31,15 +49,20 @@ export class CardList extends React.Component {
 
     return (
       <FlatList
-        columnWrapperStyle={{ margin: 4 }}
         removeClippedSubviews
         data={items}
+        contentContainerStyle={styles.container}
         numColumns={Device.isTablet ? 4 : 3}
         initialNumToRender={12}
         windowSize={32}
+        columnWrapperStyle={{
+          margin: dimensions.UNIT / 2,
+        }}
         renderItem={this.renderCard}
         keyExtractor={(item, index) => `${item.id}-${index}`}
-        ListFooterComponent={() => <View style={{ marginBottom: 16 }} />}
+        ListFooterComponent={() => <View style={{ marginBottom: dimensions.UNIT * 2 }} />}
+        showsHorizontalScrollIndicator={false}
+        showsVerticalScrollIndicator={false}
         {...props}
       />
     )

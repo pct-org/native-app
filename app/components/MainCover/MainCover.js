@@ -10,6 +10,7 @@ import dimensions from 'modules/dimensions'
 import CoverGradient from '../CoverGradient'
 import BaseButton from '../BaseButton'
 import Typography from '../Typography'
+import IconButton from '../IconButton'
 
 const { height } = Dimensions.get('window')
 
@@ -54,6 +55,9 @@ const styles = StyleSheet.create({
   },
 
   infoContainer: {
+    display      : 'flex',
+    flexDirection: 'row',
+
     marginTop   : dimensions.UNIT / 2,
     marginLeft  : dimensions.UNIT * 2,
     marginBottom: dimensions.UNIT * 2,
@@ -61,7 +65,7 @@ const styles = StyleSheet.create({
 
 })
 
-export const MainCover = ({ item, onPress, onLoad }) => {
+export const MainCover = ({ item, onOpen, onLoad }) => {
   if (!item) {
     return null
   }
@@ -88,7 +92,7 @@ export const MainCover = ({ item, onPress, onLoad }) => {
                 <Icon
                   name={'play-circle-outline'}
                   color={colors.ICON_COLOR}
-                  size={50} />
+                  size={dimensions.ICON_PLAY_MEDIUM} />
               </View>
             )}
 
@@ -111,7 +115,11 @@ export const MainCover = ({ item, onPress, onLoad }) => {
 
       <View style={styles.infoContainer}>
         <Typography
-          style={{ width: '85%' }}
+          style={{
+            width: onOpen
+              ? '85%'
+              : '100%',
+          }}
           variant={'body2'}
           textProps={{
             numberOfLines: 3,
@@ -119,21 +127,27 @@ export const MainCover = ({ item, onPress, onLoad }) => {
           }}>
           {item.summary}
         </Typography>
+
+        <IconButton
+          onPress={() => onOpen(item)}
+          name={'information-outline'}
+          color={colors.ICON_COLOR}
+          size={35} />
       </View>
     </React.Fragment>
   )
 }
 
 MainCover.propTypes = {
-  item    : PropTypes.object,
-  onPress : PropTypes.func.isRequired,
-  onLoad  : PropTypes.func.isRequired,
-  children: PropTypes.node,
+  item  : PropTypes.object,
+  onOpen: PropTypes.func.isRequired,
+  onPlay: PropTypes.func.isRequired,
+  onLoad: PropTypes.func,
 }
 
 MainCover.defaultProps = {
-  item    : null,
-  children: null,
+  item  : null,
+  onLoad: null,
 }
 
 export default MainCover

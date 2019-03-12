@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, Text, View, InteractionManager } from 'react-native'
 import Orientation from 'react-native-orientation'
 import { Constants } from 'popcorn-sdk'
 import SplashScreen from 'react-native-splash-screen'
@@ -49,18 +49,35 @@ export default class Home extends React.PureComponent {
 
     Orientation.lockToPortrait()
 
-    getItems(Constants.TYPE_MOVIE)
-    getItems(Constants.TYPE_SHOW)
-    getItems(Constants.TYPE_BOOKMARK)
+    // Fetch data after the component is done navigation
+    InteractionManager.runAfterInteractions(() => {
+      getItems(Constants.TYPE_MOVIE)
+      getItems(Constants.TYPE_SHOW)
+      getItems(Constants.TYPE_BOOKMARK)
+    })
   }
 
   componentWillUnmount() {
     Orientation.unlockAllOrientations()
   }
 
+  handleEndReached = (mode) => () => {
+    const { isLoading, modes, getItems } = this.props
+
+    if (mode === Constants.TYPE_BOOKMARK || isLoading) {
+      return
+    }
+
+    getItems(mode, modes[mode].page + 1)
+  }
+
+  handleGoTo = (to) => () => {
+    const { navigation } = this.props
+
+    navigation.navigate(to)
+  }
+
   handleItemOpen = (item) => {
-    console.log('open', item)
-    return
     const { navigation } = this.props
 
     navigation.navigate('Item', item)
@@ -99,7 +116,7 @@ export default class Home extends React.PureComponent {
     const movies = modes[Constants.TYPE_MOVIE].items.filter(movie => !movie.watched.complete && !movie.bookmarked)
 
     if (withSlice) {
-      return movies.slice(1, 11)
+      return movies.slice(1)
     }
 
     return movies
@@ -108,7 +125,7 @@ export default class Home extends React.PureComponent {
   getShows = () => {
     const { modes } = this.props
 
-    return modes[Constants.TYPE_SHOW].items.filter(show => !show.bookmarked).slice(0, 10)
+    return modes[Constants.TYPE_SHOW].items.filter(show => !show.bookmarked)
   }
 
   renderMainCover = () => {
@@ -116,7 +133,8 @@ export default class Home extends React.PureComponent {
 
     return (
       <MainCover
-        onPress={this.handleItemOpen}
+        onOpen={this.handleItemOpen}
+        onPlay={this.handleItemOpen}
         loading={isLoading}
         onLoad={this.handleCoverLoaded}
         item={this.getMainCover()} />
@@ -145,8 +163,6 @@ export default class Home extends React.PureComponent {
     const { isLoading } = this.props
     const myEpisodes = this.getMyEpisodes()
 
-    console.log('myEpisodes', myEpisodes)
-
     if (!myEpisodes || myEpisodes.length === 0) {
       return
     }
@@ -168,11 +184,11 @@ export default class Home extends React.PureComponent {
       <CardSlider
         style={styles.section}
         onPress={this.handleItemOpen}
-        // loading={isLoading}
-        loading={true}
+        loading={isLoading}
         title={i18n.t('Movies')}
-        // items={this.getMovies()} />
-        items={[]} />
+        items={this.getMovies()}
+        goToMore={this.handleGoTo('Movies')}
+        onEndReached={this.handleEndReached(Constants.TYPE_MOVIE)} />
     )
   }
 
@@ -185,7 +201,9 @@ export default class Home extends React.PureComponent {
         onPress={this.handleItemOpen}
         loading={isLoading}
         title={i18n.t('Shows')}
-        items={this.getShows()} />
+        items={this.getShows()}
+        goToMore={this.handleGoTo('Shows')}
+        onEndReached={this.handleEndReached(Constants.TYPE_SHOW)} />
     )
   }
 
@@ -206,6 +224,8 @@ export default class Home extends React.PureComponent {
             {this.renderMyEpisodes()}
 
             {this.renderMoviesList()}
+
+            {this.renderShowsList()}
 
           </ScrollViewWithStatusBar>
         )}

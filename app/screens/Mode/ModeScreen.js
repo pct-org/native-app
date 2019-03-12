@@ -8,6 +8,7 @@ import { Constants } from 'popcorn-sdk'
 import { withNavigationFocus } from 'react-navigation'
 
 import colors from 'modules/colors'
+import dimensions from 'modules/dimensions'
 
 import CardList from 'components/CardList'
 import IconButton from 'components/IconButton'
@@ -23,19 +24,11 @@ const styles = StyleSheet.create({
     position       : 'relative',
   },
 
-  listContainer: {
-    flexDirection: 'column',
-  },
-
-  listItem: {
-    marginTop: 16,
-  },
-
   searchRoot: {
     width         : '100%',
     height        : 50,
-    marginTop     : 36,
-    marginBottom  : 8,
+    marginTop     : StatusBar.currentHeight + dimensions.UNIT * 2,
+    marginBottom  : dimensions.UNIT,
     display       : 'flex',
     justifyContent: 'center',
     alignItems    : 'center',
@@ -43,7 +36,7 @@ const styles = StyleSheet.create({
 
   searchContainer: {
     backgroundColor: colors.BACKGROUND_LIGHTER,
-    width          : width - 16,
+    width          : width - (dimensions.UNIT * 4),
     height         : '100%',
   },
 
@@ -56,14 +49,14 @@ const styles = StyleSheet.create({
 
   cancelSearch: {
     position: 'absolute',
-    right   : 8,
+    right   : dimensions.UNIT,
     top     : 0,
   },
 
   searchIcon: {
     position: 'absolute',
-    left    : 8,
-    top     : 8,
+    left    : dimensions.UNIT,
+    top     : dimensions.UNIT,
   },
 
 })

@@ -1,38 +1,38 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { Image, StyleSheet, View } from 'react-native'
+import { Dimensions, Image, StyleSheet, View } from 'react-native'
 import { Constants } from 'popcorn-sdk'
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
+
+import colors from 'modules/colors'
+import dimensions from 'modules/dimensions'
 
 import CoverGradient from 'components/CoverGradient'
+import BaseButton from 'components/BaseButton'
 import Typography from 'components/Typography'
-import Overlay from 'components/Overlay'
-import IconButton from 'components/IconButton'
+import ScrollViewWithStatusBar from 'screens/Item/ItemScreen'
+
+const { height } = Dimensions.get('window')
+
+const POSTER_WIDTH = dimensions.CARD_MEDIUM_WIDTH - dimensions.UNIT
 
 const styles = StyleSheet.create({
 
+  mainContainer: {
+    position: 'relative',
+  },
+
   listContainer: {
-    height   : 400,
+    height   : height * 0.45,
     width    : '100%',
     alignSelf: 'stretch',
     position : 'relative',
     display  : 'flex',
   },
 
-  mainImage: {
+  image: {
     height: '100%',
     width : '100%',
-  },
-
-  title: {
-    position: 'absolute',
-    bottom  : 20,
-    left    : 8,
-  },
-
-  genres: {
-    position: 'absolute',
-    bottom  : 0,
-    left    : 8,
   },
 
   playContainer: {
@@ -45,59 +45,133 @@ const styles = StyleSheet.create({
     alignItems    : 'center',
   },
 
+  playIcon: {
+    marginBottom: dimensions.UNIT * 2,
+  },
+
+  infoContainer: {
+    position     : 'absolute',
+    bottom       : 0,
+    marginLeft   : dimensions.UNIT * 2,
+    marginRight  : dimensions.UNIT * 2,
+    width        : '100%',
+    display      : 'flex',
+    flexDirection: 'row',
+  },
+
+  info: {
+    position   : 'absolute',
+    bottom     : 0,
+    left       : POSTER_WIDTH,
+    // The * 5 =
+    // 2 from main margin container left
+    // 1 from of the poster
+    // 2 from main margin container right
+    width      : dimensions.SCREEN_WIDTH - POSTER_WIDTH - (dimensions.UNIT * 5),
+    marginLeft : dimensions.UNIT,
+    marginRight: dimensions.UNIT,
+  },
+
+  genres: {
+    marginTop: dimensions.UNIT / 2,
+  },
+
+  poster: {
+    borderRadius: dimensions.BORDER_RADIUS,
+    height      : dimensions.CARD_MEDIUM_HEIGHT - dimensions.UNIT,
+    width       : POSTER_WIDTH,
+  },
+
+  summary: {
+    marginLeft  : dimensions.UNIT * 2,
+    marginTop   : dimensions.UNIT * 2,
+    marginRight : dimensions.UNIT * 2,
+    marginBottom: dimensions.UNIT * 2,
+  },
 })
 
-export const Cover = ({ item, playMovie }) => (
-  <View style={styles.listContainer}>
-    <Image
-      style={styles.mainImage}
-      source={{
-        uri: item
-          ? item.images.fanart.high
-          : null,
-      }}
-    />
+export const Cover = ({ item, onOpen, onLoad }) => {
+  if (!item) {
+    return null
+  }
 
-    <Overlay />
+  const genres = [...item.genres].splice(0, 3)
 
-    <CoverGradient start={{ x: 0, y: 0.80 }} />
+  return (
+    <React.Fragment>
 
-    {item && item.type === Constants.TYPE_MOVIE && (
-      <View style={styles.playContainer}>
-        <IconButton
-          onPress={() => playMovie(item.torrents)}
-          name={'play-circle-outline'}
-          color={'#FFF'}
-          size={80}/>
+      <View style={styles.mainContainer}>
+        <BaseButton onPress={() => console.log('play')}>
+          <View style={styles.listContainer}>
+
+            <Image
+              style={styles.image}
+              source={{ uri: item.images.fanart.high }}
+              onLoad={onLoad}
+              onError={onLoad}
+            />
+
+            <CoverGradient start={{ x: 0, y: 0.1 }} />
+
+            <View style={styles.playContainer}>
+              <Icon
+                style={styles.playIcon}
+                name={'play-circle-outline'}
+                color={colors.ICON_COLOR}
+                size={dimensions.ICON_PLAY_MEDIUM} />
+            </View>
+
+          </View>
+        </BaseButton>
+
+        <View style={styles.infoContainer}>
+          <Image
+            style={styles.poster}
+            source={{ uri: item.images.poster.thumb }}
+            onLoad={onLoad}
+            onError={onLoad}
+          />
+
+          <View style={styles.info}>
+            <Typography
+              variant={'display5'}
+              textProps={{
+                width        : '100%',
+                numberOfLines: 2,
+                ellipsizeMode: 'tail',
+              }}>
+              {item.title}
+            </Typography>
+
+            <Typography
+              style={styles.genres}
+              variant={'caption'}
+              emphasis={'medium'}>
+              {genres.join(' - ')}
+            </Typography>
+          </View>
+        </View>
       </View>
-    )}
 
-    {item && (
-      <Typography
-        style={styles.title}
-        variant={'title'}
-        fontWeight={'black'}>
-        {item.title}
-      </Typography>
-    )}
+      <View style={styles.summary}>
+        <Typography variant={'body2'}>
+          {item.summary}
+        </Typography>
+      </View>
 
-    {item && item.genres && (
-      <Typography
-        style={styles.genres}
-        variant={'caption'}>
-        {item.genres.join(' - ')}
-      </Typography>
-    )}
-  </View>
-)
+    </React.Fragment>
+  )
+}
 
 Cover.propTypes = {
-  item     : PropTypes.object,
-  playMovie: PropTypes.func.isRequired,
+  item  : PropTypes.object,
+  onPlay: PropTypes.func.isRequired,
+  onLoad: PropTypes.func,
 }
 
 Cover.defaultProps = {
-  item: null,
+  item  : null,
+  onLoad: null,
 }
 
 export default Cover

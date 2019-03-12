@@ -1,13 +1,15 @@
-import colors from 'modules/colors'
 import React from 'react'
 import PropTypes from 'prop-types'
 import { StyleSheet, View, Image } from 'react-native'
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 
 import posterHolderImage from 'images/posterholder.png'
 
 import dimensions from 'modules/dimensions'
+import colors from 'modules/colors'
 
 import BaseButton from '../BaseButton'
+import Typography from '../Typography'
 import Overlay from '../Overlay'
 
 const styles = StyleSheet.create({
@@ -33,6 +35,36 @@ const styles = StyleSheet.create({
     resizeMode: 'center',
   },
 
+  iconContainer: {
+    position: 'absolute',
+    height  : '100%',
+    width   : '100%',
+    opacity : 0.8,
+    display : 'flex',
+
+    alignItems    : 'center',
+    justifyContent: 'center',
+  },
+
+  episodeNumberContainer: {
+    position : 'absolute',
+    height   : '100%',
+    width    : '100%',
+    opacity  : 0.8,
+    display  : 'flex',
+    marginTop: (dimensions.ICON_PLAY_SMALL / 2) + dimensions.UNIT,
+
+    alignItems    : 'center',
+    justifyContent: 'center',
+  },
+
+  episodeInfoContainer: {
+    position: 'absolute',
+    bottom  : dimensions.UNIT,
+    left    : dimensions.UNIT,
+    width   : '90%',
+  },
+
 })
 
 export default class Card extends React.PureComponent {
@@ -45,13 +77,6 @@ export default class Card extends React.PureComponent {
     this.state = {
       showPlaceholder: empty || !item.images.poster.thumb,
     }
-  }
-
-  getAiredDate = (aired) => {
-    const airs = new Date()
-    airs.setTime(aired)
-
-    return `${airs.getDate()}-${(airs.getMonth() + 1)}-${airs.getFullYear()}`
   }
 
   handleImageError = () => {
@@ -71,8 +96,17 @@ export default class Card extends React.PureComponent {
     return { uri: item.images.poster.thumb }
   }
 
+  getEpisodeNumber = () => {
+    const { item } = this.props
+
+    const season = `0${item.season}`
+    const episode = `0${item.number}`
+
+    return `S${season.slice(-2)}E${episode.slice(-2)}`
+  }
+
   render() {
-    const { item, variant, empty, ...rest } = this.props
+    const { item, empty, ...rest } = this.props
     const { showPlaceholder } = this.state
 
     return (
@@ -89,29 +123,34 @@ export default class Card extends React.PureComponent {
             ]}
             source={this.getImage(item)} />
 
-          <Overlay  />
+          <Overlay />
 
-          {/* <View style={styles.episodeContainer}>
+          <View style={styles.iconContainer}>
+            <Icon
+              name={'play-circle-outline'}
+              color={'#FFF'}
+              size={45} />
+          </View>
 
+          <View style={styles.episodeNumberContainer}>
+            <Typography
+              fontWeight={'medium'}
+              variant={'caption'}>
+              {this.getEpisodeNumber()}
+            </Typography>
+          </View>
 
-           <Icon
-           name={'play-circle-outline'}
-           color={'#FFF'}
-           size={60} />
-
-           <Typography
-           style={styles.episodeTitle}
-           fontWeight={'bold'}
-           variant={'subheading'}>
-           {`${item.show.title}: ${item.title}`}
-           </Typography>
-
-           <Typography
-           fontWeight={'bold'}
-           variant={'caption'}>
-           {`S${item.season} E${item.number} / ${getAiredDate(item.aired)}`}
-           </Typography>
-           </View>*/}
+          <View style={styles.episodeInfoContainer}>
+            <Typography
+              textProps={{
+                numberOfLines: 1,
+                ellipsizeMode: 'tail',
+              }}
+              fontWeight={'medium'}
+              variant={'subheading'}>
+              {`${item.show.title}: ${item.title}`}
+            </Typography>
+          </View>
 
         </View>
       </BaseButton>

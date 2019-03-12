@@ -3,15 +3,30 @@ import PropTypes from 'prop-types'
 import { StyleSheet, View, FlatList } from 'react-native'
 
 import dimensions from 'modules/dimensions'
+import i18n from 'modules/i18n'
 
 import Card from '../Card'
 import Typography from '../Typography'
+import TextButton from '../TextButton'
 
 export const styles = StyleSheet.create({
 
-  title: {
-    marginLeft  : dimensions.UNIT * 2,
-    marginBottom: dimensions.UNIT / 2,
+  titleContainer: {
+    display       : 'flex',
+    flexDirection : 'row',
+    justifyContent: 'space-between',
+    alignItems    : 'center',
+    marginBottom  : dimensions.UNIT / 2,
+    marginRight   : dimensions.UNIT,
+    marginLeft    : dimensions.UNIT * 2,
+  },
+
+  noMarginBottom: {
+    marginBottom: 0,
+  },
+
+  moreButton: {
+    padding: dimensions.UNIT / 2,
   },
 
   image: {
@@ -26,7 +41,7 @@ export const styles = StyleSheet.create({
 
 })
 
-export const CardSlider = ({ loading, title, items, onPress, style }) => {
+export const CardSlider = ({ loading, title, items, onPress, style, onEndReached, goToMore }) => {
   const renderCard = ({ item }) => (
     <Card
       variant={'medium'}
@@ -39,12 +54,24 @@ export const CardSlider = ({ loading, title, items, onPress, style }) => {
   return (
     <View style={style}>
 
-      <Typography
-        style={styles.title}
-        variant={'display6'}
-        fontWeight={'medium'}>
-        {title}
-      </Typography>
+      <View style={[styles.titleContainer, goToMore ? styles.noMarginBottom : null]}>
+        <Typography
+          variant={'display6'}
+          fontWeight={'medium'}>
+          {title}
+        </Typography>
+
+        {goToMore && (
+          <TextButton
+            style={styles.moreButton}
+            upperCase={false}
+            emphasis={'medium'}
+            fontWeight={'regular'}
+            onPress={goToMore}>
+            {i18n.t('more')}
+          </TextButton>
+        )}
+      </View>
 
       <FlatList
         horizontal
@@ -52,18 +79,30 @@ export const CardSlider = ({ loading, title, items, onPress, style }) => {
         contentContainerStyle={styles.container}
         data={items.length === 0 ? Array(4).fill() : items}
         initialNumToRender={4}
-        windowSize={5}
+        windowSize={4}
         renderItem={renderCard}
         ItemSeparatorComponent={() => <View style={{ width: dimensions.UNIT }} />}
         ListFooterComponent={() => <View style={{ width: dimensions.UNIT * 5 }} />}
-        keyExtractor={(item, index) => item ? item.id : `${index}`}
+        keyExtractor={(item, index) => item ? `${item.id}-${index}` : `${index}`}
         showsHorizontalScrollIndicator={false}
         snapToInterval={dimensions.CARD_MEDIUM_WIDTH + dimensions.UNIT}
         snapToAlignment={'center'}
+        onEndReached={onEndReached}
+        onEndReachedThreshold={dimensions.CARD_MEDIUM_WIDTH * 3}
       />
 
     </View>
   )
+}
+
+CardSlider.propTypes = {
+  onEndReached: PropTypes.func,
+  goToMore    : PropTypes.func,
+}
+
+CardSlider.defaultProps = {
+  onEndReached: null,
+  goToMore    : null,
 }
 
 export default CardSlider
