@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { Dimensions, Image, StyleSheet, View } from 'react-native'
+import { StyleSheet, View } from 'react-native'
 import { Constants } from 'popcorn-sdk'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 
@@ -11,8 +11,7 @@ import CoverGradient from '../CoverGradient'
 import BaseButton from '../BaseButton'
 import Typography from '../Typography'
 import IconButton from '../IconButton'
-
-const { height } = Dimensions.get('window')
+import Image from '../Image'
 
 const styles = StyleSheet.create({
 
@@ -21,16 +20,11 @@ const styles = StyleSheet.create({
   },
 
   listContainer: {
-    height   : height * 0.45,
+    height   : dimensions.SCREEN_HEIGHT * 0.45,
     width    : '100%',
     alignSelf: 'stretch',
     position : 'relative',
     display  : 'flex',
-  },
-
-  image: {
-    height: '100%',
-    width : '100%',
   },
 
   playContainer: {
@@ -65,12 +59,8 @@ const styles = StyleSheet.create({
 
 })
 
-export const MainCover = ({ item, onOpen, onLoad }) => {
-  if (!item) {
-    return null
-  }
-
-  const genres = [...item.genres].splice(0, 4)
+export const MainCover = ({ item, empty, onOpen }) => {
+  const genres = empty ? [] : [...item.genres].splice(0, 4)
 
   return (
     <React.Fragment>
@@ -79,15 +69,17 @@ export const MainCover = ({ item, onOpen, onLoad }) => {
           <View style={styles.listContainer}>
 
             <Image
-              style={styles.image}
-              source={{ uri: item.images.fanart.high }}
-              onLoad={onLoad}
-              onError={onLoad}
-            />
+              images={
+                empty
+                  ? {}
+                  : item.images
+              }
+              type={'fanart'}
+              size={'high'} />
 
             <CoverGradient start={{ x: 0, y: 0.1 }} />
 
-            {item && item.type === Constants.TYPE_MOVIE && (
+            {!empty && item.type === Constants.TYPE_MOVIE && (
               <View style={styles.playContainer}>
                 <Icon
                   name={'play-circle-outline'}
@@ -101,7 +93,7 @@ export const MainCover = ({ item, onOpen, onLoad }) => {
 
         <View style={styles.info}>
           <Typography variant={'display4'}>
-            {item.title}
+            {empty ? '' : item.title}
           </Typography>
 
           <Typography
@@ -116,16 +108,17 @@ export const MainCover = ({ item, onOpen, onLoad }) => {
       <View style={styles.infoContainer}>
         <Typography
           style={{
-            width: onOpen
+            width : onOpen
               ? '85%'
               : '100%',
+            height: 45, // 3 times the line height of body2
           }}
           variant={'body2'}
           textProps={{
             numberOfLines: 3,
             ellipsizeMode: 'tail',
           }}>
-          {item.summary}
+          {empty ? '' : item.summary}
         </Typography>
 
         <IconButton

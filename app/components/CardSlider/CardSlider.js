@@ -56,7 +56,7 @@ export const CardSlider = ({ loading, title, items, onPress, style, onEndReached
 
       <View style={[styles.titleContainer, goToMore ? styles.noMarginBottom : null]}>
         <Typography
-          variant={'display6'}
+          variant={'title'}
           fontWeight={'medium'}>
           {title}
         </Typography>

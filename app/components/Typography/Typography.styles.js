@@ -6,12 +6,6 @@ export default {
 
   root: {},
 
-  display6: {
-    fontSize  : 20,
-    lineHeight: 24,
-    letterSpacing: 0.25,
-  },
-
   display5: {
     fontSize  : 22,
     lineHeight: 24,
@@ -46,7 +40,8 @@ export default {
 
   title: {
     fontSize  : 20,
-    lineHeight: 28,
+    lineHeight: 24,
+    letterSpacing: 0.25,
   },
 
   subheading: {

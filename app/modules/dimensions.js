@@ -12,6 +12,8 @@ export default {
   SCREEN_WIDTH : width,
   SCREEN_HEIGHT: height,
 
+  STATUSBAR_HEIGHT: StatusBar.currentHeight,
+
   BORDER_RADIUS: 5,
 
   CARD_MEDIUM_WIDTH,
@@ -19,6 +21,9 @@ export default {
 
   MY_EPISODE_CARD_WIDTH : CARD_MEDIUM_WIDTH * 2.5,
   MY_EPISODE_CARD_HEIGHT: CARD_MEDIUM_HEIGHT,
+
+  EPISODE_CARD_WIDTH : 150,
+  EPISODE_CARD_HEIGHT: 100,
 
   ICON_PLAY_SMALL: 45,  // My Episode
   ICON_PLAY_MEDIUM: 50, // Home, Item

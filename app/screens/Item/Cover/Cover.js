@@ -95,13 +95,17 @@ export const Cover = ({ item, onOpen, onLoad }) => {
     return null
   }
 
-  const genres = [...item.genres].splice(0, 3)
+  const genres = item.genres ? [...item.genres].splice(0, 3) : []
 
   return (
     <React.Fragment>
 
       <View style={styles.mainContainer}>
-        <BaseButton onPress={() => console.log('play')}>
+        <BaseButton onPress={() => {
+          if (item.type === Constants.TYPE_MOVIE) {
+            console.log('play')
+          }
+        }}>
           <View style={styles.listContainer}>
 
             <Image
@@ -113,13 +117,15 @@ export const Cover = ({ item, onOpen, onLoad }) => {
 
             <CoverGradient start={{ x: 0, y: 0.1 }} />
 
-            <View style={styles.playContainer}>
-              <Icon
-                style={styles.playIcon}
-                name={'play-circle-outline'}
-                color={colors.ICON_COLOR}
-                size={dimensions.ICON_PLAY_MEDIUM} />
-            </View>
+            {item.type === Constants.TYPE_MOVIE && (
+              <View style={styles.playContainer}>
+                <Icon
+                  style={styles.playIcon}
+                  name={'play-circle-outline'}
+                  color={colors.ICON_COLOR}
+                  size={dimensions.ICON_PLAY_MEDIUM} />
+              </View>
+            )}
 
           </View>
         </BaseButton>

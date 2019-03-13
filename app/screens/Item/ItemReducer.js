@@ -4,6 +4,12 @@ import * as ItemConstants from './ItemConstants'
 export default (state = ItemConstants.INITIAL_STATE, action) => {
   switch (action.type) {
 
+    case ItemConstants.CLEAR_ITEM:
+      return {
+        ...state,
+        item: null,
+      }
+
     case ItemConstants.FETCH_ITEM:
       return {
         ...state,

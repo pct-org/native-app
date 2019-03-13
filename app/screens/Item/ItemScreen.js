@@ -8,7 +8,6 @@ import colors from 'modules/colors'
 import dimensions from 'modules/dimensions'
 
 import ScrollViewWithStatusBar from 'components/ScrollViewWithStatusBar'
-import Typography from 'components/Typography'
 import IconButton from 'components/IconButton'
 
 import Cover from './Cover'
@@ -22,17 +21,12 @@ const styles = StyleSheet.create({
     backgroundColor: colors.BACKGROUND,
   },
 
-  listContainer: {
+  iconsContainer: {
     display      : 'flex',
     flexDirection: 'row',
     marginLeft   : dimensions.UNIT * 2,
     marginRight  : dimensions.UNIT * 2,
-    marginTop    : dimensions.UNIT / 2,
-  },
-
-  iconsContainer: {
-    marginTop   : 24,
-    marginBottom: 24,
+    marginBottom : dimensions.UNIT * 2,
 
     minHeight: 70,
   },
@@ -80,7 +74,11 @@ export default class Item extends React.PureComponent {
   }
 
   componentWillUnmount() {
+    const { clearItem } = this.props
+
     BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress)
+
+    clearItem()
   }
 
   handleBackPress = () => {
@@ -185,10 +183,12 @@ export default class Item extends React.PureComponent {
 
         <ScrollViewWithStatusBar>
 
-          <Cover item={item} onPlay={this.selectQuality} />
+          <Cover
+            item={item}
+            onPlay={this.selectQuality} />
 
           {item && (
-            <View style={[styles.listContainer, styles.iconsContainer]}>
+            <View style={styles.iconsContainer}>
               {!isLoading && (
                 <IconButton
                   animatable={{

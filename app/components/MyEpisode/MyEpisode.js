@@ -1,9 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { StyleSheet, View, Image } from 'react-native'
+import { StyleSheet, View } from 'react-native'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
-
-import posterHolderImage from 'images/posterholder.png'
 
 import dimensions from 'modules/dimensions'
 import colors from 'modules/colors'
@@ -11,6 +9,7 @@ import colors from 'modules/colors'
 import BaseButton from '../BaseButton'
 import Typography from '../Typography'
 import Overlay from '../Overlay'
+import Image from '../Image'
 
 const styles = StyleSheet.create({
 
@@ -21,18 +20,6 @@ const styles = StyleSheet.create({
     borderRadius   : dimensions.BORDER_RADIUS,
     backgroundColor: colors.BACKGROUND_LIGHTER,
     overflow       : 'hidden',
-  },
-
-  image: {
-    height    : '100%',
-    width     : '100%',
-    resizeMode: 'cover',
-  },
-
-  placeholderImage: {
-    height    : '100%',
-    width     : '100%',
-    resizeMode: 'center',
   },
 
   iconContainer: {
@@ -69,45 +56,17 @@ const styles = StyleSheet.create({
 
 export default class Card extends React.PureComponent {
 
-  constructor(props) {
-    super(props)
-
-    const { item, empty } = props
-
-    this.state = {
-      showPlaceholder: empty || !item.images.poster.thumb,
-    }
-  }
-
-  handleImageError = () => {
-    this.setState({
-      showPlaceholder: true,
-    })
-  }
-
-  getImage = () => {
-    const { item, empty } = this.props
-    const { showPlaceholder } = this.state
-
-    if (showPlaceholder || empty) {
-      return posterHolderImage
-    }
-
-    return { uri: item.images.poster.thumb }
-  }
-
   getEpisodeNumber = () => {
-    const { item } = this.props
+    const { item, empty } = this.props
 
-    const season = `0${item.season}`
-    const episode = `0${item.number}`
+    const season = empty ? '00' : `0${item.season}`
+    const episode = empty ? '00' : `0${item.number}`
 
     return `S${season.slice(-2)}E${episode.slice(-2)}`
   }
 
   render() {
     const { item, empty, ...rest } = this.props
-    const { showPlaceholder } = this.state
 
     return (
       <BaseButton
@@ -115,13 +74,11 @@ export default class Card extends React.PureComponent {
         // onPress={() => this.openItem(item)}
         {...rest}>
         <View style={styles.root}>
-          <Image
-            style={[
-              showPlaceholder
-                ? styles.placeholderImage
-                : styles.image,
-            ]}
-            source={this.getImage(item)} />
+          <Image images={
+            empty
+              ? {}
+              : item.images
+          } />
 
           <Overlay />
 
@@ -129,7 +86,7 @@ export default class Card extends React.PureComponent {
             <Icon
               name={'play-circle-outline'}
               color={'#FFF'}
-              size={45} />
+              size={dimensions.ICON_PLAY_SMALL} />
           </View>
 
           <View style={styles.episodeNumberContainer}>
@@ -140,17 +97,19 @@ export default class Card extends React.PureComponent {
             </Typography>
           </View>
 
-          <View style={styles.episodeInfoContainer}>
-            <Typography
-              textProps={{
-                numberOfLines: 1,
-                ellipsizeMode: 'tail',
-              }}
-              fontWeight={'medium'}
-              variant={'subheading'}>
-              {`${item.show.title}: ${item.title}`}
-            </Typography>
-          </View>
+          {!empty && (
+            <View style={styles.episodeInfoContainer}>
+              <Typography
+                textProps={{
+                  numberOfLines: 1,
+                  ellipsizeMode: 'tail',
+                }}
+                fontWeight={'medium'}
+                variant={'subheading'}>
+                {`${item.show.title}: ${item.title}`}
+              </Typography>
+            </View>
+          )}
 
         </View>
       </BaseButton>

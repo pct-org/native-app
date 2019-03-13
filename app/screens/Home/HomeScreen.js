@@ -44,6 +44,10 @@ export default class Home extends React.PureComponent {
     hasInternet: true,
   }
 
+  state = {
+    coreLoading: true,
+  }
+
   componentDidMount() {
     const { getItems } = this.props
 
@@ -51,9 +55,17 @@ export default class Home extends React.PureComponent {
 
     // Fetch data after the component is done navigation
     InteractionManager.runAfterInteractions(() => {
-      getItems(Constants.TYPE_MOVIE)
-      getItems(Constants.TYPE_SHOW)
-      getItems(Constants.TYPE_BOOKMARK)
+      SplashScreen.hide()
+
+      Promise.all([
+        getItems(Constants.TYPE_MOVIE),
+        getItems(Constants.TYPE_SHOW),
+        getItems(Constants.TYPE_BOOKMARK),
+      ]).then(() => {
+        this.setState({
+          coreLoading: false,
+        })
+      })
     })
   }
 
@@ -81,10 +93,6 @@ export default class Home extends React.PureComponent {
     const { navigation } = this.props
 
     navigation.navigate('Item', item)
-  }
-
-  handleCoverLoaded = () => {
-    SplashScreen.hide()
   }
 
   getMainCover = () => {
@@ -129,23 +137,22 @@ export default class Home extends React.PureComponent {
   }
 
   renderMainCover = () => {
-    const { isLoading } = this.props
+    const item = this.getMainCover()
 
     return (
       <MainCover
         onOpen={this.handleItemOpen}
         onPlay={this.handleItemOpen}
-        loading={isLoading}
-        onLoad={this.handleCoverLoaded}
-        item={this.getMainCover()} />
+        empty={!item}
+        item={item} />
     )
   }
 
   renderMyList = () => {
-    const { isLoading } = this.props
+    const { coreLoading } = this.state
     const myList = this.getMyList()
 
-    if (!myList || myList.length === 0) {
+    if ((!myList || myList.length === 0) && !coreLoading) {
       return
     }
 
@@ -153,17 +160,16 @@ export default class Home extends React.PureComponent {
       <CardSlider
         style={styles.section}
         onPress={this.handleItemOpen}
-        loading={isLoading}
         title={i18n.t('My List')}
         items={myList} />
     )
   }
 
   renderMyEpisodes = () => {
-    const { isLoading } = this.props
+    const { coreLoading } = this.state
     const myEpisodes = this.getMyEpisodes()
 
-    if (!myEpisodes || myEpisodes.length === 0) {
+    if ((!myEpisodes || myEpisodes.length === 0) && !coreLoading) {
       return
     }
 
@@ -171,20 +177,16 @@ export default class Home extends React.PureComponent {
       <MyEpisodesSlider
         style={styles.section}
         onPress={this.handleItemOpen}
-        loading={isLoading}
         title={i18n.t('My Episodes')}
         items={myEpisodes} />
     )
   }
 
   renderMoviesList = () => {
-    const { isLoading } = this.props
-
     return (
       <CardSlider
         style={styles.section}
         onPress={this.handleItemOpen}
-        loading={isLoading}
         title={i18n.t('Movies')}
         items={this.getMovies()}
         goToMore={this.handleGoTo('Movies')}
@@ -193,13 +195,10 @@ export default class Home extends React.PureComponent {
   }
 
   renderShowsList = () => {
-    const { isLoading } = this.props
-
     return (
       <CardSlider
-        style={{ marginBottom: 16 }}
+        style={styles.section}
         onPress={this.handleItemOpen}
-        loading={isLoading}
         title={i18n.t('Shows')}
         items={this.getShows()}
         goToMore={this.handleGoTo('Shows')}

@@ -18,7 +18,6 @@ export default class Typography extends Component {
       'display3',
       'display4',
       'display5',
-      'display6',
       'headline',
       'title',
       'subheading',

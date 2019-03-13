@@ -1,15 +1,17 @@
 import React from 'react'
-import { Picker, StyleSheet, View } from 'react-native'
+import { FlatList, Picker, StyleSheet, View } from 'react-native'
 
 import colors from 'modules/colors'
 import i18n from 'modules/i18n'
+import dimensions from 'modules/dimensions'
 
 import Episode from './Episode'
+import SeasonSelector from './SeasonSelector'
 
 export const styles = StyleSheet.create({
 
   dropDown: {
-    margin: 8,
+    margin: dimensions.UNIT * 2,
 
     height         : 50,
     width          : 150,
@@ -18,6 +20,11 @@ export const styles = StyleSheet.create({
 
   dropDownItem: {
     width: 150,
+  },
+
+  container: {
+    marginLeft : dimensions.UNIT * 2,
+    marginRight: dimensions.UNIT * 2,
   },
 
 })
@@ -92,38 +99,51 @@ export default class SeasonsAndEpisodes extends React.PureComponent {
     return item.seasons
   }
 
-  render() {
+  handleSeasonChange = (season) => {
+    this.setState({
+      activeSeason: season.number,
+    })
+  }
+
+  renderEpisode = ({ item }) => {
     const { playItem } = this.props
-    const { activeSeason } = this.state
 
     return (
-      <View>
-        <Picker
-          mode={'dropdown'}
-          selectedValue={activeSeason}
-          style={styles.dropDown}
-          itemStyle={styles.dropDownItem}
-          onValueChange={(itemValue) => this.setState({ activeSeason: itemValue })}>
+      <Episode
+        empty={!item}
+        playItem={playItem}
+        hasAired={item ? item.aired < this.today : false}
+        {...item} />
+    )
+  }
 
-          {/* TODO:: Fix this so it looks a little better */}
-          {this.getSeasons().map(season => (
-            <Picker.Item
-              color={'#FFF'}
-              key={season.number}
-              label={i18n.t('Season {{number}}', { number: season.number })}
-              value={season.number} />
-          ))}
+  render() {
+    const { activeSeason } = this.state
 
-        </Picker>
+    const episodes = this.getEpisodes()
 
-        {this.getEpisodes().map(episode => (
-          <Episode
-            key={episode.key}
-            playItem={playItem}
-            hasAired={episode.aired < this.today}
-            {...episode} />
-        ))}
-      </View>
+    return (
+      <React.Fragment>
+
+        <SeasonSelector
+          activeSeason={activeSeason}
+          selectSeason={this.handleSeasonChange}
+          seasons={this.getSeasons()} />
+
+        <FlatList
+          removeClippedSubviews
+          contentContainerStyle={styles.container}
+          data={episodes.length === 0 ? Array(6).fill() : episodes}
+          initialNumToRender={10}
+          windowSize={10}
+          renderItem={this.renderEpisode}
+          ItemSeparatorComponent={() => <View style={{ marginBottom: dimensions.UNIT }} />}
+          ListFooterComponent={() => <View style={{ marginBottom: dimensions.UNIT * 4 }} />}
+          keyExtractor={(item, index) => item ? item.key : `${index}`}
+          showsVerticalScrollIndicator={false}
+        />
+
+      </React.Fragment>
     )
   }
 

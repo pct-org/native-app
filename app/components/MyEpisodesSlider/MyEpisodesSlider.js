@@ -38,7 +38,7 @@ export const MyEpisodesSlider = ({ loading, title, items, onPress, style }) => {
     <View style={style}>
       <Typography
         style={styles.title}
-        variant={'display6'}
+        variant={'title'}
         fontWeight={'medium'}>
         {title}
       </Typography>
