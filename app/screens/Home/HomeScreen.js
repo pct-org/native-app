@@ -23,10 +23,14 @@ const styles = StyleSheet.create({
   },
 
   section: {
+    position    : 'relative',
     marginTop   : dimensions.UNIT * 2,
     marginBottom: dimensions.UNIT * 2,
   },
 
+  lastSection: {
+    marginBottom: dimensions.UNIT * 4,
+  },
 })
 
 
@@ -95,6 +99,12 @@ export default class Home extends React.PureComponent {
     navigation.navigate('Item', item)
   }
 
+  handleMyEpisodesRefresh = () => {
+    const { updateMyEpisodes } = this.props
+
+    updateMyEpisodes(true)
+  }
+
   getMainCover = () => {
     const movies = this.getMovies(false)
 
@@ -109,12 +119,6 @@ export default class Home extends React.PureComponent {
     const { modes } = this.props
 
     return modes[Constants.TYPE_BOOKMARK].items.filter(movie => !movie.watched.complete)
-  }
-
-  getMyEpisodes = () => {
-    const { modes } = this.props
-
-    return modes.myEpisodes.items
   }
 
   getMovies = (withSlice = true) => {
@@ -161,15 +165,16 @@ export default class Home extends React.PureComponent {
         style={styles.section}
         onPress={this.handleItemOpen}
         title={i18n.t('My List')}
+        goToMore={this.handleGoTo('Bookmarks')}
         items={myList} />
     )
   }
 
   renderMyEpisodes = () => {
+    const { modes: { myEpisodes } } = this.props
     const { coreLoading } = this.state
-    const myEpisodes = this.getMyEpisodes()
 
-    if ((!myEpisodes || myEpisodes.length === 0) && !coreLoading) {
+    if ((!myEpisodes.items || myEpisodes.items.length === 0) && !coreLoading) {
       return
     }
 
@@ -177,8 +182,11 @@ export default class Home extends React.PureComponent {
       <MyEpisodesSlider
         style={styles.section}
         onPress={this.handleItemOpen}
+        onRefresh={this.handleMyEpisodesRefresh}
         title={i18n.t('My Episodes')}
-        items={myEpisodes} />
+        refreshing={myEpisodes.refreshing}
+        loading={myEpisodes.loading}
+        items={myEpisodes.items} />
     )
   }
 
@@ -197,7 +205,7 @@ export default class Home extends React.PureComponent {
   renderShowsList = () => {
     return (
       <CardSlider
-        style={styles.section}
+        style={[styles.section, styles.lastSection]}
         onPress={this.handleItemOpen}
         title={i18n.t('Shows')}
         items={this.getShows()}

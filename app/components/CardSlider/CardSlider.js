@@ -16,13 +16,9 @@ export const styles = StyleSheet.create({
     flexDirection : 'row',
     justifyContent: 'space-between',
     alignItems    : 'center',
-    marginBottom  : dimensions.UNIT / 2,
+    marginBottom  : 0,
     marginRight   : dimensions.UNIT,
     marginLeft    : dimensions.UNIT * 2,
-  },
-
-  noMarginBottom: {
-    marginBottom: 0,
   },
 
   moreButton: {
@@ -54,23 +50,21 @@ export const CardSlider = ({ loading, title, items, onPress, style, onEndReached
   return (
     <View style={style}>
 
-      <View style={[styles.titleContainer, goToMore ? styles.noMarginBottom : null]}>
+      <View style={styles.titleContainer}>
         <Typography
           variant={'title'}
           fontWeight={'medium'}>
           {title}
         </Typography>
 
-        {goToMore && (
-          <TextButton
-            style={styles.moreButton}
-            upperCase={false}
-            emphasis={'medium'}
-            fontWeight={'regular'}
-            onPress={goToMore}>
-            {i18n.t('more')}
-          </TextButton>
-        )}
+        <TextButton
+          style={styles.moreButton}
+          upperCase={false}
+          emphasis={'medium'}
+          fontWeight={'regular'}
+          onPress={goToMore}>
+          {i18n.t('more')}
+        </TextButton>
       </View>
 
       <FlatList
@@ -97,12 +91,11 @@ export const CardSlider = ({ loading, title, items, onPress, style, onEndReached
 
 CardSlider.propTypes = {
   onEndReached: PropTypes.func,
-  goToMore    : PropTypes.func,
+  goToMore    : PropTypes.func.isRequired,
 }
 
 CardSlider.defaultProps = {
   onEndReached: null,
-  goToMore    : null,
 }
 
 export default CardSlider

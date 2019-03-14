@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { StyleSheet, View, Image } from 'react-native'
+import { StyleSheet, View } from 'react-native'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 
 import posterHolderImage from 'images/posterholder.png'
@@ -11,6 +11,7 @@ import colors from 'modules/colors'
 import Typography from 'components/Typography'
 import Overlay from 'components/Overlay'
 import BaseButton from 'components/BaseButton'
+import Image from 'components/Image'
 
 export const styles = StyleSheet.create({
 
@@ -50,15 +51,8 @@ export const styles = StyleSheet.create({
   },
 
   image: {
-    width     : dimensions.EPISODE_CARD_WIDTH,
-    height    : dimensions.EPISODE_CARD_HEIGHT,
-    resizeMode: 'cover',
-  },
-
-  placeholderImage: {
-    width     : dimensions.EPISODE_CARD_WIDTH,
-    height    : dimensions.EPISODE_CARD_HEIGHT,
-    resizeMode: 'center',
+    width : dimensions.EPISODE_CARD_WIDTH,
+    height: dimensions.EPISODE_CARD_HEIGHT,
   },
 
 })
@@ -86,22 +80,6 @@ export default class Episode extends React.Component {
         thumb: null,
       },
     },
-  }
-
-  constructor(props) {
-    super(props)
-
-    const { images, empty } = props
-
-    this.state = {
-      showPlaceholder: empty || !images.poster.thumb,
-    }
-  }
-
-  handleImageError = () => {
-    this.setState({
-      showPlaceholder: true,
-    })
   }
 
   handlePlayItem = () => {
@@ -133,8 +111,7 @@ export default class Episode extends React.Component {
   }
 
   render() {
-    const { title, summary, number, hasAired } = this.props
-    const { showPlaceholder } = this.state
+    const { title, summary, number, hasAired, images } = this.props
 
     return (
       <View style={styles.listContainer}>
@@ -144,13 +121,8 @@ export default class Episode extends React.Component {
             <BaseButton onPress={this.handlePlayItem}>
               <View>
                 <Image
-                  onError={this.handleImageError}
-                  source={this.getImage()}
-                  style={
-                    showPlaceholder
-                      ? styles.placeholderImage
-                      : styles.image
-                  } />
+                  style={styles.image}
+                  images={images} />
 
                 <View style={styles.iconContainer}>
                   <Overlay />

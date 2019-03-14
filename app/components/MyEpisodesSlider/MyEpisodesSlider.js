@@ -1,16 +1,26 @@
 import React from 'react'
-import { StyleSheet, View, FlatList } from 'react-native'
+import PropTypes from 'prop-types'
+import { StyleSheet, View, FlatList, ActivityIndicator } from 'react-native'
+import * as Animatable from 'react-native-animatable'
 
 import Typography from 'components/Typography'
 import MyEpisode from 'components/MyEpisode'
+import TextButton from 'components/TextButton'
+import Overlay from 'components/Overlay'
 
 import dimensions from 'modules/dimensions'
+import i18n from 'modules/i18n'
 
 export const styles = StyleSheet.create({
 
-  title: {
-    marginLeft  : dimensions.UNIT * 2,
-    marginBottom: dimensions.UNIT / 2,
+  titleContainer: {
+    display       : 'flex',
+    flexDirection : 'row',
+    justifyContent: 'space-between',
+    alignItems    : 'center',
+    marginBottom  : 0,
+    marginRight   : dimensions.UNIT,
+    marginLeft    : dimensions.UNIT * 2,
   },
 
   image: {
@@ -23,9 +33,30 @@ export const styles = StyleSheet.create({
     marginLeft: dimensions.UNIT * 2,
   },
 
+  moreButton: {
+    padding: dimensions.UNIT / 2,
+  },
+
+  refreshingContainer: {
+    position: 'absolute',
+    left    : 0,
+    right   : 0,
+    width   : '100%',
+    height  : '100%',
+    display : 'flex',
+
+    flexDirection : 'row',
+    justifyContent: 'center',
+    alignItems    : 'center',
+  },
+
+  refreshingIndicator: {
+    marginRight: dimensions.UNIT,
+  },
+
 })
 
-export const MyEpisodesSlider = ({ loading, title, items, onPress, style }) => {
+export const MyEpisodesSlider = ({ loading, title, items, onPress, style, onRefresh, refreshing }) => {
   const renderEpisode = ({ item }) => (
     <MyEpisode
       empty={!item}
@@ -36,12 +67,24 @@ export const MyEpisodesSlider = ({ loading, title, items, onPress, style }) => {
 
   return (
     <View style={style}>
-      <Typography
-        style={styles.title}
-        variant={'title'}
-        fontWeight={'medium'}>
-        {title}
-      </Typography>
+      <View style={styles.titleContainer}>
+        <Typography
+          style={styles.title}
+          variant={'title'}
+          fontWeight={'medium'}>
+          {title}
+        </Typography>
+
+        <TextButton
+          style={styles.moreButton}
+          upperCase={false}
+          emphasis={'medium'}
+          fontWeight={'regular'}
+          onPress={onRefresh}>
+          {i18n.t('refresh')}
+        </TextButton>
+      </View>
+
 
       <FlatList
         horizontal
@@ -58,12 +101,34 @@ export const MyEpisodesSlider = ({ loading, title, items, onPress, style }) => {
         snapToInterval={dimensions.MY_EPISODE_CARD_WIDTH + dimensions.UNIT}
         snapToAlignment={
           items.length > 2
-            ? 'center'
+            ? 'left'
             : 'end'
         }
       />
+
+      <Animatable.View
+        animation={refreshing ? 'fadeIn' : 'fadeOut'}
+        duration={loading ? 0 : 300}
+        pointerEvents={'none'}
+        useNativeDriver
+        style={styles.refreshingContainer}>
+        <Overlay style={{ opacity: 0.8 }} />
+
+        <ActivityIndicator
+          style={styles.refreshingIndicator}
+          size={20} />
+
+        <Typography
+          variant={'title'}>
+          {i18n.t('Refreshing')}
+        </Typography>
+      </Animatable.View>
     </View>
   )
+}
+
+MyEpisodesSlider.propTypes = {
+  onRefresh: PropTypes.func.isRequired,
 }
 
 export default MyEpisodesSlider

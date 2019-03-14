@@ -34,6 +34,10 @@ export const AppNavigator = createStackNavigator({
     screen: ({ ...props }) => <ModeScreen mode={Constants.TYPE_SHOW} {...props} />,
   },
 
+  Bookmarks: {
+    screen: ({ ...props }) => <ModeScreen mode={Constants.TYPE_BOOKMARK} {...props} />,
+  },
+
 }, {
   headerMode: 'none',
 
