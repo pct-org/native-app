@@ -3,8 +3,6 @@ import PropTypes from 'prop-types'
 import { StyleSheet, View } from 'react-native'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 
-import posterHolderImage from 'images/posterholder.png'
-
 import dimensions from 'modules/dimensions'
 import colors from 'modules/colors'
 
@@ -88,17 +86,6 @@ export default class Episode extends React.Component {
     if (hasAired) {
       playItem(episode.torrents, this.props)
     }
-  }
-
-  getImage = () => {
-    const { images, empty } = this.props
-    const { showPlaceholder } = this.state
-
-    if (showPlaceholder || empty || !images.poster.thumb) {
-      return posterHolderImage
-    }
-
-    return { uri: images.poster.thumb }
   }
 
   getAirsDate = () => {

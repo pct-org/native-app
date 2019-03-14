@@ -44,9 +44,6 @@ export default class ScrollViewWithStatusBar extends React.Component {
     if (y > 10 && y < 400 && (statusBarColor !== 'transparent' || force)) {
       this.handleUpdateBackgroundColor('rgba(0, 0, 0, 0.2)', 'transparent')
 
-    } else if (y > 400 && (statusBarColor !== 'dark' || force)) {
-      this.handleUpdateBackgroundColor('rgba(0, 0, 0, 1)', 'dark')
-
     } else if (y < 10 && (statusBarColor !== 'default' || force)) {
       this.handleUpdateBackgroundColor('rgba(0, 0, 0, 0)', 'default')
     }

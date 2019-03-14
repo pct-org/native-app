@@ -91,6 +91,7 @@ export default class SubSelector extends React.Component {
               showsVerticalScrollIndicator={false}
               keyExtractor={(item, index) => `${item.language}-${index}`}
               ListHeaderComponent={() => <View style={{ marginBottom: 100 }} />}
+              ListFooterComponent={() => <View style={{ marginBottom: 100 }} />}
             />
           )}
 

@@ -1,5 +1,5 @@
 import React from 'react'
-import { StyleSheet, View, ActivityIndicator, Linking, BackHandler, InteractionManager } from 'react-native'
+import { StyleSheet, View, Linking, BackHandler, InteractionManager } from 'react-native'
 import Orientation from 'react-native-orientation'
 import { Constants } from 'popcorn-sdk'
 
@@ -10,7 +10,7 @@ import dimensions from 'modules/dimensions'
 import ScrollViewWithStatusBar from 'components/ScrollViewWithStatusBar'
 import IconButton from 'components/IconButton'
 
-import Cover from './Cover'
+import BasicInfo from './BasicInfo'
 import QualitySelector from 'components/QualitySelector'
 import ItemOrRecommendations from './ItemOrRecommendations'
 
@@ -118,7 +118,11 @@ export default class Item extends React.PureComponent {
   }
 
   getItem = (fetchThisItem = null) => {
-    const { getItem, navigation: { state: { params: item } } } = this.props
+    const { clearItem, getItem, navigation: { state: { params: item } } } = this.props
+
+    if (fetchThisItem) {
+      clearItem()
+    }
 
     getItem(fetchThisItem || item).then(({ payload: { type, seasons } }) => {
       if (type === Constants.TYPE_SHOW && seasons.length > 0) {
@@ -183,7 +187,7 @@ export default class Item extends React.PureComponent {
 
         <ScrollViewWithStatusBar>
 
-          <Cover
+          <BasicInfo
             item={item}
             onPlay={this.selectQuality} />
 
@@ -192,13 +196,14 @@ export default class Item extends React.PureComponent {
               {!isLoading && (
                 <IconButton
                   animatable={{
-                    animation: 'fadeIn',
+                    animation      : 'fadeIn',
+                    useNativeDriver: true,
                   }}
                   style={styles.icon}
                   onPress={this.handleToggleBookmarks}
                   name={item.bookmarked ? 'check' : 'plus'}
-                  color={'#FFF'}
-                  size={40}>
+                  color={colors.ICON_COLOR}
+                  size={dimensions.ITEM_ICONS}>
                   {i18n.t('My List')}
                 </IconButton>
               )}
@@ -206,13 +211,14 @@ export default class Item extends React.PureComponent {
               {item && item.type === Constants.TYPE_MOVIE && (
                 <IconButton
                   animatable={{
-                    animation: 'fadeIn',
+                    animation      : 'fadeIn',
+                    useNativeDriver: true,
                   }}
                   style={[styles.icon, { minWidth: 95 }]}
                   onPress={this.handleToggleWatched}
                   name={item.watched.complete ? 'eye-off-outline' : 'eye-outline'}
-                  color={'#FFF'}
-                  size={40}>
+                  color={colors.ICON_COLOR}
+                  size={dimensions.ITEM_ICONS}>
                   {i18n.t(item.watched.complete ? 'Mark Unwatched' : 'Mark Watched')}
                 </IconButton>
               )}
@@ -220,29 +226,26 @@ export default class Item extends React.PureComponent {
               {item && item.trailer && (
                 <IconButton
                   animatable={{
-                    animation: 'fadeIn',
+                    animation      : 'fadeIn',
+                    useNativeDriver: true,
                   }}
                   style={styles.icon}
                   onPress={this.handleTrailer}
                   name={'youtube'}
-                  color={'#FFF'}
-                  size={40}>
+                  color={colors.ICON_COLOR}
+                  size={dimensions.ITEM_ICONS}>
                   {i18n.t('Trailer')}
                 </IconButton>
               )}
             </View>
           )}
 
-          {item && item.type === Constants.TYPE_SHOW && (
+          {item && item.type === Constants.TYPE_SHOW && item.seasons.length > 0 && (
             <ItemOrRecommendations
               item={item}
               playItem={this.selectQuality}
               getItem={this.getItem}
             />
-          )}
-
-          {isLoading && (
-            <ActivityIndicator color={'#FFF'} size={50} animating={isLoading} hidesWhenStopped />
           )}
 
         </ScrollViewWithStatusBar>

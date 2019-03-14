@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import { StyleSheet, View } from 'react-native'
 import { Constants } from 'popcorn-sdk'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
+import * as Animatable from 'react-native-animatable'
 
 import colors from 'modules/colors'
 import dimensions from 'modules/dimensions'
@@ -80,12 +81,15 @@ export const MainCover = ({ item, empty, onOpen }) => {
             <CoverGradient start={{ x: 0, y: 0.1 }} />
 
             {!empty && item.type === Constants.TYPE_MOVIE && (
-              <View style={styles.playContainer}>
+              <Animatable.View
+                animation={'fadeIn'}
+                style={styles.playContainer}
+                useNativeDriver>
                 <Icon
                   name={'play-circle-outline'}
                   color={colors.ICON_COLOR}
                   size={dimensions.ICON_PLAY_MEDIUM} />
-              </View>
+              </Animatable.View>
             )}
 
           </View>
@@ -121,11 +125,17 @@ export const MainCover = ({ item, empty, onOpen }) => {
           {empty ? '' : item.summary}
         </Typography>
 
-        <IconButton
-          onPress={() => onOpen(item)}
-          name={'information-outline'}
-          color={colors.ICON_COLOR}
-          size={35} />
+        {item && (
+          <Animatable.View
+            animation={'fadeIn'}
+            useNativeDriver>
+            <IconButton
+              onPress={() => onOpen(item)}
+              name={'information-outline'}
+              color={colors.ICON_COLOR}
+              size={35} />
+          </Animatable.View>
+        )}
       </View>
     </React.Fragment>
   )

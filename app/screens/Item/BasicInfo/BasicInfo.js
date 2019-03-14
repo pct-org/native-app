@@ -1,8 +1,9 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { Dimensions, Image, StyleSheet, View } from 'react-native'
+import { Dimensions, StyleSheet, View } from 'react-native'
 import { Constants } from 'popcorn-sdk'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
+import * as Animatable from 'react-native-animatable'
 
 import colors from 'modules/colors'
 import dimensions from 'modules/dimensions'
@@ -10,7 +11,7 @@ import dimensions from 'modules/dimensions'
 import CoverGradient from 'components/CoverGradient'
 import BaseButton from 'components/BaseButton'
 import Typography from 'components/Typography'
-import ScrollViewWithStatusBar from 'screens/Item/ItemScreen'
+import Image from 'components/Image'
 
 const { height } = Dimensions.get('window')
 
@@ -77,54 +78,60 @@ const styles = StyleSheet.create({
   },
 
   poster: {
-    borderRadius: dimensions.BORDER_RADIUS,
-    height      : dimensions.CARD_MEDIUM_HEIGHT - dimensions.UNIT,
-    width       : POSTER_WIDTH,
+    overflow: 'hidden',
+    height  : dimensions.CARD_MEDIUM_HEIGHT - dimensions.UNIT,
+    width   : POSTER_WIDTH,
+
+    borderRadius   : dimensions.BORDER_RADIUS,
+    backgroundColor: colors.BACKGROUND_LIGHTER,
   },
 
   summary: {
     marginLeft  : dimensions.UNIT * 2,
-    marginTop   : dimensions.UNIT * 2,
+    marginTop   : dimensions.UNIT * 4,
     marginRight : dimensions.UNIT * 2,
     marginBottom: dimensions.UNIT * 2,
   },
 })
 
-export const Cover = ({ item, onOpen, onLoad }) => {
-  if (!item) {
-    return null
-  }
-
-  const genres = item.genres ? [...item.genres].splice(0, 3) : []
+export const BasicInfo = ({ item, onOpen }) => {
+  const genres = !item ? [] : item.genres ? [...item.genres].splice(0, 3) : []
 
   return (
     <React.Fragment>
 
       <View style={styles.mainContainer}>
         <BaseButton onPress={() => {
-          if (item.type === Constants.TYPE_MOVIE) {
-            console.log('play')
+          if (item && item.type === Constants.TYPE_MOVIE) {
+            onOpen()
           }
         }}>
           <View style={styles.listContainer}>
 
             <Image
               style={styles.image}
-              source={{ uri: item.images.fanart.high }}
-              onLoad={onLoad}
-              onError={onLoad}
+              images={
+                !item
+                  ? {}
+                  : item.images
+              }
+              type={'fanart'}
+              size={'high'}
             />
 
             <CoverGradient start={{ x: 0, y: 0.1 }} />
 
-            {item.type === Constants.TYPE_MOVIE && (
-              <View style={styles.playContainer}>
+            {item && item.type === Constants.TYPE_MOVIE && (
+              <Animatable.View
+                animation={'fadeIn'}
+                style={styles.playContainer}
+                useNativeDriver>
                 <Icon
                   style={styles.playIcon}
                   name={'play-circle-outline'}
                   color={colors.ICON_COLOR}
                   size={dimensions.ICON_PLAY_MEDIUM} />
-              </View>
+              </Animatable.View>
             )}
 
           </View>
@@ -133,9 +140,11 @@ export const Cover = ({ item, onOpen, onLoad }) => {
         <View style={styles.infoContainer}>
           <Image
             style={styles.poster}
-            source={{ uri: item.images.poster.thumb }}
-            onLoad={onLoad}
-            onError={onLoad}
+            images={
+              !item
+                ? {}
+                : item.images
+            }
           />
 
           <View style={styles.info}>
@@ -146,7 +155,7 @@ export const Cover = ({ item, onOpen, onLoad }) => {
                 numberOfLines: 2,
                 ellipsizeMode: 'tail',
               }}>
-              {item.title}
+              {item ? item.title : ''}
             </Typography>
 
             <Typography
@@ -159,25 +168,28 @@ export const Cover = ({ item, onOpen, onLoad }) => {
         </View>
       </View>
 
-      <View style={styles.summary}>
-        <Typography variant={'body2'}>
-          {item.summary}
-        </Typography>
-      </View>
+      {item && (
+        <Animatable.View
+          style={styles.summary}
+          animation={'fadeIn'}
+          useNativeDriver>
+          <Typography variant={'body2'}>
+            {item.summary}
+          </Typography>
+        </Animatable.View>
+      )}
 
     </React.Fragment>
   )
 }
 
-Cover.propTypes = {
+BasicInfo.propTypes = {
   item  : PropTypes.object,
   onPlay: PropTypes.func.isRequired,
-  onLoad: PropTypes.func,
 }
 
-Cover.defaultProps = {
-  item  : null,
-  onLoad: null,
+BasicInfo.defaultProps = {
+  item: null,
 }
 
-export default Cover
+export default BasicInfo

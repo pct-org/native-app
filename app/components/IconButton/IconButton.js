@@ -26,7 +26,9 @@ export const IconButton = ({ onPress, animatable, buttonProps, children, ...rest
       />
 
       {children && (
-        <Typography variant={'caption'}>
+        <Typography
+          variant={'caption'}
+          emphasis={'medium'}>
           {children}
         </Typography>
       )}

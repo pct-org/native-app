@@ -1,5 +1,6 @@
 import React from 'react'
 import { View, StyleSheet } from 'react-native'
+import * as Animatable from 'react-native-animatable'
 
 import i18n from 'modules/i18n'
 import colors from 'modules/colors'
@@ -77,7 +78,7 @@ export default class ItemOrRecommendations extends React.PureComponent {
     const { recommendationActive, recommendations } = this.state
 
     return (
-      <React.Fragment>
+      <Animatable.View animation={'fadeIn'} useNativeDriver>
         <View style={styles.buttonContainer}>
           <TextButton
             onPress={() => this.handleViewRecommendation(false)}
@@ -109,7 +110,7 @@ export default class ItemOrRecommendations extends React.PureComponent {
             getItem={getItem} />
         )}
 
-      </React.Fragment>
+      </Animatable.View>
     )
   }
 

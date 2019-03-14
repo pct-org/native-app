@@ -28,4 +28,5 @@ export default {
   ICON_PLAY_SMALL: 45,  // My Episode
   ICON_PLAY_MEDIUM: 50, // Home, Item
 
+  ITEM_ICONS: 35,
 }
