@@ -26,7 +26,7 @@
     "react-native-animatable": "1.3.1",
     "react-native-fs": "2.13.3",
     "react-native-gesture-handler": "1.1.0",
-    "react-native-google-cast": "github:tripss/react-native-google-cast",
+    "react-native-google-cast": "github:tripss/react-native-google-cast#8e71424503e5b86a443f0ff7ddbdfc4d72d3a754",
     "react-native-languages": "3.0.2",
     "react-native-linear-gradient": "^2.4.2",
     "react-native-markdown-renderer": "^3.2.8",
