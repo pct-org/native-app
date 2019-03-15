@@ -98,12 +98,12 @@ export const MyEpisodesSlider = ({ loading, title, items, onPress, style, onRefr
         ListFooterComponent={() => <View style={{ width: dimensions.UNIT * 5 }} />}
         keyExtractor={(item, index) => item ? `${item.id}` : `${index}`}
         showsHorizontalScrollIndicator={false}
-        snapToInterval={dimensions.MY_EPISODE_CARD_WIDTH + dimensions.UNIT}
-        snapToAlignment={
-          items.length > 2
-            ? 'left'
-            : 'end'
-        }
+        // snapToInterval={dimensions.MY_EPISODE_CARD_WIDTH + dimensions.UNIT}
+        // snapToAlignment={
+        //   items.length > 2
+        //     ? 'left'
+        //     : 'end'
+        // }
       />
 
       <Animatable.View

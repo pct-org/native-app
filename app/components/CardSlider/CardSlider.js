@@ -79,8 +79,8 @@ export const CardSlider = ({ loading, title, items, onPress, style, onEndReached
         ListFooterComponent={() => <View style={{ width: dimensions.UNIT * 5 }} />}
         keyExtractor={(item, index) => item ? `${item.id}-${index}` : `${index}`}
         showsHorizontalScrollIndicator={false}
-        snapToInterval={dimensions.CARD_MEDIUM_WIDTH + dimensions.UNIT}
-        snapToAlignment={'center'}
+        // snapToInterval={dimensions.CARD_MEDIUM_WIDTH + dimensions.UNIT}
+        // snapToAlignment={'center'}
         onEndReached={onEndReached}
         onEndReachedThreshold={dimensions.CARD_MEDIUM_WIDTH * 3}
       />
