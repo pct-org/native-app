@@ -57,18 +57,15 @@ export default class Home extends React.PureComponent {
 
     Orientation.lockToPortrait()
 
-    // Fetch data after the component is done navigation
-    InteractionManager.runAfterInteractions(() => {
-      SplashScreen.hide()
+    SplashScreen.hide()
 
-      Promise.all([
-        getItems(Constants.TYPE_MOVIE),
-        getItems(Constants.TYPE_SHOW),
-        getItems(Constants.TYPE_BOOKMARK),
-      ]).then(() => {
-        this.setState({
-          coreLoading: false,
-        })
+    Promise.all([
+      getItems(Constants.TYPE_MOVIE),
+      getItems(Constants.TYPE_SHOW),
+      getItems(Constants.TYPE_BOOKMARK),
+    ]).then(() => {
+      this.setState({
+        coreLoading: false,
       })
     })
   }

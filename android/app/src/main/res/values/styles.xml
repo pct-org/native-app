@@ -6,7 +6,7 @@
         <item name="colorAccent">@color/text_color</item>
 
         <item name="android:windowBackground">@color/background</item>
-        <item name="android:navigationBarColor">@color/background_secondary</item>
+        <item name="android:navigationBarColor">@color/background</item>
 
         <item name="castExpandedControllerToolbarStyle">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
         <item name="castExpandedControllerStyle">@style/CustomCastExpandedController</item>
