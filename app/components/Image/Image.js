@@ -7,15 +7,8 @@ import posterHolderImage from 'images/posterholder.png'
 const styles = StyleSheet.create({
 
   image: {
-    height    : '100%',
-    width     : '100%',
-    resizeMode: 'stretch',
-  },
-
-  placeholderImage: {
-    height    : '100%',
-    width     : '100%',
-    resizeMode: 'center',
+    height: '100%',
+    width : '100%',
   },
 
 })
@@ -40,11 +33,13 @@ export default class Image extends React.PureComponent {
 
     style       : PropTypes.object,
     withFallback: PropTypes.bool,
+    resizeMode  : PropTypes.string,
   }
 
   static defaultProps = {
     type        : 'poster',
     size        : 'thumb',
+    resizeMode  : 'stretch',
     style       : null,
     withFallback: true,
   }
@@ -75,15 +70,18 @@ export default class Image extends React.PureComponent {
   }
 
   render() {
-    const { images, withFallback, style, ...props } = this.props
+    const { images, withFallback, resizeMode, style, ...props } = this.props
     const { showPlaceholder } = this.state
 
     return (
       <RnImage
-        style={[
+        resizeMode={
           showPlaceholder
-            ? styles.placeholderImage
-            : styles.image,
+            ? 'center'
+            : resizeMode
+        }
+        style={[
+          styles.image,
           style,
         ]}
         source={this.getImage()}

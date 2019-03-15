@@ -108,6 +108,7 @@ export const BasicInfo = ({ item, onOpen }) => {
           <View style={styles.listContainer}>
 
             <Image
+              resizeMode={'cover'}
               withFallback={false}
               style={styles.image}
               images={

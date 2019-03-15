@@ -76,6 +76,7 @@ export const MainCover = ({ item, empty, onOpen }) => {
           <View style={styles.listContainer}>
 
             <Image
+              resizeMode={'cover'}
               images={
                 empty
                   ? {}
