@@ -46,6 +46,7 @@ export const styles = StyleSheet.create({
 
   summary: {
     marginTop: dimensions.UNIT / 2,
+    marginBottom: dimensions.UNIT / 2,
   },
 
   image: {

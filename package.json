@@ -5,6 +5,7 @@
   "scripts": {
     "prebuild": "react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle",
     "build-and-install": "yarn build:prod && yarn install-on-device:prod",
+    "build-and-install:dev": "yarn build:dev && yarn install-on-device:dev",
     "build:dev": "cd android && ./gradlew assembleDev && cd ../",
     "build:prod": "cd android && ./gradlew assembleProd && cd ../",
     "install-on-device:dev": "adb install -r ./android/app/build/outputs/apk/dev/release/app-dev-release.apk",

@@ -1,5 +1,5 @@
 <h1 align="center">
-  <img height="200" width="200" src="./app/images/logo.png" alt="logo" />
+  <img height="200" width="200" src="./logo.png" alt="logo" />
   <br />
   Popcorn Native
 </h1>

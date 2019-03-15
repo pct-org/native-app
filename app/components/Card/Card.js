@@ -29,8 +29,8 @@ const styles = StyleSheet.create({
   default: {},
 
   small: {
-    //   height: smallHeight,
-//    width : smallWidth,
+    height: dimensions.CARD_SMALL_HEIGHT,
+    width : dimensions.CARD_SMALL_WIDTH,
   },
 
   // For now is this only correct for Tablet
@@ -50,11 +50,12 @@ export const Card = ({ item, variant, empty, ...rest }) => {
       // onPress={() => this.openItem(item)}
       {...rest}>
       <View style={[styles.root, styles[variant]]}>
-        <Image images={
-          empty
-            ? {}
-            : item.images
-        } />
+        <Image
+          images={
+            empty
+              ? {}
+              : item.images
+          } />
 
         {item && item.watched && item.watched.complete && (
           <Overlay />

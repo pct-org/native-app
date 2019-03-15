@@ -53,9 +53,15 @@ const styles = StyleSheet.create({
     display      : 'flex',
     flexDirection: 'row',
 
+    justifyContent: 'space-between',
+
     marginTop   : dimensions.UNIT / 2,
     marginLeft  : dimensions.UNIT * 2,
     marginBottom: dimensions.UNIT * 2,
+  },
+
+  infoIcon: {
+    marginRight: dimensions.UNIT,
   },
 
 })
@@ -127,6 +133,7 @@ export const MainCover = ({ item, empty, onOpen }) => {
 
         {item && (
           <Animatable.View
+            style={styles.infoIcon}
             animation={'fadeIn'}
             useNativeDriver>
             <IconButton

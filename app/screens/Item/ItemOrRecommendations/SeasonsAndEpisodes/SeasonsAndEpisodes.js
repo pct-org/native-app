@@ -1,30 +1,32 @@
 import React from 'react'
-import { FlatList, Picker, StyleSheet, View } from 'react-native'
+import { FlatList, StyleSheet, View } from 'react-native'
 
-import colors from 'modules/colors'
-import i18n from 'modules/i18n'
 import dimensions from 'modules/dimensions'
+import i18n from 'modules/i18n'
+
+import Card from 'components/Card'
+import Typography from 'components/Typography'
 
 import Episode from './Episode'
-import SeasonSelector from './SeasonSelector'
 
 export const styles = StyleSheet.create({
-
-  dropDown: {
-    margin: dimensions.UNIT * 2,
-
-    height         : 50,
-    width          : 150,
-    backgroundColor: colors.ITEM_DROPDOWN_BACKGROUND,
-  },
-
-  dropDownItem: {
-    width: 150,
-  },
 
   container: {
     marginLeft : dimensions.UNIT * 2,
     marginRight: dimensions.UNIT * 2,
+  },
+
+  seasonSelector: {
+    marginBottom: dimensions.UNIT * 4,
+  },
+
+  seasonContainer: {
+    display: 'flex',
+  },
+
+  seasonNumber: {
+    marginTop: dimensions.UNIT / 2,
+    textAlign: 'center',
   },
 
 })
@@ -96,7 +98,7 @@ export default class SeasonsAndEpisodes extends React.PureComponent {
       return item.seasons.find(season => season.number === seasonNr)
     }
 
-    return item.seasons
+    return [...item.seasons].reverse()
   }
 
   handleSeasonChange = (season) => {
@@ -117,18 +119,48 @@ export default class SeasonsAndEpisodes extends React.PureComponent {
     )
   }
 
-  render() {
+  renderSeason = ({ item }) => {
     const { activeSeason } = this.state
 
+    return (
+      <View style={styles.seasonContainer}>
+        <Card
+          variant={'small'}
+          onPress={() => this.handleSeasonChange(item)}
+          item={item}
+        />
+
+        <Typography
+          style={styles.seasonNumber}
+          variant={'caption'}
+          emphasis={activeSeason === item.season ? 'high' : 'medium'}>
+          {i18n.t('Season {{number}}', { number: item.season })}
+        </Typography>
+      </View>
+    )
+  }
+
+  render() {
+    const seasons = this.getSeasons()
     const episodes = this.getEpisodes()
 
     return (
       <React.Fragment>
 
-        <SeasonSelector
-          activeSeason={activeSeason}
-          selectSeason={this.handleSeasonChange}
-          seasons={this.getSeasons()} />
+        <FlatList
+          removeClippedSubviews
+          contentContainerStyle={[styles.container, styles.seasonSelector]}
+          data={seasons.length === 0 ? Array(4).fill() : seasons}
+          initialNumToRender={4}
+          windowSize={4}
+          renderItem={this.renderSeason}
+          ItemSeparatorComponent={() => <View style={{ width: dimensions.UNIT }} />}
+          ListFooterComponent={() => <View style={{ width: dimensions.UNIT * 4 }} />}
+          keyExtractor={(item, index) => item ? `${item.number}` : `${index}`}
+          showsVerticalScrollIndicator={false}
+          showsHorizontalScrollIndicator={false}
+          horizontal
+        />
 
         <FlatList
           removeClippedSubviews

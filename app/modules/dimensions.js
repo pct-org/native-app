@@ -2,12 +2,14 @@ import { Dimensions, StatusBar } from 'react-native'
 
 const { width, height, fontScale } = Dimensions.get('window')
 
+const UNIT = 8
+
 const CARD_MEDIUM_WIDTH = (width - 40) / 3.1
 const CARD_MEDIUM_HEIGHT = ((height - StatusBar.currentHeight) / 4) * fontScale
 
 export default {
 
-  UNIT: 8,
+  UNIT,
 
   SCREEN_WIDTH : width,
   SCREEN_HEIGHT: height,
@@ -15,6 +17,9 @@ export default {
   STATUSBAR_HEIGHT: StatusBar.currentHeight,
 
   BORDER_RADIUS: 5,
+
+  CARD_SMALL_WIDTH: CARD_MEDIUM_WIDTH - UNIT,
+  CARD_SMALL_HEIGHT: CARD_MEDIUM_HEIGHT - UNIT,
 
   CARD_MEDIUM_WIDTH,
   CARD_MEDIUM_HEIGHT,

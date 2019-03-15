@@ -13,10 +13,6 @@ import BaseButton from 'components/BaseButton'
 import Typography from 'components/Typography'
 import Image from 'components/Image'
 
-const { height } = Dimensions.get('window')
-
-const POSTER_WIDTH = dimensions.CARD_MEDIUM_WIDTH - dimensions.UNIT
-
 const styles = StyleSheet.create({
 
   mainContainer: {
@@ -24,7 +20,7 @@ const styles = StyleSheet.create({
   },
 
   listContainer: {
-    height   : height * 0.45,
+    height   : dimensions.SCREEN_HEIGHT * 0.45,
     width    : '100%',
     alignSelf: 'stretch',
     position : 'relative',
@@ -63,12 +59,12 @@ const styles = StyleSheet.create({
   info: {
     position   : 'absolute',
     bottom     : 0,
-    left       : POSTER_WIDTH,
+    left       : dimensions.CARD_SMALL_WIDTH,
     // The * 5 =
     // 2 from main margin container left
     // 1 from of the poster
     // 2 from main margin container right
-    width      : dimensions.SCREEN_WIDTH - POSTER_WIDTH - (dimensions.UNIT * 5),
+    width      : dimensions.SCREEN_WIDTH - dimensions.CARD_SMALL_WIDTH - (dimensions.UNIT * 5),
     marginLeft : dimensions.UNIT,
     marginRight: dimensions.UNIT,
   },
@@ -77,20 +73,23 @@ const styles = StyleSheet.create({
     marginTop: dimensions.UNIT / 2,
   },
 
-  poster: {
-    overflow: 'hidden',
-    height  : dimensions.CARD_MEDIUM_HEIGHT - dimensions.UNIT,
-    width   : POSTER_WIDTH,
+  posterContainer: {
+    height: dimensions.CARD_SMALL_HEIGHT,
+    width : dimensions.CARD_SMALL_WIDTH,
 
-    borderRadius   : dimensions.BORDER_RADIUS,
+    borderRadius: dimensions.BORDER_RADIUS,
+    overflow    : 'hidden',
+  },
+
+  poster: {
     backgroundColor: colors.BACKGROUND_LIGHTER,
+
+    width : '100%',
+    height: '100%',
   },
 
   summary: {
-    marginLeft  : dimensions.UNIT * 2,
-    marginTop   : dimensions.UNIT * 4,
-    marginRight : dimensions.UNIT * 2,
-    marginBottom: dimensions.UNIT * 2,
+    margin: dimensions.UNIT * 2,
   },
 })
 
@@ -109,6 +108,7 @@ export const BasicInfo = ({ item, onOpen }) => {
           <View style={styles.listContainer}>
 
             <Image
+              withFallback={false}
               style={styles.image}
               images={
                 !item
@@ -138,14 +138,16 @@ export const BasicInfo = ({ item, onOpen }) => {
         </BaseButton>
 
         <View style={styles.infoContainer}>
-          <Image
-            style={styles.poster}
-            images={
-              !item
-                ? {}
-                : item.images
-            }
-          />
+          <View style={styles.posterContainer}>
+            <Image
+              style={styles.poster}
+              images={
+                !item
+                  ? {}
+                  : item.images
+              }
+            />
+          </View>
 
           <View style={styles.info}>
             <Typography

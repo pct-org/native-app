@@ -9,7 +9,7 @@ const styles = StyleSheet.create({
   image: {
     height    : '100%',
     width     : '100%',
-    resizeMode: 'cover',
+    resizeMode: 'stretch',
   },
 
   placeholderImage: {
@@ -38,13 +38,15 @@ export default class Image extends React.PureComponent {
     ]),
     size  : PropTypes.string,
 
-    style: PropTypes.object,
+    style       : PropTypes.object,
+    withFallback: PropTypes.bool,
   }
 
   static defaultProps = {
-    type : 'poster',
-    size : 'thumb',
-    style: null,
+    type        : 'poster',
+    size        : 'thumb',
+    style       : null,
+    withFallback: true,
   }
 
   state = {
@@ -52,25 +54,28 @@ export default class Image extends React.PureComponent {
   }
 
   getImage = () => {
-    const { images, type, size, empty } = this.props
+    const { images, withFallback, type, size, empty } = this.props
     const { showPlaceholder } = this.state
 
     if (showPlaceholder || empty) {
-      return posterHolderImage
+      if (withFallback) {
+        return posterHolderImage
+      }
+
+      return null
     }
 
     return { uri: images[type][size] }
   }
 
-  handleImageError = () => {
+  handleImageError = (a) => {
     this.setState({
       showPlaceholder: true,
     })
   }
 
-
   render() {
-    const { images, style, ...props } = this.props
+    const { images, withFallback, style, ...props } = this.props
     const { showPlaceholder } = this.state
 
     return (
@@ -81,7 +86,6 @@ export default class Image extends React.PureComponent {
             : styles.image,
           style,
         ]}
-        defaultSource={posterHolderImage}
         source={this.getImage()}
         {...props}
       />
