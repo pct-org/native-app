@@ -61,7 +61,7 @@ const styles = StyleSheet.create({
   },
 
   infoIcon: {
-    marginRight: dimensions.UNIT,
+    marginRight: dimensions.UNIT * 2,
   },
 
 })

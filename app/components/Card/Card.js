@@ -33,15 +33,12 @@ const styles = StyleSheet.create({
     width : dimensions.CARD_SMALL_WIDTH,
   },
 
-  // For now is this only correct for Tablet
   medium: {
     height: dimensions.CARD_MEDIUM_HEIGHT,
     width : dimensions.CARD_MEDIUM_WIDTH,
   },
 
 })
-
-// TODO:: When card is empty then animate a gray?
 
 export const Card = ({ item, variant, empty, ...rest }) => {
   return (
