@@ -56,12 +56,13 @@ export default class Modal extends React.Component {
         transparent
         visible={visible}
         animationType={'fade'}
-        onRequestClose={onRequestClose}>
+        onRequestClose={onRequestClose}
+        hardwareAccelerated>
         <View style={[styles.root]}>
 
-          <View style={[styles.root, styles.listContainer]}>
-            <StatusBar hidden />
+          <StatusBar hidden={visible} />
 
+          <View style={[styles.root, styles.listContainer]}>
             <View style={styles.closeIcon}>
               <IconButton
                 onPress={onRequestClose}
