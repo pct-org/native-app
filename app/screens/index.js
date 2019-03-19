@@ -11,32 +11,19 @@ import ItemScreen from './Item'
 import PlayerScreen from './Player'
 import ModeScreen from './Mode'
 
-// https://github.com/oblador/react-native-animatable/blob/d9cbb610a0ba530cad66ea8d346505271b1daed8/definitions/sliding-entrances.js
-
 export const AppNavigator = createStackNavigator({
-  Main: {
-    screen: HomeScreen,
-  },
 
-  Item: {
-    screen: ItemScreen,
-  },
+  Main: HomeScreen,
 
-  Player: {
-    screen: PlayerScreen,
-  },
+  Item: ItemScreen,
 
-  Movies: {
-    screen: ({ ...props }) => <ModeScreen mode={Constants.TYPE_MOVIE} {...props} />,
-  },
+  Player: PlayerScreen,
 
-  Shows: {
-    screen: ({ ...props }) => <ModeScreen mode={Constants.TYPE_SHOW} {...props} />,
-  },
+  Movies: ({ ...props }) => <ModeScreen mode={Constants.TYPE_MOVIE} {...props} />,
 
-  Bookmarks: {
-    screen: ({ ...props }) => <ModeScreen mode={Constants.TYPE_BOOKMARK} {...props} />,
-  },
+  Shows: ({ ...props }) => <ModeScreen mode={Constants.TYPE_SHOW} {...props} />,
+
+  Bookmarks: ({ ...props }) => <ModeScreen mode={Constants.TYPE_BOOKMARK} {...props} />,
 
 }, {
   headerMode: 'none',

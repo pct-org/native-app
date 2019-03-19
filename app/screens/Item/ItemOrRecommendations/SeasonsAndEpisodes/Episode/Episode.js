@@ -10,6 +10,7 @@ import Typography from 'components/Typography'
 import Overlay from 'components/Overlay'
 import BaseButton from 'components/BaseButton'
 import Image from 'components/Image'
+import QualitySelector from 'components/QualitySelector'
 
 export const styles = StyleSheet.create({
 
@@ -45,7 +46,7 @@ export const styles = StyleSheet.create({
   },
 
   summary: {
-    marginTop: dimensions.UNIT / 2,
+    marginTop   : dimensions.UNIT / 2,
     marginBottom: dimensions.UNIT / 2,
   },
 
@@ -59,7 +60,6 @@ export const styles = StyleSheet.create({
 export default class Episode extends React.Component {
 
   static propTypes = {
-    playItem   : PropTypes.func.isRequired,
     title      : PropTypes.string,
     images     : PropTypes.object,
     torrents   : PropTypes.object,
@@ -81,12 +81,14 @@ export default class Episode extends React.Component {
     },
   }
 
-  handlePlayItem = () => {
-    const { playItem, hasAired, ...episode } = this.props
+  state = {
+    showQualitySelector: false,
+  }
 
-    if (hasAired) {
-      playItem(episode.torrents, this.props)
-    }
+  toggleSelector = (showQualitySelector) => {
+    this.setState({
+      showQualitySelector,
+    })
   }
 
   getAirsDate = () => {
@@ -100,13 +102,14 @@ export default class Episode extends React.Component {
 
   render() {
     const { title, summary, number, hasAired, images } = this.props
+    const { showQualitySelector } = this.state
 
     return (
       <View style={styles.listContainer}>
 
         <View style={styles.posterWithTitle}>
           <View style={styles.posterContainer}>
-            <BaseButton onPress={this.handlePlayItem}>
+            <BaseButton onPress={() => this.toggleSelector(!showQualitySelector)}>
               <View>
                 <Image
                   style={styles.image}
@@ -116,13 +119,12 @@ export default class Episode extends React.Component {
                   <Overlay />
 
                   {hasAired && (
-                    <Icon
-                      iconStyle={{ margin: 0 }}
-                      backgroundColor={'transparent'}
-                      borderRadius={0}
-                      name={'play-circle-outline'}
-                      color={'#FFF'}
-                      size={dimensions.ICON_PLAY_SMALL} />
+                    <QualitySelector
+                      item={this.props}
+                      iconSize={dimensions.ICON_PLAY_SMALL}
+                      visible={showQualitySelector}
+                      onRequestClose={() => this.toggleSelector(false)}
+                    />
                   )}
 
                   {!hasAired && (

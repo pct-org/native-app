@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { StyleSheet, Text, View, InteractionManager } from 'react-native'
+import { StyleSheet, Text, View } from 'react-native'
 import Orientation from 'react-native-orientation'
 import { Constants } from 'popcorn-sdk'
 import SplashScreen from 'react-native-splash-screen'
@@ -31,8 +31,8 @@ const styles = StyleSheet.create({
   lastSection: {
     marginBottom: dimensions.UNIT * 4,
   },
-})
 
+})
 
 export default class Home extends React.PureComponent {
 
@@ -97,9 +97,11 @@ export default class Home extends React.PureComponent {
   }
 
   handleMyEpisodesRefresh = () => {
-    const { updateMyEpisodes } = this.props
+    const { updateMyEpisodes, modes: { myEpisodes } } = this.props
 
-    updateMyEpisodes(true)
+    if (!myEpisodes.loading && !myEpisodes.refreshing) {
+      updateMyEpisodes(true)
+    }
   }
 
   getMainCover = () => {
@@ -169,11 +171,6 @@ export default class Home extends React.PureComponent {
 
   renderMyEpisodes = () => {
     const { modes: { myEpisodes } } = this.props
-    const { coreLoading } = this.state
-
-    if ((!myEpisodes.items || myEpisodes.items.length === 0) && !coreLoading) {
-      return
-    }
 
     return (
       <MyEpisodesSlider

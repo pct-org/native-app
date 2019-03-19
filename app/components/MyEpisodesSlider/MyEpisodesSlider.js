@@ -4,6 +4,7 @@ import { StyleSheet, View, FlatList, ActivityIndicator } from 'react-native'
 import * as Animatable from 'react-native-animatable'
 
 import Typography from 'components/Typography'
+import TypographyStyles from 'components/Typography/Typography.styles'
 import MyEpisode from 'components/MyEpisode'
 import TextButton from 'components/TextButton'
 import Overlay from 'components/Overlay'
@@ -37,6 +38,10 @@ export const styles = StyleSheet.create({
     padding: dimensions.UNIT / 2,
   },
 
+  listContainer: {
+    position: 'relative',
+  },
+
   refreshingContainer: {
     position: 'absolute',
     left    : 0,
@@ -51,7 +56,11 @@ export const styles = StyleSheet.create({
   },
 
   refreshingIndicator: {
-    marginRight: dimensions.UNIT,
+    margin: dimensions.UNIT * 2,
+  },
+
+  noItems: {
+    textAlign: 'center',
   },
 
 })
@@ -61,7 +70,6 @@ export const MyEpisodesSlider = ({ loading, title, items, onPress, style, onRefr
     <MyEpisode
       empty={!item}
       item={item}
-      onPress={() => onPress(item)}
     />
   )
 
@@ -85,44 +93,57 @@ export const MyEpisodesSlider = ({ loading, title, items, onPress, style, onRefr
         </TextButton>
       </View>
 
+      <View style={styles.listContainer}>
+        <FlatList
+          scrollEnabled={items.length > 0}
+          horizontal
+          removeClippedSubviews
+          contentContainerStyle={styles.container}
+          data={items.length === 0 ? Array(2).fill() : items}
+          initialNumToRender={4}
+          windowSize={5}
+          renderItem={renderEpisode}
+          ItemSeparatorComponent={() => <View style={{ width: dimensions.UNIT }} />}
+          ListFooterComponent={() => <View style={{ width: dimensions.UNIT * 5 }} />}
+          keyExtractor={(item, index) => item ? `${item.id}` : `${index}`}
+          showsHorizontalScrollIndicator={false}
+          // snapToInterval={dimensions.MY_EPISODE_CARD_WIDTH + dimensions.UNIT}
+          // snapToAlignment={
+          //   items.length > 2
+          //     ? 'left'
+          //     : 'end'
+          // }
+        />
 
-      <FlatList
-        horizontal
-        removeClippedSubviews
-        contentContainerStyle={styles.container}
-        data={items.length === 0 ? Array(2).fill() : items}
-        initialNumToRender={4}
-        windowSize={5}
-        renderItem={renderEpisode}
-        ItemSeparatorComponent={() => <View style={{ width: dimensions.UNIT }} />}
-        ListFooterComponent={() => <View style={{ width: dimensions.UNIT * 5 }} />}
-        keyExtractor={(item, index) => item ? `${item.id}` : `${index}`}
-        showsHorizontalScrollIndicator={false}
-        // snapToInterval={dimensions.MY_EPISODE_CARD_WIDTH + dimensions.UNIT}
-        // snapToAlignment={
-        //   items.length > 2
-        //     ? 'left'
-        //     : 'end'
-        // }
-      />
+        <Animatable.View
+          animation={items.length === 0 || refreshing ? 'fadeIn' : 'fadeOut'}
+          duration={loading ? 0 : 300}
+          pointerEvents={'none'}
+          useNativeDriver
+          style={styles.refreshingContainer}>
+          <Overlay style={{ opacity: 0.8 }} />
 
-      <Animatable.View
-        animation={refreshing ? 'fadeIn' : 'fadeOut'}
-        duration={loading ? 0 : 300}
-        pointerEvents={'none'}
-        useNativeDriver
-        style={styles.refreshingContainer}>
-        <Overlay style={{ opacity: 0.8 }} />
+          {refreshing && (
+            <React.Fragment>
+              <ActivityIndicator
+                style={styles.refreshingIndicator}
+                size={20} />
 
-        <ActivityIndicator
-          style={styles.refreshingIndicator}
-          size={20} />
+              <Typography variant={'title'}>
+                {i18n.t('Refreshing')}
+              </Typography>
+            </React.Fragment>
+          )}
 
-        <Typography
-          variant={'title'}>
-          {i18n.t('Refreshing')}
-        </Typography>
-      </Animatable.View>
+          {!refreshing && items.length === 0 && (
+            <Typography
+              style={styles.noItems}
+              variant={'subheading'}>
+              {i18n.t('Episodes aired within the last 7 days from shows you follow will appear here')}
+            </Typography>
+          )}
+        </Animatable.View>
+      </View>
     </View>
   )
 }

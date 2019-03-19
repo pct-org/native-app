@@ -1,8 +1,7 @@
-import React from 'react'
+import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 import { StyleSheet, View } from 'react-native'
 import { Constants } from 'popcorn-sdk'
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import * as Animatable from 'react-native-animatable'
 
 import colors from 'modules/colors'
@@ -13,6 +12,7 @@ import BaseButton from '../BaseButton'
 import Typography from '../Typography'
 import IconButton from '../IconButton'
 import Image from '../Image'
+import QualitySelector from '../QualitySelector'
 
 const styles = StyleSheet.create({
 
@@ -67,12 +67,14 @@ const styles = StyleSheet.create({
 })
 
 export const MainCover = ({ item, empty, onOpen }) => {
+  const [showQualitySelector, toggleSelecting] = useState(false)
+
   const genres = empty ? [] : [...item.genres].splice(0, 4)
 
   return (
     <React.Fragment>
       <View style={styles.mainContainer}>
-        <BaseButton onPress={() => console.log('play')}>
+        <BaseButton onPress={() => toggleSelecting(!showQualitySelector)}>
           <View style={styles.listContainer}>
 
             <Image
@@ -92,10 +94,16 @@ export const MainCover = ({ item, empty, onOpen }) => {
                 animation={'fadeIn'}
                 style={styles.playContainer}
                 useNativeDriver>
-                <Icon
-                  name={'play-circle-outline'}
-                  color={colors.ICON_COLOR}
-                  size={dimensions.ICON_PLAY_MEDIUM} />
+
+                <QualitySelector
+                  item={
+                    empty
+                      ? {}
+                      : item
+                  }
+                  onRequestClose={() => toggleSelecting(false)}
+                  visible={showQualitySelector} />
+
               </Animatable.View>
             )}
 

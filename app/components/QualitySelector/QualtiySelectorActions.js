@@ -1,14 +1,13 @@
 import { Constants } from 'popcorn-sdk'
 import Popcorn from 'modules/PopcornSDK'
 
-import * as ItemConstants from 'screens/Item/ItemConstants'
-import * as HomeConstants from 'screens/Home/HomeConstants'
+import * as QualitySelectorConstants from './QualitySelectorConstants'
 
 export const fetchedBetterOnes = (item, episode = null, inMyEpisodes = false) => (dispatch) => {
   const method = episode ? 'searchEpisode' : 'search'
 
   dispatch({
-    type: ItemConstants.FETCH_BETTER,
+    type: QualitySelectorConstants.FETCH_BETTER,
   })
 
   Popcorn[method](
@@ -17,7 +16,7 @@ export const fetchedBetterOnes = (item, episode = null, inMyEpisodes = false) =>
   ).then((results) => {
     if (item.type === Constants.TYPE_MOVIE) {
       dispatch({
-        type   : ItemConstants.FETCHED_BETTER_FOR_MOVIE,
+        type   : QualitySelectorConstants.FETCHED_BETTER_FOR_MOVIE,
         payload: {
           item,
           newTorrents: results,
@@ -27,8 +26,8 @@ export const fetchedBetterOnes = (item, episode = null, inMyEpisodes = false) =>
     } else if (item.type === Constants.TYPE_SHOW) {
       dispatch({
         type: inMyEpisodes
-          ? HomeConstants.FETCHED_BETTER_FOR_MY_EPISODE
-          : ItemConstants.FETCHED_BETTER_FOR_EPISODE,
+          ? QualitySelectorConstants.FETCHED_BETTER_FOR_MY_EPISODE
+          : QualitySelectorConstants.FETCHED_BETTER_FOR_EPISODE,
 
         payload: {
           episodeId  : episode.id,

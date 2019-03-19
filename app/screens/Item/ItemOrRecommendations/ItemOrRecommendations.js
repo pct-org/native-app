@@ -72,7 +72,7 @@ export default class ItemOrRecommendations extends React.PureComponent {
   }
 
   render() {
-    const { item, playItem, getItem } = this.props
+    const { item, getItem } = this.props
     const { recommendationActive, recommendations } = this.state
 
     return (
@@ -96,7 +96,6 @@ export default class ItemOrRecommendations extends React.PureComponent {
         {!recommendationActive && (
           <SeasonsAndEpisodes
             item={item}
-            playItem={playItem}
           />
         )}
 

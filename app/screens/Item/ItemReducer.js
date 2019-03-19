@@ -1,5 +1,6 @@
-import * as HomeConstants from '../Home/HomeConstants'
 import * as ItemConstants from './ItemConstants'
+
+import * as QualitySelectorConstants from 'components/QualitySelector/QualitySelectorConstants'
 
 export default (state = ItemConstants.INITIAL_STATE, action) => {
   switch (action.type) {
@@ -70,29 +71,30 @@ export default (state = ItemConstants.INITIAL_STATE, action) => {
         },
       }
 
-    case ItemConstants.FETCH_BETTER:
+    case QualitySelectorConstants.FETCH_BETTER:
       return {
         ...state,
         fetchingBetter: true,
       }
 
-    case HomeConstants.FETCHED_BETTER_FOR_MY_EPISODE:
+    case QualitySelectorConstants.FETCHED_BETTER_FOR_MY_EPISODE:
       return {
         ...state,
         fetchingBetter: false,
       }
 
-    case ItemConstants.FETCHED_BETTER_FOR_MOVIE:
+    case QualitySelectorConstants.FETCHED_BETTER_FOR_MOVIE:
       return {
         ...state,
         fetchingBetter: false,
         item          : {
           ...state.item,
+          searchedForBetter: true,
           torrents: action.payload.newTorrents,
         },
       }
 
-    case ItemConstants.FETCHED_BETTER_FOR_EPISODE:
+    case QualitySelectorConstants.FETCHED_BETTER_FOR_EPISODE:
       return {
         ...state,
         fetchingBetter: false,
@@ -112,6 +114,7 @@ export default (state = ItemConstants.INITIAL_STATE, action) => {
 
                 return {
                   ...episode,
+                  searchedForBetter: true,
                   torrents: action.payload.newTorrents,
                 }
               }),

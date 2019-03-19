@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 import { StyleSheet, View } from 'react-native'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
@@ -10,6 +10,7 @@ import BaseButton from '../BaseButton'
 import Typography from '../Typography'
 import Overlay from '../Overlay'
 import Image from '../Image'
+import QualitySelector from '../QualitySelector'
 
 const styles = StyleSheet.create({
 
@@ -54,65 +55,66 @@ const styles = StyleSheet.create({
 
 })
 
-export default class Card extends React.PureComponent {
+export const MyEpisode = ({ item, empty }) => {
+  const [showQualitySelector, toggleSelecting] = useState(false)
 
-  getEpisodeNumber = () => {
-    const { item, empty } = this.props
-
+  const getEpisodeNumber = () => {
     const season = empty ? '00' : `0${item.season}`
     const episode = empty ? '00' : `0${item.number}`
 
     return `S${season.slice(-2)}E${episode.slice(-2)}`
   }
 
-  render() {
-    const { item, empty, ...rest } = this.props
+  return (
+    <BaseButton onPress={() => toggleSelecting(!showQualitySelector)}>
+      <View style={styles.root}>
+        <Image images={
+          empty
+            ? {}
+            : item.images
+        } />
 
-    return (
-      <BaseButton
-        // onLongPress={() => console.warn(item.title)}
-        // onPress={() => this.openItem(item)}
-        {...rest}>
-        <View style={styles.root}>
-          <Image images={
-            empty
-              ? {}
-              : item.images
-          } />
+        <Overlay />
 
-          <Overlay />
+        <View style={styles.iconContainer}>
+          <QualitySelector
+            visible={showQualitySelector}
+            onRequestClose={() => toggleSelecting(false)}
+            iconSize={dimensions.ICON_PLAY_SMALL}
+            item={
+              empty
+                ? {}
+                : item
+            }
+            isMyEpisode
+          />
+        </View>
 
-          <View style={styles.iconContainer}>
-            <Icon
-              name={'play-circle-outline'}
-              color={'#FFF'}
-              size={dimensions.ICON_PLAY_SMALL} />
-          </View>
+        <View style={styles.episodeNumberContainer}>
+          <Typography
+            fontWeight={'medium'}
+            variant={'caption'}>
+            {getEpisodeNumber()}
+          </Typography>
+        </View>
 
-          <View style={styles.episodeNumberContainer}>
+        {!empty && (
+          <View style={styles.episodeInfoContainer}>
             <Typography
+              textProps={{
+                numberOfLines: 1,
+                ellipsizeMode: 'tail',
+              }}
               fontWeight={'medium'}
-              variant={'caption'}>
-              {this.getEpisodeNumber()}
+              variant={'subheading'}>
+              {`${item.show.title}: ${item.title}`}
             </Typography>
           </View>
+        )}
 
-          {!empty && (
-            <View style={styles.episodeInfoContainer}>
-              <Typography
-                textProps={{
-                  numberOfLines: 1,
-                  ellipsizeMode: 'tail',
-                }}
-                fontWeight={'medium'}
-                variant={'subheading'}>
-                {`${item.show.title}: ${item.title}`}
-              </Typography>
-            </View>
-          )}
-
-        </View>
-      </BaseButton>
-    )
-  }
+      </View>
+    </BaseButton>
+  )
 }
+
+export default MyEpisode

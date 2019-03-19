@@ -1,10 +1,9 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { View, Modal as RnModal, StyleSheet } from 'react-native'
+import { View, Modal as RnModal, StyleSheet, StatusBar } from 'react-native'
 
 import colors from 'modules/colors'
 import dimensions from 'modules/dimensions'
-import StatusBarController from 'modules/StatusBarController'
 
 import IconButton from '../IconButton'
 
@@ -49,36 +48,23 @@ export default class Modal extends React.Component {
     visible       : false,
   }
 
-  handleShow = () => {
-    StatusBarController.update('rgba(0, 0, 0, 0.90)')
-  }
-
-  handleRequestClose = () => {
-    const { onRequestClose } = this.props
-
-    StatusBarController.update(StatusBarController.previousActiveBackgroundColor)
-
-    if (onRequestClose) {
-      onRequestClose()
-    }
-  }
-
   render() {
-    const { children, visible } = this.props
+    const { children, visible, onRequestClose } = this.props
 
     return (
       <RnModal
         transparent
         visible={visible}
         animationType={'fade'}
-        onShow={this.handleShow}
-        onRequestClose={this.handleRequestClose}>
+        onRequestClose={onRequestClose}>
         <View style={[styles.root]}>
 
           <View style={[styles.root, styles.listContainer]}>
+            <StatusBar hidden />
+
             <View style={styles.closeIcon}>
               <IconButton
-                onPress={this.handleRequestClose}
+                onPress={onRequestClose}
                 name={'close'}
                 color={colors.ICON_COLOR}
                 size={40}

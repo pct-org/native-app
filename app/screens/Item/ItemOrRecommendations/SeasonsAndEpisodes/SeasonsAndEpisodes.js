@@ -108,13 +108,13 @@ export default class SeasonsAndEpisodes extends React.PureComponent {
   }
 
   renderEpisode = ({ item }) => {
-    const { playItem } = this.props
+    const { item: show } = this.props
 
     return (
       <Episode
         empty={!item}
-        playItem={playItem}
         hasAired={item ? item.aired < this.today : false}
+        show={show}
         {...item} />
     )
   }
@@ -166,13 +166,14 @@ export default class SeasonsAndEpisodes extends React.PureComponent {
           removeClippedSubviews
           contentContainerStyle={styles.container}
           data={episodes.length === 0 ? Array(6).fill() : episodes}
-          initialNumToRender={10}
-          windowSize={10}
+          initialNumToRender={4}
+          windowSize={5}
           renderItem={this.renderEpisode}
           ItemSeparatorComponent={() => <View style={{ marginBottom: dimensions.UNIT }} />}
           ListFooterComponent={() => <View style={{ marginBottom: dimensions.UNIT * 4 }} />}
           keyExtractor={(item, index) => item ? item.key : `${index}`}
           showsVerticalScrollIndicator={false}
+          showsHorizontalScrollIndicator={false}
         />
 
       </React.Fragment>

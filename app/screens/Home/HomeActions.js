@@ -93,15 +93,15 @@ export const getItems = (mode, page = 1, givenFilters = {}) => (dispatch, getSta
   }
 }
 
-export const updateMyEpisodes = (force = false) => (dispatch) => new Promise(async(resolve) => {
+export const updateMyEpisodes = (refresh = false) => (dispatch) => new Promise(async(resolve) => {
   dispatch({
-    type: force
+    type: refresh
       ? HomeConstants.REFRESH_MY_EPISODES
       : HomeConstants.FETCH_MY_EPISODES,
   })
 
   const threeDaysAgo = new Date(new Date().getTime() - (3 * 24 * 60 * 60 * 1000)).getTime()
-  const zevenDaysAgo = new Date(new Date().getTime() - (7 * 24 * 60 * 60 * 1000)).getTime()
+  const eightDaysAgo = new Date(new Date().getTime() - (8 * 24 * 60 * 60 * 1000)).getTime()
 
   const showBookmarks = await Bookmarks.getAllShows()
   const myEpisodes = []
@@ -115,8 +115,8 @@ export const updateMyEpisodes = (force = false) => (dispatch) => new Promise(asy
   }
 
   showBookmarks.forEach(async(showBookmark) => {
-    // Check if the bookmark is last updated three days ago or it is a force
-    if (!showBookmark.updatedAt || showBookmark.updatedAt < threeDaysAgo || force) {
+    // Check if the bookmark is last updated three days ago or it is a refresh
+    if (!showBookmark.updatedAt || showBookmark.updatedAt < threeDaysAgo || refresh) {
       const showBasic = await Popcorn.getShowBasic(showBookmark.id)
       const pctSeason = showBasic.seasons[showBasic.seasons.length - 1]
 
@@ -137,7 +137,7 @@ export const updateMyEpisodes = (force = false) => (dispatch) => new Promise(asy
     }
 
     showBookmark.lastSeason.episodes.forEach((episode) => {
-      if (episode.hasTorrents && episode.aired > zevenDaysAgo && !episode.watched.complete) {
+      if (episode.hasTorrents && episode.aired > eightDaysAgo && !episode.watched.complete) {
         myEpisodes.push({
           show: showBookmark,
           ...episode,

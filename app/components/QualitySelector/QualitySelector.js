@@ -1,14 +1,18 @@
 import React from 'react'
-import { StyleSheet, View, Text, ActivityIndicator } from 'react-native'
+import PropTypes from 'prop-types'
+import { StyleSheet, Text, ActivityIndicator } from 'react-native'
 import * as Animatable from 'react-native-animatable'
 import { material } from 'react-native-typography'
+import { withNavigation } from 'react-navigation'
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 
+import dimensions from 'modules/dimensions'
 import i18n from 'modules/i18n'
 
 import BaseButton from 'components/BaseButton'
 import Button from 'components/Button'
-import IconButton from 'components/IconButton'
 import Typography from 'components/Typography'
+import Modal from 'components/Modal'
 
 import colors from 'modules/colors'
 
@@ -62,103 +66,116 @@ const styles = StyleSheet.create({
   },
 })
 
+@withNavigation
 export default class QualitySelector extends React.Component {
 
   static getDerivedStateFromProps(props) {
-    if (props.torrents) {
+    if (props.item && props.item.torrents) {
       return {
-        qualities: Object.keys(props.torrents).filter(quality => !!props.torrents[quality]),
+        qualities: Object.keys(props.item.torrents).filter(
+          quality => !!props.item.torrents[quality],
+        ),
       }
     }
 
-    return {}
-  }
-
-  static defaultProps = {
-    myEpisodesScreen: false,
-  }
-
-  state = {
-    hidden   : false,
-    qualities: null,
-  }
-
-  playQuality = (quality) => {
-    const { playItem, torrents, fetchingBetter } = this.props
-
-    if (!fetchingBetter) {
-      playItem(torrents[quality])
+    return {
+      qualities: [],
     }
   }
 
-  handleAnimationEnd = () => {
-    const { torrents } = this.props
+  static propTypes = {
+    style: PropTypes.object,
 
-    this.setState({
-      hidden: !torrents,
-    })
+    isMyEpisode   : PropTypes.bool,
+    fetchingBetter: PropTypes.bool,
   }
 
-  handleAnimationBegin = () => {
-    this.setState({
-      hidden: false,
-    })
+  static defaultProps = {
+    iconSize: dimensions.ICON_PLAY_MEDIUM,
+    style   : {},
+
+    isMyEpisode   : false,
+    fetchingBetter: false,
+  }
+
+  state = {
+    qualities: [],
+  }
+
+  handlePlayQuality = (quality) => {
+    const { item, onRequestClose, fetchingBetter, navigation: { navigate } } = this.props
+
+    if (!fetchingBetter) {
+      // Close the selector
+      onRequestClose()
+
+      navigate('Player', {
+        torrent: item.torrents[quality],
+        item,
+      })
+    }
   }
 
   handleSearchForBetter = () => {
-    const { fetchedBetterOnes, item, episodeToPlay, myEpisodesScreen } = this.props
+    const { fetchedBetterOnes, item, isMyEpisode } = this.props
 
     fetchedBetterOnes(
       item.show
         ? item.show
         : item,
 
-      episodeToPlay,
-      myEpisodesScreen,
+      item.show
+        ? item
+        : null,
+
+      isMyEpisode,
     )
   }
 
   render() {
-    const { torrents, cancel, fetchingBetter } = this.props
-    const { hidden, qualities } = this.state
+    const { visible, onRequestClose, iconSize } = this.props
+    const { item, style, fetchingBetter } = this.props
+    const { qualities } = this.state
 
-    if (hidden && !torrents) {
-      return null
-    }
+    const searchedForBetter = item ? item.searchedForBetter : false
 
     return (
-      <Animatable.View
-        animation={torrents ? 'fadeIn' : 'fadeOut'}
-        duration={200}
-        style={[styles.root]}
-        onAnimationBegin={this.handleAnimationBegin}
-        onAnimationEnd={this.handleAnimationEnd}
-        useNativeDriver>
+      <React.Fragment>
 
-        {qualities && (
-          <View style={[styles.root, styles.listContainer]}>
-            <View style={styles.closeIcon}>
-              <IconButton
-                onPress={cancel}
-                name={'close'}
-                color={'#FFF'}
-                size={40}
-              />
-            </View>
+        <Icon
+          style={style}
+          name={'play-circle-outline'}
+          color={colors.ICON_COLOR}
+          size={iconSize} />
 
-            {fetchingBetter && (
-              <Animatable.View
-                animation={'fadeIn'}
-                duration={200}
-                style={styles.fetchingBetter}
-                useNativeDriver>
-                <ActivityIndicator
-                  size={60}
-                  color={'#FFF'} />
-              </Animatable.View>
-            )}
+        <Modal
+          onRequestClose={onRequestClose}
+          visible={visible}>
 
-            <View style={styles.searchForBetter}>
+          {qualities.length === 0 && (
+            <Typography variant={'title'}>
+              {i18n.t('No qualities available! Try to search')}
+            </Typography>
+          )}
+
+          {fetchingBetter && (
+            <Animatable.View
+              animation={'fadeIn'}
+              duration={200}
+              style={styles.fetchingBetter}
+              useNativeDriver>
+              <ActivityIndicator
+                size={60}
+                color={'#FFF'} />
+            </Animatable.View>
+          )}
+
+          {!searchedForBetter && (
+            <Animatable.View
+              animation={!fetchingBetter ? 'fadeIn' : 'fadeOut'}
+              duration={!fetchingBetter ? 0 : 200}
+              style={styles.searchForBetter}
+              useNativeDriver>
               <Button
                 onPress={this.handleSearchForBetter}
                 variant={'primary'}>
@@ -167,39 +184,35 @@ export default class QualitySelector extends React.Component {
                   : i18n.t('search for qualities')
                 }
               </Button>
-            </View>
+            </Animatable.View>
+          )}
 
-            {qualities.length === 0 && (
-              <Typography variant={'title'}>
-                {i18n.t('No qualities available! Try to search')}
-              </Typography>
-            )}
+          {qualities.map((quality) => (
+            <Animatable.View
+              key={quality}
+              animation={'fadeIn'}
+              duration={200}
+              useNativeDriver>
+              <BaseButton onPress={() => this.handlePlayQuality(quality)}>
+                <Text style={[
+                  styles.quality,
+                  {
+                    borderBottomColor: item.torrents
+                      ? item.torrents[quality].health.color
+                      : null,
+                  },
+                ]}>
+                  {quality}
+                </Text>
+              </BaseButton>
+            </Animatable.View>
+          ))}
 
-            {qualities.map((quality) => (
-              <Animatable.View
-                key={quality}
-                animation={'fadeIn'}
-                duration={200}
-                useNativeDriver>
-                <BaseButton onPress={() => this.playQuality(quality)}>
-                  <Text style={[
-                    styles.quality,
-                    {
-                      borderBottomColor: torrents
-                        ? torrents[quality].health.color
-                        : null,
-                    },
-                  ]}>
-                    {quality}
-                  </Text>
-                </BaseButton>
-              </Animatable.View>
-            ))}
-          </View>
-        )}
+        </Modal>
 
-      </Animatable.View>
+      </React.Fragment>
     )
+
   }
 
 }

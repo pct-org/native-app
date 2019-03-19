@@ -1,5 +1,5 @@
 import React from 'react'
-import { StyleSheet, View, Linking, BackHandler, InteractionManager } from 'react-native'
+import { StyleSheet, View, Linking, InteractionManager } from 'react-native'
 import Orientation from 'react-native-orientation'
 import { Constants } from 'popcorn-sdk'
 
@@ -11,7 +11,6 @@ import ScrollViewWithStatusBar from 'components/ScrollViewWithStatusBar'
 import IconButton from 'components/IconButton'
 
 import BasicInfo from './BasicInfo'
-import QualitySelector from 'components/QualitySelector'
 import ItemOrRecommendations from './ItemOrRecommendations'
 
 const styles = StyleSheet.create({
@@ -40,32 +39,8 @@ const styles = StyleSheet.create({
 
 export default class Item extends React.PureComponent {
 
-  state = {
-    selectFromTorrents: null,
-    episodeToPlay     : null,
-  }
-
-  static getDerivedStateFromProps(props, state) {
-    const { episodeToPlay, selectFromTorrents } = state
-
-    if (episodeToPlay && selectFromTorrents) {
-      const { item } = props
-
-      const season = item.seasons.find(season => season.number === episodeToPlay.season)
-      const newEpisode = season.episodes.find(episode => episode.number === episodeToPlay.number)
-
-      return {
-        selectFromTorrents: newEpisode ? newEpisode.torrents : selectFromTorrents,
-      }
-    }
-
-    return {}
-  }
-
   componentDidMount() {
     Orientation.lockToPortrait()
-
-    BackHandler.addEventListener('hardwareBackPress', this.handleBackPress)
 
     // Fetch data after the component is done navigation
     InteractionManager.runAfterInteractions(() => {
@@ -76,23 +51,7 @@ export default class Item extends React.PureComponent {
   componentWillUnmount() {
     const { clearItem } = this.props
 
-    BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress)
-
     clearItem()
-  }
-
-  handleBackPress = () => {
-    const { selectFromTorrents } = this.state
-
-    if (selectFromTorrents !== null) {
-      this.setState({
-        selectFromTorrents: null,
-      })
-
-      return true
-    }
-
-    return false
   }
 
   handleToggleBookmarks = () => {
@@ -141,55 +100,38 @@ export default class Item extends React.PureComponent {
     }
   }
 
-  playItem = (torrent) => {
-    const { navigation: { navigate }, item } = this.props
-    const { episodeToPlay } = this.state
-
-    this.setState({
-      selectFromTorrents: null,
-    })
-
-    let playItem = item
-
-    if (episodeToPlay) {
-      playItem = {
-        ...episodeToPlay,
-        show: playItem,
-      }
-    }
-
-    navigate('Player', {
-      torrent,
-      item: playItem,
-    })
-  }
-
-  selectQuality = (torrents, episode = null) => {
-    this.setState({
-      selectFromTorrents: torrents,
-
-      episodeToPlay: episode,
-    })
-  }
-
-  cancelQualitySelect = () => {
-    this.setState({
-      selectFromTorrents: null,
-    })
-  }
+  // playItem = (torrent) => {
+  //   const { navigation: { navigate }, item } = this.props
+  //   const { episodeToPlay } = this.state
+  //
+  //   this.setState({
+  //     selectFromTorrents: null,
+  //   })
+  //
+  //   let playItem = item
+  //
+  //   if (episodeToPlay) {
+  //     playItem = {
+  //       ...episodeToPlay,
+  //       show: playItem,
+  //     }
+  //   }
+  //
+  //   navigate('Player', {
+  //     torrent,
+  //     item: playItem,
+  //   })
+  // }
 
   render() {
     const { item, isLoading } = this.props
-    const { selectFromTorrents, episodeToPlay } = this.state
 
     return (
       <View style={styles.root}>
 
         <ScrollViewWithStatusBar>
 
-          <BasicInfo
-            item={item}
-            onPlay={this.selectQuality} />
+          <BasicInfo item={item} />
 
           {item && (
             <View style={styles.iconsContainer}>
@@ -243,19 +185,11 @@ export default class Item extends React.PureComponent {
           {item && item.type === Constants.TYPE_SHOW && item.seasons.length > 0 && (
             <ItemOrRecommendations
               item={item}
-              playItem={this.selectQuality}
               getItem={this.getItem}
             />
           )}
 
         </ScrollViewWithStatusBar>
-
-        <QualitySelector
-          item={item}
-          episodeToPlay={episodeToPlay}
-          cancel={this.cancelQualitySelect}
-          torrents={selectFromTorrents}
-          playItem={this.playItem} />
 
       </View>
     )

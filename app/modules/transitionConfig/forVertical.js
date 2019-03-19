@@ -21,11 +21,14 @@ function forInitial(props) {
 }
 
 export default (props) => {
-  const { layout, position, scene } = props
+  const { layout, position, scene, scenes } = props
 
-  if (!layout.isMeasured) {
+  const wasPlayer = scenes.find(scene => scene.route.routeName === 'Player')
+
+  if (!layout.isMeasured || wasPlayer) {
     return forInitial(props)
   }
+
   const interpolate = getSceneIndicesForInterpolationInputRange(props)
 
   if (!interpolate) return { opacity: 0 }

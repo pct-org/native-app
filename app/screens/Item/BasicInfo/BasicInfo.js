@@ -1,6 +1,6 @@
-import React from 'react'
+import React, { useState } from 'react'
 import PropTypes from 'prop-types'
-import { Dimensions, StyleSheet, View } from 'react-native'
+import { StyleSheet, View } from 'react-native'
 import { Constants } from 'popcorn-sdk'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import * as Animatable from 'react-native-animatable'
@@ -12,6 +12,7 @@ import CoverGradient from 'components/CoverGradient'
 import BaseButton from 'components/BaseButton'
 import Typography from 'components/Typography'
 import Image from 'components/Image'
+import QualitySelector from 'components/QualitySelector'
 
 const styles = StyleSheet.create({
 
@@ -93,7 +94,8 @@ const styles = StyleSheet.create({
   },
 })
 
-export const BasicInfo = ({ item, onOpen }) => {
+export const BasicInfo = ({ item }) => {
+  const [showQualitySelector, toggleSelecting] = useState(false)
   const genres = !item ? [] : item.genres ? [...item.genres].splice(0, 3) : []
 
   return (
@@ -102,7 +104,7 @@ export const BasicInfo = ({ item, onOpen }) => {
       <View style={styles.mainContainer}>
         <BaseButton onPress={() => {
           if (item && item.type === Constants.TYPE_MOVIE) {
-            onOpen()
+            toggleSelecting(!showQualitySelector)
           }
         }}>
           <View style={styles.listContainer}>
@@ -127,11 +129,13 @@ export const BasicInfo = ({ item, onOpen }) => {
                 animation={'fadeIn'}
                 style={styles.playContainer}
                 useNativeDriver>
-                <Icon
+
+                <QualitySelector
                   style={styles.playIcon}
-                  name={'play-circle-outline'}
-                  color={colors.ICON_COLOR}
-                  size={dimensions.ICON_PLAY_MEDIUM} />
+                  item={item}
+                  visible={showQualitySelector}
+                  onRequestClose={() => toggleSelecting(false)} />
+
               </Animatable.View>
             )}
 
@@ -187,8 +191,7 @@ export const BasicInfo = ({ item, onOpen }) => {
 }
 
 BasicInfo.propTypes = {
-  item  : PropTypes.object,
-  onPlay: PropTypes.func.isRequired,
+  item: PropTypes.object,
 }
 
 BasicInfo.defaultProps = {
