@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { StyleSheet, Text, View, StatusBar, TextInput, Dimensions } from 'react-native'
+import { StyleSheet, Text, View, StatusBar, TextInput } from 'react-native'
 import Orientation from 'react-native-orientation'
 import * as Animatable from 'react-native-animatable'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
@@ -8,12 +8,11 @@ import { Constants } from 'popcorn-sdk'
 import { withNavigationFocus } from 'react-navigation'
 
 import colors from 'modules/colors'
+import dimensions from 'modules/dimensions'
 
 import CardList from 'components/CardList'
 import IconButton from 'components/IconButton'
 import FullScreenLoading from 'components/FullScreenLoading'
-
-const { width } = Dimensions.get('window')
 
 const styles = StyleSheet.create({
 
@@ -23,19 +22,11 @@ const styles = StyleSheet.create({
     position       : 'relative',
   },
 
-  container: {
-    flexDirection: 'column',
-  },
-
-  listItem: {
-    marginTop: 16,
-  },
-
   searchRoot: {
     width         : '100%',
     height        : 50,
-    marginTop     : 36,
-    marginBottom  : 8,
+    marginTop     : StatusBar.currentHeight + dimensions.UNIT * 2,
+    marginBottom  : dimensions.UNIT,
     display       : 'flex',
     justifyContent: 'center',
     alignItems    : 'center',
@@ -43,8 +34,9 @@ const styles = StyleSheet.create({
 
   searchContainer: {
     backgroundColor: colors.BACKGROUND_LIGHTER,
-    width          : width - 16,
+    width          : dimensions.SCREEN_WIDTH - (dimensions.UNIT * 4),
     height         : '100%',
+    borderRadius   : dimensions.BORDER_RADIUS,
   },
 
   input: {
@@ -56,14 +48,14 @@ const styles = StyleSheet.create({
 
   cancelSearch: {
     position: 'absolute',
-    right   : 8,
+    right   : dimensions.UNIT,
     top     : 0,
   },
 
   searchIcon: {
     position: 'absolute',
-    left    : 8,
-    top     : 8,
+    left    : dimensions.UNIT,
+    top     : dimensions.UNIT,
   },
 
 })
@@ -217,7 +209,6 @@ export class Mode extends React.Component {
 
             <CardList
               items={items}
-              // ListHeaderComponent={<View style={{ marginTop: 28 }} />}
               ListHeaderComponent={this.renderSearchBar}
               onEndReached={this.handleEndReached}
             />

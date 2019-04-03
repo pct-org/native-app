@@ -7,8 +7,10 @@ import SplashScreen from 'react-native-splash-screen'
 
 import i18n from 'modules/i18n'
 import colors from 'modules/colors'
+import dimensions from 'modules/dimensions'
 
 import CardSlider from 'components/CardSlider'
+import MyEpisodesSlider from 'components/MyEpisodesSlider'
 import MainCover from 'components/MainCover'
 import ScrollViewWithStatusBar from 'components/ScrollViewWithStatusBar'
 
@@ -18,6 +20,16 @@ const styles = StyleSheet.create({
     flex           : 1,
     backgroundColor: colors.BACKGROUND,
     position       : 'relative',
+  },
+
+  section: {
+    position    : 'relative',
+    marginTop   : dimensions.UNIT * 2,
+    marginBottom: dimensions.UNIT * 2,
+  },
+
+  lastSection: {
+    marginBottom: dimensions.UNIT * 4,
   },
 
 })
@@ -36,18 +48,46 @@ export default class Home extends React.PureComponent {
     hasInternet: true,
   }
 
+  state = {
+    coreLoading: true,
+  }
+
   componentDidMount() {
     const { getItems } = this.props
 
     Orientation.lockToPortrait()
 
-    getItems(Constants.TYPE_MOVIE)
-    getItems(Constants.TYPE_SHOW)
-    getItems(Constants.TYPE_BOOKMARK)
+    SplashScreen.hide()
+
+    Promise.all([
+      getItems(Constants.TYPE_MOVIE),
+      getItems(Constants.TYPE_SHOW),
+      getItems(Constants.TYPE_BOOKMARK),
+    ]).then(() => {
+      this.setState({
+        coreLoading: false,
+      })
+    })
   }
 
   componentWillUnmount() {
     Orientation.unlockAllOrientations()
+  }
+
+  handleEndReached = (mode) => () => {
+    const { isLoading, modes, getItems } = this.props
+
+    if (mode === Constants.TYPE_BOOKMARK || isLoading) {
+      return
+    }
+
+    getItems(mode, modes[mode].page + 1)
+  }
+
+  handleGoTo = (to) => () => {
+    const { navigation } = this.props
+
+    navigation.navigate(to)
   }
 
   handleItemOpen = (item) => {
@@ -56,8 +96,12 @@ export default class Home extends React.PureComponent {
     navigation.navigate('Item', item)
   }
 
-  handleCoverLoaded = () => {
-    SplashScreen.hide()
+  handleMyEpisodesRefresh = () => {
+    const { updateMyEpisodes, modes: { myEpisodes } } = this.props
+
+    if (!myEpisodes.loading && !myEpisodes.refreshing) {
+      updateMyEpisodes(true)
+    }
   }
 
   getMainCover = () => {
@@ -73,7 +117,9 @@ export default class Home extends React.PureComponent {
   getMyList = () => {
     const { modes } = this.props
 
-    return modes[Constants.TYPE_BOOKMARK].items.filter(movie => !movie.watched.complete).slice(0, 10)
+    const items = modes[Constants.TYPE_BOOKMARK].items.filter(movie => !movie.watched.complete)
+
+    return [...items].reverse()
   }
 
   getMovies = (withSlice = true) => {
@@ -83,7 +129,7 @@ export default class Home extends React.PureComponent {
     const movies = modes[Constants.TYPE_MOVIE].items.filter(movie => !movie.watched.complete && !movie.bookmarked)
 
     if (withSlice) {
-      return movies.slice(1, 11)
+      return movies.slice(1)
     }
 
     return movies
@@ -92,75 +138,75 @@ export default class Home extends React.PureComponent {
   getShows = () => {
     const { modes } = this.props
 
-    return modes[Constants.TYPE_SHOW].items.filter(show => !show.bookmarked).slice(0, 10)
+    return modes[Constants.TYPE_SHOW].items.filter(show => !show.bookmarked)
   }
 
-  getMyListCardProps = () => ({})
-
-  getMoviesListCardProps = () => ({})
-
-  getShowListCardProps = () => ({})
-
   renderMainCover = () => {
-    const { isLoading } = this.props
+    const item = this.getMainCover()
 
     return (
       <MainCover
-        onPress={this.handleItemOpen}
-        loading={isLoading}
-        onLoad={this.handleCoverLoaded}
-        item={this.getMainCover()} />
+        onOpen={this.handleItemOpen}
+        onPlay={this.handleItemOpen}
+        empty={!item}
+        item={item} />
     )
   }
 
   renderMyList = () => {
-    const { isLoading } = this.props
+    const { coreLoading } = this.state
     const myList = this.getMyList()
 
-    if (!myList || myList.length === 0) {
+    if ((!myList || myList.length === 0) && !coreLoading) {
       return
     }
 
     return (
       <CardSlider
-        style={{ marginTop: -20, marginBottom: 8 }}
+        style={styles.section}
         onPress={this.handleItemOpen}
-        loading={isLoading}
         title={i18n.t('My List')}
-        items={myList}
-        cardProps={this.getMyListCardProps()} />
+        goToMore={this.handleGoTo('Bookmarks')}
+        items={myList} />
+    )
+  }
+
+  renderMyEpisodes = () => {
+    const { modes: { myEpisodes } } = this.props
+
+    return (
+      <MyEpisodesSlider
+        style={styles.section}
+        onPress={this.handleItemOpen}
+        onRefresh={this.handleMyEpisodesRefresh}
+        title={i18n.t('My Episodes')}
+        refreshing={myEpisodes.refreshing}
+        loading={myEpisodes.loading}
+        items={myEpisodes.items} />
     )
   }
 
   renderMoviesList = () => {
-    const { isLoading } = this.props
-    const myList = this.getMyList()
-
     return (
       <CardSlider
-        style={{
-          marginTop   : myList.length > 0 ? 0 : -20,
-          marginBottom: 8,
-        }}
+        style={styles.section}
         onPress={this.handleItemOpen}
-        loading={isLoading}
         title={i18n.t('Movies')}
         items={this.getMovies()}
-        cardProps={this.getMoviesListCardProps()} />
+        goToMore={this.handleGoTo('Movies')}
+        onEndReached={this.handleEndReached(Constants.TYPE_MOVIE)} />
     )
   }
 
   renderShowsList = () => {
-    const { isLoading } = this.props
-
     return (
       <CardSlider
-        style={{ marginBottom: 16 }}
+        style={[styles.section, styles.lastSection]}
         onPress={this.handleItemOpen}
-        loading={isLoading}
         title={i18n.t('Shows')}
         items={this.getShows()}
-        cardProps={this.getShowListCardProps()} />
+        goToMore={this.handleGoTo('Shows')}
+        onEndReached={this.handleEndReached(Constants.TYPE_SHOW)} />
     )
   }
 
@@ -177,6 +223,8 @@ export default class Home extends React.PureComponent {
             {this.renderMainCover()}
 
             {this.renderMyList()}
+
+            {this.renderMyEpisodes()}
 
             {this.renderMoviesList()}
 

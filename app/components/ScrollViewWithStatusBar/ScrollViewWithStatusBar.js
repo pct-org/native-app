@@ -1,51 +1,69 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { ScrollView, StatusBar, SafeAreaView } from 'react-native'
+import { withNavigationFocus } from 'react-navigation'
 
+import StatusBarController from 'modules/StatusBarController'
+
+@withNavigationFocus
 export default class ScrollViewWithStatusBar extends React.Component {
+
 
   static propTypes = {
     children: PropTypes.node.isRequired,
   }
 
   state = {
-    statusBarBackgroundColor: 'rgba(0, 0, 0, 0)',
-    statusBarColor          : 'default',
+    statusBarColor: 'default',
   }
 
-  handleScroll = (event) => {
+  yOffset = 0
+
+  componentWillMount() {
+    this.forceUpdateScroll()
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const { isFocused } = nextProps
+    const { isFocused: wasFocused } = this.props
+
+    if (isFocused && !wasFocused) {
+      this.forceUpdateScroll()
+    }
+  }
+
+  forceUpdateScroll = () => this.handleScroll({ nativeEvent: { contentOffset: { y: this.yOffset } } }, true)
+
+  handleScroll = (event, force = false) => {
     const { statusBarColor } = this.state
 
     const { y } = event.nativeEvent.contentOffset
 
-    if (y > 10 && y < 400 && statusBarColor !== 'transparent') {
-      this.setState({
-        statusBarBackgroundColor: 'rgba(0, 0, 0, 0.20)',
-        statusBarColor          : 'transparent',
-      })
+    this.yOffset = y
 
-    } else if (y > 400 && statusBarColor !== 'dark') {
-      this.setState({
-        statusBarBackgroundColor: 'rgba(0, 0, 0, 1)',
-        statusBarColor          : 'dark',
-      })
+    if (y > 10 && y < 400 && (statusBarColor !== 'transparent' || force)) {
+      this.handleUpdateBackgroundColor('rgba(0, 0, 0, 0.2)', 'transparent')
 
-    } else if (y < 10 && statusBarColor !== 'default') {
-      this.setState({
-        statusBarBackgroundColor: 'rgba(0, 0, 0, 0)',
-        statusBarColor          : 'default',
-      })
+    } else if (y < 10 && (statusBarColor !== 'default' || force)) {
+      this.handleUpdateBackgroundColor('rgba(0, 0, 0, 0)', 'default')
     }
+  }
+
+  handleUpdateBackgroundColor = (statusBarBackgroundColor, statusBarColor) => {
+    StatusBarController.update(statusBarBackgroundColor)
+
+    this.setState({
+      statusBarColor,
+    })
   }
 
   render() {
     const { children } = this.props
-    const { statusBarBackgroundColor } = this.state
 
     return (
       <SafeAreaView>
         <StatusBar
-          backgroundColor={statusBarBackgroundColor}
+          backgroundColor={'rgba(0, 0, 0, 0)'}
           translucent
           animated
         />
@@ -56,6 +74,7 @@ export default class ScrollViewWithStatusBar extends React.Component {
           onScroll={this.handleScroll}>
           {children}
         </ScrollView>
+
       </SafeAreaView>
     )
   }

@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="background">#111214</color>
-    <color name="background_secondary">#0D0E0F</color>
-    <color name="dropdown_background">#212225</color>
+    <color name="background">#000000</color>
 
     <color name="text_color">#FAFAFA</color>
 </resources>

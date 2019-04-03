@@ -373,7 +373,7 @@ export default class VideoPlayer extends React.Component {
     const { doneBuffering, buffer, downloadSpeedFormatted, activeSub } = this.state
 
     return (
-      <View style={styles.container}>
+      <View style={styles.listContainer}>
 
         <StatusBar hidden={false} animated />
 
@@ -463,7 +463,7 @@ export default class VideoPlayer extends React.Component {
 
 const styles = StyleSheet.create({
 
-  container: {
+  listContainer: {
     flex           : 1,
     backgroundColor: 'black',
   },

@@ -1,19 +1,28 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { StyleSheet, View, Image } from 'react-native'
+import { StyleSheet, View } from 'react-native'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 
-import posterHolderImage from 'images/posterholder.png'
+import dimensions from 'modules/dimensions'
+import colors from 'modules/colors'
 
 import Typography from 'components/Typography'
 import Overlay from 'components/Overlay'
 import BaseButton from 'components/BaseButton'
+import Image from 'components/Image'
+import QualitySelector from 'components/QualitySelector'
 
 export const styles = StyleSheet.create({
 
-  container: {
+  listContainer: {
     display: 'flex',
-    margin : 8,
+  },
+
+  posterContainer: {
+    borderRadius: dimensions.BORDER_RADIUS,
+    overflow    : 'hidden',
+
+    backgroundColor: colors.BACKGROUND_LIGHTER,
   },
 
   posterWithTitle: {
@@ -33,11 +42,17 @@ export const styles = StyleSheet.create({
   },
 
   title: {
-    marginLeft: 8,
+    marginLeft: dimensions.UNIT,
   },
 
   summary: {
-    marginTop: 8,
+    marginTop   : dimensions.UNIT / 2,
+    marginBottom: dimensions.UNIT / 2,
+  },
+
+  image: {
+    width : dimensions.EPISODE_CARD_WIDTH,
+    height: dimensions.EPISODE_CARD_HEIGHT,
   },
 
 })
@@ -45,34 +60,35 @@ export const styles = StyleSheet.create({
 export default class Episode extends React.Component {
 
   static propTypes = {
-    playItem   : PropTypes.func.isRequired,
-    title      : PropTypes.string.isRequired,
-    images     : PropTypes.object.isRequired,
-    torrents   : PropTypes.object.isRequired,
-    number     : PropTypes.number.isRequired,
+    title      : PropTypes.string,
+    images     : PropTypes.object,
+    torrents   : PropTypes.object,
+    number     : PropTypes.number,
     summary    : PropTypes.string,
     hasTorrents: PropTypes.bool,
+    hasAired   : PropTypes.bool,
   }
 
   static defaultProps = {
     summary    : null,
     hasTorrents: false,
+    hasAired   : false,
+
+    images: {
+      poster: {
+        thumb: null,
+      },
+    },
   }
 
   state = {
-    showPlaceholder: false,
+    showQualitySelector: false,
   }
 
-  handleImageError = () => {
+  toggleSelector = (showQualitySelector) => {
     this.setState({
-      showPlaceholder: true,
+      showQualitySelector,
     })
-  }
-
-  handlePlayItem = () => {
-    const { playItem, ...episode } = this.props
-
-    playItem(episode.torrents, this.props)
   }
 
   getAirsDate = () => {
@@ -85,49 +101,45 @@ export default class Episode extends React.Component {
   }
 
   render() {
-    const { title, summary, number, images, hasAired } = this.props
-    const { showPlaceholder } = this.props
+    const { title, summary, number, hasAired, images } = this.props
+    const { showQualitySelector } = this.state
 
     return (
-      <View style={styles.container}>
+      <View style={styles.listContainer}>
 
         <View style={styles.posterWithTitle}>
-          <BaseButton onPress={this.handlePlayItem}>
-            <View>
-              <Image
-                onError={this.handleImageError}
-                defaultSource={posterHolderImage}
-                source={images.poster.thumb && !showPlaceholder
-                  ? { uri: images.poster.thumb }
-                  : posterHolderImage
-                }
-                style={{ width: 150, height: 100 }} />
+          <View style={styles.posterContainer}>
+            <BaseButton onPress={() => this.toggleSelector(!showQualitySelector)}>
+              <View>
+                <Image
+                  style={styles.image}
+                  images={images} />
 
-              <View style={styles.iconContainer}>
-                <Overlay />
+                <View style={styles.iconContainer}>
+                  <Overlay />
 
-                {hasAired && (
-                  <Icon
-                    iconStyle={{ margin: 0 }}
-                    backgroundColor={'transparent'}
-                    borderRadius={0}
-                    name={'play-circle-outline'}
-                    color={'#FFF'}
-                    size={60} />
-                )}
+                  {hasAired && (
+                    <QualitySelector
+                      item={this.props}
+                      iconSize={dimensions.ICON_PLAY_SMALL}
+                      visible={showQualitySelector}
+                      onRequestClose={() => this.toggleSelector(false)}
+                    />
+                  )}
 
-                {!hasAired && (
-                  <Typography variant={'caption'}>
-                    {this.getAirsDate()}
-                  </Typography>
-                )}
+                  {!hasAired && (
+                    <Typography variant={'caption'}>
+                      {this.getAirsDate()}
+                    </Typography>
+                  )}
+                </View>
               </View>
-            </View>
-          </BaseButton>
+            </BaseButton>
+          </View>
 
           <Typography
             style={styles.title}
-            variant={'body1'}
+            variant={'subheading'}
             fontWeight={'bold'}>
             {`${number}. ${title}`}
           </Typography>
@@ -135,7 +147,7 @@ export default class Episode extends React.Component {
 
         <Typography
           style={styles.summary}
-          variant={'body1'}>
+          variant={'body2'}>
           {summary}
         </Typography>
 

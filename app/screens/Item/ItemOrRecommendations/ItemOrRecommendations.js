@@ -1,8 +1,10 @@
 import React from 'react'
 import { View, StyleSheet } from 'react-native'
+import * as Animatable from 'react-native-animatable'
 
 import i18n from 'modules/i18n'
 import colors from 'modules/colors'
+import dimensions from 'modules/dimensions'
 
 import TextButton from 'components/TextButton'
 
@@ -17,16 +19,14 @@ export const styles = StyleSheet.create({
     display       : 'flex',
     flexDirection : 'row',
     width         : '100%',
-
-    paddingBottom: 16,
   },
 
   buttons: {
-    marginRight : 8,
-    paddingLeft : 8,
-    paddingRight: 8,
-    paddingTop  : 16,
-    marginBottom: 16,
+    marginRight : dimensions.UNIT,
+    paddingLeft : dimensions.UNIT * 2,
+    paddingRight: dimensions.UNIT * 2,
+    paddingTop  : dimensions.UNIT * 2,
+    marginBottom: dimensions.UNIT * 2,
   },
 
   buttonActive: {
@@ -72,22 +72,22 @@ export default class ItemOrRecommendations extends React.PureComponent {
   }
 
   render() {
-    const { item, playItem, getItem } = this.props
+    const { item, getItem } = this.props
     const { recommendationActive, recommendations } = this.state
 
     return (
-      <React.Fragment>
+      <Animatable.View animation={'fadeIn'} useNativeDriver>
         <View style={styles.buttonContainer}>
           <TextButton
             onPress={() => this.handleViewRecommendation(false)}
-            fontWeight={recommendationActive ? 'regular' : 'bold'}
+            emphasis={recommendationActive ? 'medium' : 'high'}
             style={this.getStyles(false)}>
             {i18n.t('Episodes')}
           </TextButton>
 
           <TextButton
             onPress={() => this.handleViewRecommendation(true)}
-            fontWeight={recommendationActive ? 'bold' : 'regular'}
+            emphasis={recommendationActive ? 'high' : 'medium'}
             style={this.getStyles(true)}>
             {i18n.t('More like this')}
           </TextButton>
@@ -96,7 +96,6 @@ export default class ItemOrRecommendations extends React.PureComponent {
         {!recommendationActive && (
           <SeasonsAndEpisodes
             item={item}
-            playItem={playItem}
           />
         )}
 
@@ -108,7 +107,7 @@ export default class ItemOrRecommendations extends React.PureComponent {
             getItem={getItem} />
         )}
 
-      </React.Fragment>
+      </Animatable.View>
     )
   }
 

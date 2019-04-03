@@ -3,15 +3,16 @@ import PropTypes from 'prop-types'
 import { StyleSheet } from 'react-native'
 
 import colors from 'modules/colors'
+import dimensions from 'modules/dimensions'
 
 import TextButton from '../TextButton'
 
 const defaultPadding = {
-  paddingLeft  : 16,
-  paddingRight : 16,
-  paddingTop   : 8,
-  paddingBottom: 8,
-  borderRadius : 4,
+  paddingLeft  : dimensions.UNIT * 2,
+  paddingRight : dimensions.UNIT * 2,
+  paddingTop   : dimensions.UNIT,
+  paddingBottom: dimensions.UNIT,
+  borderRadius : dimensions.BORDER_RADIUS,
 }
 
 export const styles = StyleSheet.create({

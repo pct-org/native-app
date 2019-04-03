@@ -1,26 +1,28 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { StyleSheet, View, ScrollView, FlatList } from 'react-native'
+import { StyleSheet, View, FlatList } from 'react-native'
+
+import dimensions from 'modules/dimensions'
+import i18n from 'modules/i18n'
 
 import Card from '../Card'
 import Typography from '../Typography'
+import TextButton from '../TextButton'
 
 export const styles = StyleSheet.create({
 
-  root: {
-    height     : 190,
-    width      : 120,
-    marginLeft : 10,
-    marginRight: 10,
-    alignSelf  : 'stretch',
-    position   : 'relative',
-    display    : 'flex',
-    alignItems : 'center',
+  titleContainer: {
+    display       : 'flex',
+    flexDirection : 'row',
+    justifyContent: 'space-between',
+    alignItems    : 'center',
+    marginBottom  : 0,
+    marginRight   : dimensions.UNIT,
+    marginLeft    : dimensions.UNIT * 2,
   },
 
-  title: {
-    marginLeft: 8,
-    marginTop : 8,
+  moreButton: {
+    padding: dimensions.UNIT / 2,
   },
 
   image: {
@@ -29,41 +31,58 @@ export const styles = StyleSheet.create({
     resizeMode: 'cover',
   },
 
-  scrollView: {
-    margin: 4,
+  container: {
+    marginLeft: dimensions.UNIT * 2,
   },
+
 })
 
-export const CardSlider = ({ loading, title, items, onPress, style, cardProps }) => {
+export const CardSlider = ({ loading, title, items, onPress, style, onEndReached, goToMore }) => {
   const renderCard = ({ item }) => (
     <Card
-      variant={'small'}
+      variant={'medium'}
       empty={!item}
       item={item}
       onPress={() => onPress(item)}
-      {...cardProps}
     />
   )
 
   return (
     <View style={style}>
-      <Typography
-        style={styles.title}
-        variant={'title'}
-        fontWeight={'bold'}>
-        {title}
-      </Typography>
+
+      <View style={styles.titleContainer}>
+        <Typography
+          variant={'title'}
+          fontWeight={'medium'}>
+          {title}
+        </Typography>
+
+        <TextButton
+          style={styles.moreButton}
+          upperCase={false}
+          emphasis={'medium'}
+          fontWeight={'regular'}
+          onPress={goToMore}>
+          {i18n.t('more')}
+        </TextButton>
+      </View>
 
       <FlatList
         horizontal
         removeClippedSubviews
-        style={styles.scrollView}
+        contentContainerStyle={styles.container}
         data={items.length === 0 ? Array(4).fill() : items}
         initialNumToRender={4}
-        windowSize={8}
+        windowSize={4}
         renderItem={renderCard}
-        keyExtractor={(item, index) => item ? item.id : `${index}`}
+        ItemSeparatorComponent={() => <View style={{ width: dimensions.UNIT }} />}
+        ListFooterComponent={() => <View style={{ width: dimensions.UNIT * 5 }} />}
+        keyExtractor={(item, index) => item ? `${item.id}-${index}` : `${index}`}
         showsHorizontalScrollIndicator={false}
+        // snapToInterval={dimensions.CARD_MEDIUM_WIDTH + dimensions.UNIT}
+        // snapToAlignment={'center'}
+        onEndReached={onEndReached}
+        onEndReachedThreshold={dimensions.CARD_MEDIUM_WIDTH * 3}
       />
 
     </View>
@@ -71,17 +90,12 @@ export const CardSlider = ({ loading, title, items, onPress, style, cardProps })
 }
 
 CardSlider.propTypes = {
-  title    : PropTypes.string.isRequired,
-  items    : PropTypes.array.isRequired,
-  onPress  : PropTypes.func.isRequired,
-  loading  : PropTypes.bool.isRequired,
-  style    : PropTypes.object,
-  cardProps: PropTypes.object,
+  onEndReached: PropTypes.func,
+  goToMore    : PropTypes.func.isRequired,
 }
 
 CardSlider.defaultProps = {
-  style    : null,
-  cardProps: {},
+  onEndReached: null,
 }
 
 export default CardSlider

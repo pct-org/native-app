@@ -1,23 +1,32 @@
 import React from 'react'
-import { Picker, StyleSheet, View } from 'react-native'
+import { FlatList, StyleSheet, View } from 'react-native'
 
-import colors from 'modules/colors'
+import dimensions from 'modules/dimensions'
 import i18n from 'modules/i18n'
+
+import Card from 'components/Card'
+import Typography from 'components/Typography'
 
 import Episode from './Episode'
 
 export const styles = StyleSheet.create({
 
-  dropDown: {
-    margin: 8,
-
-    height         : 50,
-    width          : 150,
-    backgroundColor: colors.ITEM_DROPDOWN_BACKGROUND,
+  container: {
+    marginLeft : dimensions.UNIT * 2,
+    marginRight: dimensions.UNIT * 2,
   },
 
-  dropDownItem: {
-    width: 150,
+  seasonSelector: {
+    marginBottom: dimensions.UNIT * 4,
+  },
+
+  seasonContainer: {
+    display: 'flex',
+  },
+
+  seasonNumber: {
+    marginTop: dimensions.UNIT / 2,
+    textAlign: 'center',
   },
 
 })
@@ -89,41 +98,85 @@ export default class SeasonsAndEpisodes extends React.PureComponent {
       return item.seasons.find(season => season.number === seasonNr)
     }
 
-    return item.seasons
+    return [...item.seasons].reverse()
   }
 
-  render() {
-    const { playItem } = this.props
+  handleSeasonChange = (season) => {
+    this.setState({
+      activeSeason: season.number,
+    })
+  }
+
+  renderEpisode = ({ item }) => {
+    const { item: show } = this.props
+
+    return (
+      <Episode
+        empty={!item}
+        hasAired={item ? item.aired < this.today : false}
+        show={show}
+        {...item} />
+    )
+  }
+
+  renderSeason = ({ item }) => {
     const { activeSeason } = this.state
 
     return (
-      <View>
-        <Picker
-          mode={'dropdown'}
-          selectedValue={activeSeason}
-          style={styles.dropDown}
-          itemStyle={styles.dropDownItem}
-          onValueChange={(itemValue) => this.setState({ activeSeason: itemValue })}>
+      <View style={styles.seasonContainer}>
+        <Card
+          variant={'small'}
+          onPress={() => this.handleSeasonChange(item)}
+          item={item}
+        />
 
-          {/* TODO:: Fix this so it looks a little better */}
-          {this.getSeasons().map(season => (
-            <Picker.Item
-              color={'#FFF'}
-              key={season.number}
-              label={i18n.t('Season {{number}}', { number: season.number })}
-              value={season.number} />
-          ))}
-
-        </Picker>
-
-        {this.getEpisodes().map(episode => (
-          <Episode
-            key={episode.key}
-            playItem={playItem}
-            hasAired={episode.aired < this.today}
-            {...episode} />
-        ))}
+        <Typography
+          style={styles.seasonNumber}
+          variant={'caption'}
+          emphasis={activeSeason === item.season ? 'high' : 'medium'}>
+          {i18n.t('Season {{number}}', { number: item.season })}
+        </Typography>
       </View>
+    )
+  }
+
+  render() {
+    const seasons = this.getSeasons()
+    const episodes = this.getEpisodes()
+
+    return (
+      <React.Fragment>
+
+        <FlatList
+          removeClippedSubviews
+          contentContainerStyle={[styles.container, styles.seasonSelector]}
+          data={seasons.length === 0 ? Array(4).fill() : seasons}
+          initialNumToRender={4}
+          windowSize={4}
+          renderItem={this.renderSeason}
+          ItemSeparatorComponent={() => <View style={{ width: dimensions.UNIT }} />}
+          ListFooterComponent={() => <View style={{ width: dimensions.UNIT * 4 }} />}
+          keyExtractor={(item, index) => item ? `${item.number}` : `${index}`}
+          showsVerticalScrollIndicator={false}
+          showsHorizontalScrollIndicator={false}
+          horizontal
+        />
+
+        <FlatList
+          removeClippedSubviews
+          contentContainerStyle={styles.container}
+          data={episodes.length === 0 ? Array(6).fill() : episodes}
+          initialNumToRender={4}
+          windowSize={5}
+          renderItem={this.renderEpisode}
+          ItemSeparatorComponent={() => <View style={{ marginBottom: dimensions.UNIT }} />}
+          ListFooterComponent={() => <View style={{ marginBottom: dimensions.UNIT * 4 }} />}
+          keyExtractor={(item, index) => item ? item.key : `${index}`}
+          showsVerticalScrollIndicator={false}
+          showsHorizontalScrollIndicator={false}
+        />
+
+      </React.Fragment>
     )
   }
 

@@ -18,6 +18,12 @@ export function fetchedItem(item) {
   }
 }
 
+export function clearItem() {
+  return {
+    type   : ItemConstants.CLEAR_ITEM,
+  }
+}
+
 export function partlyFetchedItem(item) {
   return {
     type   : ItemConstants.PARTLY_FETCH_ITEM,

@@ -17,6 +17,7 @@ export default class Typography extends Component {
       'display2',
       'display3',
       'display4',
+      'display5',
       'headline',
       'title',
       'subheading',
@@ -29,6 +30,11 @@ export default class Typography extends Component {
     color: PropTypes.oneOf([
       'white',
       'black',
+    ]),
+
+    emphasis: PropTypes.oneOf([
+      'high',
+      'medium',
     ]),
 
     fontWeight: PropTypes.oneOf([
@@ -56,6 +62,7 @@ export default class Typography extends Component {
   }
 
   static defaultProps = {
+    emphasis  : 'high',
     color     : 'white',
     variant   : 'default',
     fontWeight: 'regular',
@@ -69,13 +76,15 @@ export default class Typography extends Component {
     variant = Typography.defaultProps.variant,
     fontWeight = Typography.defaultProps.fontWeight,
     color = Typography.defaultProps.color,
+    emphasis = Typography.defaultProps.emphasis,
     style: styleProp = {},
     asObject = false,
   }) => {
     const styledColor = styles[`color${capitalizeFirstLetter(color)}`]
     const styledFont = styles[`fontFamily${capitalizeFirstLetter(fontWeight)}`]
+    const styledEmphasis = styles[`emphasis${capitalizeFirstLetter(emphasis)}`]
 
-    const textStyles = [styledColor, styles[variant], styledFont, styleProp]
+    const textStyles = [styledColor, styles[variant], styledFont, styleProp, styledEmphasis]
 
     if (asObject) {
       let objectStyle = {}

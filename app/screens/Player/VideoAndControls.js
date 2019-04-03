@@ -1,6 +1,6 @@
 import React from 'react'
 import { Dimensions, Slider, StatusBar } from 'react-native'
-import RNVideo, { TextTrackType } from 'react-native-video'
+import RNVideo from 'react-native-video'
 import { withNavigation } from 'react-navigation'
 import {
   StyleSheet,
@@ -16,7 +16,7 @@ import PlayPauseIcon from './PlayPauseIcon'
 
 const { height: windowHeight, width: windowWidth } = Dimensions.get('window')
 
-export class EpisodesBar extends React.Component {
+export class VideoAndControls extends React.Component {
 
   state = {
     showControls    : true,
@@ -278,7 +278,7 @@ export class EpisodesBar extends React.Component {
         )}
 
         <Animatable.View
-          style={[styles.container]}
+          style={[styles.listContainer]}
           animation={showControls ? 'fadeIn' : 'fadeOut'}
           pointerEvents={'box-none'}
           useNativeDriver>
@@ -353,7 +353,7 @@ export class EpisodesBar extends React.Component {
 
 const styles = StyleSheet.create({
 
-  container: {
+  listContainer: {
     position: 'absolute',
     top     : 0,
     left    : 0,
@@ -403,4 +403,4 @@ const styles = StyleSheet.create({
 })
 
 
-export default withNavigation(EpisodesBar)
+export default withNavigation(VideoAndControls)

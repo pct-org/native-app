@@ -14,8 +14,6 @@ export const styles = StyleSheet.create({
     display       : 'flex',
     justifyContent: 'center',
     alignItems    : 'center',
-
-    margin: 8,
   },
 
 })
@@ -28,7 +26,9 @@ export const IconButton = ({ onPress, animatable, buttonProps, children, ...rest
       />
 
       {children && (
-        <Typography variant={'caption'}>
+        <Typography
+          variant={'caption'}
+          emphasis={'medium'}>
           {children}
         </Typography>
       )}

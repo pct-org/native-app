@@ -1,5 +1,5 @@
 <h1 align="center">
-  <img height="200" width="200" src="./app/images/logo.png" alt="logo" />
+  <img height="200" width="200" src="./logo.png" alt="logo" />
   <br />
   Popcorn Native
 </h1>
@@ -57,9 +57,9 @@ Please see the [contributing guide](https://github.com/tripss/popcorn-native/blo
 
 Home Screen | Home Screen
 :-------------------------:|:-------------------------:
-![Home Screen](./.github/home.jpg)  | ![Home Screen](./.github/home-bottom.jpg)
+![Home Screen](./.github/home.png)  | ![Home Screen](./.github/home-bottom.png)
 
 Show Screen |  Movie Screen
 :-------------------------:|:-------------------------:
-![Shows Screen](./.github/show.jpg)  |![Show Screen](./.github/movie.jpg)
+![Shows Screen](./.github/show.png)  |![Show Screen](./.github/movie.png)
 
