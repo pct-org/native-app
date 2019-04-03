@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import { StyleSheet, View } from 'react-native'
 
 export const styles = StyleSheet.create({
@@ -13,14 +14,28 @@ export const styles = StyleSheet.create({
     opacity        : 0.32,
   },
 
+  default: {},
+
+  dark: {
+    opacity: 0.75,
+  },
+
 })
 
-export const Overlay = ({ style }) => (
-  <View style={[styles.root, style]} />
+export const Overlay = ({ style, variant }) => (
+  <View style={[styles.root, styles[variant], style]} />
 )
 
+Overlay.propTypes = {
+  variant: PropTypes.oneOf([
+    'default',
+    'dark',
+  ]),
+}
+
 Overlay.defaultProps = {
-  style: {},
+  variant: 'default',
+  style  : {},
 }
 
 export default Overlay

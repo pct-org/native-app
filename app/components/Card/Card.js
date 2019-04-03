@@ -55,7 +55,7 @@ export const Card = ({ item, variant, empty, ...rest }) => {
           } />
 
         {item && item.watched && item.watched.complete && (
-          <Overlay />
+          <Overlay variant={'dark'} />
         )}
 
       </View>

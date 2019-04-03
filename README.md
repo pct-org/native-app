@@ -57,9 +57,9 @@ Please see the [contributing guide](https://github.com/tripss/popcorn-native/blo
 
 Home Screen | Home Screen
 :-------------------------:|:-------------------------:
-![Home Screen](./.github/home.jpg)  | ![Home Screen](./.github/home-bottom.jpg)
+![Home Screen](./.github/home.png)  | ![Home Screen](./.github/home-bottom.png)
 
 Show Screen |  Movie Screen
 :-------------------------:|:-------------------------:
-![Shows Screen](./.github/show.jpg)  |![Show Screen](./.github/movie.jpg)
+![Shows Screen](./.github/show.png)  |![Show Screen](./.github/movie.png)
 

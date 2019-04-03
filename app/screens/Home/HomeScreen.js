@@ -117,7 +117,9 @@ export default class Home extends React.PureComponent {
   getMyList = () => {
     const { modes } = this.props
 
-    return modes[Constants.TYPE_BOOKMARK].items.filter(movie => !movie.watched.complete)
+    const items = modes[Constants.TYPE_BOOKMARK].items.filter(movie => !movie.watched.complete)
+
+    return [...items].reverse()
   }
 
   getMovies = (withSlice = true) => {
