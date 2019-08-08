@@ -2,14 +2,15 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { TouchableNativeFeedback } from 'react-native'
 
-export const BaseButton = ({ children, rippleColor, ...rest }) => (
-  <TouchableNativeFeedback
+export const BaseButton = ({ children, component: Component, innerRef, rippleColor, ...rest }) => (
+  <Component
     useForeground
+    ref={innerRef}
     // eslint-disable-next-line babel/new-cap
-    background={TouchableNativeFeedback.Ripple(rippleColor)}
+    background={TouchableNativeFeedback.Ripple(rippleColor, true)}
     {...rest}>
     {children}
-  </TouchableNativeFeedback>
+  </Component>
 )
 
 BaseButton.propTypes = {
@@ -19,6 +20,8 @@ BaseButton.propTypes = {
 
 BaseButton.defaultProps = {
   rippleColor: 'rgba(0, 0, 0, .3)',
+  component: TouchableNativeFeedback,
+  innerRef: null,
 }
 
 export default BaseButton

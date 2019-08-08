@@ -1,6 +1,6 @@
-import React from 'react'
+import React, { useState } from 'react'
 import PropTypes from 'prop-types'
-import { StyleSheet } from 'react-native'
+import { StyleSheet, TouchableWithoutFeedback } from 'react-native'
 
 import colors from 'modules/colors'
 import dimensions from 'modules/dimensions'
@@ -21,29 +21,38 @@ export const styles = StyleSheet.create({
     ...defaultPadding,
 
     borderWidth: dimensions.BORDER_WIDTH,
-    backgroundColor: colors.BUTTON_DEFAULT,
   },
 
   primary: {
     ...defaultPadding,
 
     borderWidth: dimensions.BORDER_WIDTH,
-    backgroundColor: colors.BUTTON_PRIMARY,
   },
 
+  focused: {
+    borderColor: '#fff'
+  }
 })
 
-export const Button = ({ children, variant, style, ...rest }) => (
-  <TextButton
-    style={{
-      ...styles[variant],
-      ...style,
-    }}
-    fontWeight={'bold'}
-    {...rest}>
-    {children}
-  </TextButton>
-)
+export const Button = ({ children, variant, style, ...rest }) => {
+  const [focus, toggleFocus] = useState(false)
+
+  return (
+    <TextButton
+      style={{
+        ...styles[variant],
+        ...style,
+        ...focus ? styles.focused : {}
+      }}
+      component={TouchableWithoutFeedback}
+      onFocus={() => toggleFocus(true)}
+      onBlur={() => toggleFocus(false)}
+      fontWeight={'bold'}
+      {...rest}>
+      {children}
+    </TextButton>
+  )
+}
 
 Button.propTypes = {
   onPress: PropTypes.func.isRequired,

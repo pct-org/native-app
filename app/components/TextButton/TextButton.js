@@ -6,8 +6,22 @@ import Typography from 'components/Typography'
 
 import BaseButton from '../BaseButton'
 
-export const TextButton = ({ children, onPress, upperCase, ...rest }) => (
-  <BaseButton onPress={onPress}>
+export const TextButton = ({
+  children,
+  innerRef,
+  onPress,
+  onFocus,
+  onBlur,
+  upperCase,
+  component,
+  ...rest
+}) => (
+  <BaseButton
+    onPress={onPress}
+    innerRef={innerRef}
+    onFocus={onFocus}
+    onBlur={onBlur}
+    component={component}>
 
     <Text style={Typography.getTextStyle(rest)}>
       {upperCase ? children.toUpperCase() : children}
@@ -17,16 +31,16 @@ export const TextButton = ({ children, onPress, upperCase, ...rest }) => (
 )
 
 TextButton.propTypes = {
-  onPress : PropTypes.func.isRequired,
+  onPress: PropTypes.func.isRequired,
   children: PropTypes.string.isRequired,
 }
 
 TextButton.defaultProps = {
-  upperCase : true,
-  variant   : 'button',
-  color     : 'white',
+  upperCase: true,
+  variant: 'button',
+  color: 'white',
   fontWeight: 'bold',
-  emphasis  : 'high',
+  emphasis: 'high',
 }
 
 export default TextButton

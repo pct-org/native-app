@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 import { StyleSheet, View } from 'react-native'
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 
 import dimensions from 'modules/dimensions'
 import colors from 'modules/colors'
@@ -15,47 +14,48 @@ import QualitySelector from '../QualitySelector'
 const styles = StyleSheet.create({
 
   root: {
-    width : dimensions.MY_EPISODE_CARD_WIDTH,
+    width: dimensions.MY_EPISODE_CARD_WIDTH,
     height: dimensions.MY_EPISODE_CARD_HEIGHT,
 
-    borderRadius   : dimensions.BORDER_RADIUS,
+    borderWidth: dimensions.BORDER_WIDTH,
+    borderRadius: dimensions.BORDER_RADIUS,
     backgroundColor: colors.BACKGROUND_LIGHTER,
-    overflow       : 'hidden',
+    overflow: 'hidden',
   },
 
   iconContainer: {
     position: 'absolute',
-    height  : '100%',
-    width   : '100%',
-    opacity : 0.8,
-    display : 'flex',
+    height: '100%',
+    width: '100%',
+    opacity: 0.8,
+    display: 'flex',
 
-    alignItems    : 'center',
+    alignItems: 'center',
     justifyContent: 'center',
   },
 
   episodeNumberContainer: {
-    position : 'absolute',
-    height   : '100%',
-    width    : '100%',
-    opacity  : 0.8,
-    display  : 'flex',
+    position: 'absolute',
+    height: '100%',
+    width: '100%',
+    opacity: 0.8,
+    display: 'flex',
     marginTop: (dimensions.ICON_PLAY_SMALL / 2) + dimensions.UNIT,
 
-    alignItems    : 'center',
+    alignItems: 'center',
     justifyContent: 'center',
   },
 
   episodeInfoContainer: {
     position: 'absolute',
-    bottom  : dimensions.UNIT,
-    left    : dimensions.UNIT,
-    width   : '90%',
+    bottom: dimensions.UNIT,
+    left: dimensions.UNIT,
+    width: '90%',
   },
 
 })
 
-export const MyEpisode = ({ item, empty }) => {
+export const MyEpisode = ({ item, style, empty, ...rest }) => {
   const [showQualitySelector, toggleSelecting] = useState(false)
 
   const getEpisodeNumber = () => {
@@ -66,8 +66,10 @@ export const MyEpisode = ({ item, empty }) => {
   }
 
   return (
-    <BaseButton onPress={() => toggleSelecting(!showQualitySelector)}>
-      <View style={styles.root}>
+    <BaseButton
+      onPress={() => toggleSelecting(!showQualitySelector)}
+      {...rest}>
+      <View style={[styles.root, style]}>
         <Image images={
           empty
             ? {}
@@ -115,6 +117,14 @@ export const MyEpisode = ({ item, empty }) => {
       </View>
     </BaseButton>
   )
+}
+
+MyEpisode.propTypes = {
+  style: PropTypes.object,
+}
+
+MyEpisode.defaultProps = {
+  style: null,
 }
 
 export default MyEpisode

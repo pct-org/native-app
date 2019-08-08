@@ -1,6 +1,6 @@
-import React from 'react'
+import React, { useState } from 'react'
 import PropTypes from 'prop-types'
-import { StyleSheet, View, FlatList } from 'react-native'
+import { StyleSheet, View, FlatList, Platform } from 'react-native'
 
 import dimensions from 'modules/dimensions'
 import i18n from 'modules/i18n'
@@ -12,13 +12,13 @@ import TextButton from '../TextButton'
 export const styles = StyleSheet.create({
 
   titleContainer: {
-    display       : 'flex',
-    flexDirection : 'row',
+    display: 'flex',
+    flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems    : 'center',
-    marginBottom  : 0,
-    marginRight   : dimensions.UNIT,
-    marginLeft    : dimensions.UNIT * 2,
+    alignItems: 'center',
+    marginBottom: 0,
+    marginRight: dimensions.UNIT,
+    marginLeft: dimensions.UNIT * 2,
   },
 
   moreButton: {
@@ -26,8 +26,8 @@ export const styles = StyleSheet.create({
   },
 
   image: {
-    height    : '100%',
-    width     : '100%',
+    height: '100%',
+    width: '100%',
     resizeMode: 'cover',
   },
 
@@ -38,49 +38,77 @@ export const styles = StyleSheet.create({
 })
 
 export const CardSlider = ({ loading, title, items, onPress, style, onEndReached, goToMore }) => {
-  const renderCard = ({ item }) => (
+  const [activeCard, setActiveCard] = useState(0)
+
+  let flatListRef = null
+
+  const handleItemFocus = (index) => {
+    let scrollTo = null
+    if (activeCard < index && flatListRef && index > 3) {
+      scrollTo = (index + 1) - 4
+
+    } else if (activeCard > index && flatListRef) {
+      if (index >= 3) {
+        scrollTo = (index - 1) - 2
+      }
+    }
+
+    if (scrollTo) {
+      flatListRef.scrollToIndex({
+        index: scrollTo,
+      })
+    }
+
+    setActiveCard(index)
+  }
+
+  const renderCard = ({ item, index }) => (
     <Card
       variant={'medium'}
       empty={!item}
       item={item}
       onPress={() => onPress(item)}
+      setActive={() => handleItemFocus(index)}
     />
   )
 
   return (
-    <View style={style}>
+    <View style={style} pointerEvents={'none'}>
 
-      <View style={styles.titleContainer}>
-        <Typography
-          variant={'title'}
-          fontWeight={'medium'}>
-          {title}
-        </Typography>
+      {(title || goToMore) && (
+        <View style={styles.titleContainer}>
+          <Typography
+            variant={'title'}
+            fontWeight={'medium'}>
+            {title}
+          </Typography>
 
-        <TextButton
-          style={styles.moreButton}
-          upperCase={false}
-          emphasis={'medium'}
-          fontWeight={'regular'}
-          onPress={goToMore}>
-          {i18n.t('more')}
-        </TextButton>
-      </View>
+          {goToMore && (
+            <TextButton
+              style={styles.moreButton}
+              upperCase={false}
+              emphasis={'medium'}
+              fontWeight={'regular'}
+              onPress={goToMore}>
+              {i18n.t('more')}
+            </TextButton>
+          )}
+        </View>
+      )}
 
       <FlatList
         horizontal
         removeClippedSubviews
+        ref={ref => flatListRef = ref}
         contentContainerStyle={styles.container}
-        data={items.length === 0 ? Array(4).fill() : items}
-        initialNumToRender={4}
-        windowSize={4}
+        data={items.length === 0 ? Array((Platform.isTV ? 11 : 4)).fill() : items}
+        initialNumToRender={Platform.isTV ? 11 : 4}
+        windowSize={Platform.isTV ? 11 : 4}
         renderItem={renderCard}
         ItemSeparatorComponent={() => <View style={{ width: dimensions.UNIT }} />}
         ListFooterComponent={() => <View style={{ width: dimensions.UNIT * 5 }} />}
         keyExtractor={(item, index) => item ? `${item.id}-${index}` : `${index}`}
         showsHorizontalScrollIndicator={false}
-        // snapToInterval={dimensions.CARD_MEDIUM_WIDTH + dimensions.UNIT}
-        // snapToAlignment={'center'}
         onEndReached={onEndReached}
         onEndReachedThreshold={dimensions.CARD_MEDIUM_WIDTH * 3}
       />
@@ -91,11 +119,13 @@ export const CardSlider = ({ loading, title, items, onPress, style, onEndReached
 
 CardSlider.propTypes = {
   onEndReached: PropTypes.func,
-  goToMore    : PropTypes.func.isRequired,
+  goToMore: PropTypes.func,
 }
 
 CardSlider.defaultProps = {
   onEndReached: null,
+  goToMore: null,
+  innerRef: null,
 }
 
 export default CardSlider

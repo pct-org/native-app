@@ -16,17 +16,19 @@ import PlayPauseIcon from './PlayPauseIcon'
 
 const { height: windowHeight, width: windowWidth } = Dimensions.get('window')
 
+var TVEventHandler = require('TVEventHandler')
+
 export class VideoAndControls extends React.Component {
 
   state = {
-    showControls    : true,
-    isPortrait      : true,
+    showControls: true,
+    isPortrait: true,
     isFirstAnimation: true,
 
-    scrollViewHeight               : 0,
+    scrollViewHeight: 0,
     scrollViewHeightWithPlaceholder: 0,
 
-    paused    : false,
+    paused: false,
     resizeMode: 'contain', // 'contain', 'cover', null, 'stretch'
 
     currentTime: 0,
@@ -48,6 +50,20 @@ export class VideoAndControls extends React.Component {
     Orientation.addOrientationListener(this.handleOrientationChange)
 
     this.toggleControls()
+
+    this._tvEventHandler = new TVEventHandler()
+    this._tvEventHandler.enable(this, (cmp, evt) => {
+      console.log(evt)
+      if (evt && evt.eventType === 'playPause') {
+        const { paused } = this.state
+
+        if (paused) {
+          this.handlePlayVideo()
+        } else {
+          this.handlePauseVideo()
+        }
+      }
+    })
   }
 
   componentWillUnmount() {
@@ -76,15 +92,15 @@ export class VideoAndControls extends React.Component {
 
     if (isPortrait) {
       return {
-        width  : windowWidth,
-        height : (windowHeight - 20),
+        width: windowWidth,
+        height: (windowHeight - 20),
         opacity: 0,
       }
     }
 
     return {
-      width  : (windowHeight),
-      height : (windowWidth - 20),
+      width: (windowHeight),
+      height: (windowWidth - 20),
       opacity: 0,
     }
   }
@@ -180,7 +196,7 @@ export class VideoAndControls extends React.Component {
 
     this.setState({
       duration: data.duration,
-      loading : false,
+      loading: false,
 
       isFirstAnimation: false,
     }, () => {
@@ -269,7 +285,7 @@ export class VideoAndControls extends React.Component {
             selectedTextTrack={
               activeSub
                 ? {
-                  type : 'language',
+                  type: 'language',
                   value: activeSub,
                 }
                 : null
@@ -355,49 +371,49 @@ const styles = StyleSheet.create({
 
   listContainer: {
     position: 'absolute',
-    top     : 0,
-    left    : 0,
-    bottom  : 0,
-    right   : 0,
-    zIndex  : 1000,
+    top: 0,
+    left: 0,
+    bottom: 0,
+    right: 0,
+    zIndex: 1000,
   },
 
   overlay: {
     position: 'absolute',
-    top     : 0,
-    left    : 0,
-    bottom  : 0,
-    right   : 0,
-    opacity : 0.6,
-    flex    : 1,
+    top: 0,
+    left: 0,
+    bottom: 0,
+    right: 0,
+    opacity: 0.6,
+    flex: 1,
 
     backgroundColor: '#000',
   },
 
   contentContainerStyle: {
     flexGrow: 1,
-    flex    : 1,
+    flex: 1,
     position: 'absolute',
-    top     : 0,
-    bottom  : 0,
-    left    : 0,
-    right   : 0,
+    top: 0,
+    bottom: 0,
+    left: 0,
+    right: 0,
   },
 
   video: {
     position: 'absolute',
-    top     : 0,
-    left    : 0,
-    bottom  : 0,
-    right   : 0,
+    top: 0,
+    left: 0,
+    bottom: 0,
+    right: 0,
   },
 
   slider: {
     position: 'absolute',
-    left    : 16,
-    bottom  : 64,
-    right   : 16,
-    zIndex  : 1001,
+    left: 16,
+    bottom: 64,
+    right: 16,
+    zIndex: 1001,
   },
 
 })

@@ -1,4 +1,5 @@
 import React from 'react'
+import { View, Text } from 'react-native'
 import { Provider } from 'react-redux'
 
 import Disclaimer from 'components/Disclaimer'
@@ -11,8 +12,6 @@ export default () => (
   <Provider store={store}>
     <Disclaimer>
       <Screens />
-
-      <CheckForUpdates />
     </Disclaimer>
   </Provider>
 )

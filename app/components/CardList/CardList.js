@@ -2,8 +2,8 @@ import React from 'react'
 import { View, FlatList } from 'react-native'
 import { withNavigation } from 'react-navigation'
 
-import Device from 'modules/DeviceDetection'
 import dimensions from 'modules/dimensions'
+import useCorrect from 'modules/useCorrect'
 
 import Card from 'components/Card'
 
@@ -15,8 +15,8 @@ export const styles = {
   },
 
   cardContainer: {
-    marginLeft  : dimensions.UNIT / 2,
-    marginRight : dimensions.UNIT / 2,
+    marginLeft: dimensions.UNIT / 2,
+    marginRight: dimensions.UNIT / 2,
     marginBottom: dimensions.UNIT / 2,
   },
 }
@@ -52,7 +52,7 @@ export class CardList extends React.Component {
         removeClippedSubviews
         data={items}
         contentContainerStyle={styles.container}
-        numColumns={Device.isTablet ? 4 : 3}
+        numColumns={useCorrect(3, 4, 6)}
         initialNumToRender={12}
         windowSize={32}
         columnWrapperStyle={{

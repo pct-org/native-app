@@ -37,6 +37,8 @@ public class MainApplication extends Application implements ReactApplication {
 
         @Override
         protected List<ReactPackage> getPackages() {
+            // TODO:: Add GoogleCastPackage if it's not for TV
+
             return Arrays.<ReactPackage>asList(
                     new MainReactPackage(),
                     new RNGestureHandlerPackage(),
@@ -49,8 +51,7 @@ public class MainApplication extends Application implements ReactApplication {
                     new TorrentStreamerPackage(),
                     new OrientationPackage(),
                     new ReactVideoPackage(),
-                    new LinearGradientPackage(),
-                    new GoogleCastPackage()
+                    new LinearGradientPackage()
             );
         }
 

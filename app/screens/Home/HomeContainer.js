@@ -8,8 +8,8 @@ import Home from './HomeScreen'
 import HomeTablet from './HomeScreen.tablet'
 
 export const mapStateToProps = state => ({
-  modes      : Selectors.getModes(state),
-  isLoading  : Selectors.getIsLoading(state),
+  modes: Selectors.getModes(state),
+  isLoading: Selectors.getIsLoading(state),
   hasInternet: Selectors.getHasInternet(state),
 })
 

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 import { StyleSheet, View, FlatList, ActivityIndicator } from 'react-native'
 import * as Animatable from 'react-native-animatable'
@@ -15,18 +15,18 @@ import i18n from 'modules/i18n'
 export const styles = StyleSheet.create({
 
   titleContainer: {
-    display       : 'flex',
-    flexDirection : 'row',
+    display: 'flex',
+    flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems    : 'center',
-    marginBottom  : 0,
-    marginRight   : dimensions.UNIT,
-    marginLeft    : dimensions.UNIT * 2,
+    alignItems: 'center',
+    marginBottom: 0,
+    marginRight: dimensions.UNIT,
+    marginLeft: dimensions.UNIT * 2,
   },
 
   image: {
-    height    : '100%',
-    width     : '100%',
+    height: '100%',
+    width: '100%',
     resizeMode: 'cover',
   },
 
@@ -44,15 +44,15 @@ export const styles = StyleSheet.create({
 
   refreshingContainer: {
     position: 'absolute',
-    left    : 0,
-    right   : 0,
-    width   : '100%',
-    height  : '100%',
-    display : 'flex',
+    left: 0,
+    right: 0,
+    width: '100%',
+    height: '100%',
+    display: 'flex',
 
-    flexDirection : 'row',
+    flexDirection: 'row',
     justifyContent: 'center',
-    alignItems    : 'center',
+    alignItems: 'center',
   },
 
   refreshingIndicator: {
@@ -66,10 +66,30 @@ export const styles = StyleSheet.create({
 })
 
 export const MyEpisodesSlider = ({ loading, title, items, onPress, style, onRefresh, refreshing }) => {
-  const renderEpisode = ({ item }) => (
+  const [activeCard, setActiveCard] = useState(0)
+
+  let flatlistRef = null
+
+  const handleItemFocus = (index) => {
+    let scrollTo = null
+    if (activeCard < index && flatlistRef && index > 7) {
+      scrollTo = (index + 1) - 7
+    }
+
+    if (scrollTo) {
+      flatlistRef.scrollToIndex({
+        index: scrollTo,
+      })
+    }
+
+    setActiveCard(index)
+  }
+
+  const renderEpisode = ({ item, index }) => (
     <MyEpisode
       empty={!item}
       item={item}
+      setActive={() => handleItemFocus(index)}
     />
   )
 
@@ -98,6 +118,7 @@ export const MyEpisodesSlider = ({ loading, title, items, onPress, style, onRefr
           scrollEnabled={items.length > 0}
           horizontal
           removeClippedSubviews
+          ref={ref => flatlistRef = ref}
           contentContainerStyle={styles.container}
           data={items.length === 0 ? Array(2).fill() : items}
           initialNumToRender={4}

@@ -1,3 +1,4 @@
+import dimensions from 'modules/dimensions'
 import React from 'react'
 import PropTypes from 'prop-types'
 import { StyleSheet } from 'react-native'
@@ -11,16 +12,17 @@ import Typography from '../Typography'
 export const styles = StyleSheet.create({
 
   container: {
-    display       : 'flex',
+    display: 'flex',
     justifyContent: 'center',
-    alignItems    : 'center',
+    alignItems: 'center',
+    borderWidth: dimensions.BORDER_WIDTH,
   },
 
 })
 
-export const IconButton = ({ onPress, animatable, buttonProps, children, ...rest }) => (
+export const IconButton = ({ onPress, animatable, animatableStyle, buttonProps, children, ...rest }) => (
   <BaseButton onPress={onPress} {...buttonProps}>
-    <Animatable.View {...animatable} style={styles.container}>
+    <Animatable.View {...animatable} style={[styles.container, animatableStyle]}>
       <Icon
         {...rest}
       />
@@ -37,17 +39,18 @@ export const IconButton = ({ onPress, animatable, buttonProps, children, ...rest
 )
 
 IconButton.propTypes = {
-  onPress    : PropTypes.func,
-  children   : PropTypes.string,
+  onPress: PropTypes.func,
+  children: PropTypes.string,
   buttonProps: PropTypes.object,
-  animatable : PropTypes.object,
+  animatable: PropTypes.object,
 }
 
 IconButton.defaultProps = {
   buttonProps: {},
-  animatable : {},
-  onPress    : null,
-  children   : null,
+  animatable: {},
+  onPress: null,
+  children: null,
+  animatableStyle: {},
 }
 
 export default IconButton

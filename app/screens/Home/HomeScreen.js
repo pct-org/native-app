@@ -14,17 +14,19 @@ import MyEpisodesSlider from 'components/MyEpisodesSlider'
 import MainCover from 'components/MainCover'
 import ScrollViewWithStatusBar from 'components/ScrollViewWithStatusBar'
 
-const styles = StyleSheet.create({
+export const styles = StyleSheet.create({
 
   root: {
-    flex           : 1,
+    flex: 1,
     backgroundColor: colors.BACKGROUND,
-    position       : 'relative',
+    position: 'relative',
+
+    width: '100%',
   },
 
   section: {
-    position    : 'relative',
-    marginTop   : dimensions.UNIT * 2,
+    position: 'relative',
+    marginTop: dimensions.UNIT * 2,
     marginBottom: dimensions.UNIT * 2,
   },
 
@@ -37,11 +39,11 @@ const styles = StyleSheet.create({
 export default class Home extends React.PureComponent {
 
   static propTypes = {
-    getItems   : PropTypes.func.isRequired,
-    modes      : PropTypes.object.isRequired,
-    isLoading  : PropTypes.bool.isRequired,
+    getItems: PropTypes.func.isRequired,
+    modes: PropTypes.object.isRequired,
+    isLoading: PropTypes.bool.isRequired,
     hasInternet: PropTypes.bool,
-    navigation : PropTypes.object.isRequired,
+    navigation: PropTypes.object.isRequired,
   }
 
   static defaultProps = {
@@ -53,11 +55,19 @@ export default class Home extends React.PureComponent {
   }
 
   componentDidMount() {
-    const { getItems } = this.props
-
     Orientation.lockToPortrait()
 
     SplashScreen.hide()
+
+    this.loadAllItems()
+  }
+
+  componentWillUnmount() {
+    Orientation.unlockAllOrientations()
+  }
+
+  loadAllItems = () => {
+    const { getItems } = this.props
 
     Promise.all([
       getItems(Constants.TYPE_MOVIE),
@@ -68,10 +78,6 @@ export default class Home extends React.PureComponent {
         coreLoading: false,
       })
     })
-  }
-
-  componentWillUnmount() {
-    Orientation.unlockAllOrientations()
   }
 
   handleEndReached = (mode) => () => {
@@ -212,7 +218,6 @@ export default class Home extends React.PureComponent {
 
   render() {
     const { hasInternet } = this.props
-
 
     return (
       <View style={styles.root}>

@@ -14,15 +14,16 @@ const { width } = Dimensions.get('window')
 
 const rootWidth = (width - (Device.isTablet ? 40 : 32)) / (Device.isTablet ? 4 : 3)
 
-const styles = StyleSheet.create({
+export const styles = StyleSheet.create({
 
   root: {
-    height         : (rootWidth * 1.5),
-    width          : rootWidth,
-    alignSelf      : 'stretch',
-    position       : 'relative',
-    borderRadius   : dimensions.BORDER_RADIUS,
-    overflow       : 'hidden',
+    height: (rootWidth * 1.5) + 1,
+    width: rootWidth + 1,
+    alignSelf: 'stretch',
+    position: 'relative',
+    borderWidth: dimensions.BORDER_WIDTH,
+    borderRadius: dimensions.BORDER_RADIUS,
+    overflow: 'hidden',
     backgroundColor: colors.BACKGROUND_LIGHTER,
   },
 
@@ -30,53 +31,53 @@ const styles = StyleSheet.create({
 
   small: {
     height: dimensions.CARD_SMALL_HEIGHT,
-    width : dimensions.CARD_SMALL_WIDTH,
+    width: dimensions.CARD_SMALL_WIDTH,
   },
 
   medium: {
     height: dimensions.CARD_MEDIUM_HEIGHT,
-    width : dimensions.CARD_MEDIUM_WIDTH,
+    width: dimensions.CARD_MEDIUM_WIDTH,
   },
 
 })
 
-export const Card = ({ item, variant, empty, ...rest }) => {
-  return (
-    <BaseButton
-      // onLongPress={() => console.warn(item.title)}
-      // onPress={() => this.openItem(item)}
-      {...rest}>
-      <View style={[styles.root, styles[variant]]}>
-        <Image
-          images={
-            empty
-              ? {}
-              : item.images
-          } />
+export const Card = ({ component: Component, item, variant, empty, style, ...rest }) => (
+  <Component
+    // onLongPress={() => console.warn(item.title)}
+    // onPress={() => this.openItem(item)}
+    {...rest}>
+    <View style={[styles.root, styles[variant], style]}>
+      <Image
+        images={
+          empty
+            ? {}
+            : item.images
+        } />
 
-        {item && item.watched && item.watched.complete && (
-          <Overlay variant={'dark'} />
-        )}
-
-      </View>
-    </BaseButton>
-  )
-}
+      {item && item.watched && item.watched.complete && (
+        <Overlay variant={'dark'} />
+      )}
+    </View>
+  </Component>
+)
 
 Card.propTypes = {
-  item   : PropTypes.object,
-  empty  : PropTypes.bool,
+  item: PropTypes.object,
+  empty: PropTypes.bool,
   variant: PropTypes.oneOf([
     'default',
     'medium',
     'small',
   ]),
+  style: PropTypes.object,
 }
 
 Card.defaultProps = {
-  item   : null,
-  empty  : false,
+  item: null,
+  empty: false,
   variant: 'default',
+  style: null,
+  component: BaseButton,
 }
 
 export default Card
