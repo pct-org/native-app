@@ -29,5 +29,5 @@ jobs:
 
     - name: Create Android build
       run: |
-      cd ./android
-      ./gradlew assembleProd
+        cd ./android
+        ./gradlew assembleProd
