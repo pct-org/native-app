@@ -12,15 +12,19 @@ jobs:
 
     steps:
     - uses: actions/checkout@master
+
     - name: Use Node.js
       uses: actions/setup-node@v1
       with:
         version: 10.x
+
     - name: Install deps
       run: |
         yarn
+
     - name: Cd into android folder
       run: cd ./android
+
     - name: Create Android build
-      uses: MrRamych/gradle-actions@1.0
-      run: assembleProd
+      uses: MrRamych/gradle-actions/openjdk-12@2.1
+      args: assembleProd
