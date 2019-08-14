@@ -28,4 +28,6 @@ jobs:
         yarn
 
     - name: Create Android build
-      run: ./android/gradlew assembleProd
+      run: |
+      cd ./android
+      ./gradlew assembleProd
