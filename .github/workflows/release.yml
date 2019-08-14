@@ -22,10 +22,8 @@ jobs:
       run: |
         yarn
 
-    - name: Cd into android folder
-      run: cd ./android
-
     - name: Create Android build
       uses: MrRamych/gradle-actions/openjdk-12@2.1
       with:
+        working-directory: android
         args: assembleProd
