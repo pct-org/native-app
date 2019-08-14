@@ -19,3 +19,8 @@ jobs:
     - name: Install deps
       run: |
         yarn
+    - name: Cd into android folder
+      run: cd ./android
+    - name: Create Android build
+      uses: MrRamych/gradle-actions@1.0
+      run: assembleProd
