@@ -24,6 +24,6 @@ jobs:
 
     - name: Create Android build
       uses: MrRamych/gradle-actions/openjdk-12@2.1
+      working-directory: android
       with:
-        working-directory: android
         args: assembleProd
