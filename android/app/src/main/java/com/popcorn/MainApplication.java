@@ -29,52 +29,52 @@ import java.util.List;
 
 public class MainApplication extends Application implements ReactApplication {
 
-    private final ReactNativeHost mReactNativeHost = new ReactNativeHost(this) {
-        @Override
-        public boolean getUseDeveloperSupport() {
-            return BuildConfig.DEBUG;
-        }
-
-        @Override
-        protected List<ReactPackage> getPackages() {
-            return Arrays.<ReactPackage>asList(
-                    new MainReactPackage(),
-                    new RNGestureHandlerPackage(),
-                    new SplashScreenReactPackage(),
-                    new RNLanguagesPackage(),
-                    new UpdateRNAppPackage(),
-                    new VectorIconsPackage(),
-                    new RNFSPackage(),
-                    new FPStaticServerPackage(),
-                    new TorrentStreamerPackage(),
-                    new OrientationPackage(),
-                    new ReactVideoPackage(),
-                    new LinearGradientPackage(),
-                    new GoogleCastPackage()
-            );
-        }
-
-        @Override
-        protected String getJSMainModuleName() {
-            return "index";
-        }
-    };
-
+  private final ReactNativeHost mReactNativeHost = new ReactNativeHost(this) {
     @Override
-    public ReactNativeHost getReactNativeHost() {
-        return mReactNativeHost;
+    public boolean getUseDeveloperSupport() {
+      return BuildConfig.DEBUG;
     }
 
     @Override
-    public void onCreate() {
-        try {
-            Method m = StrictMode.class.getMethod("disableDeathOnFileUriExposure");
-            m.invoke(null);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        super.onCreate();
-        SoLoader.init(this, /* native exopackage */ false);
+    protected List<ReactPackage> getPackages() {
+      return Arrays.<ReactPackage>asList(
+          new MainReactPackage(),
+          new RNGestureHandlerPackage(),
+          new SplashScreenReactPackage(),
+          new RNLanguagesPackage(),
+          new UpdateRNAppPackage(),
+          new VectorIconsPackage(),
+          new RNFSPackage(),
+          new FPStaticServerPackage(),
+          new TorrentStreamerPackage(),
+          new OrientationPackage(),
+          new ReactVideoPackage(),
+          new LinearGradientPackage(),
+          new GoogleCastPackage()
+      );
     }
+
+    @Override
+    protected String getJSMainModuleName() {
+      return "index";
+    }
+  };
+
+  @Override
+  public ReactNativeHost getReactNativeHost() {
+    return mReactNativeHost;
+  }
+
+  @Override
+  public void onCreate() {
+    try {
+      Method m = StrictMode.class.getMethod("disableDeathOnFileUriExposure");
+      m.invoke(null);
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+
+    super.onCreate();
+    SoLoader.init(this, /* native exopackage */ false);
+  }
 }
