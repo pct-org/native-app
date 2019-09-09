@@ -12,7 +12,7 @@ export const fetchItems = () => ({
 })
 
 export const fetchedItems = (items, mode) => ({
-  type   : HomeConstants.FETCHED_ITEMS,
+  type: HomeConstants.FETCHED_ITEMS,
   payload: {
     items,
     mode,
@@ -20,7 +20,7 @@ export const fetchedItems = (items, mode) => ({
 })
 
 export const clearItems = mode => ({
-  type   : HomeConstants.CLEAR_ITEMS,
+  type: HomeConstants.CLEAR_ITEMS,
   payload: mode,
 })
 
@@ -109,7 +109,7 @@ export const updateMyEpisodes = (refresh = false) => (dispatch) => new Promise(a
 
   if (showBookmarks.length === 0) {
     return resolve(dispatch({
-      type   : HomeConstants.FETCHED_MY_EPISODES,
+      type: HomeConstants.FETCHED_MY_EPISODES,
       payload: [],
     }))
   }
@@ -125,15 +125,20 @@ export const updateMyEpisodes = (refresh = false) => (dispatch) => new Promise(a
         showBookmark = await Popcorn.getShowIds(showBasic)
       }
 
-      // Only fetch the last season
-      showBookmark.lastSeason = await Popcorn.metadataAdapter.getAdditionalSeasonAndEpisodesInfo(
-        pctSeason.number,
-        pctSeason,
-        showBookmark,
-      )
+      try {
+        // Only fetch the last season
+        showBookmark.lastSeason = await Popcorn.metadataAdapter.getAdditionalSeasonAndEpisodesInfo(
+          pctSeason.number,
+          pctSeason,
+          showBookmark,
+        )
 
-      // Update the bookmark in the DB
-      Bookmarks.updateItem(showBookmark)
+        // Update the bookmark in the DB
+        Bookmarks.updateItem(showBookmark)
+        
+      } catch (e) {
+        // Something went wrong fetching the latest season, was not found maybe?
+      }
     }
 
     showBookmark.lastSeason.episodes.forEach((episode) => {
@@ -150,7 +155,7 @@ export const updateMyEpisodes = (refresh = false) => (dispatch) => new Promise(a
     if (bookmarksUpdated === showBookmarks.length) {
       // Dispatch the updated bookmark
       resolve(dispatch({
-        type   : HomeConstants.FETCHED_MY_EPISODES,
+        type: HomeConstants.FETCHED_MY_EPISODES,
         payload: myEpisodes.sort(sortHighLow('aired')),
       }))
     }

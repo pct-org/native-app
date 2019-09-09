@@ -29,11 +29,11 @@ import java.util.List;
 
 public class MainApplication extends Application implements ReactApplication {
 
-    private final ReactNativeHost mReactNativeHost = new ReactNativeHost(this) {
-        @Override
-        public boolean getUseDeveloperSupport() {
-            return BuildConfig.DEBUG;
-        }
+  private final ReactNativeHost mReactNativeHost = new ReactNativeHost(this) {
+    @Override
+    public boolean getUseDeveloperSupport() {
+      return BuildConfig.DEBUG;
+    }
 
         @Override
         protected List<ReactPackage> getPackages() {
@@ -55,27 +55,27 @@ public class MainApplication extends Application implements ReactApplication {
             );
         }
 
-        @Override
-        protected String getJSMainModuleName() {
-            return "index";
-        }
-    };
-
     @Override
-    public ReactNativeHost getReactNativeHost() {
-        return mReactNativeHost;
+    protected String getJSMainModuleName() {
+      return "index";
+    }
+  };
+
+  @Override
+  public ReactNativeHost getReactNativeHost() {
+    return mReactNativeHost;
+  }
+
+  @Override
+  public void onCreate() {
+    try {
+      Method m = StrictMode.class.getMethod("disableDeathOnFileUriExposure");
+      m.invoke(null);
+    } catch (Exception e) {
+      e.printStackTrace();
     }
 
-    @Override
-    public void onCreate() {
-        try {
-            Method m = StrictMode.class.getMethod("disableDeathOnFileUriExposure");
-            m.invoke(null);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        super.onCreate();
-        SoLoader.init(this, /* native exopackage */ false);
-    }
+    super.onCreate();
+    SoLoader.init(this, /* native exopackage */ false);
+  }
 }
