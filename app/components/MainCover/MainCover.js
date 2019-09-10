@@ -21,42 +21,42 @@ const styles = StyleSheet.create({
   },
 
   listContainer: {
-    height   : dimensions.SCREEN_HEIGHT * 0.45,
-    width    : '100%',
+    height: dimensions.SCREEN_HEIGHT * 0.45,
+    width: '100%',
     alignSelf: 'stretch',
-    position : 'relative',
-    display  : 'flex',
+    position: 'relative',
+    display: 'flex',
   },
 
   playContainer: {
     position: 'absolute',
-    top     : 0,
-    width   : '100%',
-    height  : '100%',
+    top: 0,
+    width: '100%',
+    height: '100%',
 
     justifyContent: 'center',
-    alignItems    : 'center',
+    alignItems: 'center',
   },
 
   info: {
-    position  : 'absolute',
-    bottom    : 0,
+    position: 'absolute',
+    bottom: 0,
     marginLeft: dimensions.UNIT * 2,
   },
 
   genres: {
-    marginTop   : dimensions.UNIT / 2,
+    marginTop: dimensions.UNIT / 2,
     marginBottom: dimensions.UNIT / 2,
   },
 
   infoContainer: {
-    display      : 'flex',
+    display: 'flex',
     flexDirection: 'row',
 
     justifyContent: 'space-between',
 
-    marginTop   : dimensions.UNIT / 2,
-    marginLeft  : dimensions.UNIT * 2,
+    marginTop: dimensions.UNIT / 2,
+    marginLeft: dimensions.UNIT * 2,
     marginBottom: dimensions.UNIT * 2,
   },
 
@@ -127,7 +127,7 @@ export const MainCover = ({ item, empty, onOpen }) => {
       <View style={styles.infoContainer}>
         <Typography
           style={{
-            width : onOpen
+            width: onOpen
               ? '85%'
               : '100%',
             height: 45, // 3 times the line height of body2
@@ -158,14 +158,14 @@ export const MainCover = ({ item, empty, onOpen }) => {
 }
 
 MainCover.propTypes = {
-  item  : PropTypes.object,
+  item: PropTypes.object,
   onOpen: PropTypes.func.isRequired,
   onPlay: PropTypes.func.isRequired,
   onLoad: PropTypes.func,
 }
 
 MainCover.defaultProps = {
-  item  : null,
+  item: null,
   onLoad: null,
 }
 

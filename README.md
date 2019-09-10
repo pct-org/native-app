@@ -42,9 +42,6 @@ yarn install
 # Start metro
 yarn start
 
-# Start app on connected android device
-yarn android
-
 # Build an install non dev build on connected device
 yarn build-and-install
 

@@ -8,7 +8,7 @@ const styles = StyleSheet.create({
 
   image: {
     height: '100%',
-    width : '100%',
+    width: '100%',
   },
 
 })
@@ -25,23 +25,25 @@ export default class Image extends React.PureComponent {
 
   static propTypes = {
     images: PropTypes.object.isRequired,
-    type  : PropTypes.oneOf([
+    type: PropTypes.oneOf([
       'poster',
       'fanart',
     ]),
-    size  : PropTypes.string,
+    size: PropTypes.string,
 
-    style       : PropTypes.object,
+    style: PropTypes.object,
     withFallback: PropTypes.bool,
-    resizeMode  : PropTypes.string,
+    empty: PropTypes.bool,
+    resizeMode: PropTypes.string,
   }
 
   static defaultProps = {
-    type        : 'poster',
-    size        : 'thumb',
-    resizeMode  : 'stretch',
-    style       : null,
+    type: 'poster',
+    size: 'thumb',
+    resizeMode: 'stretch',
+    style: null,
     withFallback: true,
+    empty: false,
   }
 
   state = {

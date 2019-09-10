@@ -66,7 +66,7 @@ export default class Home extends React.PureComponent {
     Orientation.unlockAllOrientations()
   }
 
-  loadAllItems = () => {
+  loadAllItems = (callback = null) => {
     const { getItems } = this.props
 
     Promise.all([
@@ -74,6 +74,10 @@ export default class Home extends React.PureComponent {
       getItems(Constants.TYPE_SHOW),
       getItems(Constants.TYPE_BOOKMARK),
     ]).then(() => {
+      if (callback) {
+        callback()
+      }
+
       this.setState({
         coreLoading: false,
       })

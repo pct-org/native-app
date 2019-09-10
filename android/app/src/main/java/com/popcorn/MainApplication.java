@@ -17,7 +17,6 @@ import com.ghondar.torrentstreamer.*;
 import com.github.yamill.orientation.OrientationPackage;
 import com.brentvatne.react.ReactVideoPackage;
 import com.BV.LinearGradient.LinearGradientPackage;
-import com.reactnative.googlecast.GoogleCastPackage;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
@@ -35,25 +34,25 @@ public class MainApplication extends Application implements ReactApplication {
       return BuildConfig.DEBUG;
     }
 
-        @Override
-        protected List<ReactPackage> getPackages() {
-            // TODO:: Add GoogleCastPackage if it's not for TV
+    @Override
+    protected List<ReactPackage> getPackages() {
+      // TODO:: Add GoogleCastPackage if it's not for TV
 
-            return Arrays.<ReactPackage>asList(
-                    new MainReactPackage(),
-                    new RNGestureHandlerPackage(),
-                    new SplashScreenReactPackage(),
-                    new RNLanguagesPackage(),
-                    new UpdateRNAppPackage(),
-                    new VectorIconsPackage(),
-                    new RNFSPackage(),
-                    new FPStaticServerPackage(),
-                    new TorrentStreamerPackage(),
-                    new OrientationPackage(),
-                    new ReactVideoPackage(),
-                    new LinearGradientPackage()
-            );
-        }
+      return Arrays.<ReactPackage>asList(
+          new MainReactPackage(),
+          new RNGestureHandlerPackage(),
+          new SplashScreenReactPackage(),
+          new RNLanguagesPackage(),
+          new UpdateRNAppPackage(),
+          new VectorIconsPackage(),
+          new RNFSPackage(),
+          new FPStaticServerPackage(),
+          new TorrentStreamerPackage(),
+          new OrientationPackage(),
+          new ReactVideoPackage(),
+          new LinearGradientPackage()
+      );
+    }
 
     @Override
     protected String getJSMainModuleName() {

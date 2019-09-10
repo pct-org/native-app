@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import PropTypes from 'prop-types'
-import { StyleSheet, TouchableWithoutFeedback } from 'react-native'
+import { StyleSheet, TouchableHighlight } from 'react-native'
 
 import colors from 'modules/colors'
 import dimensions from 'modules/dimensions'
@@ -19,22 +19,23 @@ export const styles = StyleSheet.create({
 
   default: {
     ...defaultPadding,
-
-    borderWidth: dimensions.BORDER_WIDTH,
   },
 
   primary: {
     ...defaultPadding,
+    backgroundColor: colors.BUTTON_PRIMARY
+  },
 
-    borderWidth: dimensions.BORDER_WIDTH,
+  active: {
+
   },
 
   focused: {
-    borderColor: '#fff'
+    backgroundColor: 'pink'
   }
 })
 
-export const Button = ({ children, variant, style, ...rest }) => {
+export const Button = ({ children, variant, style, onFocus, ...rest }) => {
   const [focus, toggleFocus] = useState(false)
 
   return (
@@ -44,9 +45,18 @@ export const Button = ({ children, variant, style, ...rest }) => {
         ...style,
         ...focus ? styles.focused : {}
       }}
-      component={TouchableWithoutFeedback}
-      onFocus={() => toggleFocus(true)}
-      onBlur={() => toggleFocus(false)}
+      component={TouchableHighlight}
+      onFocus={() => {
+        if (onFocus) {
+          onFocus()
+        }
+        console.log('button onFocus')
+        toggleFocus(true)
+      }}
+      onBlur={() => {
+        console.log('button onBlur')
+        toggleFocus(false)
+      }}
       fontWeight={'bold'}
       {...rest}>
       {children}

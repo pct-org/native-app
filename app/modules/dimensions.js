@@ -33,6 +33,9 @@ export default {
   CARD_MEDIUM_WIDTH,
   CARD_MEDIUM_HEIGHT,
 
+  CARD_LARGE_WIDTH: CARD_MEDIUM_WIDTH * 1.1,
+  CARD_LARGE_HEIGHT: CARD_MEDIUM_HEIGHT * 1.1,
+
   MY_EPISODE_CARD_WIDTH: ((300 - 40) / 3.1) * 2.5,
   MY_EPISODE_CARD_HEIGHT: (((500 - StatusBar.currentHeight) / 4) * fontScale) - UNIT,
 

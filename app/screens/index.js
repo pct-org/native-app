@@ -1,14 +1,15 @@
 /* eslint react/prop-types: 0 */
 
 import React from 'react'
-import { createStackNavigator, createAppContainer } from 'react-navigation'
+import {  createAppContainer } from 'react-navigation'
+import { createStackNavigator } from 'react-navigation-stack'
 import { Constants } from 'popcorn-sdk'
 
 import transitionConfig from '../modules/transitionConfig'
 import useCorrect from '../modules/useCorrect'
 
 import HomeScreen from './Home'
-import HomeTVScreen from './HomeTV'
+import HomeTVScreen from '../tv/screens/HomeTV'
 import ItemScreen from './Item'
 import PlayerScreen from './Player'
 import ModeScreen from './Mode'

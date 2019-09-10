@@ -1,17 +1,6 @@
-import React from 'react'
-import { View, Text } from 'react-native'
-import { Provider } from 'react-redux'
+import useCorrect from 'modules/useCorrect'
 
-import Disclaimer from 'components/Disclaimer'
-import CheckForUpdates from 'components/CheckForUpdates'
+import Root from './root'
+import RootTV from './tv/root'
 
-import store from './store'
-import Screens from './screens'
-
-export default () => (
-  <Provider store={store}>
-    <Disclaimer>
-      <Screens />
-    </Disclaimer>
-  </Provider>
-)
+export default useCorrect(Root, null, RootTV)

@@ -16,7 +16,7 @@ import PlayPauseIcon from './PlayPauseIcon'
 
 const { height: windowHeight, width: windowWidth } = Dimensions.get('window')
 
-var TVEventHandler = require('TVEventHandler')
+// var TVEventHandler = require('TVEventHandler')
 
 export class VideoAndControls extends React.Component {
 
@@ -51,19 +51,19 @@ export class VideoAndControls extends React.Component {
 
     this.toggleControls()
 
-    this._tvEventHandler = new TVEventHandler()
-    this._tvEventHandler.enable(this, (cmp, evt) => {
-      console.log(evt)
-      if (evt && evt.eventType === 'playPause') {
-        const { paused } = this.state
-
-        if (paused) {
-          this.handlePlayVideo()
-        } else {
-          this.handlePauseVideo()
-        }
-      }
-    })
+    // this._tvEventHandler = new TVEventHandler()
+    // this._tvEventHandler.enable(this, (cmp, evt) => {
+    //   console.log(evt)
+    //   if (evt && evt.eventType === 'playPause') {
+    //     const { paused } = this.state
+    //
+    //     if (paused) {
+    //       this.handlePlayVideo()
+    //     } else {
+    //       this.handlePauseVideo()
+    //     }
+    //   }
+    // })
   }
 
   componentWillUnmount() {

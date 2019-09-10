@@ -14,6 +14,12 @@ export const TextButton = ({
   onBlur,
   upperCase,
   component,
+  nextFocusUp,
+  nextFocusDown,
+  nextFocusForward,
+  nextFocusLeft,
+  nextFocusRight,
+  nativeID,
   ...rest
 }) => (
   <BaseButton
@@ -21,7 +27,13 @@ export const TextButton = ({
     innerRef={innerRef}
     onFocus={onFocus}
     onBlur={onBlur}
-    component={component}>
+    component={component}
+    nextFocusUp={nextFocusUp}
+    nextFocusDown={nextFocusDown}
+    nextFocusForward={nextFocusForward}
+    nextFocusLeft={nextFocusLeft}
+    nextFocusRight={nextFocusRight}
+    nativeID={nativeID}>
 
     <Text style={Typography.getTextStyle(rest)}>
       {upperCase ? children.toUpperCase() : children}
@@ -33,6 +45,12 @@ export const TextButton = ({
 TextButton.propTypes = {
   onPress: PropTypes.func.isRequired,
   children: PropTypes.string.isRequired,
+
+  nextFocusUp: PropTypes.bool,
+  nextFocusDown: PropTypes.bool,
+  nextFocusForward: PropTypes.bool,
+  nextFocusLeft: PropTypes.bool,
+  nextFocusRight: PropTypes.bool,
 }
 
 TextButton.defaultProps = {
@@ -41,6 +59,12 @@ TextButton.defaultProps = {
   color: 'white',
   fontWeight: 'bold',
   emphasis: 'high',
+
+  nextFocusUp: null,
+  nextFocusDown: null,
+  nextFocusForward: null,
+  nextFocusLeft: null,
+  nextFocusRight: null,
 }
 
 export default TextButton

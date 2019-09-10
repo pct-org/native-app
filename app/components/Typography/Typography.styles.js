@@ -23,12 +23,12 @@ export default {
   },
 
   display3: {
-    fontSize: makeFontSize(56),
+    fontSize: makeFontSize(29),
     lineHeight: 64,
   },
 
   display2: {
-    fontSize: makeFontSize(45),
+    fontSize: makeFontSize(31),
     lineHeight: 52,
   },
 

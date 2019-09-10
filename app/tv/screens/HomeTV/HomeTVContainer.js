@@ -1,7 +1,7 @@
 import { connect } from 'react-redux'
 
-import * as Actions from '../Home/HomeActions'
-import * as Selectors from '../Home/HomeSelectors'
+import * as Actions from 'screens/Home/HomeActions'
+import * as Selectors from 'screens/Home/HomeSelectors'
 
 import HomeTV from './HomeTVScreen'
 

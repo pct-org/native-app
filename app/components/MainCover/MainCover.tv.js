@@ -1,172 +1,171 @@
 import React, { useState } from 'react'
 import PropTypes from 'prop-types'
-import { StyleSheet, View } from 'react-native'
+import { ScrollView, StyleSheet, View } from 'react-native'
 import { Constants } from 'popcorn-sdk'
 import * as Animatable from 'react-native-animatable'
 
 import colors from 'modules/colors'
 import dimensions from 'modules/dimensions'
+import withFocusManager from 'tv/modules/FocusManager/withFocusManager'
 
 import CoverGradient from '../CoverGradient'
-import BaseButton from '../BaseButton'
+import Button from '../Button'
 import Typography from '../Typography'
 import IconButton from '../IconButton'
 import Image from '../Image'
-import QualitySelector from '../QualitySelector'
+import Overlay from '../Overlay'
 
 const styles = StyleSheet.create({
 
-  mainContainer: {
-    position: 'relative',
-  },
-
-  listContainer: {
-    height   : dimensions.SCREEN_HEIGHT * 0.45,
-    width    : '100%',
-    alignSelf: 'stretch',
-    position : 'relative',
-    display  : 'flex',
-  },
-
-  playContainer: {
-    position: 'absolute',
-    top     : 0,
-    width   : '100%',
-    height  : '100%',
-
+  root: {
+    height: dimensions.SCREEN_HEIGHT,
+    width: dimensions.SCREEN_WIDTH,
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
     justifyContent: 'center',
-    alignItems    : 'center',
+  },
+
+  container: {
+    position: 'relative',
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: dimensions.SCREEN_HEIGHT * 0.8,
+    width: dimensions.SCREEN_WIDTH * 0.5,
+  },
+
+  cover: {
+    height: dimensions.CARD_LARGE_HEIGHT,
+    width: dimensions.CARD_LARGE_WIDTH,
+    borderWidth: dimensions.BORDER_WIDTH,
+    borderRadius: dimensions.BORDER_RADIUS,
   },
 
   info: {
-    position  : 'absolute',
-    bottom    : 0,
-    marginLeft: dimensions.UNIT * 2,
+    position: 'relative',
+    marginLeft: dimensions.UNIT * 4,
+    minWidth: dimensions.SCREEN_WIDTH * 0.5,
+  },
+
+  title: {
+    height: 60,
+  },
+
+  summary: {
+    height: 60,
+    // marginTop: dimensions.UNIT,
+    // marginBottom: dimensions.UNIT,
   },
 
   genres: {
-    marginTop   : dimensions.UNIT / 2,
-    marginBottom: dimensions.UNIT / 2,
+    height: 30,
+    marginTop: dimensions.UNIT / 2,
+    marginBottom: dimensions.UNIT,
   },
-
-  infoContainer: {
-    display      : 'flex',
-    flexDirection: 'row',
-
-    justifyContent: 'space-between',
-
-    marginTop   : dimensions.UNIT / 2,
-    marginLeft  : dimensions.UNIT * 2,
-    marginBottom: dimensions.UNIT * 2,
-  },
-
-  infoIcon: {
-    marginRight: dimensions.UNIT * 2,
-  },
-
 })
 
-export const MainCover = ({ item, empty, onOpen }) => {
+export const MainCover = ({ item, empty,focusManager }) => {
   const [showQualitySelector, toggleSelecting] = useState(false)
 
   const genres = empty ? [] : [...item.genres].splice(0, 4)
 
   return (
-    <React.Fragment>
-      <View style={styles.mainContainer}>
-        <BaseButton onPress={() => toggleSelecting(!showQualitySelector)}>
-          <View style={styles.listContainer}>
+    <View style={styles.root}>
+      <Image
+        style={{
+          position: 'absolute',
+          width: dimensions.SCREEN_WIDTH,
+          height: dimensions.SCREEN_HEIGHT,
+          top: 0,
+          bottom: 0,
+        }}
+        images={empty ? {} : item.images}
+        empty={empty}
+        type={'fanart'}
+        size={'full'}
+      />
 
-            <Image
-              resizeMode={'cover'}
-              images={
-                empty
-                  ? {}
-                  : item.images
-              }
-              type={'fanart'}
-              size={'high'} />
+      <Overlay variant={'dark'} />
 
-            <CoverGradient start={{ x: 0, y: 0.1 }} />
+      <View style={styles.container}>
+        <Image
+          resizeMode={'cover'}
+          images={empty ? {} : item.images}
+          empty={empty}
+          type={'poster'}
+          size={'high'}
+          style={styles.cover}
+        />
 
-            {!empty && item.type === Constants.TYPE_MOVIE && (
-              <Animatable.View
-                animation={'fadeIn'}
-                style={styles.playContainer}
-                useNativeDriver>
+        {empty && (
+          <View style={styles.info} />
+        )}
 
-                <QualitySelector
-                  item={
-                    empty
-                      ? {}
-                      : item
-                  }
-                  onRequestClose={() => toggleSelecting(false)}
-                  visible={showQualitySelector} />
-
-              </Animatable.View>
-            )}
-
-          </View>
-        </BaseButton>
-
-        <View style={styles.info}>
-          <Typography variant={'display4'}>
-            {empty ? '' : item.title}
-          </Typography>
-
-          <Typography
-            style={styles.genres}
-            variant={'caption'}
-            emphasis={'medium'}>
-            {genres.join(' - ')}
-          </Typography>
-        </View>
-      </View>
-
-      <View style={styles.infoContainer}>
-        <Typography
-          style={{
-            width : onOpen
-              ? '85%'
-              : '100%',
-            height: 45, // 3 times the line height of body2
-          }}
-          variant={'body2'}
-          textProps={{
-            numberOfLines: 3,
-            ellipsizeMode: 'tail',
-          }}>
-          {empty ? '' : item.summary}
-        </Typography>
-
-        {item && (
+        {!empty && (
           <Animatable.View
-            style={styles.infoIcon}
+            style={styles.info}
             animation={'fadeIn'}
             useNativeDriver>
-            <IconButton
-              onPress={() => onOpen(item)}
-              name={'information-outline'}
-              color={colors.ICON_COLOR}
-              size={35} />
+            <Typography
+              style={styles.title}
+              variant={'display3'}>
+              {item.title}
+            </Typography>
+
+            <Typography
+              style={styles.summary}
+              variant={'body2'}
+              textProps={{
+                numberOfLines: 4,
+                ellipsizeMode: 'tail',
+              }}>
+              {item.summary}
+            </Typography>
+
+            <Typography
+              style={styles.genres}
+              variant={'caption'}
+              emphasis={'medium'}>
+              {genres.join(' - ')}
+            </Typography>
+
+            <View
+              style={{
+                position: 'relative',
+                display: 'flex',
+                flexDirection: 'row',
+              }}>
+              <Button
+                innerRef={ref => focusManager.addRef('btn-main-cover-play', ref)}
+                onPress={() => {}}
+                variant={'primary'}>
+                PLAY
+              </Button>
+
+              <IconButton
+                style={{ marginLeft: 20 }}
+                onPress={() => {}}
+                name={'plus'}
+                color={colors.ICON_COLOR}
+                size={35} />
+            </View>
           </Animatable.View>
         )}
       </View>
-    </React.Fragment>
+    </View>
   )
 }
 
 MainCover.propTypes = {
-  item  : PropTypes.object,
-  onOpen: PropTypes.func.isRequired,
-  onPlay: PropTypes.func.isRequired,
+  item: PropTypes.object,
   onLoad: PropTypes.func,
 }
 
 MainCover.defaultProps = {
-  item  : null,
+  item: null,
   onLoad: null,
 }
 
-export default MainCover
+export default withFocusManager(MainCover)
