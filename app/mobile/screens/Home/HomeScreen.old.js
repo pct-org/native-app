@@ -1,3 +1,5 @@
+import { useQuery } from '@apollo/react-hooks'
+import MyListQuery from 'mobile/screens/Home/MyList/MyListQuery'
 import React from 'react'
 import PropTypes from 'prop-types'
 import { StyleSheet, Text, View } from 'react-native'
@@ -13,6 +15,11 @@ import CardSlider from 'components/CardSlider'
 import MyEpisodesSlider from 'components/MyEpisodesSlider'
 import MainCover from 'components/MainCover'
 import ScrollViewWithStatusBar from 'components/ScrollViewWithStatusBar'
+
+
+
+
+import MyList from './MyList'
 
 export const styles = StyleSheet.create({
 
@@ -39,59 +46,18 @@ export const styles = StyleSheet.create({
 export default class Home extends React.PureComponent {
 
   static propTypes = {
-    getItems: PropTypes.func.isRequired,
-    modes: PropTypes.object.isRequired,
-    isLoading: PropTypes.bool.isRequired,
-    hasInternet: PropTypes.bool,
     navigation: PropTypes.object.isRequired,
   }
 
-  static defaultProps = {
-    hasInternet: true,
-  }
-
-  state = {
-    coreLoading: true,
-  }
 
   componentDidMount() {
     Orientation.lockToPortrait()
-
     SplashScreen.hide()
 
-    this.loadAllItems()
   }
 
   componentWillUnmount() {
     Orientation.unlockAllOrientations()
-  }
-
-  loadAllItems = (callback = null) => {
-    const { getItems } = this.props
-
-    Promise.all([
-      getItems(Constants.TYPE_MOVIE),
-      getItems(Constants.TYPE_SHOW),
-      getItems(Constants.TYPE_BOOKMARK),
-    ]).then(() => {
-      if (callback) {
-        callback()
-      }
-
-      this.setState({
-        coreLoading: false,
-      })
-    })
-  }
-
-  handleEndReached = (mode) => () => {
-    const { isLoading, modes, getItems } = this.props
-
-    if (mode === Constants.TYPE_BOOKMARK || isLoading) {
-      return
-    }
-
-    getItems(mode, modes[mode].page + 1)
   }
 
   handleGoTo = (to) => () => {
@@ -106,51 +72,6 @@ export default class Home extends React.PureComponent {
     navigation.navigate('Item', item)
   }
 
-  handleMyEpisodesRefresh = () => {
-    const { updateMyEpisodes, modes: { myEpisodes } } = this.props
-
-    if (!myEpisodes.loading && !myEpisodes.refreshing) {
-      updateMyEpisodes(true)
-    }
-  }
-
-  getMainCover = () => {
-    const movies = this.getMovies(false)
-
-    if (movies.length > 0) {
-      return movies[0]
-    }
-
-    return null
-  }
-
-  getMyList = () => {
-    const { modes } = this.props
-
-    const items = modes[Constants.TYPE_BOOKMARK].items.filter(movie => !movie.watched.complete)
-
-    return [...items].reverse()
-  }
-
-  getMovies = (withSlice = true) => {
-    const { modes } = this.props
-
-    // Don't show movies that we already watched on the home screen
-    const movies = modes[Constants.TYPE_MOVIE].items.filter(movie => !movie.watched.complete && !movie.bookmarked)
-
-    if (withSlice) {
-      return movies.slice(1)
-    }
-
-    return movies
-  }
-
-  getShows = () => {
-    const { modes } = this.props
-
-    return modes[Constants.TYPE_SHOW].items.filter(show => !show.bookmarked)
-  }
-
   renderMainCover = () => {
     const item = this.getMainCover()
 
@@ -163,26 +84,10 @@ export default class Home extends React.PureComponent {
     )
   }
 
-  renderMyList = () => {
-    const { coreLoading } = this.state
-    const myList = this.getMyList()
-
-    if ((!myList || myList.length === 0) && !coreLoading) {
-      return
-    }
-
-    return (
-      <CardSlider
-        style={styles.section}
-        onPress={this.handleItemOpen}
-        title={i18n.t('My List')}
-        goToMore={this.handleGoTo('Bookmarks')}
-        items={myList} />
-    )
-  }
-
   renderMyEpisodes = () => {
     const { modes: { myEpisodes } } = this.props
+
+    return
 
     return (
       <MyEpisodesSlider
@@ -223,6 +128,8 @@ export default class Home extends React.PureComponent {
   render() {
     const { hasInternet } = this.props
 
+    const { loading, error, data } = useQuery(MyListQuery);
+
     return (
       <View style={styles.root}>
 
@@ -231,9 +138,19 @@ export default class Home extends React.PureComponent {
 
             {this.renderMainCover()}
 
-            {this.renderMyList()}
+            <MyList
+              styles={styles}
+              handleGoTo={this.handleGoTo}
+              handleItemOpen={this.handleItemOpen}
+            />
 
-            {this.renderMyEpisodes()}
+            <CardSlider
+              style={styles.section}
+              onPress={this.handleItemOpen}
+              title={i18n.t('Movies')}
+              items={this.getMovies()}
+              goToMore={this.handleGoTo('Movies')}
+              onEndReached={this.handleEndReached(Constants.TYPE_MOVIE)} />
 
             {this.renderMoviesList()}
 

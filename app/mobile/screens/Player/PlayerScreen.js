@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { StatusBar, StyleSheet, ActivityIndicator, View, BackHandler } from 'react-native'
 import RNFS from 'react-native-fs'
-import GoogleCast, { CastButton } from 'react-native-google-cast'
+// import GoogleCast, { CastButton } from 'react-native-google-cast'
 import StaticServer from 'react-native-static-server'
 import TorrentStreamer from 'react-native-torrent-streamer'
 import { utils } from 'popcorn-sdk'
@@ -67,9 +67,9 @@ export default class VideoPlayer extends React.Component {
   componentDidMount() {
     const { navigation: { state: { params: { torrent, item } } } } = this.props
 
-    GoogleCast.EventEmitter.addListener(GoogleCast.MEDIA_PROGRESS_UPDATED, this.handleCastMediaProgressUpdate)
-    GoogleCast.EventEmitter.addListener(GoogleCast.SESSION_STARTED, this.handleCastSessionStarted)
-    GoogleCast.EventEmitter.addListener(GoogleCast.SESSION_ENDED, this.handleCastSessionEnded)
+    // GoogleCast.EventEmitter.addListener(GoogleCast.MEDIA_PROGRESS_UPDATED, this.handleCastMediaProgressUpdate)
+    // GoogleCast.EventEmitter.addListener(GoogleCast.SESSION_STARTED, this.handleCastSessionStarted)
+    // GoogleCast.EventEmitter.addListener(GoogleCast.SESSION_ENDED, this.handleCastSessionEnded)
 
     BackHandler.addEventListener('hardwareBackPress', this.handleBackPress)
 
@@ -113,9 +113,9 @@ export default class VideoPlayer extends React.Component {
   componentWillUnmount() {
     Orientation.lockToPortrait()
 
-    GoogleCast.EventEmitter.removeAllListeners(GoogleCast.MEDIA_STATUS_UPDATED)
-    GoogleCast.EventEmitter.removeAllListeners(GoogleCast.SESSION_STARTED)
-    GoogleCast.EventEmitter.removeAllListeners(GoogleCast.SESSION_ENDED)
+    // GoogleCast.EventEmitter.removeAllListeners(GoogleCast.MEDIA_STATUS_UPDATED)
+    // GoogleCast.EventEmitter.removeAllListeners(GoogleCast.SESSION_STARTED)
+    // GoogleCast.EventEmitter.removeAllListeners(GoogleCast.SESSION_ENDED)
 
     BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress)
 
@@ -128,7 +128,7 @@ export default class VideoPlayer extends React.Component {
     this.staticServer.kill()
 
     // Stop casting but keep the connection
-    GoogleCast.stop()
+    // GoogleCast.stop()
   }
 
   handleBackPress = () => {

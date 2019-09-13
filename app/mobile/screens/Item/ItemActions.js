@@ -5,10 +5,9 @@ import Bookmarks from 'modules/db/Bookmarks'
 import Watched from 'modules/db/Watched'
 
 import * as ItemConstants from './ItemConstants'
-import * as HomeSelectors from '../Home/HomeSelectors'
 
 export function hasItem(itemId, mode, state) {
-  return HomeSelectors.getModes(state)[mode].items.find(item => item.id === itemId)
+  return false //HomeSelectors.getModes(state)[mode].items.find(item => item.id === itemId)
 }
 
 export function fetchedItem(item) {
