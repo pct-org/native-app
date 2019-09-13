@@ -8,7 +8,6 @@ import StatusBarController from 'modules/StatusBarController'
 @withNavigationFocus
 export default class ScrollViewWithStatusBar extends React.Component {
 
-
   static propTypes = {
     children: PropTypes.node.isRequired,
   }

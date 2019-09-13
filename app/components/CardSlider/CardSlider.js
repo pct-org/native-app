@@ -37,43 +37,26 @@ export const styles = StyleSheet.create({
 
 })
 
-export const CardSlider = ({ loading, title, items, onPress, style, onEndReached, goToMore }) => {
-  const [activeCard, setActiveCard] = useState(0)
+export const CardSlider = ({ title, items, onPress, style, onEndReached, goToMore }) => {
+  const renderCard = ({ item }) => {
+    const empty = !item
 
-  let flatListRef = null
-
-  const handleItemFocus = (index) => {
-    let scrollTo = null
-    if (activeCard < index && flatListRef && index > 3) {
-      scrollTo = (index + 1) - 4
-
-    } else if (activeCard > index && flatListRef) {
-      if (index >= 3) {
-        scrollTo = (index - 1) - 2
-      }
-    }
-
-    if (scrollTo) {
-      flatListRef.scrollToIndex({
-        index: scrollTo,
-      })
-    }
-
-    setActiveCard(index)
+    return (
+      <Card
+        variant={'medium'}
+        empty={!item}
+        item={item}
+        onPress={() => {
+          if (!empty) {
+            onPress(item)
+          }
+        }}
+      />
+    )
   }
 
-  const renderCard = ({ item, index }) => (
-    <Card
-      variant={'medium'}
-      empty={!item}
-      item={item}
-      onPress={() => onPress(item)}
-      setActive={() => handleItemFocus(index)}
-    />
-  )
-
   return (
-    <View style={style} pointerEvents={'none'}>
+    <View style={style}>
 
       {(title || goToMore) && (
         <View style={styles.titleContainer}>
@@ -99,11 +82,10 @@ export const CardSlider = ({ loading, title, items, onPress, style, onEndReached
       <FlatList
         horizontal
         removeClippedSubviews
-        ref={ref => flatListRef = ref}
         contentContainerStyle={styles.container}
-        data={items.length === 0 ? Array((Platform.isTV ? 11 : 4)).fill() : items}
-        initialNumToRender={Platform.isTV ? 11 : 4}
-        windowSize={Platform.isTV ? 11 : 4}
+        data={items.length === 0 ? Array(4).fill() : items}
+        initialNumToRender={4}
+        windowSize={4}
         renderItem={renderCard}
         ItemSeparatorComponent={() => <View style={{ width: dimensions.UNIT }} />}
         ListFooterComponent={() => <View style={{ width: dimensions.UNIT * 5 }} />}

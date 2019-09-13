@@ -27,10 +27,9 @@ export default class Image extends React.PureComponent {
     images: PropTypes.object.isRequired,
     type: PropTypes.oneOf([
       'poster',
-      'fanart',
+      'backdrop',
     ]),
     size: PropTypes.string,
-
     style: PropTypes.object,
     withFallback: PropTypes.bool,
     empty: PropTypes.bool,

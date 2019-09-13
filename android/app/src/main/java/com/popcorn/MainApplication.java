@@ -4,6 +4,7 @@ import android.app.Application;
 import android.os.StrictMode;
 
 import com.facebook.react.ReactApplication;
+import com.reactnativecommunity.asyncstorage.AsyncStoragePackage;
 import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;
 
 import org.devio.rn.splashscreen.SplashScreenReactPackage;
@@ -40,6 +41,7 @@ public class MainApplication extends Application implements ReactApplication {
 
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new AsyncStoragePackage(),
           new RNGestureHandlerPackage(),
           new SplashScreenReactPackage(),
           new RNLanguagesPackage(),

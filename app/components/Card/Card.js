@@ -48,6 +48,8 @@ export const Card = ({ component: Component, item, variant, empty, style, ...res
     {...rest}>
     <View style={[styles.root, styles[variant], style]}>
       <Image
+        type={'poster'}
+        size={'thumb'}
         images={
           empty
             ? {}

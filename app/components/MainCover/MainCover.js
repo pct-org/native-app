@@ -84,7 +84,7 @@ export const MainCover = ({ item, empty, onOpen }) => {
                   ? {}
                   : item.images
               }
-              type={'fanart'}
+              type={'backdrop'}
               size={'high'} />
 
             <CoverGradient start={{ x: 0, y: 0.1 }} />
@@ -137,7 +137,7 @@ export const MainCover = ({ item, empty, onOpen }) => {
             numberOfLines: 3,
             ellipsizeMode: 'tail',
           }}>
-          {empty ? '' : item.summary}
+          {empty ? '' : item.synopsis}
         </Typography>
 
         {item && (

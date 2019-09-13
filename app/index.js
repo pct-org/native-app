@@ -1,6 +1,6 @@
 import useCorrect from 'modules/useCorrect'
 
-import Root from './root'
-import RootTV from './tv/root'
+import Root from './mobile/root'
+// import RootTV from './tv/root'
 
-export default useCorrect(Root, null, RootTV)
+export default useCorrect(Root)

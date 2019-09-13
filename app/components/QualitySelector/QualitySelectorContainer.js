@@ -1,6 +1,6 @@
 import { connect } from 'react-redux'
 
-import { getFetchingBetter } from 'screens/Item/ItemSelectors'
+import { getFetchingBetter } from 'mobile/screens/Item/ItemSelectors'
 import * as QualtiySelectorActions from './QualtiySelectorActions'
 
 import QualitySelector from './QualitySelector'
