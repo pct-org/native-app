@@ -14,7 +14,7 @@ export const AppNavigator = createStackNavigator({
 }, {
   headerMode: 'none',
 
-  transitionConfig: transitionConfig,
+  // transitionConfig: transitionConfig,
 })
 
 export default createAppContainer(AppNavigator)

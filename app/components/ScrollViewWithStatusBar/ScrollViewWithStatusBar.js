@@ -6,7 +6,7 @@ import { withNavigationFocus } from 'react-navigation'
 import StatusBarController from 'modules/StatusBarController'
 
 @withNavigationFocus
-export default class ScrollViewWithStatusBar extends React.Component {
+export default class ScrollViewWithStatusBar extends React.PureComponent {
 
   static propTypes = {
     children: PropTypes.node.isRequired,
@@ -18,7 +18,7 @@ export default class ScrollViewWithStatusBar extends React.Component {
 
   yOffset = 0
 
-  componentWillMount() {
+  componentDidMount() {
     this.forceUpdateScroll()
   }
 
@@ -57,10 +57,10 @@ export default class ScrollViewWithStatusBar extends React.Component {
   }
 
   render() {
-    const { children } = this.props
+    const { children, style } = this.props
 
     return (
-      <SafeAreaView>
+      <SafeAreaView style={style}>
         <StatusBar
           backgroundColor={'rgba(0, 0, 0, 0)'}
           translucent

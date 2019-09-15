@@ -1,10 +1,9 @@
 import React from 'react'
 import { ApolloProvider } from '@apollo/react-common'
-import PropTypes from 'prop-types'
 
-import getClient from 'modules/Apollo'
+import getClient from 'modules/GraphQL/Apollo'
 
-export default class ApolloLoader extends React.Component {
+export default class ApolloLoader extends React.PureComponent {
 
   state = {
     loading: true,

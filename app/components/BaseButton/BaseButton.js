@@ -6,7 +6,6 @@ export const BaseButton = ({ children, component: Component, innerRef, rippleCol
   <Component
     useForeground
     ref={innerRef}
-    hasTVPreferredFocus
     // eslint-disable-next-line babel/new-cap
     background={TouchableNativeFeedback.Ripple(rippleColor, true)}
     {...rest}>

@@ -1,6 +1,6 @@
-import React, { useState } from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
-import { StyleSheet, View, FlatList, Platform } from 'react-native'
+import { StyleSheet, View, FlatList } from 'react-native'
 
 import dimensions from 'modules/dimensions'
 import i18n from 'modules/i18n'
@@ -37,17 +37,17 @@ export const styles = StyleSheet.create({
 
 })
 
-export const CardSlider = ({ title, items, onPress, style, onEndReached, goToMore }) => {
+export const CardSlider = ({ title, items, onPress, style, onEndReached, goToMore, loading }) => {
   const renderCard = ({ item }) => {
     const empty = !item
 
     return (
       <Card
         variant={'medium'}
-        empty={!item}
+        empty={empty}
         item={item}
         onPress={() => {
-          if (!empty) {
+          if (!empty && !loading) {
             onPress(item)
           }
         }}
@@ -83,13 +83,19 @@ export const CardSlider = ({ title, items, onPress, style, onEndReached, goToMor
         horizontal
         removeClippedSubviews
         contentContainerStyle={styles.container}
-        data={items.length === 0 ? Array(4).fill() : items}
+        data={items.length === 0
+          ? Array(4).fill()
+          : items
+        }
         initialNumToRender={4}
-        windowSize={4}
+        windowSize={8}
         renderItem={renderCard}
         ItemSeparatorComponent={() => <View style={{ width: dimensions.UNIT }} />}
         ListFooterComponent={() => <View style={{ width: dimensions.UNIT * 5 }} />}
-        keyExtractor={(item, index) => item ? `${item.id}-${index}` : `${index}`}
+        keyExtractor={(item, index) => item
+          ? `${item._id}-${index}`
+          : `${index}`
+        }
         showsHorizontalScrollIndicator={false}
         onEndReached={onEndReached}
         onEndReachedThreshold={dimensions.CARD_MEDIUM_WIDTH * 3}
@@ -102,12 +108,15 @@ export const CardSlider = ({ title, items, onPress, style, onEndReached, goToMor
 CardSlider.propTypes = {
   onEndReached: PropTypes.func,
   goToMore: PropTypes.func,
+
+  loading: PropTypes.bool,
 }
 
 CardSlider.defaultProps = {
   onEndReached: null,
   goToMore: null,
-  innerRef: null,
+
+  loading: false,
 }
 
 export default CardSlider

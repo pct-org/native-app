@@ -1,21 +1,22 @@
-import React, { useEffect, useState } from 'react'
-import { StyleSheet, Text, View } from 'react-native'
+import React, { useEffect } from 'react'
+import { StyleSheet } from 'react-native'
+import { useQuery } from '@apollo/react-hooks'
 import Orientation from 'react-native-orientation'
 import SplashScreen from 'react-native-splash-screen'
-import { Query } from '@apollo/react-components'
 
 import i18n from 'modules/i18n'
 import colors from 'modules/colors'
 import dimensions from 'modules/dimensions'
+import fetchMoreUpdateQuery from 'modules/GraphQL/helpers/fetchMoreUpdateQuery'
 
 import CardSlider from 'components/CardSlider'
-import MyEpisodesSlider from 'components/MyEpisodesSlider'
 import MainCover from 'components/MainCover'
 import ScrollViewWithStatusBar from 'components/ScrollViewWithStatusBar'
 
 
-import { useQuery } from '@apollo/react-hooks'
-import { MoviesAndBookmarksQuery, ShowsQuery } from './HomeQuery'
+import MoviesQuery from './MoviesQuery'
+import ShowsSlider from './ShowsSlider'
+import BookmarksSlider from './BookmarksSlider'
 
 export const styles = StyleSheet.create({
 
@@ -39,8 +40,16 @@ export const styles = StyleSheet.create({
 
 })
 
-export const Home = ({ navigation, hasInternet = true }) => {
-  const [moviesOffset, updateMoviesOffset] = useState(0)
+export const Home = ({ navigation }) => {
+  const { loading: moviesLoading, data: moviesData, fetchMore: moviesFetchMore } = useQuery(
+    MoviesQuery,
+    {
+      variables: {
+        offset: 0,
+      },
+    },
+  )
+
   useEffect(() => {
     Orientation.lockToPortrait()
     SplashScreen.hide()
@@ -61,83 +70,48 @@ export const Home = ({ navigation, hasInternet = true }) => {
 
     navigation.navigate('Item', item)
   }
+
+  const noMoviesYet = !moviesData || !moviesData.movies
+
+  const movies = noMoviesYet
+    ? null
+    : [...moviesData.movies].slice(1)
+
+  const mainCover = noMoviesYet
+    ? null
+    : moviesData.movies[0]
+
   return (
-    <View style={styles.root}>
+    <ScrollViewWithStatusBar style={styles.root}>
 
-      {hasInternet && (
-        <ScrollViewWithStatusBar>
+      <MainCover
+        onOpen={handleItemOpen}
+        onPlay={handleItemOpen}
+        empty={!mainCover}
+        item={mainCover} />
 
-          <Query query={MoviesAndBookmarksQuery} variables={{ offset: moviesOffset }}>
-            {({ loading, data, fetchMore }) => {
-              console.log('data', data)
-              const movies = loading
-                ? []
-                : [...data.movies].slice(1)
+      <BookmarksSlider
+        handleGoTo={handleGoTo}
+        handleItemOpen={handleItemOpen}
+        styles={styles}
+      />
 
-              const mainCover = loading
-                ? null
-                : data.movies[0]
+      <CardSlider
+        style={styles.section}
+        handleItemOpen={handleItemOpen}
+        title={i18n.t('Movies')}
+        items={noMoviesYet ? [] : movies}
+        goToMore={handleGoTo('Movies')}
+        onEndReached={fetchMoreUpdateQuery('movies', moviesData, moviesFetchMore)}
+      />
 
-              return (
-                <React.Fragment>
-                  <MainCover
-                    onOpen={handleItemOpen}
-                    onPlay={handleItemOpen}
-                    empty={!mainCover}
-                    item={mainCover} />
+      <ShowsSlider
+        handleGoTo={handleGoTo}
+        handleItemOpen={handleItemOpen}
+        styles={styles}
+      />
 
-                  <CardSlider
-                    style={styles.section}
-                    onPress={handleItemOpen}
-                    title={i18n.t('My List')}
-                    goToMore={handleGoTo('Bookmarks')}
-                    items={loading ? [] : data.bookmarks} />
-
-                  <CardSlider
-                    style={styles.section}
-                    handleItemOpen={handleItemOpen}
-                    title={i18n.t('Movies')}
-                    items={movies}
-                    goToMore={handleGoTo('Movies')}
-                    onEndReached={() => fetchMore({
-                      variables: moviesOffset + 25,
-                      updateQuery: (prev, { fetchMoreResult }) => {
-                        if (!fetchMoreResult) {
-                          return prev
-                        }
-
-                        return Object.assign({}, prev, {
-                          movies: [...prev.movies, ...fetchMoreResult.movies],
-                        })
-                      },
-                    })}
-                  />
-                </React.Fragment>
-              )
-            }}
-          </Query>
-
-          <Query query={ShowsQuery}>
-            {({ loading: loading, data }) => (
-              <CardSlider
-                style={styles.section}
-                handleItemOpen={handleItemOpen}
-                title={i18n.t('Shows')}
-                items={loading ? [] : data.shows}
-                goToMore={handleGoTo('Shows')}
-                //onEndReached={this.handleEndReached(Constants.TYPE_MOVIE)}
-              />
-            )}
-          </Query>
-
-        </ScrollViewWithStatusBar>
-      )}
-
-      {!hasInternet && (
-        <Text>No internet!</Text>
-      )}
-
-    </View>
+    </ScrollViewWithStatusBar>
   )
 }
 

@@ -14,7 +14,6 @@ import com.tripss.updaternapp.UpdateRNAppPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
 import com.rnfs.RNFSPackage;
 import com.futurepress.staticserver.FPStaticServerPackage;
-import com.ghondar.torrentstreamer.*;
 import com.github.yamill.orientation.OrientationPackage;
 import com.brentvatne.react.ReactVideoPackage;
 import com.BV.LinearGradient.LinearGradientPackage;
@@ -41,7 +40,7 @@ public class MainApplication extends Application implements ReactApplication {
 
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
-            new AsyncStoragePackage(),
+          new AsyncStoragePackage(),
           new RNGestureHandlerPackage(),
           new SplashScreenReactPackage(),
           new RNLanguagesPackage(),
@@ -49,7 +48,6 @@ public class MainApplication extends Application implements ReactApplication {
           new VectorIconsPackage(),
           new RNFSPackage(),
           new FPStaticServerPackage(),
-          new TorrentStreamerPackage(),
           new OrientationPackage(),
           new ReactVideoPackage(),
           new LinearGradientPackage()
