@@ -2,6 +2,10 @@
   "name": "@pct-org/native-app",
   "version": "0.12.0",
   "private": true,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/pct-org/native-app.git"
+  },
   "scripts": {
     "prebuild": "react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle",
     "build-and-install": "yarn build:prod && yarn install-on-device:prod",
@@ -12,8 +16,8 @@
     "install-on-device:prod": "adb install -r ./android/app/build/outputs/apk/prod/release/app-prod-release.apk",
     "lint": "eslint ./app/**/*.js",
     "lint:fix": "yarn lint --fix",
-    "start:android": "react-native run-android --variant=devDebug",
     "start": "react-native start",
+    "start:android": "react-native run-android --variant=devDebug",
     "test": "jest"
   },
   "dependencies": {
@@ -63,6 +67,8 @@
     "@babel/plugin-transform-flow-strip-types": "7.4.4",
     "@babel/plugin-transform-runtime": "7.6.0",
     "@babel/preset-react": "^7.0.0",
+    "@commitlint/cli": "^8.1.0",
+    "@commitlint/config-conventional": "^8.1.0",
     "babel-eslint": "10.0.3",
     "babel-plugin-module-resolver": "3.2.0",
     "eslint": "5.16.0",
@@ -78,6 +84,7 @@
     "eslint-plugin-react": "7.14.3",
     "eslint-plugin-standard": "4.0.1",
     "get-dev-paths": "^0.1.1",
+    "husky": "^3.0.5",
     "jest": "24.8.0",
     "jest-react-native": "^18.0.0",
     "metro-react-native-babel-preset": "0.56.0",

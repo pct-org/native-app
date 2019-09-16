@@ -60,13 +60,11 @@ export const Home = ({ navigation }) => {
   })
 
   const handleGoTo = (to) => () => {
-    const { navigation } = this.props
-
     navigation.navigate(to)
   }
 
   const handleItemOpen = (item) => {
-    const { navigation } = this.props
+    console.log('handleItemOpen', item, navigation)
 
     navigation.navigate('Item', item)
   }
@@ -92,13 +90,13 @@ export const Home = ({ navigation }) => {
 
       <BookmarksSlider
         handleGoTo={handleGoTo}
-        handleItemOpen={handleItemOpen}
+        onPress={handleItemOpen}
         styles={styles}
       />
 
       <CardSlider
         style={styles.section}
-        handleItemOpen={handleItemOpen}
+        onPress={handleItemOpen}
         title={i18n.t('Movies')}
         items={noMoviesYet ? [] : movies}
         goToMore={handleGoTo('Movies')}
@@ -107,7 +105,7 @@ export const Home = ({ navigation }) => {
 
       <ShowsSlider
         handleGoTo={handleGoTo}
-        handleItemOpen={handleItemOpen}
+        onPress={handleItemOpen}
         styles={styles}
       />
 
@@ -116,129 +114,3 @@ export const Home = ({ navigation }) => {
 }
 
 export default Home
-
-/*export default class Home extends React.PureComponent {
-
- static propTypes = {
- navigation: PropTypes.object.isRequired,
- }
-
-
- componentDidMount() {
- Orientation.lockToPortrait()
- SplashScreen.hide()
-
- }
-
- componentWillUnmount() {
- Orientation.unlockAllOrientations()
- }
-
- handleGoTo = (to) => () => {
- const { navigation } = this.props
-
- navigation.navigate(to)
- }
-
- handleItemOpen = (item) => {
- const { navigation } = this.props
-
- navigation.navigate('Item', item)
- }
-
- renderMainCover = () => {
- const item = this.getMainCover()
-
- return (
- <MainCover
- onOpen={this.handleItemOpen}
- onPlay={this.handleItemOpen}
- empty={!item}
- item={item} />
- )
- }
-
- renderMyEpisodes = () => {
- const { modes: { myEpisodes } } = this.props
-
- return
-
- return (
- <MyEpisodesSlider
- style={styles.section}
- onPress={this.handleItemOpen}
- onRefresh={this.handleMyEpisodesRefresh}
- title={i18n.t('My Episodes')}
- refreshing={myEpisodes.refreshing}
- loading={myEpisodes.loading}
- items={myEpisodes.items} />
- )
- }
-
- renderMoviesList = () => {
- return (
- <CardSlider
- style={styles.section}
- onPress={this.handleItemOpen}
- title={i18n.t('Movies')}
- items={this.getMovies()}
- goToMore={this.handleGoTo('Movies')}
- onEndReached={this.handleEndReached(Constants.TYPE_MOVIE)} />
- )
- }
-
- renderShowsList = () => {
- return (
- <CardSlider
- style={[styles.section, styles.lastSection]}
- onPress={this.handleItemOpen}
- title={i18n.t('Shows')}
- items={this.getShows()}
- goToMore={this.handleGoTo('Shows')}
- onEndReached={this.handleEndReached(Constants.TYPE_SHOW)} />
- )
- }
-
- render() {
- const { hasInternet } = this.props
-
- const { loading, error, data } = useQuery(MyListQuery)
-
- return (
- <View style={styles.root}>
-
- {hasInternet && (
- <ScrollViewWithStatusBar>
-
- {this.renderMainCover()}
-
- <MyList
- styles={styles}
- handleGoTo={this.handleGoTo}
- handleItemOpen={this.handleItemOpen}
- />
-
- <CardSlider
- style={styles.section}
- onPress={this.handleItemOpen}
- title={i18n.t('Movies')}
- items={this.getMovies()}
- goToMore={this.handleGoTo('Movies')}
- onEndReached={this.handleEndReached(Constants.TYPE_MOVIE)} />
-
- {this.renderMoviesList()}
-
- {this.renderShowsList()}
-
- </ScrollViewWithStatusBar>
- )}
-
- {!hasInternet && (
- <Text>No internet!</Text>
- )}
-
- </View>
- )
- }
-
- }*/

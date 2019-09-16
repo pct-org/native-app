@@ -9,7 +9,7 @@ import CardSlider from 'components/CardSlider'
 
 import BookmarksSliderQuery from './BookmarksSliderQuery'
 
-export const BookmarksSlider = ({ styles, handleGoTo, handleItemOpen }) => {
+export const BookmarksSlider = ({ styles, handleGoTo, onPress }) => {
   const { loading, data, fetchMore } = useQuery(
     BookmarksSliderQuery,
     {
@@ -22,7 +22,7 @@ export const BookmarksSlider = ({ styles, handleGoTo, handleItemOpen }) => {
   return (
     <CardSlider
       style={styles.section}
-      handleItemOpen={handleItemOpen}
+      onPress={onPress}
       title={i18n.t('My List')}
       items={!data || !data.bookmarks ? [] : data.bookmarks}
       goToMore={handleGoTo('MyList')}
@@ -36,7 +36,7 @@ export const BookmarksSlider = ({ styles, handleGoTo, handleItemOpen }) => {
 BookmarksSlider.propTypes = {
   styles: PropTypes.object.isRequired,
   handleGoTo: PropTypes.func.isRequired,
-  handleItemOpen: PropTypes.func.isRequired,
+  onPress: PropTypes.func.isRequired,
 }
 
 export default BookmarksSlider

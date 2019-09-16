@@ -1,5 +1,6 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { StyleSheet, View, Linking, InteractionManager } from 'react-native'
+import { useLazyQuery } from '@apollo/react-hooks'
 import Orientation from 'react-native-orientation'
 import { Constants } from 'popcorn-sdk'
 
@@ -9,190 +10,151 @@ import dimensions from 'modules/dimensions'
 
 import ScrollViewWithStatusBar from 'components/ScrollViewWithStatusBar'
 import IconButton from 'components/IconButton'
+import SplashScreen from 'react-native-splash-screen'
 
 import BasicInfo from './BasicInfo'
 import ItemOrRecommendations from './ItemOrRecommendations'
 
+
+import { MovieQuery, ShowQuery } from './ItemQuery'
+
 const styles = StyleSheet.create({
 
   root: {
-    flex           : 1,
+    flex: 1,
     backgroundColor: colors.BACKGROUND,
   },
 
   iconsContainer: {
-    display      : 'flex',
+    display: 'flex',
     flexDirection: 'row',
-    marginLeft   : dimensions.UNIT * 2,
-    marginRight  : dimensions.UNIT * 2,
-    marginBottom : dimensions.UNIT * 2,
+    marginLeft: dimensions.UNIT * 2,
+    marginRight: dimensions.UNIT * 2,
+    marginBottom: dimensions.UNIT * 2,
 
     minHeight: 70,
   },
 
   icon: {
-    minWidth : 80,
+    minWidth: 80,
     textAlign: 'center',
   },
 
 })
 
-export default class Item extends React.PureComponent {
+export const Item = ({ navigation: { state: { params } } }) => {
+  const [executeQuery, { called, loading: itemLoading, data }] = useLazyQuery(
+    params.type === 'movie'
+      ? MovieQuery
+      : ShowQuery,
+    {
+      variables: {
+        _id: params._id,
+      },
+    },
+  )
 
-  componentDidMount() {
+  useEffect(() => {
     Orientation.lockToPortrait()
 
-    // Fetch data after the component is done navigation
+    // Execute the query after the component is done navigation
     InteractionManager.runAfterInteractions(() => {
-      this.getItem()
-    })
-  }
-
-  componentWillUnmount() {
-    const { clearItem } = this.props
-
-    clearItem()
-  }
-
-  handleToggleBookmarks = () => {
-    const { item, addToBookmarks, removeFromBookmarks } = this.props
-
-    if (item.bookmarked) {
-      removeFromBookmarks(item)
-
-    } else {
-      addToBookmarks(item)
-    }
-  }
-
-  handleToggleWatched = () => {
-    const { item, markWatched, markUnwatched } = this.props
-
-    if (item.watched.complete) {
-      markUnwatched(item)
-
-    } else {
-      markWatched(item)
-    }
-  }
-
-  getItem = (fetchThisItem = null) => {
-    const { clearItem, getItem, navigation: { state: { params: item } } } = this.props
-
-    if (fetchThisItem) {
-      clearItem()
-    }
-
-    getItem(fetchThisItem || item).then(({ payload: { type, seasons } }) => {
-      if (type === Constants.TYPE_SHOW && seasons.length > 0) {
-        this.setState({
-          activeSeason: seasons[seasons.length - 1].number,
-        })
+      if(!called) {
+        // Execute the query
+        executeQuery()
       }
     })
+  })
+
+  const handleToggleBookmarks = () => {
+
   }
 
-  handleTrailer = () => {
-    const { item } = this.props
+  const handleToggleWatched = () => {
 
-    if (item.trailer) {
-      Linking.openURL(item.trailer)
-    }
   }
 
-  // playItem = (torrent) => {
-  //   const { navigation: { navigate }, item } = this.props
-  //   const { episodeToPlay } = this.state
-  //
-  //   this.setState({
-  //     selectFromTorrents: null,
-  //   })
-  //
-  //   let playItem = item
-  //
-  //   if (episodeToPlay) {
-  //     playItem = {
-  //       ...episodeToPlay,
-  //       show: playItem,
-  //     }
-  //   }
-  //
-  //   navigate('Player', {
-  //     torrent,
-  //     item: playItem,
-  //   })
-  // }
+  const handleTrailer = () => {
 
-  render() {
-    const { item, isLoading } = this.props
+  }
 
-    return (
-      <View style={styles.root}>
+  const loading = itemLoading || !data
+  console.log('loading', called, loading, data)
+  const item = loading ? null : data.item
 
-        <ScrollViewWithStatusBar>
+  return (
+    <View style={styles.root}>
 
-          <BasicInfo item={item} />
+      <ScrollViewWithStatusBar>
 
-          {item && (
-            <View style={styles.iconsContainer}>
-              {!isLoading && (
-                <IconButton
-                  animatable={{
-                    animation      : 'fadeIn',
-                    useNativeDriver: true,
-                  }}
-                  style={styles.icon}
-                  onPress={this.handleToggleBookmarks}
-                  name={item.bookmarked ? 'check' : 'plus'}
-                  color={colors.ICON_COLOR}
-                  size={dimensions.ITEM_ICONS}>
-                  {i18n.t('My List')}
-                </IconButton>
-              )}
+        <BasicInfo
+          loading={loading}
+          item={item} />
 
-              {item && item.type === Constants.TYPE_MOVIE && (
-                <IconButton
-                  animatable={{
-                    animation      : 'fadeIn',
-                    useNativeDriver: true,
-                  }}
-                  style={[styles.icon, { minWidth: 95 }]}
-                  onPress={this.handleToggleWatched}
-                  name={item.watched.complete ? 'eye-off-outline' : 'eye-outline'}
-                  color={colors.ICON_COLOR}
-                  size={dimensions.ITEM_ICONS}>
-                  {i18n.t(item.watched.complete ? 'Mark Unwatched' : 'Mark Watched')}
-                </IconButton>
-              )}
-
-              {item && item.trailer && (
-                <IconButton
-                  animatable={{
-                    animation      : 'fadeIn',
-                    useNativeDriver: true,
-                  }}
-                  style={styles.icon}
-                  onPress={this.handleTrailer}
-                  name={'youtube'}
-                  color={colors.ICON_COLOR}
-                  size={dimensions.ITEM_ICONS}>
-                  {i18n.t('Trailer')}
-                </IconButton>
-              )}
-            </View>
+        <View style={styles.iconsContainer}>
+          {!loading && (
+            <IconButton
+              animatable={{
+                animation: 'fadeIn',
+                useNativeDriver: true,
+              }}
+              style={styles.icon}
+              onPress={handleToggleBookmarks}
+              name={item.bookmarked
+                ? 'check'
+                : 'plus'
+              }
+              color={colors.ICON_COLOR}
+              size={dimensions.ITEM_ICONS}>
+              {i18n.t('My List')}
+            </IconButton>
           )}
 
-          {item && item.type === Constants.TYPE_SHOW && item.seasons.length > 0 && (
-            <ItemOrRecommendations
-              item={item}
-              getItem={this.getItem}
-            />
+          {!loading && item.type === Constants.TYPE_MOVIE && (
+            <IconButton
+              animatable={{
+                animation: 'fadeIn',
+                useNativeDriver: true,
+              }}
+              style={[styles.icon, { minWidth: 95 }]}
+              onPress={handleToggleWatched}
+              name={item.watched.complete
+                ? 'eye-off-outline'
+                : 'eye-outline'
+              }
+              color={colors.ICON_COLOR}
+              size={dimensions.ITEM_ICONS}>
+              {i18n.t(item.watched.complete ? 'Mark Unwatched' : 'Mark Watched')}
+            </IconButton>
           )}
 
-        </ScrollViewWithStatusBar>
+          {!loading && item.trailer && (
+            <IconButton
+              animatable={{
+                animation: 'fadeIn',
+                useNativeDriver: true,
+              }}
+              style={styles.icon}
+              onPress={handleTrailer}
+              name={'youtube'}
+              color={colors.ICON_COLOR}
+              size={dimensions.ITEM_ICONS}>
+              {i18n.t('Trailer')}
+            </IconButton>
+          )}
+        </View>
 
-      </View>
-    )
-  }
+        {/*{item && item.type === Constants.TYPE_SHOW && item.seasons.length > 0 && (*/}
+        {/*  <ItemOrRecommendations*/}
+        {/*    item={item}*/}
+        {/*    getItem={this.getItem}*/}
+        {/*  />*/}
+        {/*)}*/}
 
+      </ScrollViewWithStatusBar>
+
+    </View>
+  )
 }
+
+export default Item

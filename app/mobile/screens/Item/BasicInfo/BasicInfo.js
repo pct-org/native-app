@@ -21,26 +21,26 @@ const styles = StyleSheet.create({
   },
 
   listContainer: {
-    height   : dimensions.SCREEN_HEIGHT * 0.45,
-    width    : '100%',
+    height: dimensions.SCREEN_HEIGHT * 0.45,
+    width: '100%',
     alignSelf: 'stretch',
-    position : 'relative',
-    display  : 'flex',
+    position: 'relative',
+    display: 'flex',
   },
 
   image: {
     height: '100%',
-    width : '100%',
+    width: '100%',
   },
 
   playContainer: {
     position: 'absolute',
-    top     : 0,
-    width   : '100%',
-    height  : '100%',
+    top: 0,
+    width: '100%',
+    height: '100%',
 
     justifyContent: 'center',
-    alignItems    : 'center',
+    alignItems: 'center',
   },
 
   playIcon: {
@@ -48,25 +48,25 @@ const styles = StyleSheet.create({
   },
 
   infoContainer: {
-    position     : 'absolute',
-    bottom       : 0,
-    marginLeft   : dimensions.UNIT * 2,
-    marginRight  : dimensions.UNIT * 2,
-    width        : '100%',
-    display      : 'flex',
+    position: 'absolute',
+    bottom: 0,
+    marginLeft: dimensions.UNIT * 2,
+    marginRight: dimensions.UNIT * 2,
+    width: '100%',
+    display: 'flex',
     flexDirection: 'row',
   },
 
   info: {
-    position   : 'absolute',
-    bottom     : 0,
-    left       : dimensions.CARD_SMALL_WIDTH,
+    position: 'absolute',
+    bottom: 0,
+    left: dimensions.CARD_SMALL_WIDTH,
     // The * 5 =
     // 2 from main margin container left
     // 1 from of the poster
     // 2 from main margin container right
-    width      : dimensions.SCREEN_WIDTH - dimensions.CARD_SMALL_WIDTH - (dimensions.UNIT * 5),
-    marginLeft : dimensions.UNIT,
+    width: dimensions.SCREEN_WIDTH - dimensions.CARD_SMALL_WIDTH - (dimensions.UNIT * 5),
+    marginLeft: dimensions.UNIT,
     marginRight: dimensions.UNIT,
   },
 
@@ -76,16 +76,16 @@ const styles = StyleSheet.create({
 
   posterContainer: {
     height: dimensions.CARD_SMALL_HEIGHT,
-    width : dimensions.CARD_SMALL_WIDTH,
+    width: dimensions.CARD_SMALL_WIDTH,
 
     borderRadius: dimensions.BORDER_RADIUS,
-    overflow    : 'hidden',
+    overflow: 'hidden',
   },
 
   poster: {
     backgroundColor: colors.BACKGROUND_LIGHTER,
 
-    width : '100%',
+    width: '100%',
     height: '100%',
   },
 
@@ -94,9 +94,9 @@ const styles = StyleSheet.create({
   },
 })
 
-export const BasicInfo = ({ item }) => {
+export const BasicInfo = ({ loading, item }) => {
   const [showQualitySelector, toggleSelecting] = useState(false)
-  const genres = !item ? [] : item.genres ? [...item.genres].splice(0, 3) : []
+  const genres = loading ? [] : item.genres ? [...item.genres].splice(0, 3) : []
 
   return (
     <React.Fragment>
@@ -114,17 +114,17 @@ export const BasicInfo = ({ item }) => {
               withFallback={false}
               style={styles.image}
               images={
-                !item
+                loading
                   ? {}
                   : item.images
               }
-              type={'fanart'}
+              type={'backdrop'}
               size={'high'}
             />
 
             <CoverGradient start={{ x: 0, y: 0.1 }} />
 
-            {item && item.type === Constants.TYPE_MOVIE && (
+            {!loading && item.type === Constants.TYPE_MOVIE && (
               <Animatable.View
                 animation={'fadeIn'}
                 style={styles.playContainer}
@@ -147,7 +147,7 @@ export const BasicInfo = ({ item }) => {
             <Image
               style={styles.poster}
               images={
-                !item
+                loading
                   ? {}
                   : item.images
               }
@@ -158,11 +158,11 @@ export const BasicInfo = ({ item }) => {
             <Typography
               variant={'display5'}
               textProps={{
-                width        : '100%',
+                width: '100%',
                 numberOfLines: 2,
                 ellipsizeMode: 'tail',
               }}>
-              {item ? item.title : ''}
+              {loading ? '' : item.title}
             </Typography>
 
             <Typography
@@ -175,26 +175,26 @@ export const BasicInfo = ({ item }) => {
         </View>
       </View>
 
-      {item && (
-        <Animatable.View
-          style={styles.summary}
-          animation={'fadeIn'}
-          useNativeDriver>
-          <Typography variant={'body2'}>
-            {item.summary}
-          </Typography>
-        </Animatable.View>
-      )}
+      <Animatable.View
+        style={styles.summary}
+        animation={'fadeIn'}
+        useNativeDriver>
+        <Typography variant={'body2'}>
+          {loading ? '' : item.synopsis}
+        </Typography>
+      </Animatable.View>
 
     </React.Fragment>
   )
 }
 
 BasicInfo.propTypes = {
+  loading: PropTypes.bool,
   item: PropTypes.object,
 }
 
 BasicInfo.defaultProps = {
+  loading: false,
   item: null,
 }
 

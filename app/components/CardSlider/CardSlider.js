@@ -97,7 +97,11 @@ export const CardSlider = ({ title, items, onPress, style, onEndReached, goToMor
           : `${index}`
         }
         showsHorizontalScrollIndicator={false}
-        onEndReached={onEndReached}
+        onEndReached={
+          items.length >= 25
+            ? onEndReached
+            : null
+        }
         onEndReachedThreshold={dimensions.CARD_MEDIUM_WIDTH * 3}
       />
 

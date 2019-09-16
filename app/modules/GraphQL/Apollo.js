@@ -9,7 +9,9 @@ const SCHEMA_VERSION = '1' // Must be a string.
 const SCHEMA_VERSION_KEY = 'apollo-schema-version'
 
 export default async() => {
-  const cache = new InMemoryCache()
+  const cache = new InMemoryCache({
+    dataIdFromObject: object => object._id || null,
+  })
 
   const persistor = new CachePersistor({
     cache,
@@ -41,6 +43,8 @@ export default async() => {
     link: new HttpLink({
       uri: 'http://10.0.2.2:3000/graphql',
     }),
+
+    connectToDevTools: __DEV__,
 
     name: 'Native App',
     defaultOptions: {
