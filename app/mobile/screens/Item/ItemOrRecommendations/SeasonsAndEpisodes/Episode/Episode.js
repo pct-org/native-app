@@ -20,25 +20,25 @@ export const styles = StyleSheet.create({
 
   posterContainer: {
     borderRadius: dimensions.BORDER_RADIUS,
-    overflow    : 'hidden',
+    overflow: 'hidden',
 
     backgroundColor: colors.BACKGROUND_LIGHTER,
   },
 
   posterWithTitle: {
-    display      : 'flex',
+    display: 'flex',
     flexDirection: 'row',
-    alignItems   : 'center',
+    alignItems: 'center',
   },
 
   iconContainer: {
     position: 'absolute',
-    top     : 0,
-    width   : '100%',
-    height  : '100%',
+    top: 0,
+    width: '100%',
+    height: '100%',
 
     justifyContent: 'center',
-    alignItems    : 'center',
+    alignItems: 'center',
   },
 
   title: {
@@ -46,12 +46,12 @@ export const styles = StyleSheet.create({
   },
 
   summary: {
-    marginTop   : dimensions.UNIT / 2,
+    marginTop: dimensions.UNIT / 2,
     marginBottom: dimensions.UNIT / 2,
   },
 
   image: {
-    width : dimensions.EPISODE_CARD_WIDTH,
+    width: dimensions.EPISODE_CARD_WIDTH,
     height: dimensions.EPISODE_CARD_HEIGHT,
   },
 
@@ -60,19 +60,19 @@ export const styles = StyleSheet.create({
 export default class Episode extends React.Component {
 
   static propTypes = {
-    title      : PropTypes.string,
-    images     : PropTypes.object,
-    torrents   : PropTypes.object,
-    number     : PropTypes.number,
-    summary    : PropTypes.string,
+    title: PropTypes.string,
+    images: PropTypes.object,
+    torrents: PropTypes.object,
+    number: PropTypes.number,
+    summary: PropTypes.string,
     hasTorrents: PropTypes.bool,
-    hasAired   : PropTypes.bool,
+    hasAired: PropTypes.bool,
   }
 
   static defaultProps = {
-    summary    : null,
+    summary: null,
     hasTorrents: false,
-    hasAired   : false,
+    hasAired: false,
 
     images: {
       poster: {
@@ -101,7 +101,7 @@ export default class Episode extends React.Component {
   }
 
   render() {
-    const { title, summary, number, hasAired, images } = this.props
+    const { title, synopsis, number, hasAired, images } = this.props
     const { showQualitySelector } = this.state
 
     return (
@@ -148,7 +148,7 @@ export default class Episode extends React.Component {
         <Typography
           style={styles.summary}
           variant={'body2'}>
-          {summary}
+          {synopsis}
         </Typography>
 
       </View>

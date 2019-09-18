@@ -11,6 +11,23 @@ const SCHEMA_VERSION_KEY = 'apollo-schema-version'
 export default async() => {
   const cache = new InMemoryCache({
     dataIdFromObject: object => object._id || null,
+
+    cacheRedirects: {
+      Query: {
+        movie: (_, args, { getCacheKey }) => {
+          return getCacheKey({
+            __typename: 'Movie',
+            _id: args._id,
+          })
+        },
+        show: (_, args, { getCacheKey }) => {
+          return getCacheKey({
+            __typename: 'Show',
+            _id: args._id,
+          })
+        },
+      },
+    },
   })
 
   const persistor = new CachePersistor({

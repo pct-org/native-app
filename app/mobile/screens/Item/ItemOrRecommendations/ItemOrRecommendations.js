@@ -47,17 +47,17 @@ export default class ItemOrRecommendations extends React.PureComponent {
     recommendations     : [],
   }
 
-  handleViewRecommendation = (recommendationActive) => {
-    this.setState({
-      recommendationActive,
-    })
-  }
-
-  handleFetchedRecommendations = (recommendations) => {
-    this.setState({
-      recommendations,
-    })
-  }
+  // handleViewRecommendation = (recommendationActive) => {
+  //   this.setState({
+  //     recommendationActive,
+  //   })
+  // }
+  //
+  // handleFetchedRecommendations = (recommendations) => {
+  //   this.setState({
+  //     recommendations,
+  //   })
+  // }
 
   getStyles = (isRecommendation) => {
     const { recommendationActive } = this.state
@@ -99,13 +99,13 @@ export default class ItemOrRecommendations extends React.PureComponent {
           />
         )}
 
-        {recommendationActive && (
-          <Recommendations
-            onFetchedRecommendations={this.handleFetchedRecommendations}
-            recommendations={recommendations}
-            item={item}
-            getItem={getItem} />
-        )}
+        {/*{recommendationActive && (*/}
+        {/*  <Recommendations*/}
+        {/*    onFetchedRecommendations={this.handleFetchedRecommendations}*/}
+        {/*    recommendations={recommendations}*/}
+        {/*    item={item}*/}
+        {/*    getItem={getItem} />*/}
+        {/*)}*/}
 
       </Animatable.View>
     )

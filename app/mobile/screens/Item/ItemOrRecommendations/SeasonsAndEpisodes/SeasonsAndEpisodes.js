@@ -12,7 +12,7 @@ import Episode from './Episode'
 export const styles = StyleSheet.create({
 
   container: {
-    marginLeft : dimensions.UNIT * 2,
+    marginLeft: dimensions.UNIT * 2,
     marginRight: dimensions.UNIT * 2,
   },
 
@@ -44,7 +44,7 @@ export default class SeasonsAndEpisodes extends React.PureComponent {
     // If we retrieve more season then update to the latest one
     if (newSeasonCount > activeSeason && newSeasonCount > onlyWhenHigherThen) {
       return {
-        activeSeason      : nextItem.seasons[nextItem.seasons.length - 1].number,
+        activeSeason: nextItem.seasons[nextItem.seasons.length - 1].number,
         onlyWhenHigherThen: nextItem.seasons.length,
       }
     }
@@ -57,7 +57,7 @@ export default class SeasonsAndEpisodes extends React.PureComponent {
   static defaultProps = {}
 
   state = {
-    activeSeason      : null,
+    activeSeason: null,
     onlyWhenHigherThen: 0,
   }
 
@@ -133,8 +133,8 @@ export default class SeasonsAndEpisodes extends React.PureComponent {
         <Typography
           style={styles.seasonNumber}
           variant={'caption'}
-          emphasis={activeSeason === item.season ? 'high' : 'medium'}>
-          {i18n.t('Season {{number}}', { number: item.season })}
+          emphasis={activeSeason === item.number ? 'high' : 'medium'}>
+          {i18n.t('Season {{number}}', { number: item.number })}
         </Typography>
       </View>
     )

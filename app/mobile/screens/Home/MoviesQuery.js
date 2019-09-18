@@ -4,6 +4,7 @@ export default gql`
   query movies($offset: Float!) {
     movies(limit: 25, offset: $offset, noBookmarks: true, noWatched: true) {
       _id
+      __typename
       title
       genres
       synopsis
@@ -13,10 +14,10 @@ export default gql`
         complete
         progress
       }
-#      torrents {
-#        quality
-#        url
-#      }
+      torrents {
+        quality
+        url
+      }
       images {
         backdrop {
           high

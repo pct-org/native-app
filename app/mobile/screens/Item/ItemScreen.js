@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
 })
 
 export const Item = ({ navigation: { state: { params } } }) => {
-  const [executeQuery, { called, loading: itemLoading, data }] = useLazyQuery(
+  const [executeQuery, { called: queryCalled, loading: itemLoading, data }] = useLazyQuery(
     params.type === 'movie'
       ? MovieQuery
       : ShowQuery,
@@ -58,12 +58,13 @@ export const Item = ({ navigation: { state: { params } } }) => {
     Orientation.lockToPortrait()
 
     // Execute the query after the component is done navigation
-    InteractionManager.runAfterInteractions(() => {
-      if(!called) {
-        // Execute the query
-        executeQuery()
-      }
-    })
+    //InteractionManager.runAfterInteractions(() => {
+    console.info('execute qery')
+    if (!queryCalled) {
+      // Execute the query
+      executeQuery()
+    }
+    //})
   })
 
   const handleToggleBookmarks = () => {
@@ -79,7 +80,7 @@ export const Item = ({ navigation: { state: { params } } }) => {
   }
 
   const loading = itemLoading || !data
-  console.log('loading', called, loading, data)
+  console.log('loading', data)
   const item = loading ? null : data.item
 
   return (
@@ -144,12 +145,11 @@ export const Item = ({ navigation: { state: { params } } }) => {
           )}
         </View>
 
-        {/*{item && item.type === Constants.TYPE_SHOW && item.seasons.length > 0 && (*/}
-        {/*  <ItemOrRecommendations*/}
-        {/*    item={item}*/}
-        {/*    getItem={this.getItem}*/}
-        {/*  />*/}
-        {/*)}*/}
+        {item && item.type === Constants.TYPE_SHOW && item.seasons.length > 0 && (
+          <ItemOrRecommendations
+            item={item}
+          />
+        )}
 
       </ScrollViewWithStatusBar>
 

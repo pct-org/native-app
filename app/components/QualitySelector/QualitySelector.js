@@ -196,11 +196,11 @@ export default class QualitySelector extends React.Component {
               <BaseButton onPress={() => this.handlePlayQuality(quality)}>
                 <Text style={[
                   styles.quality,
-                  {
-                    borderBottomColor: item.torrents
-                      ? item.torrents[quality].health.color
-                      : null,
-                  },
+                  // {
+                  //   borderBottomColor: item.torrents
+                  //     ? item.torrents[quality].health.color
+                  //     : null,
+                  // },
                 ]}>
                   {quality}
                 </Text>
