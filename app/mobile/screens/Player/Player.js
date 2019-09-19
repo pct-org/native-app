@@ -36,7 +36,7 @@ export const Player = ({ navigation: { state: { params: { item, playQuality } } 
     }] = useLazyQuery(
     DownloadQuery,
     {
-      pollInterval: 200, // 1000
+      pollInterval: 1000,
       skip: queryCalled,
       variables: {
         _id: item._id,

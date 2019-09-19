@@ -1,4 +1,3 @@
-import dimensions from 'modules/dimensions'
 import React from 'react'
 import PropTypes from 'prop-types'
 import { StyleSheet } from 'react-native'
@@ -15,7 +14,6 @@ export const styles = StyleSheet.create({
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    borderWidth: dimensions.BORDER_WIDTH,
   },
 
 })
