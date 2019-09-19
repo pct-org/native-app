@@ -10,28 +10,28 @@ import IconButton from '../IconButton'
 const styles = StyleSheet.create({
 
   root: {
-    flex    : 1,
+    flex: 1,
     position: 'absolute',
-    top     : 0,
-    left    : 0,
-    width   : '100%',
-    height  : '100%',
+    top: 0,
+    left: 0,
+    width: '100%',
+    height: '100%',
   },
 
   listContainer: {
-    opacity        : 0.90,
-    display        : 'flex',
-    justifyContent : 'center',
-    alignItems     : 'center',
+    opacity: 0.90,
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
     backgroundColor: colors.BACKGROUND,
-    zIndex         : 1100,
+    zIndex: 1100,
   },
 
   closeIcon: {
     position: 'absolute',
-    top     : dimensions.UNIT * 2,
-    right   : dimensions.UNIT * 2,
-    zIndex  : 1001,
+    bottom: dimensions.UNIT * 2,
+    right: (dimensions.SCREEN_WIDTH / 2) - 20,
+    zIndex: 1001,
   },
 
 })
@@ -40,12 +40,12 @@ export default class Modal extends React.Component {
 
   static propTypes = {
     onRequestClose: PropTypes.func,
-    visible       : PropTypes.bool,
+    visible: PropTypes.bool,
   }
 
   static defaultProps = {
     onRequestClose: null,
-    visible       : false,
+    visible: false,
   }
 
   render() {

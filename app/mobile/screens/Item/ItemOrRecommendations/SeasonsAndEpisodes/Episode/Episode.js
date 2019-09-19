@@ -1,7 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { StyleSheet, View } from 'react-native'
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 
 import dimensions from 'modules/dimensions'
 import colors from 'modules/colors'
@@ -10,7 +9,8 @@ import Typography from 'components/Typography'
 import Overlay from 'components/Overlay'
 import BaseButton from 'components/BaseButton'
 import Image from 'components/Image'
-import QualitySelector from 'components/QualitySelector'
+
+import QualitySelector from 'mobile/components/QualitySelector'
 
 export const styles = StyleSheet.create({
 
@@ -62,15 +62,14 @@ export default class Episode extends React.Component {
   static propTypes = {
     title: PropTypes.string,
     images: PropTypes.object,
-    torrents: PropTypes.object,
     number: PropTypes.number,
-    summary: PropTypes.string,
+    synopsis: PropTypes.string,
     hasTorrents: PropTypes.bool,
     hasAired: PropTypes.bool,
   }
 
   static defaultProps = {
-    summary: null,
+    synopsis: null,
     hasTorrents: false,
     hasAired: false,
 
@@ -92,10 +91,10 @@ export default class Episode extends React.Component {
   }
 
   getAirsDate = () => {
-    const { aired } = this.props
+    const { firstAired } = this.props
 
     const airs = new Date()
-    airs.setTime(aired)
+    airs.setTime(firstAired)
 
     return `${airs.getDate()}-${(airs.getMonth() + 1)}-${airs.getFullYear()}`
   }

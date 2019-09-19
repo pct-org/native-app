@@ -16,6 +16,7 @@ export const MovieQuery = gql`
       }
       torrents {
         quality
+        url
       }
       images {
         backdrop {
@@ -50,14 +51,24 @@ export const ShowQuery = gql`
         _id
         title
         number
+        type
         images {
-          thumb
+          poster {
+            thumb
+          }
         }
         episodes {
           _id
           title
           number
           synopsis
+          firstAired
+          type
+          images {
+            poster {
+              thumb
+            }
+          }
           torrents {
             quality
           }

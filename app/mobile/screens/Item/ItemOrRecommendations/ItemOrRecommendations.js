@@ -16,16 +16,16 @@ export const styles = StyleSheet.create({
   buttonContainer: {
     borderTopWidth: 2,
     borderTopColor: '#000',
-    display       : 'flex',
-    flexDirection : 'row',
-    width         : '100%',
+    display: 'flex',
+    flexDirection: 'row',
+    width: '100%',
   },
 
   buttons: {
-    marginRight : dimensions.UNIT,
-    paddingLeft : dimensions.UNIT * 2,
+    marginRight: dimensions.UNIT,
+    paddingLeft: dimensions.UNIT * 2,
     paddingRight: dimensions.UNIT * 2,
-    paddingTop  : dimensions.UNIT * 2,
+    paddingTop: dimensions.UNIT * 2,
     marginBottom: dimensions.UNIT * 2,
   },
 
@@ -44,7 +44,7 @@ export default class ItemOrRecommendations extends React.PureComponent {
 
   state = {
     recommendationActive: false,
-    recommendations     : [],
+    recommendations: [],
   }
 
   // handleViewRecommendation = (recommendationActive) => {
@@ -85,12 +85,12 @@ export default class ItemOrRecommendations extends React.PureComponent {
             {i18n.t('Episodes')}
           </TextButton>
 
-          <TextButton
-            onPress={() => this.handleViewRecommendation(true)}
-            emphasis={recommendationActive ? 'high' : 'medium'}
-            style={this.getStyles(true)}>
-            {i18n.t('More like this')}
-          </TextButton>
+          {/*<TextButton*/}
+          {/*  onPress={() => this.handleViewRecommendation(true)}*/}
+          {/*  emphasis={recommendationActive ? 'high' : 'medium'}*/}
+          {/*  style={this.getStyles(true)}>*/}
+          {/*  {i18n.t('More like this')}*/}
+          {/*</TextButton>*/}
         </View>
 
         {!recommendationActive && (

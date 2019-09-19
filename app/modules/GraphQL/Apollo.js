@@ -66,11 +66,11 @@ export default async() => {
     name: 'Native App',
     defaultOptions: {
       watchQuery: {
-        fetchPolicy: 'cache-and-network',
+        fetchPolicy: 'network',
         errorPolicy: 'all',
       },
       query: {
-        fetchPolicy: 'cache-and-network',
+        fetchPolicy: 'network',
         errorPolicy: 'all',
       },
       mutate: {

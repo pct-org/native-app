@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { StyleSheet, View, Linking, InteractionManager } from 'react-native'
-import { useLazyQuery } from '@apollo/react-hooks'
+import { useLazyQuery, useMutation } from '@apollo/react-hooks'
 import Orientation from 'react-native-orientation'
 import { Constants } from 'popcorn-sdk'
 
@@ -10,13 +10,12 @@ import dimensions from 'modules/dimensions'
 
 import ScrollViewWithStatusBar from 'components/ScrollViewWithStatusBar'
 import IconButton from 'components/IconButton'
-import SplashScreen from 'react-native-splash-screen'
 
 import BasicInfo from './BasicInfo'
 import ItemOrRecommendations from './ItemOrRecommendations'
+import { MovieQuery, ShowQuery, AddBookmarkMutation } from './ItemGraphQL'
 
-
-import { MovieQuery, ShowQuery } from './ItemQuery'
+import Bookmarked from './Bookmarked'
 
 const styles = StyleSheet.create({
 
@@ -43,10 +42,12 @@ const styles = StyleSheet.create({
 })
 
 export const Item = ({ navigation: { state: { params } } }) => {
-  const [executeQuery, { called: queryCalled, loading: itemLoading, data }] = useLazyQuery(
-    params.type === 'movie'
-      ? MovieQuery
-      : ShowQuery,
+  const Query = params.type === 'movie'
+    ? MovieQuery
+    : ShowQuery
+
+  const [executeQuery, { called: queryCalled, loading: itemLoading, data, error }] = useLazyQuery(
+    Query,
     {
       variables: {
         _id: params._id,
@@ -59,17 +60,18 @@ export const Item = ({ navigation: { state: { params } } }) => {
 
     // Execute the query after the component is done navigation
     //InteractionManager.runAfterInteractions(() => {
-    console.info('execute qery')
     if (!queryCalled) {
       // Execute the query
       executeQuery()
+      console.info('executeQuery')
     }
     //})
   })
 
-  const handleToggleBookmarks = () => {
+  const loading = itemLoading || !data
+  const item = loading ? null : data.item
 
-  }
+  console.log(item)
 
   const handleToggleWatched = () => {
 
@@ -78,10 +80,6 @@ export const Item = ({ navigation: { state: { params } } }) => {
   const handleTrailer = () => {
 
   }
-
-  const loading = itemLoading || !data
-  console.log('loading', data)
-  const item = loading ? null : data.item
 
   return (
     <View style={styles.root}>
@@ -94,21 +92,11 @@ export const Item = ({ navigation: { state: { params } } }) => {
 
         <View style={styles.iconsContainer}>
           {!loading && (
-            <IconButton
-              animatable={{
-                animation: 'fadeIn',
-                useNativeDriver: true,
-              }}
-              style={styles.icon}
-              onPress={handleToggleBookmarks}
-              name={item.bookmarked
-                ? 'check'
-                : 'plus'
-              }
-              color={colors.ICON_COLOR}
-              size={dimensions.ITEM_ICONS}>
-              {i18n.t('My List')}
-            </IconButton>
+            <Bookmarked
+              styles={styles}
+              Query={Query}
+              {...item}
+            />
           )}
 
           {!loading && item.type === Constants.TYPE_MOVIE && (

@@ -6,6 +6,7 @@ import transitionConfig from 'modules/transitionConfig'
 
 import HomeScreen from './Home'
 import ItemScreen from './Item'
+import PlayerScreen from './Player'
 
 export const AppNavigator = createStackNavigator({
 
@@ -13,6 +14,7 @@ export const AppNavigator = createStackNavigator({
 
   Item: ItemScreen,
 
+  Player: PlayerScreen,
 
 }, {
   headerMode: 'none',

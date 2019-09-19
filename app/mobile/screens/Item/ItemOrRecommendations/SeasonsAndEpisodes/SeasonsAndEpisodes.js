@@ -113,7 +113,8 @@ export default class SeasonsAndEpisodes extends React.PureComponent {
     return (
       <Episode
         empty={!item}
-        hasAired={item ? item.aired < this.today : false}
+        hasAired={item ? item.firstAired < this.today : false}
+        hasTorrents={item ? item.torrents.length > 0 : false}
         show={show}
         {...item} />
     )
@@ -156,7 +157,7 @@ export default class SeasonsAndEpisodes extends React.PureComponent {
           renderItem={this.renderSeason}
           ItemSeparatorComponent={() => <View style={{ width: dimensions.UNIT }} />}
           ListFooterComponent={() => <View style={{ width: dimensions.UNIT * 4 }} />}
-          keyExtractor={(item, index) => item ? `${item.number}` : `${index}`}
+          keyExtractor={(item, index) => item ? item._id : `${index}`}
           showsVerticalScrollIndicator={false}
           showsHorizontalScrollIndicator={false}
           horizontal
@@ -171,7 +172,7 @@ export default class SeasonsAndEpisodes extends React.PureComponent {
           renderItem={this.renderEpisode}
           ItemSeparatorComponent={() => <View style={{ marginBottom: dimensions.UNIT }} />}
           ListFooterComponent={() => <View style={{ marginBottom: dimensions.UNIT * 4 }} />}
-          keyExtractor={(item, index) => item ? item.key : `${index}`}
+          keyExtractor={(item, index) => item ? item._id : `${index}`}
           showsVerticalScrollIndicator={false}
           showsHorizontalScrollIndicator={false}
         />
