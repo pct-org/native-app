@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import PropTypes from 'prop-types'
 import { StatusBar, StyleSheet, ActivityIndicator, View, BackHandler } from 'react-native'
 import { useMutation, useLazyQuery } from '@apollo/react-hooks'
@@ -9,30 +9,47 @@ import Typography from 'components/Typography'
 import Button from 'components/Button'
 import IconButton from 'components/IconButton'
 import SubSelector from 'components/SubSelector'
+import Orientation from 'react-native-orientation'
 
-import { StartStreamMutation, DownloadQuery } from './DownloadGraphQL'
+import { StartStreamMutation, StopStreamMutation, DownloadQuery } from './DownloadGraphQL'
 import VideoAndControls from './VideoAndControls'
 
 export const Player = ({ navigation: { state: { params: { item, playQuality } } } }) => {
-  const [startStream, { called, loading, data }] = useMutation(
-    StartStreamMutation,
-    {
-      variables: {
-        _id: item._id,
-        type: item.type,
-        quality: playQuality,
-      },
+  useEffect(() => {
+      if (!calledStartStream) {
+        // Start the stream
+        // startStream().then(() => {
+        //   executeQuery()
+        // })
+      }
+
+      return () => {
+        Orientation.lockToPortrait()
+
+        if (!calledStopStream) {
+          // Stop the stream
+          stopStream()
+        }
+      }
     },
+    [],
   )
 
+  const [startStream, { called: calledStartStream, loading, data }] = useMutation(
+    StartStreamMutation, { variables: { _id: item._id, itemType: item.type, quality: playQuality } },
+  )
+
+  const [stopStream, { called: calledStopStream }] = useMutation(
+    StopStreamMutation, { variables: { _id: item._id } },
+  )
+
+  // TODO:: Stop polling when download is 100%
   const [
-    executeQuery,
-    {
-      startPolling,
-      stopPolling,
+    executeQuery, {
       called: queryCalled,
       loading: downloadLoading,
       data: downloadData,
+      stopPolling,
     }] = useLazyQuery(
     DownloadQuery,
     {
@@ -44,25 +61,10 @@ export const Player = ({ navigation: { state: { params: { item, playQuality } } 
     },
   )
 
-  console.log('queryCalled', queryCalled)
+  console.log('queryCalled', queryCalled, stopPolling)
   console.log('data', data, item)
-  if (!called) {
-    // Start the stream
-    startStream().then(() => {
-      executeQuery()
-    })
-  }
 
   const { url, showControls } = {}
-  const { doneBuffering, buffer, downloadSpeedFormatted, activeSub } = {}
-
-  const getItemTitle = () => {
-    if (item.show) {
-      return `${item.show.title} - ${item.title}`
-    }
-
-    return item.title
-  }
 
   const toggleControls = () => {
 
@@ -72,11 +74,56 @@ export const Player = ({ navigation: { state: { params: { item, playQuality } } 
 
   }
 
+  /**
+   * Play a other episode
+   *
+   * @param item
+   * @param torrent
+   */
+  const playItem = (item, torrent) => {
+    // First stop the existing stream
+    if (!calledStopStream) {
+      // Stop the stream
+      stopStream()
+    }
+
+    // Stop the current polling
+    if (stopPolling) {
+      stopPolling()
+    }
+
+    // Start the new stream
+    startStream({
+      variables: {
+        _id: item._id,
+        itemType: item.type,
+        quality: torrent.quality,
+      },
+    }).then(() => {
+      // Start polling the new one
+      executeQuery({
+        variables: {
+          _id: item._id,
+        },
+      })
+    })
+  }
+
   const download = loading || downloadLoading || !downloadData
     ? null
     : downloadData.download
 
-  console.log('download', download)
+  const isDownloadLoading = loading
+                            || downloadLoading
+                            || !downloadData
+                            || download.progress < 3
+
+  console.log('download', isDownloadLoading, download)
+
+  if (download && false) {
+    console.log('URL:', `http://10.0.2.2:3000/watch/${download._id}`)
+    console.log('URL:', `http://localhost:3000/watch/${download._id}`)
+  }
 
   return (
     <View style={styles.listContainer}>
@@ -85,55 +132,54 @@ export const Player = ({ navigation: { state: { params: { item, playQuality } } 
         hidden={false}
         animated />
 
-      {!download && (
+      {isDownloadLoading && (
         <View style={[styles.fullScreen, styles.loadingContainer]}>
 
-          {!download && (
-            <ActivityIndicator size={60} color={'#FFF'} />
-          )}
+          <ActivityIndicator size={60} color={'#FFF'} />
 
           <Typography
             style={{ marginTop: 10, marginBottom: 20, textAlign: 'center' }}
             variant={'title'}>
-            {getItemTitle()}
+            {item && item.show && (
+              `${item.show.title} - ${item.title}`
+            )}
+
+            {item && !item.show && (
+              `${item.title}`
+            )}
           </Typography>
 
-          {/*{buffer !== 0 && !doneBuffering && (*/}
-          {/*  <React.Fragment>*/}
-          {/*    <Typography style={{ marginTop: 10 }}>*/}
-          {/*      {i18n.t('Buffering')}*/}
-          {/*    </Typography>*/}
+          {download && (
+            <React.Fragment>
+              {download && download.status !== 'connecting' && (
+                <Typography style={{ marginTop: 10 }}>
+                  {i18n.t('Buffering')}
+                </Typography>
+              )}
 
-          {/*    <Typography variant={'body2'} style={{ marginTop: 5 }}>*/}
-          {/*      {buffer}% / {downloadSpeedFormatted}*/}
-          {/*    </Typography>*/}
-          {/*  </React.Fragment>*/}
-          {/*)}*/}
+              {!download || download.status === 'connecting' && (
+                <Typography style={{ marginTop: 10 }}>
+                  {download ? i18n.t('Connecting') : i18n.t('Queued')}
+                </Typography>
+              )}
 
-          {/*{buffer === 0 && (*/}
-          {/*  <Typography style={{ marginTop: 10 }}>*/}
-          {/*    {i18n.t('Connecting')}*/}
-          {/*  </Typography>*/}
-          {/*)}*/}
-
-          {!downloadData && (
-            <Typography style={{ marginTop: 10 }}>
-              {i18n.t('Starting')}
-            </Typography>
+              <Typography variant={'body2'} style={{ marginTop: 5 }}>
+                {(download.progress / 3 * 100).toFixed(2)}% / {download.speed}
+              </Typography>
+            </React.Fragment>
           )}
 
         </View>
       )}
 
-      {!loading && (
+      {(!isDownloadLoading || true) && (
         <React.Fragment>
 
           <VideoAndControls
             item={item}
-            url={url}
-            // playItem={this.playItem}
-            showControls={showControls}
-            activeSub={activeSub}>
+            url={`http://10.0.2.2:3000/watch/`}
+            playOtherEpisode={playItem}
+            showControls={showControls}>
 
           </VideoAndControls>
 

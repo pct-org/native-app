@@ -22,14 +22,14 @@ export default class ScrollViewWithStatusBar extends React.PureComponent {
     this.forceUpdateScroll()
   }
 
-  componentWillReceiveProps(nextProps) {
-    const { isFocused } = nextProps
-    const { isFocused: wasFocused } = this.props
-
-    if (isFocused && !wasFocused) {
-      this.forceUpdateScroll()
-    }
-  }
+  // componentWillReceiveProps(nextProps) {
+  //   const { isFocused } = nextProps
+  //   const { isFocused: wasFocused } = this.props
+  //
+  //   if (isFocused && !wasFocused) {
+  //     this.forceUpdateScroll()
+  //   }
+  // }
 
   forceUpdateScroll = () => this.handleScroll({ nativeEvent: { contentOffset: { y: this.yOffset } } }, true)
 

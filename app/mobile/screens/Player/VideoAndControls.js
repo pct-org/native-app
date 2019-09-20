@@ -1,18 +1,11 @@
 import React from 'react'
-import { Dimensions, Slider, StatusBar } from 'react-native'
 import RNVideo from 'react-native-video'
-import { withNavigation } from 'react-navigation'
-import {
-  StyleSheet,
-  TouchableWithoutFeedback,
-  View,
-  ScrollView,
-} from 'react-native'
-
+import { Dimensions, Slider, StatusBar, StyleSheet, TouchableWithoutFeedback, View, ScrollView } from 'react-native'
 import * as Animatable from 'react-native-animatable'
 import Orientation from 'react-native-orientation'
 
 import PlayPauseIcon from './PlayPauseIcon'
+import Episode from '../Item/ItemOrRecommendations/SeasonsAndEpisodes/Episode'
 
 const { height: windowHeight, width: windowWidth } = Dimensions.get('window')
 
@@ -95,6 +88,7 @@ export class VideoAndControls extends React.Component {
         width: windowWidth,
         height: (windowHeight - 20),
         opacity: 0,
+        zIndex: 1000,
       }
     }
 
@@ -102,6 +96,7 @@ export class VideoAndControls extends React.Component {
       width: (windowHeight),
       height: (windowWidth - 20),
       opacity: 0,
+      zIndex: 1000,
     }
   }
 
@@ -142,30 +137,33 @@ export class VideoAndControls extends React.Component {
     })
   }
 
-  /*  getEpisodes = () => {
-   const { item } = this.props
+  getEpisodes = () => {
+    const { item } = this.props
 
-   let episodes = []
+    let episodes = []
 
-   if (item.type === Constants.TYPE_SHOW_EPISODE) {
-   const season = item.seasons.find(season => season.number === item.season)
+    if (item.type === 'episode') {
+      const season = item.show.seasons.find(season => season.number === item.season)
 
-   if (season) {
-   episodes = season.episodes
-   }
-   }
+      if (season) {
+        episodes = season.episodes
+      }
+    }
 
-   return episodes
-   }
+    console.log('episodes', episodes)
 
-   playEpisode = (episode) => {
-   const { playItem, item } = this.props
+    return episodes
+  }
 
-   playItem('other', 'https://download.blender.org/peach/bigbuckbunny_movies/big_buck_bunny_1080p_h264.mov', {
-   ...item,
-   ...episode,
-   })
-   }*/
+  playEpisode = (episode, quality) => {
+    const { playOtherEpisode, item } = this.props
+
+    console.log('playEpisode', episode, quality)
+    // playOtherEpisode('other', 'https://download.blender.org/peach/bigbuckbunny_movies/big_buck_bunny_1080p_h264.mov', {
+    //   ...item,
+    //   ...episode,
+    // })
+  }
 
   handlePauseVideo = () => {
     const { paused } = this.state
@@ -219,7 +217,7 @@ export class VideoAndControls extends React.Component {
 
   toggleControls = (withTimeout = true) => {
     const { showControls } = this.state
-
+    console.log('toggleControls')
     if (this.controlsTimer) {
       clearTimeout(this.controlsTimer)
     }
@@ -256,10 +254,13 @@ export class VideoAndControls extends React.Component {
   }
 
   render() {
-    const { url, item, children, subs, activeSub, forcePaused } = this.props
+    const { url, item, children, forcePaused } = this.props
     const { isPortrait, resizeMode, progress } = this.state
-    const { showControls, paused } = this.state
+    //const { showControls, paused } = this.state
 
+    const showControls = true
+    const paused = true
+    console.log('showControls', showControls)
     return (
       <React.Fragment>
         <StatusBar
@@ -281,15 +282,6 @@ export class VideoAndControls extends React.Component {
             onAudioBecomingNoisy={this.handlePauseVideo}
             onSeek={this.handlePlayVideo}
             repeat={false}
-            textTracks={subs}
-            selectedTextTrack={
-              activeSub
-                ? {
-                  type: 'language',
-                  value: activeSub,
-                }
-                : null
-            }
           />
         )}
 
@@ -306,18 +298,17 @@ export class VideoAndControls extends React.Component {
             paused={paused}
           />
 
-          {children}
 
-          <Slider
-            value={progress}
-            thumbTintColor={'#FFF'}
-            minimumTrackTintColor={'#FFF'}
-            maximumTrackTintColor={'#FFF'}
-            maximumValue={100}
-            step={5}
-            disabled
-            style={styles.slider}
-            onValueChange={this.onSliderPositionChange} />
+          {/*<Slider*/}
+          {/*  value={progress}*/}
+          {/*  thumbTintColor={'#FFF'}*/}
+          {/*  minimumTrackTintColor={'#FFF'}*/}
+          {/*  maximumTrackTintColor={'#FFF'}*/}
+          {/*  maximumValue={100}*/}
+          {/*  step={5}*/}
+          {/*  disabled*/}
+          {/*  style={styles.slider}*/}
+          {/*  onValueChange={this.onSliderPositionChange} />*/}
 
           <ScrollView
             ref={ref => this.scrollViewRef = ref}
@@ -335,28 +326,27 @@ export class VideoAndControls extends React.Component {
               <View style={this.getPlaceholderStyle()} />
             </TouchableWithoutFeedback>
 
-            {/*<ScrollView
-             showsHorizontalScrollIndicator={false}
-             showsVerticalScrollIndicator={false}
-             onScroll={() => this.toggleControls(false)}
-             scrollEventThrottle={10}
-             contentContainerStyle={{
-             flexGrow: 1,
-             }}
-             horizontal>
+            <ScrollView
+              showsHorizontalScrollIndicator={false}
+              showsVerticalScrollIndicator={false}
+              onScroll={() => this.toggleControls(false)}
+              scrollEventThrottle={10}
+              contentContainerStyle={{
+                flexGrow: 1,
+                backgroundColor: 'green',
+              }}
+              horizontal>
 
-             {this.getEpisodes().map(episode => (
-             <Episode
-             variant={'big'}
-             key={episode.key}
-             playItem={() => {
-             //this.playEpisode(episode)
-             }}
-             hasAired={episode.aired < this.today}
-             {...episode} />
-             ))}
+              {this.getEpisodes().map(episode => (
+                <Episode
+                  variant={'player'}
+                  key={episode._id}
+                  playItem={this.playEpisode}
+                  hasAired={episode.firstAired < this.today}
+                  {...episode} />
+              ))}
 
-             </ScrollView>*/}
+            </ScrollView>
 
           </ScrollView>
 
@@ -395,9 +385,10 @@ const styles = StyleSheet.create({
     flex: 1,
     position: 'absolute',
     top: 0,
-    bottom: 0,
     left: 0,
     right: 0,
+
+    backgroundColor: 'purple',
   },
 
   video: {
@@ -419,4 +410,4 @@ const styles = StyleSheet.create({
 })
 
 
-export default withNavigation(VideoAndControls)
+export default VideoAndControls

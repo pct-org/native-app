@@ -10,10 +10,9 @@ import dimensions from 'modules/dimensions'
 import fetchMoreUpdateQuery from 'modules/GraphQL/helpers/fetchMoreUpdateQuery'
 
 import CardSlider from 'components/CardSlider'
-import MainCover from 'components/MainCover'
 import ScrollViewWithStatusBar from 'components/ScrollViewWithStatusBar'
 
-
+import MainCover from './MainCover'
 import MoviesQuery from './MoviesQuery'
 import ShowsSlider from './ShowsSlider'
 import BookmarksSlider from './BookmarksSlider'

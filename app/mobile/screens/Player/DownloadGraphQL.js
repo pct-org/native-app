@@ -5,18 +5,33 @@ export const DownloadQuery = gql`
     download(_id: $_id) {
       _id
       type
-      progress
+      itemType
       status
+      quality
+      progress
+      speed
+      timeRemaining
     }
   }
 `
+
 export const StartStreamMutation = gql`
-  mutation StartStream($_id: String!, $type: String!, $quality: String!) {
-    download: startStream(_id: $_id, type: $type, quality: $quality) {
+  mutation StartStream($_id: String!, $itemType: String!, $quality: String!) {
+    download: startStream(_id: $_id, itemType: $itemType, quality: $quality) {
       _id
       type
-      progress
+      itemType
       status
+      quality
+      progress
+      speed
+      timeRemaining
     }
+  }
+`
+
+export const StopStreamMutation = gql`
+  mutation StopStream($_id: String!) {
+    download: stopStream(_id: $_id)
   }
 `

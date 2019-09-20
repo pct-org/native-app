@@ -29,7 +29,6 @@ export const ShowsSlider = ({ styles, handleGoTo, onPress }) => {
       loading={loading}
       onEndReached={fetchMoreUpdateQuery('shows', data, fetchMore)}
     />
-
   )
 }
 

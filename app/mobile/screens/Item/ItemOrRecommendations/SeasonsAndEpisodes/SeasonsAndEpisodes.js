@@ -31,6 +31,8 @@ export const styles = StyleSheet.create({
 
 })
 
+// TODO:: Refactor
+
 export default class SeasonsAndEpisodes extends React.PureComponent {
 
   static getDerivedStateFromProps(nextProps, state) {

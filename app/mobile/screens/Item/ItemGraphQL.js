@@ -61,6 +61,7 @@ export const ShowQuery = gql`
           _id
           title
           number
+          season
           synopsis
           firstAired
           type

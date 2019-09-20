@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { StyleSheet, Text, ActivityIndicator } from 'react-native'
+import { StyleSheet, Text } from 'react-native'
 import * as Animatable from 'react-native-animatable'
 import { material } from 'react-native-typography'
 import { withNavigation } from 'react-navigation'
@@ -10,7 +10,6 @@ import dimensions from 'modules/dimensions'
 import i18n from 'modules/i18n'
 
 import BaseButton from 'components/BaseButton'
-import Button from 'components/Button'
 import Typography from 'components/Typography'
 import Modal from 'components/Modal'
 
@@ -66,85 +65,79 @@ const styles = StyleSheet.create({
   },
 })
 
-@withNavigation
-export default class QualitySelector extends React.Component {
+export const QualitySelector = ({ visible, playItem, onRequestClose, iconSize, style, item, navigation }) => {
+  const handlePlayTorrent = (torrent) => {
+    const { navigate } = navigation
 
-  static propTypes = {
-    style: PropTypes.object,
-
-    isMyEpisode: PropTypes.bool,
-    fetchingBetter: PropTypes.bool,
-  }
-
-  static defaultProps = {
-    iconSize: dimensions.ICON_PLAY_MEDIUM,
-    style: {},
-
-    isMyEpisode: false,
-  }
-
-  handlePlayTorrent = (torrent) => {
-    const { item, onRequestClose, navigation: { navigate } } = this.props
-
-    console.log('handlePlayTorrent', torrent)
     // Close the selector
     onRequestClose()
 
-    navigate('Player', {
-      playQuality: torrent.quality,
-      item,
-    })
+    if (playItem) {
+      playItem(item, torrent.quality)
+
+    } else {
+      navigate(
+        'Player',
+        {
+          playQuality: torrent.quality,
+          item,
+        },
+      )
+    }
   }
 
-  render() {
-    const { visible, onRequestClose, iconSize } = this.props
-    const { style, item } = this.props
+  return (
+    <React.Fragment>
 
-    return (
-      <React.Fragment>
+      <Icon
+        style={style}
+        name={'play-circle-outline'}
+        color={colors.ICON_COLOR}
+        size={iconSize} />
 
-        <Icon
-          style={style}
-          name={'play-circle-outline'}
-          color={colors.ICON_COLOR}
-          size={iconSize} />
+      <Modal
+        onRequestClose={onRequestClose}
+        visible={visible}>
 
-        <Modal
-          onRequestClose={onRequestClose}
-          visible={visible}>
+        {item.torrents.length === 0 && (
+          <Typography variant={'title'}>
+            {i18n.t('No qualities available!')}
+          </Typography>
+        )}
 
-          {item.torrents.length === 0 && (
-            <Typography variant={'title'}>
-              {i18n.t('No qualities available! Try to search')}
-            </Typography>
-          )}
+        {item.torrents.map((torrent) => (
+          <Animatable.View
+            key={torrent.quality}
+            animation={'fadeIn'}
+            duration={200}
+            useNativeDriver>
+            <BaseButton onPress={() => handlePlayTorrent(torrent)}>
+              <Text style={styles.quality}>
+                {torrent.quality}
+              </Text>
+            </BaseButton>
+          </Animatable.View>
+        ))}
 
-          {item.torrents.map((torrent) => (
-            <Animatable.View
-              key={torrent.quality}
-              animation={'fadeIn'}
-              duration={200}
-              useNativeDriver>
-              <BaseButton onPress={() => this.handlePlayTorrent(torrent)}>
-                <Text style={[
-                  styles.quality,
-                  // {
-                  //   borderBottomColor: item.torrents
-                  //     ? item.torrents[quality].health.color
-                  //     : null,
-                  // },
-                ]}>
-                  {torrent.quality}
-                </Text>
-              </BaseButton>
-            </Animatable.View>
-          ))}
+      </Modal>
 
-        </Modal>
-
-      </React.Fragment>
-    )
-
-  }
-
+    </React.Fragment>
+  )
 }
+
+
+QualitySelector.propTypes = {
+  style: PropTypes.object,
+
+  isMyEpisode: PropTypes.bool,
+  fetchingBetter: PropTypes.bool,
+}
+
+QualitySelector.defaultProps = {
+  iconSize: dimensions.ICON_PLAY_MEDIUM,
+  style: {},
+
+  isMyEpisode: false,
+}
+
+export default withNavigation(QualitySelector)

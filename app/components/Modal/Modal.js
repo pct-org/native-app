@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import PropTypes from 'prop-types'
 import { View, Modal as RnModal, StyleSheet, StatusBar } from 'react-native'
 
@@ -36,48 +36,49 @@ const styles = StyleSheet.create({
 
 })
 
-export default class Modal extends React.Component {
+export const Modal = ({ children, visible, onRequestClose }) => {
+  useEffect(() => {
+    // Update the status bar visibility
+    StatusBar.setHidden(visible)
 
-  static propTypes = {
-    onRequestClose: PropTypes.func,
-    visible: PropTypes.bool,
-  }
+  }, [visible])
 
-  static defaultProps = {
-    onRequestClose: null,
-    visible: false,
-  }
+  return (
+    <RnModal
+      transparent
+      visible={visible}
+      animationType={'fade'}
+      onRequestClose={onRequestClose}
+      hardwareAccelerated>
+      <View style={[styles.root]}>
 
-  render() {
-    const { children, visible, onRequestClose } = this.props
-
-    return (
-      <RnModal
-        transparent
-        visible={visible}
-        animationType={'fade'}
-        onRequestClose={onRequestClose}
-        hardwareAccelerated>
-        <View style={[styles.root]}>
-
-          <StatusBar hidden={visible} />
-
-          <View style={[styles.root, styles.listContainer]}>
-            <View style={styles.closeIcon}>
-              <IconButton
-                onPress={onRequestClose}
-                name={'close'}
-                color={colors.ICON_COLOR}
-                size={40}
-              />
-            </View>
-
-            {children}
+        <View style={[styles.root, styles.listContainer]}>
+          <View style={styles.closeIcon}>
+            <IconButton
+              onPress={onRequestClose}
+              name={'close'}
+              color={colors.ICON_COLOR}
+              size={40}
+            />
           </View>
 
+          {children}
         </View>
-      </RnModal>
-    )
-  }
 
+      </View>
+    </RnModal>
+  )
 }
+
+Modal.propTypes = {
+  onRequestClose: PropTypes.func,
+  visible: PropTypes.bool,
+}
+
+Modal.defaultProps = {
+  onRequestClose: null,
+  visible: false,
+}
+
+
+export default Modal

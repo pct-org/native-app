@@ -14,7 +14,7 @@ import QualitySelector from 'mobile/components/QualitySelector'
 
 export const styles = StyleSheet.create({
 
-  listContainer: {
+  container: {
     display: 'flex',
   },
 
@@ -57,6 +57,8 @@ export const styles = StyleSheet.create({
 
 })
 
+
+// TODO:: Refactor to dump component with useState
 export default class Episode extends React.Component {
 
   static propTypes = {
@@ -104,7 +106,7 @@ export default class Episode extends React.Component {
     const { showQualitySelector } = this.state
 
     return (
-      <View style={styles.listContainer}>
+      <View style={styles.container}>
 
         <View style={styles.posterWithTitle}>
           <View style={styles.posterContainer}>

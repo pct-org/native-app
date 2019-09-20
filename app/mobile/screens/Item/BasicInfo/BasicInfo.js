@@ -12,7 +12,7 @@ import CoverGradient from 'components/CoverGradient'
 import BaseButton from 'components/BaseButton'
 import Typography from 'components/Typography'
 import Image from 'components/Image'
-import QualitySelector from 'components/QualitySelector'
+import QualitySelector from 'mobile/components/QualitySelector'
 
 const styles = StyleSheet.create({
 
