@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { StyleSheet, Text } from 'react-native'
+import { StyleSheet, Text, ToastAndroid } from 'react-native'
 import * as Animatable from 'react-native-animatable'
 import { material } from 'react-native-typography'
 import { withNavigation } from 'react-navigation'
@@ -49,9 +49,11 @@ const styles = StyleSheet.create({
 
   quality: {
     ...material.titleWhiteObject,
-    margin: 8,
+    padding: 8,
+  },
 
-    borderBottomWidth: 1,
+  qualitySize: {
+    ...material.captionWhiteObject,
   },
 
   searchForBetter: {
@@ -120,7 +122,7 @@ export const QualitySelector = ({ variant, visible, playItem, onRequestClose, ic
             useNativeDriver>
             <BaseButton onPress={() => handlePlayTorrent(torrent)}>
               <Text style={styles.quality}>
-                {torrent.quality}
+                {torrent.quality} <Text style={styles.qualitySize}>({torrent.sizeString})</Text>
               </Text>
             </BaseButton>
           </Animatable.View>

@@ -40,7 +40,7 @@ export const styles = StyleSheet.create({
 })
 
 export const Home = ({ navigation }) => {
-  const { loading: moviesLoading, data: moviesData, fetchMore: moviesFetchMore } = useQuery(
+  const { data: moviesData, fetchMore: moviesFetchMore } = useQuery(
     MoviesQuery,
     {
       variables: {
@@ -70,13 +70,10 @@ export const Home = ({ navigation }) => {
 
   const noMoviesYet = !moviesData || !moviesData.movies
 
+  // Filter out bookmarks, when adding then this data is updated
   const movies = noMoviesYet
     ? null
-    : [...moviesData.movies].slice(1)
-
-  const mainCover = noMoviesYet
-    ? null
-    : moviesData.movies[0]
+    : moviesData.movies.filter(movie => !movie.bookmarked)
 
   return (
     <ScrollViewWithStatusBar style={styles.root}>
@@ -84,8 +81,11 @@ export const Home = ({ navigation }) => {
       <MainCover
         onOpen={handleItemOpen}
         onPlay={handleItemOpen}
-        empty={!mainCover}
-        item={mainCover} />
+        empty={noMoviesYet}
+        item={noMoviesYet
+          ? null
+          : movies[0]
+        } />
 
       <BookmarksSlider
         handleGoTo={handleGoTo}
@@ -97,7 +97,7 @@ export const Home = ({ navigation }) => {
         style={styles.section}
         onPress={handleItemOpen}
         title={i18n.t('Movies')}
-        items={noMoviesYet ? [] : movies}
+        items={noMoviesYet ? [] : [...movies].slice(1)}
         goToMore={handleGoTo('Movies')}
         onEndReached={fetchMoreUpdateQuery('movies', moviesData, moviesFetchMore)}
       />

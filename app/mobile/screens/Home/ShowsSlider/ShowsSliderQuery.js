@@ -6,6 +6,7 @@ export default gql`
       _id
       title
       type
+      bookmarked
       images {
         poster {
           thumb

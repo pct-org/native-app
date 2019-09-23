@@ -35,5 +35,6 @@
   "No qualities available! Try to search": "No qualities available! Try to search",
   "more": "more",
   "refresh": "refresh",
-  "Refreshing": "Refreshing"
+  "Refreshing": "Refreshing",
+  "Size: {{size}}": "Size: {{size}}"
 }

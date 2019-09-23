@@ -24,7 +24,7 @@ export const ShowsSlider = ({ styles, handleGoTo, onPress }) => {
       style={styles.section}
       onPress={onPress}
       title={i18n.t('Shows')}
-      items={!data || !data.shows ? [] : data.shows}
+      items={!data || !data.shows ? [] : data.shows.filter(show => !show.bookmarked)}
       goToMore={handleGoTo('Shows')}
       loading={loading}
       onEndReached={fetchMoreUpdateQuery('shows', data, fetchMore)}
