@@ -16,7 +16,7 @@ export const MovieQuery = gql`
       }
       torrents {
         quality
-        url
+        sizeString
       }
       images {
         backdrop {
@@ -72,6 +72,7 @@ export const ShowQuery = gql`
           }
           torrents {
             quality
+            sizeString
           }
         }
       }

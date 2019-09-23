@@ -7,12 +7,12 @@ import * as Animatable from 'react-native-animatable'
 import colors from 'modules/colors'
 import dimensions from 'modules/dimensions'
 
+import QualitySelector from 'mobile/components/QualitySelector'
 import CoverGradient from 'components/CoverGradient'
 import BaseButton from 'components/BaseButton'
 import Typography from 'components/Typography'
 import IconButton from 'components/IconButton'
 import Image from 'components/Image'
-import QualitySelector from 'mobile/components/QualitySelector'
 
 const styles = StyleSheet.create({
 
@@ -95,14 +95,14 @@ export const MainCover = ({ item, empty, onOpen }) => {
                 style={styles.playContainer}
                 useNativeDriver>
 
-                {/*<QualitySelector*/}
-                {/*  item={*/}
-                {/*    empty*/}
-                {/*      ? {}*/}
-                {/*      : item*/}
-                {/*  }*/}
-                {/*  onRequestClose={() => toggleSelecting(false)}*/}
-                {/*  visible={showQualitySelector} />*/}
+                <QualitySelector
+                  item={empty
+                    ? null
+                    : item
+                  }
+                  visible={showQualitySelector}
+                  onRequestClose={() => toggleSelecting(false)}
+                />
 
               </Animatable.View>
             )}

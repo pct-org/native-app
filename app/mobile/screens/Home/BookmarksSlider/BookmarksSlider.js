@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import PropTypes from 'prop-types'
 import { useQuery } from '@apollo/react-hooks'
 
@@ -7,10 +7,10 @@ import fetchMoreUpdateQuery from 'modules/GraphQL/helpers/fetchMoreUpdateQuery'
 
 import CardSlider from 'components/CardSlider'
 
-import BookmarksSliderQuery from './BookmarksSliderQuery'
+import BookmarksSliderQuery, { BookmarkedSubscription } from './BookmarksSliderQuery'
 
-export const BookmarksSlider = ({ styles, handleGoTo, onPress }) => {
-  const { loading, data, fetchMore } = useQuery(
+export const BookmarksSlider = ({ styles, handleGoTo, onPress, ...re }) => {
+  const { loading, data, fetchMore, subscribeToMore } = useQuery(
     BookmarksSliderQuery,
     {
       variables: {
@@ -18,6 +18,38 @@ export const BookmarksSlider = ({ styles, handleGoTo, onPress }) => {
       },
     },
   )
+
+  useEffect(() => {
+    subscribeToMore({
+      document: BookmarkedSubscription,
+      updateQuery: (prev, { subscriptionData }) => {
+        if (!subscriptionData.data) {
+          return prev
+        }
+
+        // Get the updated bookmark
+        const { bookmarked } = subscriptionData.data
+
+        // Is the new bookmarked bookmarked
+        if (bookmarked.bookmarked) {
+          // Add the new bookmark
+          return Object.assign({}, {
+            bookmarks: [bookmarked, ...prev.bookmarks],
+          })
+        } else {
+          // Remove the bookmark
+          return Object.assign({}, {
+            bookmarks: prev.bookmarks.filter(prevBookmark => prevBookmark._id !== bookmarked._id),
+          })
+        }
+      },
+    })
+
+  }, [])
+
+  if (!loading && (!data || !data.bookmarks || data.bookmarks.length === 0)) {
+    return null
+  }
 
   return (
     <CardSlider

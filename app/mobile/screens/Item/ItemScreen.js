@@ -60,18 +60,15 @@ export const Item = ({ navigation: { state: { params } } }) => {
 
     // Execute the query after the component is done navigation
     //InteractionManager.runAfterInteractions(() => {
-    if (!queryCalled) {
-      // Execute the query
-      executeQuery()
-      console.info('executeQuery')
-    }
+    // Execute the query
+    executeQuery()
     //})
-  })
+  }, [])
 
   const loading = itemLoading || !data
   const item = loading ? null : data.item
 
-  console.log(item)
+  console.log('item', error, loading, item)
 
   const handleToggleWatched = () => {
 

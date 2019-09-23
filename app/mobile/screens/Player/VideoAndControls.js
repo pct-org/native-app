@@ -298,17 +298,16 @@ export class VideoAndControls extends React.Component {
             paused={paused}
           />
 
-
-          {/*<Slider*/}
-          {/*  value={progress}*/}
-          {/*  thumbTintColor={'#FFF'}*/}
-          {/*  minimumTrackTintColor={'#FFF'}*/}
-          {/*  maximumTrackTintColor={'#FFF'}*/}
-          {/*  maximumValue={100}*/}
-          {/*  step={5}*/}
-          {/*  disabled*/}
-          {/*  style={styles.slider}*/}
-          {/*  onValueChange={this.onSliderPositionChange} />*/}
+          <Slider
+            value={progress}
+            thumbTintColor={'#FFF'}
+            minimumTrackTintColor={'#FFF'}
+            maximumTrackTintColor={'#FFF'}
+            maximumValue={100}
+            step={5}
+            disabled
+            style={styles.slider}
+            onValueChange={this.onSliderPositionChange} />
 
           <ScrollView
             ref={ref => this.scrollViewRef = ref}
@@ -326,27 +325,27 @@ export class VideoAndControls extends React.Component {
               <View style={this.getPlaceholderStyle()} />
             </TouchableWithoutFeedback>
 
-            <ScrollView
-              showsHorizontalScrollIndicator={false}
-              showsVerticalScrollIndicator={false}
-              onScroll={() => this.toggleControls(false)}
-              scrollEventThrottle={10}
-              contentContainerStyle={{
-                flexGrow: 1,
-                backgroundColor: 'green',
-              }}
-              horizontal>
+            {/*<ScrollView*/}
+            {/*  showsHorizontalScrollIndicator={false}*/}
+            {/*  showsVerticalScrollIndicator={false}*/}
+            {/*  onScroll={() => this.toggleControls(false)}*/}
+            {/*  scrollEventThrottle={10}*/}
+            {/*  contentContainerStyle={{*/}
+            {/*    flexGrow: 1,*/}
+            {/*    backgroundColor: 'green',*/}
+            {/*  }}*/}
+            {/*  horizontal>*/}
 
-              {this.getEpisodes().map(episode => (
-                <Episode
-                  variant={'player'}
-                  key={episode._id}
-                  playItem={this.playEpisode}
-                  hasAired={episode.firstAired < this.today}
-                  {...episode} />
-              ))}
+            {/*  {this.getEpisodes().map(episode => (*/}
+            {/*    <Episode*/}
+            {/*      variant={'player'}*/}
+            {/*      key={episode._id}*/}
+            {/*      playItem={this.playEpisode}*/}
+            {/*      hasAired={episode.firstAired < this.today}*/}
+            {/*      {...episode} />*/}
+            {/*  ))}*/}
 
-            </ScrollView>
+            {/*</ScrollView>*/}
 
           </ScrollView>
 

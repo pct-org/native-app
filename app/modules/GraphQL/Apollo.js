@@ -3,7 +3,10 @@ import FSStorage from 'redux-persist-fs-storage'
 import { InMemoryCache } from 'apollo-cache-inmemory'
 import { CachePersistor } from 'apollo-cache-persist'
 import { ApolloClient } from 'apollo-client'
+import { split } from 'apollo-link'
 import { HttpLink } from 'apollo-link-http'
+import { WebSocketLink } from 'apollo-link-ws'
+import { getMainDefinition } from 'apollo-utilities'
 
 const SCHEMA_VERSION = '1' // Must be a string.
 const SCHEMA_VERSION_KEY = 'apollo-schema-version'
@@ -57,20 +60,34 @@ export default async() => {
   return new ApolloClient({
     cache,
 
-    link: new HttpLink({
-      uri: 'http://10.0.2.2:3000/graphql',
-    }),
+    link: split(
+      // split based on operation type
+      ({ query }) => {
+        const definition = getMainDefinition(query)
+
+        return (
+          definition.kind === 'OperationDefinition' &&
+          definition.operation === 'subscription'
+        )
+      },
+      new WebSocketLink({
+        uri: 'ws://10.0.2.2:3000/graphql',
+      }),
+      new HttpLink({
+        uri: 'http://10.0.2.2:3000/graphql',
+      }),
+    ),
 
     connectToDevTools: __DEV__,
 
     name: 'Native App',
     defaultOptions: {
       watchQuery: {
-        fetchPolicy: 'network',
+        fetchPolicy: 'network-only',
         errorPolicy: 'all',
       },
       query: {
-        fetchPolicy: 'network',
+        fetchPolicy: 'network-only',
         errorPolicy: 'all',
       },
       mutate: {

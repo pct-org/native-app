@@ -65,7 +65,7 @@ const styles = StyleSheet.create({
   },
 })
 
-export const QualitySelector = ({ visible, playItem, onRequestClose, iconSize, style, item, navigation }) => {
+export const QualitySelector = ({ variant, visible, playItem, onRequestClose, iconSize, style, item, navigation }) => {
   const handlePlayTorrent = (torrent) => {
     const { navigate } = navigation
 
@@ -86,6 +86,13 @@ export const QualitySelector = ({ visible, playItem, onRequestClose, iconSize, s
     }
   }
 
+  const handleDownloadTorrent = (torrent) => {
+    // Close the selector
+    onRequestClose()
+
+    // TODO:: Start download mutation
+  }
+
   return (
     <React.Fragment>
 
@@ -99,13 +106,13 @@ export const QualitySelector = ({ visible, playItem, onRequestClose, iconSize, s
         onRequestClose={onRequestClose}
         visible={visible}>
 
-        {item.torrents.length === 0 && (
+        {(!item || !item.torrents || item.torrents.length === 0) && (
           <Typography variant={'title'}>
             {i18n.t('No qualities available!')}
           </Typography>
         )}
 
-        {item.torrents.map((torrent) => (
+        {item && item.torrents && item.torrents.map((torrent) => (
           <Animatable.View
             key={torrent.quality}
             animation={'fadeIn'}
@@ -128,16 +135,14 @@ export const QualitySelector = ({ visible, playItem, onRequestClose, iconSize, s
 
 QualitySelector.propTypes = {
   style: PropTypes.object,
-
-  isMyEpisode: PropTypes.bool,
   fetchingBetter: PropTypes.bool,
+  variant: PropTypes.oneOf(['play', 'download']),
 }
 
 QualitySelector.defaultProps = {
   iconSize: dimensions.ICON_PLAY_MEDIUM,
   style: {},
-
-  isMyEpisode: false,
+  variant: 'play',
 }
 
 export default withNavigation(QualitySelector)

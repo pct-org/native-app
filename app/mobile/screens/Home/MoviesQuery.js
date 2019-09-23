@@ -9,6 +9,15 @@ export default gql`
       genres
       synopsis
       type
+      bookmarked
+      watched {
+        complete
+        progress
+      }
+      torrents {
+        quality
+        sizeString
+      }
       images {
         backdrop {
           high

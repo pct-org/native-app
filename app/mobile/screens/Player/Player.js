@@ -43,7 +43,6 @@ export const Player = ({ navigation: { state: { params: { item, playQuality } } 
     StopStreamMutation, { variables: { _id: item._id } },
   )
 
-  // TODO:: Stop polling when download is 100%
   const [
     executeQuery, {
       called: queryCalled,
@@ -117,6 +116,11 @@ export const Player = ({ navigation: { state: { params: { item, playQuality } } 
                             || downloadLoading
                             || !downloadData
                             || download.progress < 3
+
+  if (download && download.progress === 100) {
+    // Stop polling when progress is 100
+    stopPolling()
+  }
 
   console.log('download', isDownloadLoading, download)
 

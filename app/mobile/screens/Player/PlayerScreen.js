@@ -79,20 +79,6 @@ export default class VideoPlayer extends React.Component {
     BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress)
   }
 
-  handleBackPress = () => {
-    // const { showSubSelector } = this.state
-    //
-    // if (showSubSelector) {
-    //   this.setState({
-    //     showSubSelector: false,
-    //   })
-    //
-    //   return true
-    // }
-
-    return false
-  }
-
   handleTorrentStatus = (status) => {
     const nProgress = parseFloat(status.progress)
 
