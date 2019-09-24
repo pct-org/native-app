@@ -20,7 +20,9 @@ export default class Typography extends Component {
       'display5',
       'headline',
       'title',
-      'subheading',
+      'seasonTitle',
+      'episodeTitle',
+      'episodeDescription',
       'body2',
       'body1',
       'caption',
@@ -30,6 +32,7 @@ export default class Typography extends Component {
     color: PropTypes.oneOf([
       'white',
       'black',
+      'primary',
     ]),
 
     emphasis: PropTypes.oneOf([
@@ -62,14 +65,14 @@ export default class Typography extends Component {
   }
 
   static defaultProps = {
-    emphasis  : 'high',
-    color     : 'white',
-    variant   : 'default',
+    emphasis: 'high',
+    color: 'white',
+    variant: 'default',
     fontWeight: 'regular',
-    textProps : {},
-    component : null,
-    children  : null,
-    style     : null,
+    textProps: {},
+    component: null,
+    children: null,
+    style: null,
   }
 
   static getTextStyle = ({

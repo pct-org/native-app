@@ -26,17 +26,20 @@ export const styles = StyleSheet.create({
     paddingRight: dimensions.UNIT * 2,
     paddingTop: dimensions.UNIT * 2,
     marginBottom: dimensions.UNIT * 2,
+    marginLeft: dimensions.UNIT * 2,
   },
 
   buttonActive: {
-    borderTopWidth: 2,
+    borderTopWidth: 4,
     borderTopColor: colors.ITEM_ACTIVE_TAB_INDICATOR,
   },
 
 })
 
 export const ItemOrRecommendations = ({ item }) => (
-  <Animatable.View animation={'fadeIn'} useNativeDriver>
+  <Animatable.View
+    animation={'fadeIn'}
+    useNativeDriver>
     <View style={styles.buttonContainer}>
       <TextButton
         onPress={() => {}}

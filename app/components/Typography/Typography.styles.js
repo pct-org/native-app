@@ -48,11 +48,6 @@ export default {
     letterSpacing: 0.25,
   },
 
-  subheading: {
-    fontSize: makeFontSize(16),
-    lineHeight: 24,
-  },
-
   body2: {
     fontSize: makeFontSize(12),
     lineHeight: 15,
@@ -73,6 +68,24 @@ export default {
   button: {
     fontSize: makeFontSize(14),
     lineHeight: 20,
+  },
+
+
+  seasonTitle: {
+    fontSize: makeFontSize(12),
+    lineHeight: 16,
+    letterSpacing: 0.4,
+  },
+
+  episodeTitle: {
+    fontSize: makeFontSize(14),
+    lineHeight: 24,
+  },
+
+  episodeDescription: {
+    fontSize: makeFontSize(12),
+    lineHeight: 15,
+    letterSpacing: 0.21,
   },
 
   fontFamilyThin: {
@@ -101,6 +114,10 @@ export default {
 
   fontFamilyBlack: {
     fontFamily: `${fontName}-Black`,
+  },
+
+  colorPrimary: {
+    color: colors.PRIMARY_COLOR,
   },
 
   colorWhite: {

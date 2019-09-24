@@ -108,7 +108,7 @@ export const MyEpisode = ({ item, style, empty, ...rest }) => {
                 ellipsizeMode: 'tail',
               }}
               fontWeight={'medium'}
-              variant={'subheading'}>
+              variant={'episodeTitle'}>
               {`${item.show.title}: ${item.title}`}
             </Typography>
           </View>

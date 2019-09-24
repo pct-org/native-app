@@ -176,12 +176,12 @@ export const Player = ({ navigation: { state: { params: { item, playQuality } } 
         </View>
       )}
 
-      {(!isDownloadLoading || true) && (
+      {(!isDownloadLoading && false) && (
         <React.Fragment>
 
           <VideoAndControls
             item={item}
-            url={`http://10.0.2.2:3000/watch/`}
+            url={`http://10.0.2.2:3000/watch/${download._id}`}
             playOtherEpisode={playItem}
             showControls={showControls}>
 

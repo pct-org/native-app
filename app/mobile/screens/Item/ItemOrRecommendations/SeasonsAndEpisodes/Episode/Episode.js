@@ -46,8 +46,8 @@ export const styles = StyleSheet.create({
   },
 
   summary: {
-    marginTop: dimensions.UNIT / 2,
-    marginBottom: dimensions.UNIT / 2,
+    marginTop: dimensions.UNIT,
+    marginBottom: dimensions.UNIT * 2,
   },
 
   image: {
@@ -140,7 +140,7 @@ export default class Episode extends React.Component {
 
           <Typography
             style={styles.title}
-            variant={'subheading'}
+            variant={'episodeTitle'}
             fontWeight={'bold'}>
             {`${number}. ${title}`}
           </Typography>
@@ -148,7 +148,7 @@ export default class Episode extends React.Component {
 
         <Typography
           style={styles.summary}
-          variant={'body2'}>
+          variant={'episodeDescription'}>
           {synopsis}
         </Typography>
 

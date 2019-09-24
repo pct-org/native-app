@@ -39,8 +39,8 @@ export default {
   MY_EPISODE_CARD_WIDTH: ((300 - 40) / 3.1) * 2.5,
   MY_EPISODE_CARD_HEIGHT: (((500 - StatusBar.currentHeight) / 4) * fontScale) - UNIT,
 
-  EPISODE_CARD_WIDTH: 150,
-  EPISODE_CARD_HEIGHT: 100,
+  EPISODE_CARD_WIDTH: 130,
+  EPISODE_CARD_HEIGHT: 85,
 
   ICON_PLAY_SMALL: Platform.isTV ? 30 : 45,  // My Episode
   ICON_PLAY_MEDIUM: 50, // Home, Item

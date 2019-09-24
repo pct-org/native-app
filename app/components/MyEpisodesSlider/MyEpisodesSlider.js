@@ -159,7 +159,7 @@ export const MyEpisodesSlider = ({ loading, title, items, onPress, style, onRefr
           {!refreshing && items.length === 0 && (
             <Typography
               style={styles.noItems}
-              variant={'subheading'}>
+              variant={'episodeTitle'}>
               {i18n.t('Episodes aired within the last 7 days from shows you follow will appear here')}
             </Typography>
           )}

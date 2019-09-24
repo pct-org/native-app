@@ -21,11 +21,8 @@ export const styles = {
   },
 }
 
-export class CardList extends React.Component {
-
-  handleItemOpen = (item) => {
-    const { handleItemOpen, navigation } = this.props
-
+export const CardList = ({ items, handleItemOpen, navigation, ...props }) => {
+  const handleItemPress = (item) => {
     if (handleItemOpen) {
       handleItemOpen(item)
 
@@ -34,40 +31,35 @@ export class CardList extends React.Component {
     }
   }
 
-  renderCard = ({ item }) => (
+  const renderCard = ({ item }) => (
     <View style={{ margin: dimensions.UNIT / 2 }}>
       <Card
         variant={'medium'}
         item={item}
-        onPress={() => this.handleItemOpen(item)}
+        onPress={() => handleItemPress(item)}
       />
     </View>
   )
 
-  render() {
-    const { items, handleItemOpen, ...props } = this.props
-
-    return (
-      <FlatList
-        removeClippedSubviews
-        data={items}
-        contentContainerStyle={styles.container}
-        numColumns={useCorrect(3, 4, 6)}
-        initialNumToRender={12}
-        windowSize={32}
-        columnWrapperStyle={{
-          margin: dimensions.UNIT / 2,
-        }}
-        renderItem={this.renderCard}
-        keyExtractor={(item, index) => `${item.id}-${index}`}
-        ListFooterComponent={() => <View style={{ marginBottom: dimensions.UNIT * 2 }} />}
-        showsHorizontalScrollIndicator={false}
-        showsVerticalScrollIndicator={false}
-        {...props}
-      />
-    )
-  }
-
+  return (
+    <FlatList
+      removeClippedSubviews
+      data={items}
+      contentContainerStyle={styles.container}
+      numColumns={useCorrect(3, 4, 6)}
+      initialNumToRender={12}
+      windowSize={32}
+      columnWrapperStyle={{
+        margin: dimensions.UNIT / 2,
+      }}
+      renderItem={renderCard}
+      keyExtractor={(item, index) => `${item.id}-${index}`}
+      ListFooterComponent={() => <View style={{ marginBottom: dimensions.UNIT * 2 }} />}
+      showsHorizontalScrollIndicator={false}
+      showsVerticalScrollIndicator={false}
+      {...props}
+    />
+  )
 }
 
 export default withNavigation(CardList)

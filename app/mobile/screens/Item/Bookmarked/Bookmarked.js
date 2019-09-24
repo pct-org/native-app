@@ -1,5 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import { StyleSheet } from 'react-native'
 import { useMutation } from '@apollo/react-hooks'
 
 import colors from 'modules/colors'
@@ -10,7 +11,17 @@ import IconButton from 'components/IconButton'
 
 import { AddBookmarkMutation, RemoveBookmarkMutation } from './BookmarkedGraphQL'
 
-export const Bookmarked = ({ _id, type, bookmarked, Query, styles }) => {
+const styles = StyleSheet.create({
+
+  icon: {
+    minWidth: 80,
+    textAlign: 'center',
+    marginLeft: dimensions.UNIT,
+  },
+
+})
+
+export const Bookmarked = ({ _id, type, bookmarked }) => {
   const options = {
     variables: {
       _id,
@@ -49,13 +60,21 @@ export const Bookmarked = ({ _id, type, bookmarked, Query, styles }) => {
         ? 'check'
         : 'plus'
       }
-      color={colors.ICON_COLOR}
+      color={bookmarked
+        ? colors.ICON_ACTIVE
+        : colors.ICON_COLOR
+      }
       size={dimensions.ITEM_ICONS}>
       {i18n.t('My List')}
     </IconButton>
   )
 }
-Bookmarked.propTypes = {}
+
+Bookmarked.propTypes = {
+  _id: PropTypes.string.isRequired,
+  type: PropTypes.oneOf(['show', 'movie']).isRequired,
+  bookmarked: PropTypes.bool.isRequired,
+}
 
 Bookmarked.defaultProps = {}
 

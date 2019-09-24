@@ -135,7 +135,9 @@ export default class SeasonsAndEpisodes extends React.PureComponent {
 
         <Typography
           style={styles.seasonNumber}
-          variant={'caption'}
+          color={activeSeason === item.number ? 'primary' : 'white'}
+          fontWeight={activeSeason === item.number ? 'bold' : 'regular'}
+          variant={'seasonTitle'}
           emphasis={activeSeason === item.number ? 'high' : 'medium'}>
           {i18n.t('Season {{number}}', { number: item.number })}
         </Typography>

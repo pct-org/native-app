@@ -10,6 +10,8 @@ export const MovieQuery = gql`
       synopsis
       type
       bookmarked
+      downloaded
+      downloading
       watched {
         complete
         progress
@@ -65,6 +67,12 @@ export const ShowQuery = gql`
           synopsis
           firstAired
           type
+          downloaded
+          downloading
+          watched {
+            complete
+            progress
+          }
           images {
             poster {
               thumb

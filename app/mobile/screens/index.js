@@ -7,6 +7,7 @@ import transitionConfig from 'modules/transitionConfig'
 import HomeScreen from './Home'
 import ItemScreen from './Item'
 import PlayerScreen from './Player'
+import ModeScreen from './Mode'
 
 export const AppNavigator = createStackNavigator({
 
@@ -15,6 +16,12 @@ export const AppNavigator = createStackNavigator({
   Item: ItemScreen,
 
   Player: PlayerScreen,
+
+  Movies: ({ ...props }) => <ModeScreen mode={'movies'} {...props} />,
+
+  Shows: ({ ...props }) => <ModeScreen mode={'shows'} {...props} />,
+
+  MyList: ({ ...props }) => <ModeScreen mode={'bookmarks'} {...props} />,
 
 }, {
   headerMode: 'none',

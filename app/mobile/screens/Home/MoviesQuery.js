@@ -2,7 +2,7 @@ import gql from 'graphql-tag'
 
 export default gql`
   query movies($offset: Float!) {
-    movies(limit: 25, offset: $offset, noBookmarks: true, noWatched: true) {
+    movies(limit: 25, offset: $offset, noWatched: true) {
       _id
       __typename
       title
