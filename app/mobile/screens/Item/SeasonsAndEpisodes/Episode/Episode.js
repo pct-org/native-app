@@ -101,7 +101,7 @@ export default class Episode extends React.Component {
     const airs = new Date()
     airs.setTime(firstAired)
 
-    return `${airs.getDate()}-${(airs.getMonth() + 1)}-${airs.getFullYear()}`
+    return `${`0${airs.getDate()}`.slice(-2)}-${`0${(airs.getMonth() + 1)}`.slice(-2)}-${airs.getFullYear()}`
   }
 
   render() {

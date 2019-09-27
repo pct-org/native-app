@@ -12,16 +12,16 @@ import Container from '../Container'
 export const styles = StyleSheet.create({
 
   root: {
-    height: dimensions.CARD_HEIGHT,
-    width: dimensions.CARD_WIDTH,
     borderRadius: dimensions.BORDER_RADIUS,
     overflow: 'hidden',
     margin: dimensions.UNIT,
+    height: dimensions.CARD_HEIGHT,
+    width: dimensions.CARD_WIDTH,
   },
 
 })
 
-export const Card = ({ item, variant, empty, style, ...rest }) => (
+export const Card = ({ item, empty, style, ...rest }) => (
   <Container
     elevation={1}
     style={[styles.root, style]}>
@@ -50,18 +50,12 @@ export const Card = ({ item, variant, empty, style, ...rest }) => (
 Card.propTypes = {
   item: PropTypes.object,
   empty: PropTypes.bool,
-  variant: PropTypes.oneOf([
-    'default',
-    'medium',
-    'small',
-  ]),
   style: PropTypes.object,
 }
 
 Card.defaultProps = {
   item: null,
   empty: false,
-  variant: 'default',
   style: null,
   component: BaseButton,
 }

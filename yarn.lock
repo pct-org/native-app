@@ -6719,6 +6719,11 @@ react-native-video@5.0.2:
     prop-types "^15.5.10"
     shaka-player "^2.4.4"
 
+react-native-vlc-player@^0.2.0:
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/react-native-vlc-player/-/react-native-vlc-player-0.2.0.tgz#a80150bbaf5507d87118396ebbc114d5b27d7341"
+  integrity sha512-u/0q+tHCWdnPX/hq+cTLAhrIqQ22Bn/+4Q4H+TFCCfrDTFw9Z9jxasMXJOHeqwjLrZBtNO/CHw+Nj6RibjsuJQ==
+
 "react-native-xmlrpc@github:nguyenphuquang/react-native-xmlrpc":
   version "0.0.1"
   resolved "https://codeload.github.com/nguyenphuquang/react-native-xmlrpc/tar.gz/381086bb70b93026d6f77051555594bc0f6c0129"

@@ -1,12 +1,15 @@
 const PRIMARY_COLOR_200 = '#FECC91'
+const PRIMARY_COLOR_500 = '#FB9B42'
 
 const BACKGROUND = '#202125'
 
 export default {
 
-
   PRIMARY_COLOR_200,
+  PRIMARY_COLOR_500,
   BACKGROUND,
+
+  BACKGROUND_OVERLAY: '#000000',
 
   ICON: {
     WHITE: '#ffffff',

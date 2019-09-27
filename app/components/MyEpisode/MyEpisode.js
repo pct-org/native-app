@@ -102,7 +102,6 @@ export const MyEpisode = ({ item, style, empty, ...rest }) => {
                 style={styles.episodeNumberContainer}
                 useNativeDriver>
                 <Typography
-                  fontWeight={'medium'}
                   variant={'caption'}>
                   {getEpisodeNumber()}
                 </Typography>
@@ -117,7 +116,6 @@ export const MyEpisode = ({ item, style, empty, ...rest }) => {
                     numberOfLines: 1,
                     ellipsizeMode: 'tail',
                   }}
-                  fontWeight={'high'}
                   variant={'caption'}>
                   {`${item.show.title}: ${item.title}`}
                 </Typography>

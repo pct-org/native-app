@@ -18,9 +18,9 @@ export const Player = ({ navigation: { state: { params: { item, playQuality } } 
   useEffect(() => {
       if (!calledStartStream) {
         // Start the stream
-        // startStream().then(() => {
-        //   executeQuery()
-        // })
+        startStream().then(() => {
+          executeQuery()
+        })
       }
 
       return () => {
@@ -60,10 +60,7 @@ export const Player = ({ navigation: { state: { params: { item, playQuality } } 
     },
   )
 
-  console.log('queryCalled', queryCalled, stopPolling)
-  console.log('data', data, item)
-
-  const { url, showControls } = {}
+  const { showControls } = {}
 
   const toggleControls = () => {
 
@@ -122,12 +119,11 @@ export const Player = ({ navigation: { state: { params: { item, playQuality } } 
     stopPolling()
   }
 
-  console.log('download', isDownloadLoading, download)
-
-  if (download && false) {
-    console.log('URL:', `http://10.0.2.2:3000/watch/${download._id}`)
-    console.log('URL:', `http://localhost:3000/watch/${download._id}`)
-  }
+  // if (download) {
+  //   console.log('URL:', `http://10.0.2.2:3000/watch/${download._id}`)
+  //   console.log('URL:', `http://192.168.1.67:3000/watch/${download._id}`)
+  //   console.log('URL:', `http://localhost:3000/watch/${download._id}`)
+  // }
 
   return (
     <View style={styles.listContainer}>
@@ -136,52 +132,52 @@ export const Player = ({ navigation: { state: { params: { item, playQuality } } 
         hidden={false}
         animated />
 
-      {isDownloadLoading && (
-        <View style={[styles.fullScreen, styles.loadingContainer]}>
+      {/*{isDownloadLoading && (*/}
+      {/*  <View style={[styles.fullScreen, styles.loadingContainer]}>*/}
 
-          <ActivityIndicator size={60} color={'#FFF'} />
+      {/*    <ActivityIndicator size={60} color={'#FFF'} />*/}
 
-          <Typography
-            style={{ marginTop: 10, marginBottom: 20, textAlign: 'center' }}
-            variant={'title'}>
-            {item && item.show && (
-              `${item.show.title} - ${item.title}`
-            )}
+      {/*    <Typography*/}
+      {/*      style={{ marginTop: 10, marginBottom: 20, textAlign: 'center' }}*/}
+      {/*      variant={'title'}>*/}
+      {/*      {item && item.show && (*/}
+      {/*        `${item.show.title} - ${item.title}`*/}
+      {/*      )}*/}
 
-            {item && !item.show && (
-              `${item.title}`
-            )}
-          </Typography>
+      {/*      {item && !item.show && (*/}
+      {/*        `${item.title}`*/}
+      {/*      )}*/}
+      {/*    </Typography>*/}
 
-          {download && (
-            <React.Fragment>
-              {download && download.status !== 'connecting' && (
-                <Typography style={{ marginTop: 10 }}>
-                  {i18n.t('Buffering')}
-                </Typography>
-              )}
+      {/*    {download && (*/}
+      {/*      <React.Fragment>*/}
+      {/*        {download && download.status !== 'connecting' && (*/}
+      {/*          <Typography style={{ marginTop: 10 }}>*/}
+      {/*            {i18n.t('Buffering')}*/}
+      {/*          </Typography>*/}
+      {/*        )}*/}
 
-              {!download || download.status === 'connecting' && (
-                <Typography style={{ marginTop: 10 }}>
-                  {download ? i18n.t('Connecting') : i18n.t('Queued')}
-                </Typography>
-              )}
+      {/*        {!download || download.status === 'connecting' && (*/}
+      {/*          <Typography style={{ marginTop: 10 }}>*/}
+      {/*            {download ? i18n.t('Connecting') : i18n.t('Queued')}*/}
+      {/*          </Typography>*/}
+      {/*        )}*/}
 
-              <Typography variant={'body2'} style={{ marginTop: 5 }}>
-                {(download.progress / 3 * 100).toFixed(2)}% / {download.speed}
-              </Typography>
-            </React.Fragment>
-          )}
+      {/*        <Typography variant={'body2'} style={{ marginTop: 5 }}>*/}
+      {/*          {(download.progress / 3 * 100).toFixed(2)}% / {download.speed}*/}
+      {/*        </Typography>*/}
+      {/*      </React.Fragment>*/}
+      {/*    )}*/}
 
-        </View>
-      )}
+      {/*  </View>*/}
+      {/*)}*/}
 
-      {(!isDownloadLoading && false) && (
+      {(!isDownloadLoading) && (
         <React.Fragment>
 
           <VideoAndControls
             item={item}
-            url={`http://10.0.2.2:3000/watch/${download._id}`}
+            url={`http://192.168.1.67:3000/watch/${download._id}`}
             playOtherEpisode={playItem}
             showControls={showControls}>
 

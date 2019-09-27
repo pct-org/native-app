@@ -6,6 +6,7 @@ import android.content.res.Configuration;
 import android.os.StrictMode;
 
 import com.facebook.react.ReactApplication;
+import com.ghondar.vlc.VlcPlayerPackage;
 import com.reactnativecommunity.asyncstorage.AsyncStoragePackage;
 import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;
 
@@ -44,6 +45,7 @@ public class MainApplication extends Application implements ReactApplication {
       List<ReactPackage> packages = new LinkedList<ReactPackage>(
           Arrays.<ReactPackage>asList(
               new MainReactPackage(),
+              new VlcPlayerPackage(),
               new AsyncStoragePackage(),
               new RNGestureHandlerPackage(),
               new SplashScreenReactPackage(),
@@ -52,7 +54,6 @@ public class MainApplication extends Application implements ReactApplication {
               new VectorIconsPackage(),
               new RNFSPackage(),
               new FPStaticServerPackage(),
-              new OrientationPackage(),
               new ReactVideoPackage(),
               new LinearGradientPackage()
           )

@@ -1,9 +1,10 @@
 import React, { useEffect } from 'react'
 import PropTypes from 'prop-types'
-import { View, Modal as RnModal, StyleSheet, StatusBar } from 'react-native'
+import { View, Modal as RnModal, StyleSheet } from 'react-native'
 
 import colors from 'modules/colors'
 import dimensions from 'modules/dimensions'
+import StatusBarController from 'modules/StatusBarController'
 
 import IconButton from '../IconButton'
 
@@ -23,7 +24,7 @@ const styles = StyleSheet.create({
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: colors.BACKGROUND,
+    backgroundColor: colors.BACKGROUND_OVERLAY,
     zIndex: 1100,
   },
 
@@ -39,7 +40,7 @@ const styles = StyleSheet.create({
 export const Modal = ({ children, visible, onRequestClose }) => {
   useEffect(() => {
     // Update the status bar visibility
-    StatusBar.setHidden(visible)
+    StatusBarController.setHidden(visible)
 
   }, [visible])
 
@@ -57,7 +58,7 @@ export const Modal = ({ children, visible, onRequestClose }) => {
             <IconButton
               onPress={onRequestClose}
               name={'close'}
-              color={colors.ICON_COLOR}
+              color={'primary'}
               size={40}
             />
           </View>

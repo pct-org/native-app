@@ -100,7 +100,7 @@ export const MainCover = ({ empty, item, handleItemOpen }) => {
     <View style={styles.mainContainer}>
       <BaseButton onPress={() => {
         if (item && item.type === Constants.TYPE_MOVIE) {
-          // toggleSelecting(!showQualitySelector)
+           toggleSelecting(!showQualitySelector)
         }
       }}>
         <View style={styles.backgroundContainer}>
@@ -143,46 +143,51 @@ export const MainCover = ({ empty, item, handleItemOpen }) => {
           empty={empty}
           item={item}
           onPress={() => {
-            if (handleItemOpen) {
+            if (!empty && handleItemOpen) {
               handleItemOpen(item)
             }
           }}
         />
 
-        <View style={styles.info}>
-          <Typography
-            style={styles.title}
-            variant={'headline5'}
-            textProps={{
-              width: '100%',
-              numberOfLines: 4,
-              ellipsizeMode: 'tail',
-            }}>
-            {empty ? '' : item.title}
-          </Typography>
+        {!empty && (
+          <Animatable.View
+            animation={'fadeIn'}
+            style={styles.info}
+            useNativeDriver>
+            <Typography
+              style={styles.title}
+              variant={'headline5'}
+              textProps={{
+                width: '100%',
+                numberOfLines: 4,
+                ellipsizeMode: 'tail',
+              }}>
+              {empty ? '' : item.title}
+            </Typography>
 
-          <View style={styles.likedContainer}>
-            <Icon
-              style={styles.likedIcon}
-              name={'heart'}
-              color={'01dp'}
-              size={24} />
+            <View style={styles.likedContainer}>
+              <Icon
+                style={styles.likedIcon}
+                name={'heart'}
+                color={'01dp'}
+                size={24} />
+
+              <Typography
+                style={styles.genres}
+                variant={'caption'}
+                emphasis={'medium'}>
+                {empty ? '' : `${item.rating.percentage}%`}
+              </Typography>
+            </View>
 
             <Typography
               style={styles.genres}
               variant={'caption'}
               emphasis={'medium'}>
-              {empty ? '' : `${item.rating.percentage}%`}
+              {genres.join(' - ')}
             </Typography>
-          </View>
-
-          <Typography
-            style={styles.genres}
-            variant={'caption'}
-            emphasis={'medium'}>
-            {genres.join(' - ')}
-          </Typography>
-        </View>
+          </Animatable.View>
+        )}
       </View>
     </View>
   )

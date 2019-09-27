@@ -2,8 +2,6 @@ export const fontName = 'Quicksand'
 
 import colors from 'modules/colors'
 
-const makeFontSize = (size) => size
-
 export default {
 
   root: {},
@@ -119,6 +117,10 @@ export default {
 
   colorPrimary: {
     color: colors.PRIMARY_COLOR_200,
+  },
+
+  colorPrimaryDark: {
+    color: colors.PRIMARY_COLOR_500,
   },
 
   colorWhite: {

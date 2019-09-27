@@ -12,7 +12,6 @@ import dimensions from 'modules/dimensions'
 import ScrollViewWithStatusBar from 'components/ScrollViewWithStatusBar'
 import MainCover from 'mobile/components/MainCover'
 
-import ItemOrRecommendations from './ItemOrRecommendations'
 import { MovieQuery, ShowQuery, AddBookmarkMutation } from './ItemGraphQL'
 
 import Bookmarked from './Bookmarked'

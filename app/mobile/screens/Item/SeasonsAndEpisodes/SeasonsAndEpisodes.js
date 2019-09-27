@@ -132,7 +132,6 @@ export default class SeasonsAndEpisodes extends React.PureComponent {
     return (
       <View style={styles.seasonContainer}>
         <Card
-          variant={'small'}
           onPress={() => this.handleSeasonChange(item)}
           item={item}
         />

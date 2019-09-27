@@ -187,6 +187,7 @@ android {
 }
 
 dependencies {
+    implementation project(':react-native-vlc-player')
     implementation project(':@react-native-community_async-storage')
     implementation project(':react-native-gesture-handler')
     implementation project(':react-native-splash-screen')

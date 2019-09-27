@@ -1,6 +1,7 @@
+import Card from 'components/Card/Card'
 import React from 'react'
 import PropTypes from 'prop-types'
-import { StyleSheet, Text, ToastAndroid } from 'react-native'
+import { StyleSheet, Text, ToastAndroid, View } from 'react-native'
 import * as Animatable from 'react-native-animatable'
 import { material } from 'react-native-typography'
 import { withNavigation } from 'react-navigation'
@@ -11,6 +12,7 @@ import i18n from 'modules/i18n'
 import Icon from 'components/Icon'
 import Typography from 'components/Typography'
 import Modal from 'components/Modal'
+import TextButton from 'components/TextButton'
 
 import colors from 'modules/colors'
 
@@ -25,39 +27,49 @@ const styles = StyleSheet.create({
     height: '100%',
   },
 
-  listContainer: {
-    opacity: 0.9,
+  itemContainer: {
+    position: 'absolute',
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: colors.BACKGROUND,
+    width: '100%',
+    top: dimensions.UNIT * 9,
+    paddingLeft: dimensions.UNIT * 2,
+    paddingRight: dimensions.UNIT * 2,
   },
 
-  closeIcon: {
+  title: {
+    marginTop: dimensions.UNIT * 3,
+    textAlign: 'center'
+  },
+
+  container: {
     position: 'absolute',
-    top: 34,
-    right: 14,
+    top: (dimensions.SCREEN_HEIGHT / 2) + dimensions.UNIT * 3,
+    display: 'flex',
+    alignItems: 'center',
   },
 
-  qualityContainer: {
+  qualitiesContainer: {
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
     flexDirection: 'row',
+    marginTop: dimensions.UNIT * 2,
   },
 
   quality: {
-    ...material.titleWhiteObject,
-    padding: 8,
+    textAlign: 'center',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 
-  qualitySize: {
-    ...material.captionWhiteObject,
-  },
+  qualitySize: {},
 
 })
 
-export const QualitySelector = ({ variant, itemType, visible, playItem, onRequestClose, style, item, navigation }) => {
+export const QualitySelector = ({ itemType, variant, visible, playItem, onRequestClose, style, item, navigation }) => {
   const handlePlayTorrent = (torrent) => {
     const { navigate } = navigation
 
@@ -84,7 +96,6 @@ export const QualitySelector = ({ variant, itemType, visible, playItem, onReques
 
     // TODO:: Start download mutation
   }
-
   return (
     <React.Fragment>
 
@@ -96,31 +107,72 @@ export const QualitySelector = ({ variant, itemType, visible, playItem, onReques
           : 45
         } />
 
-      {/*<Modal*/}
-      {/*  onRequestClose={onRequestClose}*/}
-      {/*  visible={visible}>*/}
+      <Modal
+        onRequestClose={onRequestClose}
+        visible={visible}>
 
-      {/*  {(!item || !item.torrents || item.torrents.length === 0) && (*/}
-      {/*    <Typography variant={'title'}>*/}
-      {/*      {i18n.t('No qualities available!')}*/}
-      {/*    </Typography>*/}
-      {/*  )}*/}
+        {item && item.title && (
+          <Animatable.View
+            style={styles.itemContainer}
+            animation={'fadeIn'}
+            duration={200}
+            useNativeDriver>
+            <Card
+              item={
+                item.type === 'movie'
+                  ? item
+                  : item.show
+              }
+              onPress={null}
+            />
 
-      {/*  {item && item.torrents && item.torrents.map((torrent) => (*/}
-      {/*    <Animatable.View*/}
-      {/*      key={torrent.quality}*/}
-      {/*      animation={'fadeIn'}*/}
-      {/*      duration={200}*/}
-      {/*      useNativeDriver>*/}
-      {/*      <BaseButton onPress={() => handlePlayTorrent(torrent)}>*/}
-      {/*        <Text style={styles.quality}>*/}
-      {/*          {torrent.quality} <Text style={styles.qualitySize}>({torrent.sizeString})</Text>*/}
-      {/*        </Text>*/}
-      {/*      </BaseButton>*/}
-      {/*    </Animatable.View>*/}
-      {/*  ))}*/}
+            <Typography
+              style={styles.title}
+              variant={'headline5'}>
+              {item.type === 'movie'
+                ? item.title
+                : `${item.show.title}: ${item.title}`
+              }
+            </Typography>
 
-      {/*</Modal>*/}
+          </Animatable.View>
+        )}
+
+        <Animatable.View
+          animation={'fadeIn'}
+          duration={200}
+          style={styles.container}
+          useNativeDriver>
+          <Typography variant={'subtitle1'}>
+            {i18n.t(variant === 'play'
+              ? 'Watch in'
+              : 'Download in'
+            )}
+          </Typography>
+
+          <View style={styles.qualitiesContainer}>
+            {item && item.torrents && item.torrents.map((torrent) => (
+              <View
+                key={torrent.quality}
+
+                style={styles.quality}>
+                <TextButton
+                  color={'primary'}
+                  onPress={() => handlePlayTorrent(torrent)}>
+                  {torrent.quality}
+                </TextButton>
+
+                <Typography
+                  variant={'caption'}
+                  emphasis={'medium'}>
+                  {torrent.sizeString}
+                </Typography>
+              </View>
+            ))}
+          </View>
+        </Animatable.View>
+
+      </Modal>
 
     </React.Fragment>
   )

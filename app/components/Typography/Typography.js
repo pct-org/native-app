@@ -33,6 +33,7 @@ export default class Typography extends Component {
       'white',
       'black',
       'primary',
+      'primaryDark',
     ]),
 
     emphasis: PropTypes.oneOf([

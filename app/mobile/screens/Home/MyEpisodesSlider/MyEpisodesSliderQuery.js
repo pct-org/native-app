@@ -16,8 +16,17 @@ export default gql`
           thumb
         }
       }
+      torrents {
+        quality
+        sizeString
+      }
       show {
         title
+        images {
+          poster {
+            thumb
+          }
+        }
       }
     }
   }

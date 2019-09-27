@@ -10,4 +10,9 @@ export default {
 
     StatusBar.setBackgroundColor(this.currentActiveBackgroundColor, true)
   },
+
+  setHidden: (hidden) => {
+    StatusBar.setHidden(hidden, true)
+  }
+
 }

@@ -37,5 +37,7 @@
   "more": "more",
   "refresh": "refresh",
   "Refreshing": "Refreshing",
-  "Size: {{size}}": "Size: {{size}}"
+  "Size: {{size}}": "Size: {{size}}",
+  "Watch in": "Watch in",
+  "Download in": "Download in"
 }

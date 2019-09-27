@@ -37,5 +37,7 @@
   "more": "meer",
   "refresh": "refreshen",
   "Refreshing": "Refreshen",
-  "Size: {{size}}": "Groote: {{size}}"
+  "Size: {{size}}": "Groote: {{size}}",
+  "Watch in": "Bekijken in",
+  "Download in": "Download in"
 }
