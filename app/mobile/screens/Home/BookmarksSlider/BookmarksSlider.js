@@ -1,3 +1,4 @@
+import dimensions from 'modules/dimensions'
 import React, { useEffect } from 'react'
 import PropTypes from 'prop-types'
 import { useQuery } from '@apollo/react-hooks'
@@ -9,7 +10,7 @@ import CardSlider from 'components/CardSlider'
 
 import BookmarksSliderQuery, { BookmarkedSubscription } from './BookmarksSliderQuery'
 
-export const BookmarksSlider = ({ styles, handleGoTo, onPress, ...re }) => {
+export const BookmarksSlider = ({ handleGoTo, onPress }) => {
   const { loading, data, fetchMore, subscribeToMore } = useQuery(
     BookmarksSliderQuery,
     {
@@ -23,7 +24,7 @@ export const BookmarksSlider = ({ styles, handleGoTo, onPress, ...re }) => {
     subscribeToMore({
       document: BookmarkedSubscription,
       updateQuery: (prev, { subscriptionData }) => {
-        if (!subscriptionData.data) {
+        if (!subscriptionData.data || !subscriptionData.data.bookmarked) {
           return prev
         }
 
@@ -53,7 +54,6 @@ export const BookmarksSlider = ({ styles, handleGoTo, onPress, ...re }) => {
 
   return (
     <CardSlider
-      style={styles.section}
       onPress={onPress}
       title={i18n.t('My List')}
       items={!data || !data.bookmarks ? [] : data.bookmarks}
@@ -66,7 +66,6 @@ export const BookmarksSlider = ({ styles, handleGoTo, onPress, ...re }) => {
 }
 
 BookmarksSlider.propTypes = {
-  styles: PropTypes.object.isRequired,
   handleGoTo: PropTypes.func.isRequired,
   onPress: PropTypes.func.isRequired,
 }

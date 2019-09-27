@@ -1,5 +1,1 @@
-import useCorrect from 'modules/useCorrect'
-
-import MyEpisode from './MyEpisode'
-
-export default MyEpisode
+export { default } from './MyEpisode'

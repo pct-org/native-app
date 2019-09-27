@@ -4,12 +4,11 @@ import { StyleSheet, Text, ToastAndroid } from 'react-native'
 import * as Animatable from 'react-native-animatable'
 import { material } from 'react-native-typography'
 import { withNavigation } from 'react-navigation'
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 
 import dimensions from 'modules/dimensions'
 import i18n from 'modules/i18n'
 
-import BaseButton from 'components/BaseButton'
+import Icon from 'components/Icon'
 import Typography from 'components/Typography'
 import Modal from 'components/Modal'
 
@@ -56,18 +55,9 @@ const styles = StyleSheet.create({
     ...material.captionWhiteObject,
   },
 
-  searchForBetter: {
-    position: 'absolute',
-    bottom: 20,
-  },
-
-  fetchingBetter: {
-    position: 'absolute',
-    top: 100,
-  },
 })
 
-export const QualitySelector = ({ variant, visible, playItem, onRequestClose, iconSize, style, item, navigation }) => {
+export const QualitySelector = ({ variant, itemType, visible, playItem, onRequestClose, style, item, navigation }) => {
   const handlePlayTorrent = (torrent) => {
     const { navigate } = navigation
 
@@ -101,34 +91,36 @@ export const QualitySelector = ({ variant, visible, playItem, onRequestClose, ic
       <Icon
         style={style}
         name={'play-circle-outline'}
-        color={colors.ICON_COLOR}
-        size={iconSize} />
+        size={itemType === 'my-episode'
+          ? 30
+          : 45
+        } />
 
-      <Modal
-        onRequestClose={onRequestClose}
-        visible={visible}>
+      {/*<Modal*/}
+      {/*  onRequestClose={onRequestClose}*/}
+      {/*  visible={visible}>*/}
 
-        {(!item || !item.torrents || item.torrents.length === 0) && (
-          <Typography variant={'title'}>
-            {i18n.t('No qualities available!')}
-          </Typography>
-        )}
+      {/*  {(!item || !item.torrents || item.torrents.length === 0) && (*/}
+      {/*    <Typography variant={'title'}>*/}
+      {/*      {i18n.t('No qualities available!')}*/}
+      {/*    </Typography>*/}
+      {/*  )}*/}
 
-        {item && item.torrents && item.torrents.map((torrent) => (
-          <Animatable.View
-            key={torrent.quality}
-            animation={'fadeIn'}
-            duration={200}
-            useNativeDriver>
-            <BaseButton onPress={() => handlePlayTorrent(torrent)}>
-              <Text style={styles.quality}>
-                {torrent.quality} <Text style={styles.qualitySize}>({torrent.sizeString})</Text>
-              </Text>
-            </BaseButton>
-          </Animatable.View>
-        ))}
+      {/*  {item && item.torrents && item.torrents.map((torrent) => (*/}
+      {/*    <Animatable.View*/}
+      {/*      key={torrent.quality}*/}
+      {/*      animation={'fadeIn'}*/}
+      {/*      duration={200}*/}
+      {/*      useNativeDriver>*/}
+      {/*      <BaseButton onPress={() => handlePlayTorrent(torrent)}>*/}
+      {/*        <Text style={styles.quality}>*/}
+      {/*          {torrent.quality} <Text style={styles.qualitySize}>({torrent.sizeString})</Text>*/}
+      {/*        </Text>*/}
+      {/*      </BaseButton>*/}
+      {/*    </Animatable.View>*/}
+      {/*  ))}*/}
 
-      </Modal>
+      {/*</Modal>*/}
 
     </React.Fragment>
   )
@@ -142,7 +134,6 @@ QualitySelector.propTypes = {
 }
 
 QualitySelector.defaultProps = {
-  iconSize: dimensions.ICON_PLAY_MEDIUM,
   style: {},
   variant: 'play',
 }

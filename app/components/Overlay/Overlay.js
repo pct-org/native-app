@@ -11,18 +11,14 @@ export const styles = StyleSheet.create({
     bottom: 0,
     left: 0,
     backgroundColor: 'black',
-    opacity: 0.32,
+    opacity: 0.50,
   },
 
   default: {},
 
   dark: {
-    opacity: 0.75,
+    opacity: 0.70,
   },
-
-  medium: {
-    opacity: 0.52,
-  }
 
 })
 
@@ -34,7 +30,6 @@ Overlay.propTypes = {
   variant: PropTypes.oneOf([
     'default',
     'dark',
-    'medium'
   ]),
 }
 

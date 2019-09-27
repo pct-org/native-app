@@ -6,18 +6,20 @@
  * @param {function} fetchMore - The fetchMore function from the current query
  * @return {Function}
  */
-export default (type, data, fetchMore) => () => fetchMore({
-  variables: {
-    offset: data[type].length,
-  },
-  updateQuery: (prev, { fetchMoreResult }) => {
-    if (!fetchMoreResult) {
-      return prev
-    }
+export default (type, data, fetchMore) => () => {
+  return fetchMore({
+    variables: {
+      offset: data[type].length,
+    },
+    updateQuery: (prev, { fetchMoreResult }) => {
+      if (!fetchMoreResult || !fetchMoreResult[type]) {
+        return prev
+      }
 
-    return {
-      [type]: [...prev[type], ...fetchMoreResult[type]],
-    }
-  },
-})
+      return {
+        [type]: [...prev[type], ...fetchMoreResult[type]],
+      }
+    },
+  })
+}
 

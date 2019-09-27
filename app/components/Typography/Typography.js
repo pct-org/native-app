@@ -13,20 +13,20 @@ export default class Typography extends Component {
 
     variant: PropTypes.oneOf([
       'default',
-      'display1',
-      'display2',
-      'display3',
-      'display4',
-      'display5',
-      'headline',
-      'title',
-      'seasonTitle',
-      'episodeTitle',
-      'episodeDescription',
-      'body2',
+      'headline1',
+      'headline2',
+      'headline3',
+      'headline4',
+      'headline5',
+      'headline6',
+      'subtitle1',
+      'subtitle2',
       'body1',
-      'caption',
+      'body2',
       'button',
+      'caption',
+      'captionSmall',
+      'overline',
     ]),
 
     color: PropTypes.oneOf([
@@ -38,16 +38,13 @@ export default class Typography extends Component {
     emphasis: PropTypes.oneOf([
       'high',
       'medium',
+      'low',
     ]),
 
     fontWeight: PropTypes.oneOf([
-      'thin',
-      'extraLight',
-      'light',
+      'default',
       'regular',
       'medium',
-      'bold',
-      'black',
     ]),
 
     children: PropTypes.oneOfType([
@@ -68,7 +65,7 @@ export default class Typography extends Component {
     emphasis: 'high',
     color: 'white',
     variant: 'default',
-    fontWeight: 'regular',
+    fontWeight: 'default',
     textProps: {},
     component: null,
     children: null,
@@ -84,10 +81,16 @@ export default class Typography extends Component {
     asObject = false,
   }) => {
     const styledColor = styles[`color${capitalizeFirstLetter(color)}`]
-    const styledFont = styles[`fontFamily${capitalizeFirstLetter(fontWeight)}`]
+    const styledFont = fontWeight !== 'default' ? styles[`fontFamily${capitalizeFirstLetter(fontWeight)}`] : null
     const styledEmphasis = styles[`emphasis${capitalizeFirstLetter(emphasis)}`]
 
-    const textStyles = [styledColor, styles[variant], styledFont, styleProp, styledEmphasis]
+    const textStyles = [
+      styledColor,
+      styles[variant],
+      styledFont,
+      styleProp,
+      color !== 'primary' || emphasis !== 'high' ? styledEmphasis : {},
+    ]
 
     if (asObject) {
       let objectStyle = {}

@@ -3,47 +3,33 @@ import PropTypes from 'prop-types'
 import { StyleSheet, View, FlatList } from 'react-native'
 
 import dimensions from 'modules/dimensions'
-import i18n from 'modules/i18n'
 
 import Card from '../Card'
 import Typography from '../Typography'
-import TextButton from '../TextButton'
 
 export const styles = StyleSheet.create({
 
+  root: {},
+
   titleContainer: {
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 0,
-    marginRight: dimensions.UNIT,
+    marginTop: dimensions.UNIT,
     marginLeft: dimensions.UNIT * 2,
-  },
-
-  moreButton: {
-    padding: dimensions.UNIT / 2,
-  },
-
-  image: {
-    height: '100%',
-    width: '100%',
-    resizeMode: 'cover',
   },
 
   container: {
-    marginLeft: dimensions.UNIT * 2,
+    marginBottom: dimensions.UNIT * 2,
+    marginLeft: dimensions.UNIT,
+    marginRight: dimensions.UNIT,
   },
 
 })
 
-export const CardSlider = ({ title, items, onPress, style, onEndReached, goToMore, loading }) => {
+export const CardSlider = ({ title, items, onPress, onEndReached, goToMore, loading }) => {
   const renderCard = ({ item }) => {
     const empty = !item
 
     return (
       <Card
-        variant={'medium'}
         empty={empty}
         item={item}
         onPress={() => {
@@ -56,32 +42,20 @@ export const CardSlider = ({ title, items, onPress, style, onEndReached, goToMor
   }
 
   return (
-    <View style={style}>
+    <View style={styles.root}>
 
       {(title || goToMore) && (
         <View style={styles.titleContainer}>
-          <Typography
-            variant={'title'}
-            fontWeight={'medium'}>
+          <Typography variant={'headline6'}>
             {title}
           </Typography>
-
-          {goToMore && (
-            <TextButton
-              style={styles.moreButton}
-              upperCase={false}
-              emphasis={'medium'}
-              fontWeight={'regular'}
-              onPress={goToMore}>
-              {i18n.t('more')}
-            </TextButton>
-          )}
         </View>
       )}
 
       <FlatList
         horizontal
         removeClippedSubviews
+        scrollEnabled={items.length > 0}
         contentContainerStyle={styles.container}
         data={items.length === 0
           ? Array(4).fill()
@@ -90,19 +64,18 @@ export const CardSlider = ({ title, items, onPress, style, onEndReached, goToMor
         initialNumToRender={4}
         windowSize={8}
         renderItem={renderCard}
-        ItemSeparatorComponent={() => <View style={{ width: dimensions.UNIT }} />}
-        ListFooterComponent={() => <View style={{ width: dimensions.UNIT * 5 }} />}
+        ListFooterComponent={() => <View style={{ width: dimensions.UNIT * 4 }} />}
         keyExtractor={(item, index) => item
           ? `${item._id}-${index}`
           : `${index}`
         }
         showsHorizontalScrollIndicator={false}
         onEndReached={
-          items.length >= 25
+          items.length > 0
             ? onEndReached
             : null
         }
-        onEndReachedThreshold={dimensions.CARD_MEDIUM_WIDTH * 3}
+        onEndReachedThreshold={dimensions.CARD_WIDTH * 3}
       />
 
     </View>

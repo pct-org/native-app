@@ -1,3 +1,4 @@
+import Typography from 'components/Typography'
 import React, { useEffect } from 'react'
 import { StyleSheet, View, Linking, InteractionManager } from 'react-native'
 import { useLazyQuery, useMutation } from '@apollo/react-hooks'
@@ -9,13 +10,13 @@ import colors from 'modules/colors'
 import dimensions from 'modules/dimensions'
 
 import ScrollViewWithStatusBar from 'components/ScrollViewWithStatusBar'
-import IconButton from 'components/IconButton'
+import MainCover from 'mobile/components/MainCover'
 
-import BasicInfo from './BasicInfo'
 import ItemOrRecommendations from './ItemOrRecommendations'
 import { MovieQuery, ShowQuery, AddBookmarkMutation } from './ItemGraphQL'
 
 import Bookmarked from './Bookmarked'
+import SeasonsAndEpisodes from './SeasonsAndEpisodes'
 
 const styles = StyleSheet.create({
 
@@ -39,6 +40,12 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
 
+  synopsis: {
+    marginTop: dimensions.UNIT * 3,
+    marginBottom: dimensions.UNIT * 3,
+    marginLeft: dimensions.UNIT * 2,
+    marginRight: dimensions.UNIT * 2,
+  },
 })
 
 export const Item = ({ navigation: { state: { params } } }) => {
@@ -83,55 +90,63 @@ export const Item = ({ navigation: { state: { params } } }) => {
 
       <ScrollViewWithStatusBar>
 
-        <BasicInfo
-          loading={loading}
+        <MainCover
+          empty={loading}
           item={item} />
 
-        <View style={styles.iconsContainer}>
-          {!loading && (
-            <Bookmarked
-              styles={styles}
-              Query={Query}
-              {...item}
-            />
-          )}
+        {/*<View style={styles.iconsContainer}>*/}
+        {/*  {!loading && (*/}
+        {/*    <Bookmarked*/}
+        {/*      styles={styles}*/}
+        {/*      Query={Query}*/}
+        {/*      {...item}*/}
+        {/*    />*/}
+        {/*  )}*/}
 
-          {!loading && item.type === Constants.TYPE_MOVIE && (
-            <IconButton
-              animatable={{
-                animation: 'fadeIn',
-                useNativeDriver: true,
-              }}
-              style={[styles.icon, { minWidth: 95 }]}
-              onPress={handleToggleWatched}
-              name={item.watched.complete
-                ? 'eye-off-outline'
-                : 'eye-outline'
-              }
-              color={colors.ICON_COLOR}
-              size={dimensions.ITEM_ICONS}>
-              {i18n.t(item.watched.complete ? 'Mark Unwatched' : 'Mark Watched')}
-            </IconButton>
-          )}
+        {/*  /!*{!loading && item.type === Constants.TYPE_MOVIE && (*!/*/}
+        {/*  /!*  <IconButton*!/*/}
+        {/*  /!*    animatable={{*!/*/}
+        {/*  /!*      animation: 'fadeIn',*!/*/}
+        {/*  /!*      useNativeDriver: true,*!/*/}
+        {/*  /!*    }}*!/*/}
+        {/*  /!*    style={[styles.icon, { minWidth: 95 }]}*!/*/}
+        {/*  /!*    onPress={handleToggleWatched}*!/*/}
+        {/*  /!*    name={item.watched.complete*!/*/}
+        {/*  /!*      ? 'eye-off-outline'*!/*/}
+        {/*  /!*      : 'eye-outline'*!/*/}
+        {/*  /!*    }*!/*/}
+        {/*  /!*    color={colors.ICON_COLOR}*!/*/}
+        {/*  /!*    size={dimensions.ITEM_ICONS}>*!/*/}
+        {/*  /!*    {i18n.t(item.watched.complete ? 'Mark Unwatched' : 'Mark Watched')}*!/*/}
+        {/*  /!*  </IconButton>*!/*/}
+        {/*  /!*)}*!/*/}
 
-          {!loading && item.trailer && (
-            <IconButton
-              animatable={{
-                animation: 'fadeIn',
-                useNativeDriver: true,
-              }}
-              style={styles.icon}
-              onPress={handleTrailer}
-              name={'youtube'}
-              color={colors.ICON_COLOR}
-              size={dimensions.ITEM_ICONS}>
-              {i18n.t('Trailer')}
-            </IconButton>
-          )}
-        </View>
+        {/*  /!*{!loading && item.trailer && (*!/*/}
+        {/*  /!*  <IconButton*!/*/}
+        {/*  /!*    animatable={{*!/*/}
+        {/*  /!*      animation: 'fadeIn',*!/*/}
+        {/*  /!*      useNativeDriver: true,*!/*/}
+        {/*  /!*    }}*!/*/}
+        {/*  /!*    style={styles.icon}*!/*/}
+        {/*  /!*    onPress={handleTrailer}*!/*/}
+        {/*  /!*    name={'youtube'}*!/*/}
+        {/*  /!*    color={colors.ICON_COLOR}*!/*/}
+        {/*  /!*    size={dimensions.ITEM_ICONS}>*!/*/}
+        {/*  /!*    {i18n.t('Trailer')}*!/*/}
+        {/*  /!*  </IconButton>*!/*/}
+        {/*  /!*)}*!/*/}
+        {/*</View>*/}
+
+        {item && (
+          <View style={styles.synopsis}>
+            <Typography variant={'body2'}>
+              {item.synopsis}
+            </Typography>
+          </View>
+        )}
 
         {item && item.type === Constants.TYPE_SHOW && item.seasons.length > 0 && (
-          <ItemOrRecommendations
+          <SeasonsAndEpisodes
             item={item}
           />
         )}

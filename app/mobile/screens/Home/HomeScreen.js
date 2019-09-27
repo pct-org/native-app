@@ -5,32 +5,26 @@ import Orientation from 'react-native-orientation'
 import SplashScreen from 'react-native-splash-screen'
 
 import i18n from 'modules/i18n'
-import colors from 'modules/colors'
 import dimensions from 'modules/dimensions'
 import fetchMoreUpdateQuery from 'modules/GraphQL/helpers/fetchMoreUpdateQuery'
 
 import CardSlider from 'components/CardSlider'
 import ScrollViewWithStatusBar from 'components/ScrollViewWithStatusBar'
 
-import MainCover from './MainCover'
+import Container from 'components/Container'
+import MainCover from 'mobile/components/MainCover'
 import MoviesQuery from './MoviesQuery'
 import ShowsSlider from './ShowsSlider'
 import BookmarksSlider from './BookmarksSlider'
+import MyEpisodesSlider from './MyEpisodesSlider'
 
 export const styles = StyleSheet.create({
 
   root: {
     flex: 1,
-    backgroundColor: colors.BACKGROUND,
     position: 'relative',
 
     width: '100%',
-  },
-
-  section: {
-    position: 'relative',
-    marginTop: dimensions.UNIT * 2,
-    marginBottom: dimensions.UNIT * 2,
   },
 
   lastSection: {
@@ -76,38 +70,39 @@ export const Home = ({ navigation }) => {
     : moviesData.movies.filter(movie => !movie.bookmarked)
 
   return (
-    <ScrollViewWithStatusBar style={styles.root}>
+    <ScrollViewWithStatusBar>
+      <Container>
 
-      <MainCover
-        onOpen={handleItemOpen}
-        onPlay={handleItemOpen}
-        empty={noMoviesYet}
-        item={noMoviesYet
-          ? null
-          : movies[0]
-        } />
+        <MainCover
+          handleItemOpen={handleItemOpen}
+          handleItemPlay={handleItemOpen}
+          empty={noMoviesYet}
+          item={noMoviesYet
+            ? null
+            : movies[0]
+          } />
 
-      <BookmarksSlider
-        handleGoTo={handleGoTo}
-        onPress={handleItemOpen}
-        styles={styles}
-      />
+        <BookmarksSlider
+          handleGoTo={handleGoTo}
+          onPress={handleItemOpen}
+        />
 
-      <CardSlider
-        style={styles.section}
-        onPress={handleItemOpen}
-        title={i18n.t('Movies')}
-        items={noMoviesYet ? [] : [...movies].slice(1)}
-        goToMore={handleGoTo('Movies')}
-        onEndReached={fetchMoreUpdateQuery('movies', moviesData, moviesFetchMore)}
-      />
+        <MyEpisodesSlider />
 
-      <ShowsSlider
-        handleGoTo={handleGoTo}
-        onPress={handleItemOpen}
-        styles={styles}
-      />
+        <CardSlider
+          onPress={handleItemOpen}
+          title={i18n.t('Movies')}
+          items={noMoviesYet ? [] : [...movies].slice(1)}
+          goToMore={handleGoTo('Movies')}
+          onEndReached={fetchMoreUpdateQuery('movies', moviesData, moviesFetchMore)}
+        />
 
+        <ShowsSlider
+          handleGoTo={handleGoTo}
+          onPress={handleItemOpen}
+        />
+
+      </Container>
     </ScrollViewWithStatusBar>
   )
 }

@@ -3,10 +3,9 @@ import PropTypes from 'prop-types'
 import { StyleSheet } from 'react-native'
 import * as Animatable from 'react-native-animatable'
 
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
-
 import BaseButton from '../BaseButton'
 import Typography from '../Typography'
+import Icon from '../Icon'
 
 export const styles = StyleSheet.create({
 
@@ -20,7 +19,9 @@ export const styles = StyleSheet.create({
 
 export const IconButton = ({ onPress, animatable, animatableStyle, buttonProps, children, ...rest }) => (
   <BaseButton onPress={onPress} {...buttonProps}>
-    <Animatable.View {...animatable} style={[styles.container, animatableStyle]}>
+    <Animatable.View
+      {...animatable}
+      style={[styles.container, animatableStyle]}>
       <Icon
         {...rest}
       />

@@ -10,6 +10,9 @@ export default gql`
       synopsis
       type
       bookmarked
+      rating {
+        percentage
+      }
       watched {
         complete
         progress

@@ -9,7 +9,7 @@ import CardSlider from 'components/CardSlider'
 
 import ShowsSliderQuery from './ShowsSliderQuery'
 
-export const ShowsSlider = ({ styles, handleGoTo, onPress }) => {
+export const ShowsSlider = ({ handleGoTo, onPress }) => {
   const { loading, data, fetchMore } = useQuery(
     ShowsSliderQuery,
     {
@@ -21,7 +21,6 @@ export const ShowsSlider = ({ styles, handleGoTo, onPress }) => {
 
   return (
     <CardSlider
-      style={styles.section}
       onPress={onPress}
       title={i18n.t('Shows')}
       items={!data || !data.shows ? [] : data.shows.filter(show => !show.bookmarked)}
@@ -33,7 +32,6 @@ export const ShowsSlider = ({ styles, handleGoTo, onPress }) => {
 }
 
 ShowsSlider.propTypes = {
-  styles: PropTypes.object.isRequired,
   handleGoTo: PropTypes.func.isRequired,
   onPress: PropTypes.func.isRequired,
 }

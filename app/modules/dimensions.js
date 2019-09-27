@@ -1,19 +1,19 @@
-import { Dimensions, StatusBar, Platform } from 'react-native'
+import { Dimensions, StatusBar } from 'react-native'
 
-const { width: screenWidth, height: screenHeight, fontScale } = Dimensions.get('window')
+const { width: screenWidth, height: screenHeight } = Dimensions.get('window')
 
 const UNIT = 8
+const SKETCH_DEFAULT_WIDTH = 360
 
-let width = screenWidth
-let height = screenHeight
+const sketchAdjuster = screenWidth / SKETCH_DEFAULT_WIDTH
 
-if (Platform.isTV) {
-  width = 425
-  height = 725
+const getWidth = (sketchSize) => {
+  return sketchSize * sketchAdjuster
 }
 
-const CARD_MEDIUM_WIDTH = (width - 40) / 3.1
-const CARD_MEDIUM_HEIGHT = ((height - StatusBar.currentHeight) / 4) * fontScale
+const getHeight = (sketchSize) => {
+  return sketchSize * sketchAdjuster
+}
 
 export default {
 
@@ -24,26 +24,17 @@ export default {
 
   STATUSBAR_HEIGHT: StatusBar.currentHeight,
 
-  BORDER_WIDTH: 1.5,
   BORDER_RADIUS: 5,
 
-  CARD_SMALL_WIDTH: CARD_MEDIUM_WIDTH - UNIT,
-  CARD_SMALL_HEIGHT: CARD_MEDIUM_HEIGHT - UNIT,
+  CARD_HEIGHT: getHeight(130),
+  CARD_WIDTH: getWidth(90),
 
-  CARD_MEDIUM_WIDTH,
-  CARD_MEDIUM_HEIGHT,
+  MY_EPISODE_CARD_HEIGHT: getHeight(100),
+  MY_EPISODE_CARD_WIDTH: getWidth(178),
 
-  CARD_LARGE_WIDTH: CARD_MEDIUM_WIDTH * 1.1,
-  CARD_LARGE_HEIGHT: CARD_MEDIUM_HEIGHT * 1.1,
+  EPISODE_CARD_HEIGHT: getHeight(68),
+  EPISODE_CARD_WIDTH: getWidth(121),
 
-  MY_EPISODE_CARD_WIDTH: ((300 - 40) / 3.1) * 2.5,
-  MY_EPISODE_CARD_HEIGHT: (((500 - StatusBar.currentHeight) / 4) * fontScale) - UNIT,
-
-  EPISODE_CARD_WIDTH: 130,
-  EPISODE_CARD_HEIGHT: 85,
-
-  ICON_PLAY_SMALL: Platform.isTV ? 30 : 45,  // My Episode
-  ICON_PLAY_MEDIUM: 50, // Home, Item
-
-  ITEM_ICONS: 35,
+  getWidth,
+  getHeight,
 }

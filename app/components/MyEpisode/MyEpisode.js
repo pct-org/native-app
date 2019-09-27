@@ -1,26 +1,25 @@
 import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 import { StyleSheet, View } from 'react-native'
+import * as Animatable from 'react-native-animatable'
 
 import dimensions from 'modules/dimensions'
-import colors from 'modules/colors'
+import QualitySelector from 'mobile/components/QualitySelector'
 
+import Container from '../Container'
 import BaseButton from '../BaseButton'
 import Typography from '../Typography'
 import Overlay from '../Overlay'
 import Image from '../Image'
-import QualitySelector from '../QualitySelector'
 
 const styles = StyleSheet.create({
 
   root: {
-    width: dimensions.MY_EPISODE_CARD_WIDTH,
     height: dimensions.MY_EPISODE_CARD_HEIGHT,
-
-    borderWidth: dimensions.BORDER_WIDTH,
+    width: dimensions.MY_EPISODE_CARD_WIDTH,
     borderRadius: dimensions.BORDER_RADIUS,
-    backgroundColor: colors.BACKGROUND_LIGHTER,
     overflow: 'hidden',
+    margin: dimensions.UNIT,
   },
 
   iconContainer: {
@@ -36,14 +35,10 @@ const styles = StyleSheet.create({
 
   episodeNumberContainer: {
     position: 'absolute',
-    height: '100%',
-    width: '100%',
-    opacity: 0.8,
-    display: 'flex',
-    marginTop: (dimensions.ICON_PLAY_SMALL / 2) + dimensions.UNIT,
-
     alignItems: 'center',
     justifyContent: 'center',
+    bottom: dimensions.UNIT + 16,
+    left: dimensions.UNIT,
   },
 
   episodeInfoContainer: {
@@ -66,56 +61,73 @@ export const MyEpisode = ({ item, style, empty, ...rest }) => {
   }
 
   return (
-    <BaseButton
-      onPress={() => toggleSelecting(!showQualitySelector)}
-      {...rest}>
-      <View style={[styles.root, style]}>
-        <Image images={
-          empty
-            ? {}
-            : item.images
-        } />
+    <Container
+      elevation={1}
+      style={[styles.root, style]}>
+      <BaseButton
+        onPress={() => {
+          if (!empty) {
+            toggleSelecting(!showQualitySelector)
+          }
+        }}
+        {...rest}>
+        <View>
+          <Image images={
+            empty
+              ? {}
+              : item.images
+          } />
 
-        <Overlay />
+          {!empty && (
+            <Overlay variant={'dark'} />
+          )}
 
-        <View style={styles.iconContainer}>
-          <QualitySelector
-            visible={showQualitySelector}
-            onRequestClose={() => toggleSelecting(false)}
-            iconSize={dimensions.ICON_PLAY_SMALL}
-            item={
-              empty
-                ? {}
-                : item
-            }
-            isMyEpisode
-          />
-        </View>
-
-        <View style={styles.episodeNumberContainer}>
-          <Typography
-            fontWeight={'medium'}
-            variant={'caption'}>
-            {getEpisodeNumber()}
-          </Typography>
-        </View>
-
-        {!empty && (
-          <View style={styles.episodeInfoContainer}>
-            <Typography
-              textProps={{
-                numberOfLines: 1,
-                ellipsizeMode: 'tail',
-              }}
-              fontWeight={'medium'}
-              variant={'episodeTitle'}>
-              {`${item.show.title}: ${item.title}`}
-            </Typography>
+          <View style={styles.iconContainer}>
+            <QualitySelector
+              visible={showQualitySelector}
+              itemType={'my-episode'}
+              onRequestClose={() => toggleSelecting(false)}
+              item={
+                empty
+                  ? {}
+                  : item
+              }
+            />
           </View>
-        )}
 
-      </View>
-    </BaseButton>
+          {!empty && (
+            <React.Fragment>
+              <Animatable.View
+                animation={'fadeIn'}
+                style={styles.episodeNumberContainer}
+                useNativeDriver>
+                <Typography
+                  fontWeight={'medium'}
+                  variant={'caption'}>
+                  {getEpisodeNumber()}
+                </Typography>
+              </Animatable.View>
+
+              <Animatable.View
+                animation={'fadeIn'}
+                style={styles.episodeInfoContainer}
+                useNativeDriver>
+                <Typography
+                  textProps={{
+                    numberOfLines: 1,
+                    ellipsizeMode: 'tail',
+                  }}
+                  fontWeight={'high'}
+                  variant={'caption'}>
+                  {`${item.show.title}: ${item.title}`}
+                </Typography>
+              </Animatable.View>
+            </React.Fragment>
+          )}
+
+        </View>
+      </BaseButton>
+    </Container>
   )
 }
 

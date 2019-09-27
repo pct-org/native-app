@@ -12,6 +12,9 @@ export const MovieQuery = gql`
       bookmarked
       downloaded
       downloading
+      rating {
+        percentage
+      }
       watched {
         complete
         progress
@@ -41,6 +44,9 @@ export const ShowQuery = gql`
       synopsis
       type
       bookmarked
+      rating {
+        percentage
+      }
       images {
         backdrop {
           high
