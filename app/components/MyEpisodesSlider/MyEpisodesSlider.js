@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import { StyleSheet, View, FlatList } from 'react-native'
 
 import dimensions from 'modules/dimensions'
@@ -59,6 +60,9 @@ export const MyEpisodesSlider = ({ title, items }) => {
   )
 }
 
-MyEpisodesSlider.propTypes = {}
+MyEpisodesSlider.propTypes = {
+  title: PropTypes.string.isRequired,
+  items: PropTypes.array.isRequired,
+}
 
 export default MyEpisodesSlider

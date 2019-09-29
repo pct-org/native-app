@@ -38,6 +38,7 @@ export class VideoAndControls extends React.Component {
   }
 
   componentDidMount() {
+    console.log('VideoAndControls', 'mount')
     Orientation.addOrientationListener(this.handleOrientationChange)
 
     this.toggleControls()
@@ -48,19 +49,20 @@ export class VideoAndControls extends React.Component {
   }
 
   handleOrientationChange = (orientation) => {
+    console.log('handleOrientationChange',orientation)
     if (orientation === 'LANDSCAPE') {
       this.setState({
         isPortrait: false,
       })
 
-      // this.videoRef.presentFullscreenPlayer()
+      this.videoRef.presentFullscreenPlayer()
 
     } else if (orientation === 'PORTRAIT') {
       this.setState({
         isPortrait: true,
       })
 
-      // this.videoRef.dismissFullscreenPlayer()
+      this.videoRef.dismissFullscreenPlayer()
     }
   }
 
@@ -186,7 +188,7 @@ export class VideoAndControls extends React.Component {
         this.videoRef.seek(currentTime)
       }
 
-      Orientation.unlockAllOrientations()
+      // Orientation.unlockAllOrientations()
     })
   }
 
@@ -256,12 +258,12 @@ export class VideoAndControls extends React.Component {
             ref={(ref) => {
               this.videoRef = ref
 
-              console.log(this.videoRef)
+              console.log('videoRef', this.videoRef)
             }}
             source={{
               uri: url,
               autoplay: true,
-              initOptions: ['--codec=avcodec'],
+              // initOptions: ['--codec=avcodec'],
             }}
             style={styles.video}
             paused={paused || forcePaused}
@@ -272,14 +274,20 @@ export class VideoAndControls extends React.Component {
               console.log('onVLCProgress')
             }}
             onVLCEnded={(...a) => {
+              Orientation.lockToPortrait()
+
               console.log('onVLCEnded')
               console.log('onVLCEnded', a)
             }}
             onVLCStopped={(...a) => {
+              Orientation.lockToPortrait()
+
               console.log('onVLCStopped')
               console.log('onVLCStopped', a)
             }}
             onVLCPlaying={(...a) => {
+              Orientation.lockToLandscape()
+
               console.log('onVLCPlaying')
               console.log('onVLCPlaying', a)
             }}
@@ -410,7 +418,7 @@ const styles = StyleSheet.create({
 
   video: {
     position: 'absolute',
-    top: (dimensions.SCREEN_HEIGHT / 2) - ((windowWidth / 2) / 2),
+    top: 0,
     left: 0,
     bottom: 0,
     right: 0,

@@ -6,19 +6,16 @@ import android.content.res.Configuration;
 import android.os.StrictMode;
 
 import com.facebook.react.ReactApplication;
-import com.ghondar.vlc.VlcPlayerPackage;
+import com.popcorn.VlcPlayer.VlcPlayerPackage;
 import com.reactnativecommunity.asyncstorage.AsyncStoragePackage;
 import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;
-
 import org.devio.rn.splashscreen.SplashScreenReactPackage;
-
 import com.reactcommunity.rnlanguages.RNLanguagesPackage;
 import com.tripss.updaternapp.UpdateRNAppPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
 import com.rnfs.RNFSPackage;
 import com.futurepress.staticserver.FPStaticServerPackage;
 import com.github.yamill.orientation.OrientationPackage;
-import com.brentvatne.react.ReactVideoPackage;
 import com.BV.LinearGradient.LinearGradientPackage;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
@@ -54,8 +51,8 @@ public class MainApplication extends Application implements ReactApplication {
               new VectorIconsPackage(),
               new RNFSPackage(),
               new FPStaticServerPackage(),
-              new ReactVideoPackage(),
-              new LinearGradientPackage()
+              new LinearGradientPackage(),
+              new OrientationPackage()
           )
       );
 

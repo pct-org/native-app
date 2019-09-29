@@ -82,18 +82,23 @@ export const MyEpisode = ({ item, style, empty, ...rest }) => {
             <Overlay variant={'dark'} />
           )}
 
-          <View style={styles.iconContainer}>
-            <QualitySelector
-              visible={showQualitySelector}
-              itemType={'my-episode'}
-              onRequestClose={() => toggleSelecting(false)}
-              item={
-                empty
-                  ? {}
-                  : item
-              }
-            />
-          </View>
+          {!empty && (
+            <Animatable.View
+              animation={'fadeIn'}
+              style={styles.iconContainer}
+              useNativeDriver>
+              <QualitySelector
+                visible={showQualitySelector}
+                itemType={'my-episode'}
+                onRequestClose={() => toggleSelecting(false)}
+                item={
+                  empty
+                    ? {}
+                    : item
+                }
+              />
+            </Animatable.View>
+          )}
 
           {!empty && (
             <React.Fragment>

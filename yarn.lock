@@ -3984,10 +3984,10 @@ has@^1.0.1, has@^1.0.3:
   dependencies:
     function-bind "^1.1.1"
 
-hermes-engine@^0.1.1:
-  version "0.1.1"
-  resolved "https://registry.yarnpkg.com/hermes-engine/-/hermes-engine-0.1.1.tgz#33d5da1a3b7289667f121dc1aca3566171e86fd8"
-  integrity sha512-5nPNtJg3ZiUT14SfU5KcETWrDFadn9R0hv2FCihiLZUeNHuLxaoiFy0bAMrXukKPyXG76XZ4zl5iGXr7E7Nhpw==
+hermes-engine@^0.2.1:
+  version "0.2.1"
+  resolved "https://registry.yarnpkg.com/hermes-engine/-/hermes-engine-0.2.1.tgz#25c0f1ff852512a92cb5c5cc47cf967e1e722ea2"
+  integrity sha512-eNHUQHuadDMJARpaqvlCZoK/Nitpj6oywq3vQ3wCwEsww5morX34mW5PmKWQTO7aU0ck0hgulxR+EVDlXygGxQ==
 
 hoist-non-react-statics@^2.3.1:
   version "2.5.5"
@@ -5024,11 +5024,6 @@ jsx-ast-utils@^2.1.0, jsx-ast-utils@^2.2.1:
   dependencies:
     array-includes "^3.0.3"
     object.assign "^4.1.0"
-
-keymirror@^0.1.1:
-  version "0.1.1"
-  resolved "https://registry.yarnpkg.com/keymirror/-/keymirror-0.1.1.tgz#918889ea13f8d0a42e7c557250eee713adc95c35"
-  integrity sha1-kYiJ6hP40KQufFVyUO7nE63JXDU=
 
 kind-of@^1.1.0:
   version "1.1.0"
@@ -6710,20 +6705,6 @@ react-native-vector-icons@6.6.0:
     prop-types "^15.6.2"
     yargs "^13.2.2"
 
-react-native-video@5.0.2:
-  version "5.0.2"
-  resolved "https://registry.yarnpkg.com/react-native-video/-/react-native-video-5.0.2.tgz#8f07da0cd85a1d4b316d115f3786409efc9e39fb"
-  integrity sha512-zbItbMH0uZYkK7xFKa41+950QjoTrIl60bY1vAP7gxTn20HGHvHZRw28h9A5npK5T0QuWMAkn8twaGzqcDkTug==
-  dependencies:
-    keymirror "^0.1.1"
-    prop-types "^15.5.10"
-    shaka-player "^2.4.4"
-
-react-native-vlc-player@^0.2.0:
-  version "0.2.0"
-  resolved "https://registry.yarnpkg.com/react-native-vlc-player/-/react-native-vlc-player-0.2.0.tgz#a80150bbaf5507d87118396ebbc114d5b27d7341"
-  integrity sha512-u/0q+tHCWdnPX/hq+cTLAhrIqQ22Bn/+4Q4H+TFCCfrDTFw9Z9jxasMXJOHeqwjLrZBtNO/CHw+Nj6RibjsuJQ==
-
 "react-native-xmlrpc@github:nguyenphuquang/react-native-xmlrpc":
   version "0.0.1"
   resolved "https://codeload.github.com/nguyenphuquang/react-native-xmlrpc/tar.gz/381086bb70b93026d6f77051555594bc0f6c0129"
@@ -6733,10 +6714,10 @@ react-native-vlc-player@^0.2.0:
     superagent "^3.6.0"
     xmlbuilder "^8.2.2"
 
-react-native@0.61.0-rc.0:
-  version "0.61.0-rc.0"
-  resolved "https://registry.yarnpkg.com/react-native/-/react-native-0.61.0-rc.0.tgz#5f376fefee982c463eee52d691a8bdb7a37650c2"
-  integrity sha512-Q7iSVoj2jylbXTdrjBKlEb6YLyVUFTIS7yIUjnKZgzpBj8NDYVCBPuqqRyypmRH/mV4a+lQ1xyhyGaj2LCeptg==
+react-native@0.61.1:
+  version "0.61.1"
+  resolved "https://registry.yarnpkg.com/react-native/-/react-native-0.61.1.tgz#ac2559f78f9e689356fedfa93159026a25313d7d"
+  integrity sha512-FjOhAgzjrPr2BjBITmCY+SHzWxfP/bv5ve3oN6ItoIPsVPjJG2QZE8yeByVdI4TzaZrGHU4Ag7/7hX4j39cj2Q==
   dependencies:
     "@babel/runtime" "^7.0.0"
     "@react-native-community/cli" "^3.0.0-alpha.1"
@@ -6751,7 +6732,7 @@ react-native@0.61.0-rc.0:
     event-target-shim "^5.0.1"
     fbjs "^1.0.0"
     fbjs-scripts "^1.1.0"
-    hermes-engine "^0.1.1"
+    hermes-engine "^0.2.1"
     invariant "^2.2.4"
     jsc-android "^245459.0.0"
     metro-babel-register "^0.56.0"
@@ -7367,11 +7348,6 @@ setprototypeof@1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/setprototypeof/-/setprototypeof-1.1.0.tgz#d0bd85536887b6fe7c0d818cb962d9d91c54e656"
   integrity sha512-BvE/TwpZX4FXExxOxZyRGQQv651MSwmWKZGqvmPcRIjDqWub67kTKuIMx43cZZrS/cBBzwBcNDWoFxt2XEFIpQ==
-
-shaka-player@^2.4.4:
-  version "2.4.5"
-  resolved "https://registry.yarnpkg.com/shaka-player/-/shaka-player-2.4.5.tgz#9d74d20ab98597b5b2b423440df9eb28dc182b36"
-  integrity sha512-T8WNIYrswagvgsaVtg3pCtqMN4DMsvwMzfV2u0uQaO7zn33GCIN1V17SMu+OsLZ8Dhwb3L5hh0SKjPsOhD2zaA==
 
 shebang-command@^1.2.0:
   version "1.2.0"

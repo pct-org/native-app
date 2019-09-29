@@ -50,7 +50,7 @@ export const Home = ({ navigation }) => {
     return () => {
       Orientation.unlockAllOrientations()
     }
-  })
+  }, [])
 
   const handleGoTo = (to) => () => {
     navigation.navigate(to)

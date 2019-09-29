@@ -15,16 +15,21 @@ import { StartStreamMutation, StopStreamMutation, DownloadQuery } from './Downlo
 import VideoAndControls from './VideoAndControls'
 
 export const Player = ({ navigation: { state: { params: { item, playQuality } } } }) => {
+
+  // setTimeout(() => {
+  //   Orientation.lockToLandscape()
+  // }, 4000)
+
   useEffect(() => {
-      if (!calledStartStream) {
-        // Start the stream
-        startStream().then(() => {
-          executeQuery()
-        })
-      }
+      // if (!calledStartStream) {
+      //   // Start the stream
+      //   startStream().then(() => {
+      //     executeQuery()
+      //   })
+      // }
 
       return () => {
-        Orientation.lockToPortrait()
+         Orientation.lockToPortrait()
 
         if (!calledStopStream) {
           // Stop the stream
@@ -105,14 +110,21 @@ export const Player = ({ navigation: { state: { params: { item, playQuality } } 
     })
   }
 
-  const download = loading || downloadLoading || !downloadData
-    ? null
-    : downloadData.download
+  // const download = loading || downloadLoading || !downloadData
+  //   ? null
+  //   : downloadData.download
 
-  const isDownloadLoading = loading
-                            || downloadLoading
-                            || !downloadData
-                            || download.progress < 3
+  const download = {
+    _id: 'tt6317068-2-12',
+    progress: 10,
+  }
+  // const isDownloadLoading = loading
+  //                           || downloadLoading
+  //                           || !downloadData
+  //                           || download.progress < 3
+
+
+  const isDownloadLoading = false
 
   if (download && download.progress === 100) {
     // Stop polling when progress is 100
@@ -125,12 +137,14 @@ export const Player = ({ navigation: { state: { params: { item, playQuality } } 
   //   console.log('URL:', `http://localhost:3000/watch/${download._id}`)
   // }
 
+  console.log('item', item)
+
   return (
     <View style={styles.listContainer}>
 
-      <StatusBar
-        hidden={false}
-        animated />
+      {/*<StatusBar*/}
+      {/*  hidden={false}*/}
+      {/*  animated />*/}
 
       {/*{isDownloadLoading && (*/}
       {/*  <View style={[styles.fullScreen, styles.loadingContainer]}>*/}

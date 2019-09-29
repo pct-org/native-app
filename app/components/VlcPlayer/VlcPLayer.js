@@ -1,10 +1,11 @@
-import React, { Component, Fragment } from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
-import { View, StyleSheet } from 'react-native'
+import { StyleSheet } from 'react-native'
 
-import NativeVlcPlayer from 'react-native-vlc-player/src/NativeVlcPlayer'
+import NativeVlcPlayer from './NativeVlcPlayer'
 
-class VlcPlayer extends Component {
+export class VlcPlayer extends React.Component {
+
   static propTypes = {
     paused: PropTypes.bool,
   }
@@ -13,27 +14,16 @@ class VlcPlayer extends Component {
     paused: false,
   }
 
-  state = {
-    hidden: false,
-    overlay: {
-      opacity: 0,
-      backgroundColor: 'transparent',
-    },
-  }
-
   render() {
     const { forwardRef, paused, style, ...rest } = this.props
 
-    const props = JSON.parse(JSON.stringify(rest))
-
     return (
-
       <NativeVlcPlayer
-        {...props}
+        {...rest}
         paused={paused}
+        resizeMode={'contain'}
         ref={forwardRef}
         style={StyleSheet.absoluteFill} />
-
     )
   }
 
