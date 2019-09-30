@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Handler;
 import android.preference.PreferenceManager;
+import android.util.AttributeSet;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.SurfaceView;
@@ -30,68 +31,39 @@ import org.videolan.libvlc.util.VLCUtil;
 
 import java.util.ArrayList;
 
-public class VlcPlayerView extends FrameLayout implements IVLCVout.Callback, LifecycleEventListener, MediaPlayer.EventListener {
+public class VlcPlayerView extends FrameLayout implements IVLCVout.Callback, LifecycleEventListener {
 
   private boolean pausedState;
 
-  public enum Events {
-    EVENT_PROGRESS("onVLCProgress"),
-    EVENT_ENDED("onVLCEnded"),
-    EVENT_STOPPED("onVLCStopped"),
-    EVENT_PLAYING("onVLCPlaying"),
-    EVENT_BUFFERING("onVLCBuffering"),
-    EVENT_PAUSED("onVLCPaused"),
-    EVENT_ERROR("onVLCError"),
-    EVENT_VOLUME_CHANGED("onVLCVolumeChanged"),
-    EVENT_SEEK("onVLCVideoSeek");
-
-    private final String mName;
-
-    Events(final String name) {
-      mName = name;
-    }
-
-    @Override
-    public String toString() {
-      return mName;
-    }
-  }
-
   private final VlcEventEmitter eventEmitter;
 
-
-  public static final String EVENT_PROP_DURATION = "duration";
-  public static final String EVENT_PROP_CURRENT_TIME = "currentTime";
-  public static final String EVENT_PROP_POSITION = "position";
-  public static final String EVENT_PROP_END = "endReached";
-  public static final String EVENT_PROP_SEEK_TIME = "seekTime";
-
-  private RCTEventEmitter mEventEmitter;
   private final AspectRatioFrameLayout layout;
   private ViewGroup.LayoutParams layoutParams;
   private SurfaceView surfaceView;
   private ThemedReactContext context;
   private boolean isFullscreen;
-  private double aspectRatio;
-
-  private String mSrcString;
 
   // media player
   private LibVLC libvlc;
   private MediaPlayer mMediaPlayer = null;
-
-  private Media media;
   private boolean autoPlay;
 
+
   public VlcPlayerView(ThemedReactContext context) {
+    this(context, null);
+  }
+
+  public VlcPlayerView(ThemedReactContext context, AttributeSet attrs) {
+    this(context, attrs, 0);
+  }
+
+  public VlcPlayerView(ThemedReactContext context, AttributeSet attrs, int defStyleAttr) {
     super(context);
 
     this.context = context;
+    this.context.addLifecycleEventListener(this);
 
     this.eventEmitter = new VlcEventEmitter(context);
-
-    mEventEmitter = this.context.getJSModule(RCTEventEmitter.class);
-    this.context.addLifecycleEventListener(this);
 
     LayoutParams aspectRatioParams = new LayoutParams(
         LayoutParams.MATCH_PARENT,
@@ -118,7 +90,8 @@ public class VlcPlayerView extends FrameLayout implements IVLCVout.Callback, Lif
   @Override
   public void setId(int id) {
     super.setId(id);
-    eventEmitter.setViewId(id);
+
+    this.eventEmitter.setViewId(id);
   }
 
   private void updateSurfaceView() {
@@ -142,7 +115,6 @@ public class VlcPlayerView extends FrameLayout implements IVLCVout.Callback, Lif
     final IVLCVout vout = mMediaPlayer.getVLCVout();
 
     if (!vout.areViewsAttached()) {
-      // vout.setVideoView((SurfaceView) surfaceView);
       vout.setVideoView(surfaceView);
     }
 
@@ -189,7 +161,9 @@ public class VlcPlayerView extends FrameLayout implements IVLCVout.Callback, Lif
       // Create media player
       mMediaPlayer = new MediaPlayer(libvlc);
       surfaceView.setKeepScreenOn(true);
-      mMediaPlayer.setEventListener(this);
+
+      this.eventEmitter.setMediaPlayer(mMediaPlayer);
+      mMediaPlayer.setEventListener(this.eventEmitter);
 
       if (mMediaPlayer != null) {
         setVideoView();
@@ -199,7 +173,7 @@ public class VlcPlayerView extends FrameLayout implements IVLCVout.Callback, Lif
 
   private void setMedia(String filePath) {
     Uri uri = Uri.parse(filePath);
-    media = new Media(libvlc, uri);
+    Media media = new Media(libvlc, uri);
     mMediaPlayer.setMedia(media);
 
     if (autoPlay) {
@@ -248,8 +222,7 @@ public class VlcPlayerView extends FrameLayout implements IVLCVout.Callback, Lif
   }
 
   public void setFilePath(String filePath) {
-    this.mSrcString = filePath;
-    setMedia(mSrcString);
+    setMedia(filePath);
   }
 
   public void setAutoPlay(boolean autoPlay) {
@@ -279,48 +252,15 @@ public class VlcPlayerView extends FrameLayout implements IVLCVout.Callback, Lif
 
   public void seek(float seek) {
     WritableMap event = Arguments.createMap();
-    event.putDouble(EVENT_PROP_CURRENT_TIME, mMediaPlayer.getTime());
-    event.putDouble(EVENT_PROP_SEEK_TIME, seek);
-    mEventEmitter.receiveEvent(getId(), Events.EVENT_SEEK.toString(), event);
+    // event.putDouble(EVENT_PROP_CURRENT_TIME, mMediaPlayer.getTime());
+    // event.putDouble(EVENT_PROP_SEEK_TIME, seek);
+    // mEventEmitter.receiveEvent(getId(), Events.EVENT_SEEK.toString(), event);
     mMediaPlayer.setTime((long) (mMediaPlayer.getLength() * seek));
   }
 
   public void setVolume(int volume) {
     mMediaPlayer.setVolume(volume);
   }
-
-//  @Override
-//  protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-//    super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-//
-//    if (aspectRatio == 0) {
-//      // Aspect ratio not set.
-//      return;
-//    }
-//
-//    int measuredWidth = getMeasuredWidth();
-//    int measuredHeight = getMeasuredHeight();
-//
-//    float viewAspectRatio = (float) measuredWidth / measuredHeight;
-//    double aspectDeformation = aspectRatio / viewAspectRatio - 1;
-//    Log.d("TYCHO", "w:" + measuredWidth + " h:" + measuredHeight);
-//    Log.d("TYCHO", "aspectDeformation:" + aspectDeformation);
-//
-//    if (aspectDeformation > 0) {
-//      ViewGroup.LayoutParams lp = surfaceView.getLayoutParams();
-//      lp.width = measuredWidth;
-//      lp.height = measuredHeight;
-//      surfaceView.setLayoutParams(lp);
-//      surfaceView.invalidate();
-//
-//    } else {
-//      ViewGroup.LayoutParams lp = surfaceView.getLayoutParams();
-//      lp.width = measuredWidth;
-//      lp.height = measuredHeight;
-//      surfaceView.setLayoutParams(lp);
-//      surfaceView.invalidate();
-//    }
-//  }
 
   @Override
   public void onNewLayout(IVLCVout vout, int width, int height, int visibleWidth, int visibleHeight, int sarNum, int sarDen) {
@@ -329,7 +269,8 @@ public class VlcPlayerView extends FrameLayout implements IVLCVout.Callback, Lif
     }
 
     double videoWidth = visibleWidth,
-        videoHeight = visibleHeight;
+        videoHeight = visibleHeight,
+        aspectRatio;
 
     // compute the aspect ratio
     if (sarDen == sarNum) {
@@ -341,18 +282,8 @@ public class VlcPlayerView extends FrameLayout implements IVLCVout.Callback, Lif
       aspectRatio = videoWidth / videoHeight;
     }
 
-    Log.d("TYCHO onNewLayout", "aspectRatio: " + aspectRatio);
-    Log.d("TYCHO onNewLayout", "videoHeight: " + videoHeight);
-    Log.d("TYCHO onNewLayout", "videoWidth: " + videoWidth);
-
     boolean isInitialRatio = layout.getAspectRatio() == 0;
     layout.setAspectRatio((float) aspectRatio);
-
-    ViewGroup.LayoutParams lp = surfaceView.getLayoutParams();
-    lp.width = (int) videoWidth;
-    lp.height = visibleHeight;
-    surfaceView.setLayoutParams(lp);
-    surfaceView.invalidate();
 
     // React native workaround for measuring and layout on initial load.
     if (isInitialRatio) {
@@ -421,44 +352,6 @@ public class VlcPlayerView extends FrameLayout implements IVLCVout.Callback, Lif
     }
   };
 
-  @Override
-  public void onEvent(MediaPlayer.Event event) {
-    WritableMap eventMap = Arguments.createMap();
-
-    switch (event.type) {
-      case MediaPlayer.Event.EndReached:
-        pausedState = false;
-        eventMap.putBoolean(EVENT_PROP_END, true);
-        mEventEmitter.receiveEvent(getId(), Events.EVENT_ENDED.toString(), eventMap);
-        break;
-      case MediaPlayer.Event.Stopped:
-        mEventEmitter.receiveEvent(getId(), Events.EVENT_STOPPED.toString(), null);
-        break;
-      case MediaPlayer.Event.Playing:
-        Log.d("TYCHO", "Playing event");
-        eventMap.putDouble(EVENT_PROP_DURATION, mMediaPlayer.getLength());
-        mEventEmitter.receiveEvent(getId(), Events.EVENT_PLAYING.toString(), eventMap);
-
-        this.eventEmitter.startedPlaying();
-
-        break;
-//            case MediaPlayer.Event.Buffering:
-//                mEventEmitter.receiveEvent(getId(), Events.EVENT_PLAYING.toString(), null);
-//                break;
-      case MediaPlayer.Event.Paused:
-        mEventEmitter.receiveEvent(getId(), Events.EVENT_PAUSED.toString(), null);
-        break;
-      case MediaPlayer.Event.EncounteredError:
-        mEventEmitter.receiveEvent(getId(), Events.EVENT_ERROR.toString(), null);
-        break;
-      case MediaPlayer.Event.TimeChanged:
-        eventMap.putDouble(EVENT_PROP_CURRENT_TIME, mMediaPlayer.getTime());
-        eventMap.putDouble(EVENT_PROP_DURATION, mMediaPlayer.getLength());
-        eventMap.putDouble(EVENT_PROP_POSITION, mMediaPlayer.getPosition());
-        mEventEmitter.receiveEvent(getId(), Events.EVENT_PROGRESS.toString(), eventMap);
-        break;
-    }
-  }
 
   public void setFullscreen(boolean fullscreen) {
     if (fullscreen == isFullscreen) {
@@ -492,13 +385,6 @@ public class VlcPlayerView extends FrameLayout implements IVLCVout.Callback, Lif
       decorView.setSystemUiVisibility(uiOptions);
       // eventEmitter.fullscreenDidDismiss();
     }
-
-    // Update the view
-    ViewGroup.LayoutParams lp = surfaceView.getLayoutParams();
-    lp.width = getMeasuredWidth();
-    lp.height = getMeasuredHeight();
-    surfaceView.setLayoutParams(lp);
-    surfaceView.invalidate();
 
     // React native workaround for measuring and layout on initial load.
     post(measureAndLayout);

@@ -1,7 +1,7 @@
-import dimensions from 'modules/dimensions'
+import Overlay from 'components/Overlay/Overlay'
 import React from 'react'
 import VlcPlayer from 'components/VlcPlayer'
-import { Dimensions, Slider, StatusBar, StyleSheet, TouchableWithoutFeedback, View, ScrollView } from 'react-native'
+import { Dimensions, Slider, StyleSheet, TouchableWithoutFeedback, View, ScrollView } from 'react-native'
 import * as Animatable from 'react-native-animatable'
 import Orientation from 'react-native-orientation'
 
@@ -10,20 +10,6 @@ import PlayPauseIcon from './PlayPauseIcon'
 const { height: windowHeight, width: windowWidth } = Dimensions.get('window')
 
 export class VideoAndControls extends React.Component {
-
-  state = {
-    showControls: true,
-    isPortrait: true,
-    isFirstAnimation: true,
-
-    scrollViewHeight: 0,
-    scrollViewHeightWithPlaceholder: 0,
-
-    paused: false,
-    resizeMode: 'contain', // 'contain', 'cover', null, 'stretch'
-
-    currentTime: 0,
-  }
 
   scrollViewRef
 
@@ -35,10 +21,24 @@ export class VideoAndControls extends React.Component {
     super(props)
 
     this.today = Date.now()
+
+    this.state = {
+      showControls: true,
+      isPortrait: Orientation.getInitialOrientation() === 'PORTRAIT',
+      isFirstAnimation: true,
+
+      scrollViewHeight: 0,
+      scrollViewHeightWithPlaceholder: 0,
+
+      loading: true,
+      paused: false,
+      resizeMode: 'contain', // 'contain', 'cover', null, 'stretch'
+
+      currentTime: 0,
+    }
   }
 
   componentDidMount() {
-    console.log('VideoAndControls', 'mount')
     Orientation.addOrientationListener(this.handleOrientationChange)
 
     this.toggleControls()
@@ -49,7 +49,6 @@ export class VideoAndControls extends React.Component {
   }
 
   handleOrientationChange = (orientation) => {
-    console.log('handleOrientationChange',orientation)
     if (orientation === 'LANDSCAPE') {
       this.setState({
         isPortrait: false,
@@ -72,7 +71,7 @@ export class VideoAndControls extends React.Component {
     if (isPortrait) {
       return {
         width: windowWidth,
-        height: (windowHeight - 20),
+        height: windowHeight,
         opacity: 0,
         zIndex: 1000,
       }
@@ -80,7 +79,7 @@ export class VideoAndControls extends React.Component {
 
     return {
       width: (windowHeight),
-      height: (windowWidth - 20),
+      height: (windowWidth),
       opacity: 0,
       zIndex: 1000,
     }
@@ -175,29 +174,27 @@ export class VideoAndControls extends React.Component {
     })
   }
 
-  handleVideoLoad = (data) => {
+  handleOnPlaying = ({ duration }) => {
     const { currentTime } = this.state
 
     this.setState({
-      duration: data.duration,
+      duration,
       loading: false,
-
       isFirstAnimation: false,
     }, () => {
       if (currentTime > 0) {
         this.videoRef.seek(currentTime)
       }
 
-      // Orientation.unlockAllOrientations()
+      Orientation.lockToLandscape()
     })
   }
 
-  handleVideoProgress = ({ currentTime }) => {
-    const { duration } = this.state
-
+  handleOnProgress = ({ currentTime, duration }) => {
     this.setState({
       currentTime,
-      progress: parseInt((parseInt(currentTime) / parseInt(duration)) * 100),
+      duration,
+      progress: parseInt(`${(parseInt(currentTime) / parseInt(duration)) * 100}`),
     })
   }
 
@@ -242,17 +239,10 @@ export class VideoAndControls extends React.Component {
   render() {
     const { url, item, children, forcePaused } = this.props
     const { isPortrait, resizeMode, progress } = this.state
-    //const { showControls, paused } = this.state
-
-    const showControls = true
-    const paused = true
+    const { showControls, paused } = this.state
 
     return (
       <React.Fragment>
-        {/*<StatusBar*/}
-        {/*  hidden={!paused && !isPortrait}*/}
-        {/*  animated />*/}
-
         {url && (
           <VlcPlayer
             ref={(ref) => {
@@ -267,117 +257,112 @@ export class VideoAndControls extends React.Component {
             }}
             style={styles.video}
             paused={paused || forcePaused}
+            resizeMode={resizeMode}
 
-            // onVLCProgress={this.handleVideoProgress}
-            onVLCProgress={(...a) => {
-              console.log('onVLCProgress', a)
-              console.log('onVLCProgress')
-            }}
-            onVLCEnded={(...a) => {
-              Orientation.lockToPortrait()
+            // // onVLCProgress={this.handleVideoProgress}
+            // onVLCProgress={(...a) => {
+            //   console.log('onVLCProgress', a)
+            //   console.log('onVLCProgress')
+            // }}
+            // onVLCEnded={(...a) => {
+            //   Orientation.lockToPortrait()
+            //
+            //   console.log('onVLCEnded')
+            //   console.log('onVLCEnded', a)
+            // }}
+            // onVLCStopped={(...a) => {
+            //   Orientation.lockToPortrait()
+            //
+            //   console.log('onVLCStopped')
+            //   console.log('onVLCStopped', a)
+            // }}
+            onPlaying={this.handleOnPlaying}
+            onProgress={this.handleOnProgress}
+            // onVLCBuffering={(...a) => {
+            //   console.log('onVLCBuffering')
+            //   console.log('onVLCBuffering', a)
+            // }}
+            // onVLCPaused={(...a) => {
+            //   console.log('onVLCPaused')
+            //   console.log('onVLCPaused', a)
+            // }}
 
-              console.log('onVLCEnded')
-              console.log('onVLCEnded', a)
-            }}
-            onVLCStopped={(...a) => {
-              Orientation.lockToPortrait()
-
-              console.log('onVLCStopped')
-              console.log('onVLCStopped', a)
-            }}
-            onVLCPlaying={(...a) => {
-              Orientation.lockToLandscape()
-
-              console.log('onVLCPlaying')
-              console.log('onVLCPlaying', a)
-            }}
-            onVLCBuffering={(...a) => {
-              console.log('onVLCBuffering')
-              console.log('onVLCBuffering', a)
-            }}
-            onVLCPaused={(...a) => {
-              console.log('onVLCPaused')
-              console.log('onVLCPaused', a)
-            }}
-
-
-            // volume={1}
-            // rate={1}
-            // muted={false}
-            // resizeMode={resizeMode}
-            // onLoad={this.handleVideoLoad}
             // onError={console.warn}
+
             // onAudioBecomingNoisy={this.handlePauseVideo}
             // onSeek={this.handlePlayVideo}
-            // repeat={false}
           />
         )}
 
-        {/*<Animatable.View*/}
-        {/*  style={[styles.listContainer]}*/}
-        {/*  animation={showControls ? 'fadeIn' : 'fadeOut'}*/}
-        {/*  pointerEvents={'box-none'}*/}
-        {/*  useNativeDriver>*/}
+        {!isPortrait && (
+          <Animatable.View
+            style={[styles.listContainer]}
+            animation={showControls ? 'fadeIn' : 'fadeOut'}
+            pointerEvents={'box-none'}
+            useNativeDriver>
 
-        {/*  <PlayPauseIcon*/}
-        {/*    isPortrait={isPortrait}*/}
-        {/*    handlePlayVideo={this.handlePlayVideo}*/}
-        {/*    handlePauseVideo={this.handlePauseVideo}*/}
-        {/*    paused={paused}*/}
-        {/*  />*/}
+            <PlayPauseIcon
+              isPortrait={isPortrait}
+              handlePlayVideo={this.handlePlayVideo}
+              handlePauseVideo={this.handlePauseVideo}
+              paused={paused}
+            />
 
-        {/*  <Slider*/}
-        {/*    value={progress}*/}
-        {/*    thumbTintColor={'#FFF'}*/}
-        {/*    minimumTrackTintColor={'#FFF'}*/}
-        {/*    maximumTrackTintColor={'#FFF'}*/}
-        {/*    maximumValue={100}*/}
-        {/*    step={5}*/}
-        {/*    disabled*/}
-        {/*    style={styles.slider}*/}
-        {/*    onValueChange={this.onSliderPositionChange} />*/}
+            {children}
 
-        {/*  <ScrollView*/}
-        {/*    ref={ref => this.scrollViewRef = ref}*/}
-        {/*    showsHorizontalScrollIndicator={false}*/}
-        {/*    showsVerticalScrollIndicator={false}*/}
-        {/*    contentContainerStyle={styles.contentContainerStyle}*/}
-        {/*    onScroll={this.toggleControls}*/}
-        {/*    scrollEnabled={showControls}*/}
-        {/*    onScrollEndDrag={this.positionScroller}*/}
-        {/*    onContentSizeChange={this.onContentSizeChange}>*/}
+            {/*<Slider*/}
+            {/*  value={progress}*/}
+            {/*  thumbTintColor={'#FFF'}*/}
+            {/*  minimumTrackTintColor={'#FFF'}*/}
+            {/*  maximumTrackTintColor={'#FFF'}*/}
+            {/*  maximumValue={100}*/}
+            {/*  step={5}*/}
+            {/*  disabled*/}
+            {/*  style={styles.slider}*/}
+            {/*  onValueChange={this.onSliderPositionChange} />*/}
 
-        {/*    <View style={[styles.overlay]} />*/}
+            <ScrollView
+              ref={ref => this.scrollViewRef = ref}
+              showsHorizontalScrollIndicator={false}
+              showsVerticalScrollIndicator={false}
+              contentContainerStyle={styles.contentContainerStyle}
+              onScroll={this.toggleControls}
+              scrollEnabled={showControls}
+              onScrollEndDrag={this.positionScroller}
+              onContentSizeChange={this.onContentSizeChange}>
 
-        {/*    <TouchableWithoutFeedback onPress={this.toggleControls}>*/}
-        {/*      <View style={this.getPlaceholderStyle()} />*/}
-        {/*    </TouchableWithoutFeedback>*/}
+              <Overlay variant={'dark'} />
 
-        {/*    /!*<ScrollView*!/*/}
-        {/*    /!*  showsHorizontalScrollIndicator={false}*!/*/}
-        {/*    /!*  showsVerticalScrollIndicator={false}*!/*/}
-        {/*    /!*  onScroll={() => this.toggleControls(false)}*!/*/}
-        {/*    /!*  scrollEventThrottle={10}*!/*/}
-        {/*    /!*  contentContainerStyle={{*!/*/}
-        {/*    /!*    flexGrow: 1,*!/*/}
-        {/*    /!*    backgroundColor: 'green',*!/*/}
-        {/*    /!*  }}*!/*/}
-        {/*    /!*  horizontal>*!/*/}
+              <TouchableWithoutFeedback onPress={this.toggleControls}>
+                <View style={this.getPlaceholderStyle()} />
+              </TouchableWithoutFeedback>
 
-        {/*    /!*  {this.getEpisodes().map(episode => (*!/*/}
-        {/*    /!*    <Episode*!/*/}
-        {/*    /!*      variant={'player'}*!/*/}
-        {/*    /!*      key={episode._id}*!/*/}
-        {/*    /!*      playItem={this.playEpisode}*!/*/}
-        {/*    /!*      hasAired={episode.firstAired < this.today}*!/*/}
-        {/*    /!*      {...episode} />*!/*/}
-        {/*    /!*  ))}*!/*/}
+              {/*<ScrollView*/}
+              {/*  showsHorizontalScrollIndicator={false}*/}
+              {/*  showsVerticalScrollIndicator={false}*/}
+              {/*  onScroll={() => this.toggleControls(false)}*/}
+              {/*  scrollEventThrottle={10}*/}
+              {/*  contentContainerStyle={{*/}
+              {/*    flexGrow: 1,*/}
+              {/*    backgroundColor: 'green',*/}
+              {/*  }}*/}
+              {/*  horizontal>*/}
 
-        {/*    /!*</ScrollView>*!/*/}
+              {/*  {this.getEpisodes().map(episode => (*/}
+              {/*    <Episode*/}
+              {/*      variant={'player'}*/}
+              {/*      key={episode._id}*/}
+              {/*      playItem={this.playEpisode}*/}
+              {/*      hasAired={episode.firstAired < this.today}*/}
+              {/*      {...episode} />*/}
+              {/*  ))}*/}
 
-        {/*  </ScrollView>*/}
+              {/*</ScrollView>*/}
 
-        {/*</Animatable.View>*/}
+            </ScrollView>
+
+          </Animatable.View>
+        )}
 
       </React.Fragment>
     )
@@ -395,18 +380,6 @@ const styles = StyleSheet.create({
     zIndex: 1000,
   },
 
-  overlay: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    bottom: 0,
-    right: 0,
-    opacity: 0.6,
-    flex: 1,
-
-    backgroundColor: '#000',
-  },
-
   contentContainerStyle: {
     flexGrow: 1,
     flex: 1,
@@ -422,6 +395,7 @@ const styles = StyleSheet.create({
     left: 0,
     bottom: 0,
     right: 0,
+    zIndex: 800,
   },
 
   slider: {

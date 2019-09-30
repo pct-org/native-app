@@ -21,9 +21,9 @@ export const styles = StyleSheet.create({
 
 })
 
-export const Card = ({ item, empty, style, ...rest }) => (
+export const Card = ({ item,elevation, empty, style, ...rest }) => (
   <Container
-    elevation={1}
+    elevation={elevation}
     style={[styles.root, style]}>
     <BaseButton
       // onLongPress={() => console.warn(item.title)}
@@ -51,6 +51,7 @@ Card.propTypes = {
   item: PropTypes.object,
   empty: PropTypes.bool,
   style: PropTypes.object,
+  elevation: PropTypes.number,
 }
 
 Card.defaultProps = {
@@ -58,6 +59,7 @@ Card.defaultProps = {
   empty: false,
   style: null,
   component: BaseButton,
+  elevation: 1
 }
 
 export default Card

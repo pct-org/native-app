@@ -1,25 +1,14 @@
 import React, { useEffect } from 'react'
 import PropTypes from 'prop-types'
-import { StatusBar, StyleSheet, ActivityIndicator, View, BackHandler } from 'react-native'
+import { StyleSheet, View } from 'react-native'
 import { useMutation, useLazyQuery } from '@apollo/react-hooks'
-
-import i18n from 'modules/i18n'
-
-import Typography from 'components/Typography'
-import Button from 'components/Button'
-import IconButton from 'components/IconButton'
-import SubSelector from 'components/SubSelector'
 import Orientation from 'react-native-orientation'
 
 import { StartStreamMutation, StopStreamMutation, DownloadQuery } from './DownloadGraphQL'
 import VideoAndControls from './VideoAndControls'
+import PlayingItemInfo from './PlayingItemInfo'
 
 export const Player = ({ navigation: { state: { params: { item, playQuality } } } }) => {
-
-  // setTimeout(() => {
-  //   Orientation.lockToLandscape()
-  // }, 4000)
-
   useEffect(() => {
       // if (!calledStartStream) {
       //   // Start the stream
@@ -29,7 +18,7 @@ export const Player = ({ navigation: { state: { params: { item, playQuality } } 
       // }
 
       return () => {
-         Orientation.lockToPortrait()
+        Orientation.lockToPortrait()
 
         if (!calledStopStream) {
           // Stop the stream
@@ -64,16 +53,6 @@ export const Player = ({ navigation: { state: { params: { item, playQuality } } 
       },
     },
   )
-
-  const { showControls } = {}
-
-  const toggleControls = () => {
-
-  }
-
-  const toggleControlsOff = () => {
-
-  }
 
   /**
    * Play a other episode
@@ -118,33 +97,23 @@ export const Player = ({ navigation: { state: { params: { item, playQuality } } 
     _id: 'tt6317068-2-12',
     progress: 10,
   }
-  // const isDownloadLoading = loading
+  // const isBuffering = loading
   //                           || downloadLoading
   //                           || !downloadData
   //                           || download.progress < 3
 
 
-  const isDownloadLoading = false
+  const isBuffering = false
 
   if (download && download.progress === 100) {
     // Stop polling when progress is 100
     stopPolling()
   }
 
-  // if (download) {
-  //   console.log('URL:', `http://10.0.2.2:3000/watch/${download._id}`)
-  //   console.log('URL:', `http://192.168.1.67:3000/watch/${download._id}`)
-  //   console.log('URL:', `http://localhost:3000/watch/${download._id}`)
-  // }
-
-  console.log('item', item)
+  console.log('item', item, download, isBuffering)
 
   return (
     <View style={styles.listContainer}>
-
-      {/*<StatusBar*/}
-      {/*  hidden={false}*/}
-      {/*  animated />*/}
 
       {/*{isDownloadLoading && (*/}
       {/*  <View style={[styles.fullScreen, styles.loadingContainer]}>*/}
@@ -186,18 +155,17 @@ export const Player = ({ navigation: { state: { params: { item, playQuality } } 
       {/*  </View>*/}
       {/*)}*/}
 
-      {(!isDownloadLoading) && (
-        <React.Fragment>
+      {(!isBuffering) && (
+        <VideoAndControls
+          item={item}
+          url={`http://192.168.88.189:3000/watch/${download._id}`}
+          playOtherEpisode={playItem}>
 
-          <VideoAndControls
+          <PlayingItemInfo
             item={item}
-            url={`http://192.168.1.67:3000/watch/${download._id}`}
-            playOtherEpisode={playItem}
-            showControls={showControls}>
+          />
 
-          </VideoAndControls>
-
-        </React.Fragment>
+        </VideoAndControls>
       )}
 
     </View>

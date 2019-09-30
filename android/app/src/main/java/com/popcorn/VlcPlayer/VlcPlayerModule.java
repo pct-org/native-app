@@ -52,20 +52,12 @@ public class VlcPlayerModule extends ViewGroupManager<VlcPlayerView> {
   @Override
   public Map getExportedCustomDirectEventTypeConstants() {
     MapBuilder.Builder builder = MapBuilder.builder();
-    for (String event : VlcEventEmitter.Events) {
-      builder.put(event, MapBuilder.of("registrationName", event));
+    for (VlcEventEmitter.Events event : VlcEventEmitter.Events.values()) {
+      builder.put(event.toString(), MapBuilder.of("registrationName", event.toString()));
     }
+
     return builder.build();
   }
-
-//  @Override
-//  public @Nullable Map<String, Object> getExportedCustomDirectEventTypeConstants() {
-//    MapBuilder.Builder<String, Object> builder = MapBuilder.builder();
-//    for (String event : VideoEventEmitter.Events) {
-//      builder.put(event, MapBuilder.of("registrationName", event));
-//    }
-//    return builder.build();
-//  }
 
   @ReactProp(name = PROP_SOURCE)
   public void setPath(final VlcPlayerView playerView, ReadableMap map) {
@@ -74,11 +66,6 @@ public class VlcPlayerModule extends ViewGroupManager<VlcPlayerView> {
 
     playerView.setAutoPlay(autoPlay);
     playerView.setFilePath(path);
-  }
-
-  @ReactProp(name = PROP_VOLUME)
-  public void setVolume(final VlcPlayerView playerView, float volume) {
-    playerView.setVolume((int) (300 * volume));
   }
 
   @ReactProp(name = PROP_SEEK)
@@ -91,18 +78,10 @@ public class VlcPlayerModule extends ViewGroupManager<VlcPlayerView> {
     playerView.setPaused(paused);
   }
 
-//    @ReactProp(name = PROP_RESIZE)
-//    public void resize(final VlcPlayerView playerView, ReadableMap resize) {
-//        int width = resize.getInt("width");
-//        int height = resize.getInt("height");
-//        playerView.changeSurfaceLayout(width, height);
-//    }
-
   @ReactProp(name = PROP_RESIZE_MODE)
   public void setResizeMode(final VlcPlayerView videoView, final String resizeModeOrdinalString) {
     videoView.setResizeMode(convertToIntDef(resizeModeOrdinalString));
   }
-
 
   @ReactProp(name = PROP_FULLSCREEN, defaultBoolean = false)
   public void setFullscreen(final VlcPlayerView videoView, final boolean fullscreen) {
