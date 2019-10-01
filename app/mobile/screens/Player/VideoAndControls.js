@@ -1,11 +1,13 @@
-import Overlay from 'components/Overlay/Overlay'
 import React from 'react'
-import VlcPlayer from 'components/VlcPlayer'
-import { Dimensions, Slider, StyleSheet, TouchableWithoutFeedback, View, ScrollView } from 'react-native'
+import { Dimensions, StyleSheet, TouchableWithoutFeedback, View, ScrollView } from 'react-native'
 import * as Animatable from 'react-native-animatable'
 import Orientation from 'react-native-orientation'
 
+import VlcPlayer from 'components/VlcPlayer'
+import Overlay from 'components/Overlay'
+
 import PlayPauseIcon from './PlayPauseIcon'
+import ResizeMode from './ResizeMode'
 
 const { height: windowHeight, width: windowWidth } = Dimensions.get('window')
 
@@ -198,9 +200,15 @@ export class VideoAndControls extends React.Component {
     })
   }
 
+  handleResizeModeChange = (resizeMode) => {
+    this.setState({
+      resizeMode
+    })
+  }
+
   toggleControls = (withTimeout = true) => {
     const { showControls } = this.state
-    console.log('toggleControls')
+
     if (this.controlsTimer) {
       clearTimeout(this.controlsTimer)
     }
@@ -247,8 +255,6 @@ export class VideoAndControls extends React.Component {
           <VlcPlayer
             ref={(ref) => {
               this.videoRef = ref
-
-              console.log('videoRef', this.videoRef)
             }}
             source={{
               uri: url,
@@ -306,6 +312,11 @@ export class VideoAndControls extends React.Component {
               handlePlayVideo={this.handlePlayVideo}
               handlePauseVideo={this.handlePauseVideo}
               paused={paused}
+            />
+
+            <ResizeMode
+              activeMode={resizeMode}
+              changeResizeMode={this.handleResizeModeChange}
             />
 
             {children}

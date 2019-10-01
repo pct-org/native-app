@@ -7,15 +7,16 @@ import Orientation from 'react-native-orientation'
 import { StartStreamMutation, StopStreamMutation, DownloadQuery } from './DownloadGraphQL'
 import VideoAndControls from './VideoAndControls'
 import PlayingItemInfo from './PlayingItemInfo'
+import DownloadInfo from './DownloadInfo'
 
 export const Player = ({ navigation: { state: { params: { item, playQuality } } } }) => {
   useEffect(() => {
-      // if (!calledStartStream) {
-      //   // Start the stream
-      //   startStream().then(() => {
-      //     executeQuery()
-      //   })
-      // }
+      if (!calledStartStream) {
+        // Start the stream
+        startStream().then(() => {
+          executeQuery()
+        })
+      }
 
       return () => {
         Orientation.lockToPortrait()
@@ -29,7 +30,7 @@ export const Player = ({ navigation: { state: { params: { item, playQuality } } 
     [],
   )
 
-  const [startStream, { called: calledStartStream, loading, data }] = useMutation(
+  const [startStream, { called: calledStartStream, loading, data, error }] = useMutation(
     StartStreamMutation, { variables: { _id: item._id, itemType: item.type, quality: playQuality } },
   )
 
@@ -89,28 +90,26 @@ export const Player = ({ navigation: { state: { params: { item, playQuality } } 
     })
   }
 
-  // const download = loading || downloadLoading || !downloadData
-  //   ? null
-  //   : downloadData.download
+  const download = loading || downloadLoading || !downloadData
+    ? null
+    : downloadData.download
 
-  const download = {
-    _id: 'tt6317068-2-12',
-    progress: 10,
-  }
-  // const isBuffering = loading
-  //                           || downloadLoading
-  //                           || !downloadData
-  //                           || download.progress < 3
+  const isBuffering = loading
+                      || downloadLoading
+                      || !downloadData
+                      || !download
+                      || download.progress < 3
 
-
-  const isBuffering = false
 
   if (download && download.progress === 100) {
     // Stop polling when progress is 100
     stopPolling()
   }
 
-  console.log('item', item, download, isBuffering)
+  console.log('item', item, isBuffering)
+  console.log('download', download)
+  console.log('downloadData', downloadData)
+  console.log('error', error)
 
   return (
     <View style={styles.listContainer}>
@@ -155,14 +154,18 @@ export const Player = ({ navigation: { state: { params: { item, playQuality } } 
       {/*  </View>*/}
       {/*)}*/}
 
-      {(!isBuffering) && (
+      {!isBuffering && download && (
         <VideoAndControls
           item={item}
-          url={`http://192.168.88.189:3000/watch/${download._id}`}
+          url={`http://192.168.43.228:3000/watch/${download._id}`}
           playOtherEpisode={playItem}>
 
           <PlayingItemInfo
             item={item}
+          />
+
+          <DownloadInfo
+            {...download}
           />
 
         </VideoAndControls>

@@ -9,6 +9,7 @@ export const DownloadQuery = gql`
       status
       quality
       progress
+      numPeers
       speed
       timeRemaining
     }
@@ -24,6 +25,7 @@ export const StartStreamMutation = gql`
       status
       quality
       progress
+      numPeers
       speed
       timeRemaining
     }

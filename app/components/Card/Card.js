@@ -21,7 +21,7 @@ export const styles = StyleSheet.create({
 
 })
 
-export const Card = ({ item,elevation, empty, style, ...rest }) => (
+export const Card = ({ item, elevation, empty, style, ...rest }) => (
   <Container
     elevation={elevation}
     style={[styles.root, style]}>
@@ -59,7 +59,7 @@ Card.defaultProps = {
   empty: false,
   style: null,
   component: BaseButton,
-  elevation: 1
+  elevation: 1,
 }
 
 export default Card
