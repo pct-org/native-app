@@ -1,13 +1,20 @@
 import React, { useEffect } from 'react'
 import PropTypes from 'prop-types'
-import { StyleSheet, View } from 'react-native'
+import { StyleSheet, View, ActivityIndicator } from 'react-native'
 import { useMutation, useLazyQuery } from '@apollo/react-hooks'
 import Orientation from 'react-native-orientation'
+
+import colors from 'modules/colors'
+import i18n from 'modules/i18n'
+import dimensions from 'modules/dimensions'
+
+import Typography from 'components/Typography'
 
 import { StartStreamMutation, StopStreamMutation, DownloadQuery } from './DownloadGraphQL'
 import VideoAndControls from './VideoAndControls'
 import PlayingItemInfo from './PlayingItemInfo'
 import DownloadInfo from './DownloadInfo'
+import EpisodePlaying from './EpisodePlaying'
 
 export const Player = ({ navigation: { state: { params: { item, playQuality } } } }) => {
   useEffect(() => {
@@ -112,47 +119,39 @@ export const Player = ({ navigation: { state: { params: { item, playQuality } } 
   console.log('error', error)
 
   return (
-    <View style={styles.listContainer}>
+    <View style={styles.root}>
 
-      {/*{isDownloadLoading && (*/}
-      {/*  <View style={[styles.fullScreen, styles.loadingContainer]}>*/}
+      {isBuffering && (
+        <View style={[styles.fullScreen, styles.bufferingContainer]}>
 
-      {/*    <ActivityIndicator size={60} color={'#FFF'} />*/}
+          <EpisodePlaying
+            item={item}
+          />
 
-      {/*    <Typography*/}
-      {/*      style={{ marginTop: 10, marginBottom: 20, textAlign: 'center' }}*/}
-      {/*      variant={'title'}>*/}
-      {/*      {item && item.show && (*/}
-      {/*        `${item.show.title} - ${item.title}`*/}
-      {/*      )}*/}
+          <ActivityIndicator
+            size={50}
+            style={{ marginTop: dimensions.UNIT * 5 }}
+            color={colors.PRIMARY_COLOR_200} />
 
-      {/*      {item && !item.show && (*/}
-      {/*        `${item.title}`*/}
-      {/*      )}*/}
-      {/*    </Typography>*/}
+          {download && download.status !== 'connecting' && (
+            <Typography style={{ marginTop: dimensions.UNIT * 3 }}>
+              {i18n.t('Buffering')}
+            </Typography>
+          )}
 
-      {/*    {download && (*/}
-      {/*      <React.Fragment>*/}
-      {/*        {download && download.status !== 'connecting' && (*/}
-      {/*          <Typography style={{ marginTop: 10 }}>*/}
-      {/*            {i18n.t('Buffering')}*/}
-      {/*          </Typography>*/}
-      {/*        )}*/}
+          {!download || download.status === 'connecting' && (
+            <Typography style={{ marginTop: dimensions.UNIT * 3 }}>
+              {download ? i18n.t('Connecting') : i18n.t('Queued')}
+            </Typography>
+          )}
 
-      {/*        {!download || download.status === 'connecting' && (*/}
-      {/*          <Typography style={{ marginTop: 10 }}>*/}
-      {/*            {download ? i18n.t('Connecting') : i18n.t('Queued')}*/}
-      {/*          </Typography>*/}
-      {/*        )}*/}
-
-      {/*        <Typography variant={'body2'} style={{ marginTop: 5 }}>*/}
-      {/*          {(download.progress / 3 * 100).toFixed(2)}% / {download.speed}*/}
-      {/*        </Typography>*/}
-      {/*      </React.Fragment>*/}
-      {/*    )}*/}
-
-      {/*  </View>*/}
-      {/*)}*/}
+          {download && (
+            <Typography variant={'body2'} style={{ marginTop: dimensions.UNIT / 2 }}>
+              {(download.progress / 3 * 100).toFixed(2)}% / {download.speed}
+            </Typography>
+          )}
+        </View>
+      )}
 
       {!isBuffering && download && (
         <VideoAndControls
@@ -177,9 +176,17 @@ export const Player = ({ navigation: { state: { params: { item, playQuality } } 
 
 const styles = StyleSheet.create({
 
-  listContainer: {
+  root: {
     flex: 1,
     backgroundColor: 'black',
+  },
+
+  bufferingContainer: {
+    backgroundColor: colors.BACKGROUND,
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    alignContent: 'center',
   },
 
   fullScreen: {
@@ -188,12 +195,6 @@ const styles = StyleSheet.create({
     left: 0,
     bottom: 0,
     right: 0,
-  },
-
-  loadingContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
   },
 
   slider: {

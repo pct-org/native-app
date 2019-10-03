@@ -28,52 +28,50 @@ export const styles = {
   },
 
   text: {
-    textAlign:'right'
-  }
+    textAlign: 'right',
+  },
 }
 
-export const DownloadInfo = ({ status, progress, speed, timeRemaining, numPeers }) => {
-  return (
-    <View style={styles.root}>
-      <View style={styles.container}>
-        <Typography
-          style={styles.text}
-          emphasis={'high'}
-          color={'white'}
-          variant={'caption'}>
-          {status}
-        </Typography>
+export const DownloadInfo = ({ status, progress, speed, timeRemaining, numPeers }) => (
+  <View style={styles.root}>
+    <View style={styles.container}>
+      <Typography
+        style={styles.text}
+        emphasis={'high'}
+        color={'white'}
+        variant={'caption'}>
+        {status}
+      </Typography>
 
-        {status !== 'complete' && (
-          <React.Fragment>
-            <Typography
-              style={styles.text}
-              emphasis={'medium'}
-              color={'white'}
-              variant={'caption'}>
-              {`${progress}% / ${speed}`}
-            </Typography>
+      {status !== 'complete' && (
+        <React.Fragment>
+          <Typography
+            style={styles.text}
+            emphasis={'medium'}
+            color={'white'}
+            variant={'caption'}>
+            {`${progress}% / ${speed}`}
+          </Typography>
 
-            <Typography
-              style={styles.text}
-              emphasis={'medium'}
-              color={'white'}
-              variant={'caption'}>
-              {timeRemaining}
-            </Typography>
+          <Typography
+            style={styles.text}
+            emphasis={'medium'}
+            color={'white'}
+            variant={'caption'}>
+            {timeRemaining}
+          </Typography>
 
-            <Typography
-              style={styles.text}
-              emphasis={'medium'}
-              color={'white'}
-              variant={'caption'}>
-              {numPeers}
-            </Typography>
-          </React.Fragment>
-        )}
-      </View>
+          <Typography
+            style={styles.text}
+            emphasis={'medium'}
+            color={'white'}
+            variant={'caption'}>
+            {numPeers}
+          </Typography>
+        </React.Fragment>
+      )}
     </View>
-  )
-}
+  </View>
+)
 
 export default DownloadInfo

@@ -317,6 +317,7 @@ export class VideoAndControls extends React.Component {
             <ResizeMode
               activeMode={resizeMode}
               changeResizeMode={this.handleResizeModeChange}
+              toggleControls={this.toggleControls}
             />
 
             {children}

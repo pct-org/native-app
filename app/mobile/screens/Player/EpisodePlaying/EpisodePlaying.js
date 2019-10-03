@@ -10,7 +10,8 @@ export const styles = {
   root: {
     display: 'flex',
     flexDirection: 'row',
-    maxWidth: '55%',
+    marginRight: dimensions.UNIT * 2,
+    marginLeft: dimensions.UNIT * 2
   },
 
   container: {
@@ -20,6 +21,7 @@ export const styles = {
 
   synopsis: {
     marginTop: dimensions.UNIT / 2,
+    width: dimensions.SCREEN_WIDTH - dimensions.CARD_WIDTH - (dimensions.UNIT * 5)
   },
 }
 

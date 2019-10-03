@@ -7,7 +7,7 @@ import IconButton from 'components/IconButton'
 
 const ICON_SIZE = dimensions.UNIT * 4
 
-export const ResizeMode = ({ activeMode, changeResizeMode }) => {
+export const ResizeMode = ({ activeMode, changeResizeMode, toggleControls }) => {
   const getNextMode = () => {
     if (activeMode === 'contain') {
       return 'cover'
@@ -32,8 +32,16 @@ export const ResizeMode = ({ activeMode, changeResizeMode }) => {
       pointerEvents={'box-none'}>
 
       <IconButton
-        onPress={() => changeResizeMode(getNextMode())}
-        name={'contain'}
+        style={{
+          transform: [{ rotate: '90deg' }],
+        }}
+        onPress={() => {
+          // Also toggle the controls so they stay visible
+          toggleControls()
+
+          changeResizeMode(getNextMode())
+        }}
+        name={'cellphone-screenshot'}
         color={'primary'}
         size={ICON_SIZE}>
         {activeMode}
@@ -45,7 +53,7 @@ export const ResizeMode = ({ activeMode, changeResizeMode }) => {
 
 ResizeMode.propTypes = {
   activeMode: PropTypes.string.isRequired,
-  changeResizeMode: PropTypes.func.isRequired
+  changeResizeMode: PropTypes.func.isRequired,
 }
 
 export default ResizeMode
