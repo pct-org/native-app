@@ -29,6 +29,12 @@ export default async() => {
             _id: args._id,
           })
         },
+        download: (_, args, { getCacheKey }) => {
+          return getCacheKey({
+            __typename: 'Download',
+            _id: args._id,
+          })
+        },
       },
     },
   })
@@ -71,10 +77,10 @@ export default async() => {
         )
       },
       new WebSocketLink({
-        uri: 'ws://192.168.43.228:3000/graphql',
+        uri: 'ws://10.0.2.2:3000/graphql',
       }),
       new HttpLink({
-        uri: 'http://192.168.43.228:3000/graphql',
+        uri: 'http://10.0.2.2:3000/graphql',
       }),
     ),
 

@@ -1,6 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { StyleSheet, View } from 'react-native'
+import { withNavigation } from 'react-navigation'
 
 import dimensions from 'modules/dimensions'
 
@@ -12,6 +13,7 @@ import Container from 'components/Container'
 import IconButton from 'components/IconButton'
 
 import QualitySelector from 'mobile/components/QualitySelector'
+import EpisodeStatus from './EpisodeStatus'
 
 export const styles = StyleSheet.create({
 
@@ -63,6 +65,7 @@ export const styles = StyleSheet.create({
 
 
 // TODO:: Refactor to dump component with useState
+@withNavigation
 export default class Episode extends React.Component {
 
   static propTypes = {
@@ -85,15 +88,7 @@ export default class Episode extends React.Component {
     },
   }
 
-  state = {
-    showQualitySelector: false,
-  }
-
-  toggleSelector = (showQualitySelector) => {
-    this.setState({
-      showQualitySelector,
-    })
-  }
+  playSelectorRef
 
   getAirsDate = () => {
     const { firstAired } = this.props
@@ -105,8 +100,7 @@ export default class Episode extends React.Component {
   }
 
   render() {
-    const { title, synopsis, number, hasAired, images } = this.props
-    const { showQualitySelector } = this.state
+    const { title, synopsis, number, hasAired, images, navigation } = this.props
 
     return (
       <View style={styles.container}>
@@ -115,7 +109,7 @@ export default class Episode extends React.Component {
           <Container
             elevation={1}
             style={styles.posterContainer}>
-            <BaseButton onPress={() => this.toggleSelector(!showQualitySelector)}>
+            <BaseButton onPress={() => this.playSelectorRef.handleOnIconPress()}>
               <View>
                 <Image
                   style={styles.image}
@@ -126,9 +120,9 @@ export default class Episode extends React.Component {
 
                   {hasAired && (
                     <QualitySelector
+                      ref={ref => this.playSelectorRef = ref}
                       item={this.props}
-                      visible={showQualitySelector}
-                      onRequestClose={() => this.toggleSelector(false)}
+                      navigation={navigation}
                     />
                   )}
 
@@ -160,11 +154,11 @@ export default class Episode extends React.Component {
             </Typography>
           </View>
 
-          <IconButton
-            size={24}
-            color={'primary'}
-            emphasis={'medium'}
-            name={'cloud-download'} />
+          <QualitySelector
+            item={this.props}
+            variant={QualitySelector.VARIANT_DOWNLOAD}
+            navigation={navigation}
+          />
         </View>
 
         <Typography

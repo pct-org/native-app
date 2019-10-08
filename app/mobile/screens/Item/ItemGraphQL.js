@@ -10,14 +10,17 @@ export const MovieQuery = gql`
       synopsis
       type
       bookmarked
-      downloaded
-      downloading
       rating {
         percentage
       }
       watched {
         complete
         progress
+      }
+      download {
+        downloadStatus
+        downloading
+        downloadComplete
       }
       torrents {
         quality
@@ -73,11 +76,14 @@ export const ShowQuery = gql`
           synopsis
           firstAired
           type
-          downloaded
-          downloading
           watched {
             complete
             progress
+          }
+          download {
+            downloadStatus
+            downloading
+            downloadComplete
           }
           images {
             poster {

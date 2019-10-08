@@ -39,5 +39,8 @@
   "Refreshing": "Refreshing",
   "Size: {{size}}": "Size: {{size}}",
   "Watch in": "Watch in",
-  "Download in": "Download in"
+  "Download in": "Download in",
+  "Hold long to cancel": "Hold long to cancel",
+  "Hold long to remove": "Hold long to remove",
+  "\"{{title}}\" removed": "\"{{title}}\" removed"
 }

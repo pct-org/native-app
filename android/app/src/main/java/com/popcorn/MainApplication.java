@@ -1,31 +1,16 @@
 package com.popcorn;
 
 import android.app.Application;
-import android.app.UiModeManager;
-import android.content.res.Configuration;
 import android.os.StrictMode;
 
+import com.facebook.react.PackageList;
 import com.facebook.react.ReactApplication;
-import com.popcorn.VlcPlayer.VlcPlayerPackage;
-import com.reactnativecommunity.asyncstorage.AsyncStoragePackage;
-import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;
-import org.devio.rn.splashscreen.SplashScreenReactPackage;
-import com.reactcommunity.rnlanguages.RNLanguagesPackage;
-import com.tripss.updaternapp.UpdateRNAppPackage;
-import com.oblador.vectoricons.VectorIconsPackage;
-import com.rnfs.RNFSPackage;
-import com.futurepress.staticserver.FPStaticServerPackage;
-import com.github.yamill.orientation.OrientationPackage;
-import com.BV.LinearGradient.LinearGradientPackage;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
-import com.facebook.react.shell.MainReactPackage;
 import com.facebook.soloader.SoLoader;
-import com.reactnative.googlecast.GoogleCastPackage;
+import com.popcorn.VlcPlayer.VlcPlayerPackage;
 
 import java.lang.reflect.Method;
-import java.util.Arrays;
-import java.util.LinkedList;
 import java.util.List;
 
 public class MainApplication extends Application implements ReactApplication {
@@ -39,31 +24,9 @@ public class MainApplication extends Application implements ReactApplication {
 
     @Override
     protected List<ReactPackage> getPackages() {
-      List<ReactPackage> packages = new LinkedList<ReactPackage>(
-          Arrays.<ReactPackage>asList(
-              new MainReactPackage(),
-              new VlcPlayerPackage(),
-              new AsyncStoragePackage(),
-              new RNGestureHandlerPackage(),
-              new SplashScreenReactPackage(),
-              new RNLanguagesPackage(),
-              new UpdateRNAppPackage(),
-              new VectorIconsPackage(),
-              new RNFSPackage(),
-              new FPStaticServerPackage(),
-              new LinearGradientPackage(),
-              new OrientationPackage()
-          )
-      );
+      List<ReactPackage> packages = new PackageList(this).getPackages();
 
-      UiModeManager uiModeManager = (UiModeManager) getSystemService(UI_MODE_SERVICE);
-      if (uiModeManager.getCurrentModeType() != Configuration.UI_MODE_TYPE_TELEVISION) {
-
-        // Only add the ChromeCast if it's not TV
-        packages.add(
-            new GoogleCastPackage()
-        );
-      }
+      packages.add(new VlcPlayerPackage());
 
       return packages;
     }
@@ -72,6 +35,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected String getJSMainModuleName() {
       return "index";
     }
+
   };
 
   @Override

@@ -39,5 +39,8 @@
   "Refreshing": "Refreshen",
   "Size: {{size}}": "Groote: {{size}}",
   "Watch in": "Bekijken in",
-  "Download in": "Download in"
+  "Download in": "Download in",
+  "Hold long to cancel": "Inhouden om te cancellen",
+  "Hold long to remove": "Inhouden om te verwijderen",
+  "\"{{title}}\" removed": "\"{{title}}\" verwijderd"
 }

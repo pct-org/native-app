@@ -7,10 +7,10 @@ import Orientation from 'react-native-orientation'
 import colors from 'modules/colors'
 import i18n from 'modules/i18n'
 import dimensions from 'modules/dimensions'
+import { StartStreamMutation, StopStreamMutation, DownloadQuery } from 'modules/GraphQL/DownloadGraphQL'
 
 import Typography from 'components/Typography'
 
-import { StartStreamMutation, StopStreamMutation, DownloadQuery } from './DownloadGraphQL'
 import VideoAndControls from './VideoAndControls'
 import PlayingItemInfo from './PlayingItemInfo'
 import DownloadInfo from './DownloadInfo'
@@ -156,7 +156,7 @@ export const Player = ({ navigation: { state: { params: { item, playQuality } } 
       {!isBuffering && download && (
         <VideoAndControls
           item={item}
-          url={`http://192.168.43.228:3000/watch/${download._id}`}
+          url={`http://10.0.2.2:3000/watch/${download._id}`}
           playOtherEpisode={playItem}>
 
           <PlayingItemInfo

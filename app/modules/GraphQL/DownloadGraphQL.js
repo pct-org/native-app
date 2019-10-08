@@ -37,3 +37,25 @@ export const StopStreamMutation = gql`
     download: stopStream(_id: $_id)
   }
 `
+
+export const StartDownloadMutation = gql`
+  mutation startDownload($_id: String!, $itemType: String!, $quality: String!) {
+    download: startDownload(_id: $_id, itemType: $itemType, quality: $quality) {
+      _id
+      type
+      itemType
+      status
+      quality
+      progress
+      numPeers
+      speed
+      timeRemaining
+    }
+  }
+`
+
+export const RemoveDownloadMutation = gql`
+  mutation removeDownload($_id: String!) {
+    download: removeDownload(_id: $_id)
+  }
+`
