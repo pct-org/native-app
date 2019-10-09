@@ -6699,11 +6699,6 @@ react-native-safe-modules@^1.0.0:
   resolved "https://registry.yarnpkg.com/react-native-screens/-/react-native-screens-1.0.0-alpha.22.tgz#7a120377b52aa9bbb94d0b8541a014026be9289b"
   integrity sha512-kSyAt0AeVU6N7ZonfV6dP6iZF8B7Bce+tk3eujXhzBGsLg0VSLnU7uE9VqJF0xdQrHR91ZjGgVMieo/8df9KTA==
 
-react-native-snackbar@^2.0.2:
-  version "2.0.2"
-  resolved "https://registry.yarnpkg.com/react-native-snackbar/-/react-native-snackbar-2.0.2.tgz#f01b247734aaff53075a2a07045f5d2531cf91d4"
-  integrity sha512-m/tMKYj5KrTNxOkK8LuOVJC/8FFto8rTarGlbLPQdVaLSVBeV84QAyeSQPSneWRz3EOM/7RAMkGFDynJXoPbcw==
-
 react-native-splash-screen@3.2.0:
   version "3.2.0"
   resolved "https://registry.yarnpkg.com/react-native-splash-screen/-/react-native-splash-screen-3.2.0.tgz#d47ec8557b1ba988ee3ea98d01463081b60fff45"

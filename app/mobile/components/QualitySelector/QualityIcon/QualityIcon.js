@@ -2,7 +2,6 @@ import React, { useEffect } from 'react'
 import PropTypes from 'prop-types'
 import { StyleSheet, ToastAndroid } from 'react-native'
 import LottieView from 'lottie-react-native'
-import Snackbar from 'react-native-snackbar'
 import { useLazyQuery } from '@apollo/react-hooks'
 
 import i18n from 'modules/i18n'
@@ -28,7 +27,7 @@ export const QualityIcon = ({ handleOnPress, handleRemoveDownload, item, downloa
     executeQuery,
     {
       called: queryCalled,
-      data: downloadData,
+      data,
       stopPolling: stopPollingDownload,
     },
   ] = useLazyQuery(
@@ -42,34 +41,32 @@ export const QualityIcon = ({ handleOnPress, handleRemoveDownload, item, downloa
     },
   )
 
-  const download = downloadData
-    ? downloadData.download
-    : downloadProp
-
   useEffect(() => {
-    if (download || (item.download && item.download.downloading && !item.download.downloadComplete)) {
+    if (downloadProp) {
       executeQuery()
     }
 
     return () => {
       if (stopPollingDownload) {
+        console.log('stopPollingDownload')
         stopPollingDownload()
       }
     }
   }, [downloadProp])
 
-  console.log('download',download)
-  if (variant === QualitySelector.VARIANT_DOWNLOAD) {
-    if (item.download || download) {
-      const downloadStatus = download
-        ? download.status
-        : item.download.downloadStatus
+  const download = downloadProp && !data
+    ? downloadProp
+    : data
+      ? data.download
+      : null
 
+  if (variant === QualitySelector.VARIANT_DOWNLOAD) {
+    if (download && download.status !== 'removed') {
       return (
         <BaseButton
           onPress={() => {
             ToastAndroid.show(
-              item.downloading
+              download.status === 'downloading'
                 ? i18n.t('Hold long to cancel')
                 : i18n.t('Hold long to remove'),
               ToastAndroid.SHORT,
@@ -89,7 +86,7 @@ export const QualityIcon = ({ handleOnPress, handleRemoveDownload, item, downloa
           <Animatable.View
             animation={'fadeIn'}
             useNativeDriver>
-            {downloadStatus === 'downloading' && (
+            {download.status === 'downloading' && (
               <LottieView
                 style={{
                   width: 24,
@@ -100,26 +97,26 @@ export const QualityIcon = ({ handleOnPress, handleRemoveDownload, item, downloa
                 loop />
             )}
 
-            {['queued', 'complete'].indexOf(downloadStatus) > -1 && (
+            {['queued', 'connecting', 'complete'].indexOf(download.status) > -1 && (
               <Icon
                 size={24}
-                name={downloadStatus === 'queued'
-                  ? 'cloud'
-                  : 'cloud-check'
+                name={download.status === 'complete'
+                  ? 'cloud-check'
+                  : 'cloud'
                 }
                 color={'primary'}
                 emphasis={'high'} />
             )}
 
-            {downloadStatus !== 'complete' && (
+            {download.status !== 'complete' && (
               <Typography
                 style={styles.downloadStatus}
                 emphasis={'medium'}
                 variant={'captionSmall'}>
                 {
-                  downloadStatus === 'downloading' && download
+                  download.status === 'downloading'
                     ? download.progress
-                    : downloadStatus
+                    : download.status
                 }
               </Typography>
             )}

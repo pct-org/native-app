@@ -1,6 +1,6 @@
 import gql from 'graphql-tag'
 
-export const DownloadQuery = gql`
+export const DownloadQuery = gql`  
   query download($_id: String!) {
     download(_id: $_id) {
       _id
@@ -34,7 +34,17 @@ export const StartStreamMutation = gql`
 
 export const StopStreamMutation = gql`
   mutation StopStream($_id: String!) {
-    download: stopStream(_id: $_id)
+    download: stopStream(_id: $_id) {
+      _id
+      type
+      itemType
+      status
+      quality
+      progress
+      numPeers
+      speed
+      timeRemaining
+    }
   }
 `
 
@@ -56,6 +66,16 @@ export const StartDownloadMutation = gql`
 
 export const RemoveDownloadMutation = gql`
   mutation removeDownload($_id: String!) {
-    download: removeDownload(_id: $_id)
+    download: removeDownload(_id: $_id) {
+      _id
+      type
+      itemType
+      status
+      quality
+      progress
+      numPeers
+      speed
+      timeRemaining
+    }
   }
 `

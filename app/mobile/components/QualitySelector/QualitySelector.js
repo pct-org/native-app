@@ -2,11 +2,12 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { StyleSheet, Text, ToastAndroid, View } from 'react-native'
 import * as Animatable from 'react-native-animatable'
-import { Mutation } from '@apollo/react-components'
+import { Mutation, Query } from '@apollo/react-components'
 
 import dimensions from 'modules/dimensions'
+import withApollo from 'modules/GraphQL/withApollo'
 import i18n from 'modules/i18n'
-import DownloadGraphQL, { RemoveDownloadMutation, StartDownloadMutation } from 'modules/GraphQL/DownloadGraphQL'
+import { DownloadQuery, RemoveDownloadMutation, StartDownloadMutation } from 'modules/GraphQL/DownloadGraphQL'
 
 import Card from 'components/Card'
 import Icon from 'components/Icon'
@@ -47,6 +48,8 @@ const styles = StyleSheet.create({
   },
 
 })
+
+@withApollo
 export default class QualitySelector extends React.Component {
 
   static VARIANT_PLAY = 'play'
@@ -57,15 +60,35 @@ export default class QualitySelector extends React.Component {
     fetchingBetter: PropTypes.bool,
     variant: PropTypes.oneOf(['play', 'download']),
     navigation: PropTypes.object.isRequired,
+    apollo: PropTypes.object.isRequired,
   }
 
   static defaultProps = {
     style: {},
-    variant: QualitySelector.VARIANT_PLAY,
+    variant: 'play',
+  }
+
+  static getDerivedStateFromProps(props, state) {
+    const { item } = props
+
+    let download = state.download || null
+
+    if (item.download && !state.download) {
+      download = {
+        status: item.download.status,
+        progress: 0,
+      }
+    }
+
+    return {
+      visible: state.visible || false,
+      download,
+    }
   }
 
   state = {
     visible: false,
+    download: null,
   }
 
   /**
@@ -97,9 +120,9 @@ export default class QualitySelector extends React.Component {
   }
 
   handleOnIconPress = () => {
-    const { item } = this.props
+    const { download } = this.state
 
-    if (item.download && (item.download.downloading || item.download.downloadComplete)) {
+    if (download) {
       this.handlePlayTorrent({
         quality: 'download',
       })
@@ -111,6 +134,50 @@ export default class QualitySelector extends React.Component {
     }
   }
 
+  /**
+   * Starts the download
+   *
+   * @param quality
+   * @return {Promise<void>}
+   */
+  handleStartDownload = async(quality) => {
+    const { apollo, item } = this.props
+
+    const { data: { download } } = await apollo.mutate({
+      variables: {
+        _id: item._id,
+        itemType: item.type,
+        quality,
+      },
+      mutation: StartDownloadMutation,
+    })
+
+    this.setState({
+      download,
+      visible: false,
+    })
+  }
+
+  /**
+   * Removes the download
+   *
+   * @return {Promise<void>}
+   */
+  handleRemoveDownload = async() => {
+    const { apollo, item } = this.props
+
+    apollo.mutate({
+      variables: {
+        _id: item._id,
+      },
+      mutation: RemoveDownloadMutation,
+    })
+
+    this.setState({
+      download: null,
+    })
+  }
+
   isVisible = () => {
     const { visible } = this.state
 
@@ -119,94 +186,66 @@ export default class QualitySelector extends React.Component {
 
   render() {
     const { itemType, variant, style, item } = this.props
-    const { visible } = this.state
-
-    const mutationVariables = {
-      _id: item._id,
-    }
+    const { visible, download } = this.state
 
     return (
-      <Mutation
-        mutation={StartDownloadMutation}
-        variables={mutationVariables}>
-        {(startDownload, { data }) => (
-          <React.Fragment>
-            <Mutation
-              mutation={RemoveDownloadMutation}
-              variables={mutationVariables}>
-              {(removeDownload) => (
-                <QualityIcon
-                  item={item}
-                  itemType={itemType}
-                  variant={variant}
-                  style={style}
-                  download={
-                    data
-                      ? data.download
-                      : null
-                  }
-                  handleOnPress={this.handleOnIconPress}
-                  handleStartDownload={startDownload}
-                  handleRemoveDownload={removeDownload}
-                />
-              )}
-            </Mutation>
+      <React.Fragment>
+        <QualityIcon
+          item={item}
+          itemType={itemType}
+          variant={variant}
+          style={style}
+          download={download}
+          handleOnPress={this.handleOnIconPress}
+          handleStartDownload={this.handleStartDownload}
+          handleRemoveDownload={this.handleRemoveDownload}
+        />
 
-            <Modal
-              onRequestClose={this.handleRequestClose}
-              visible={visible}>
+        <Modal
+          onRequestClose={this.handleRequestClose}
+          visible={visible}>
 
-              {item && item.title && (
-                <Animatable.View
-                  style={styles.itemContainer}
-                  animation={'fadeIn'}
-                  duration={200}
-                  useNativeDriver>
-                  <Card
-                    item={
-                      item.type === 'movie'
-                        ? item
-                        : item.show
-                    }
-                    onPress={null}
-                  />
-
-                  <Typography
-                    style={styles.title}
-                    variant={'headline5'}>
-                    {item.type === 'movie'
-                      ? item.title
-                      : `${item.show.title}: ${item.title}`
-                    }
-                  </Typography>
-
-                </Animatable.View>
-              )}
-
-              <Qualities
-                item={item}
-                variant={variant}
-                handleQualityPress={(torrent) => {
-                  if (variant === QualitySelector.VARIANT_PLAY) {
-                    this.handlePlayTorrent(torrent)
-
-                  } else {
-                    this.handleRequestClose()
-
-                    startDownload({
-                      variables: {
-                        _id: item._id,
-                        itemType: item.type,
-                        quality: torrent.quality,
-                      },
-                    })
-                  }
-                }}
+          {item && item.title && (
+            <Animatable.View
+              style={styles.itemContainer}
+              animation={'fadeIn'}
+              duration={200}
+              useNativeDriver>
+              <Card
+                item={
+                  item.type === 'movie'
+                    ? item
+                    : item.show
+                }
+                onPress={null}
               />
-            </Modal>
-          </React.Fragment>
-        )}
-      </Mutation>
+
+              <Typography
+                style={styles.title}
+                variant={'headline5'}>
+                {item.type === 'movie'
+                  ? item.title
+                  : `${item.show.title}: ${item.title}`
+                }
+              </Typography>
+
+            </Animatable.View>
+          )}
+
+          <Qualities
+            item={item}
+            variant={variant}
+            handleQualityPress={(torrent) => {
+              if (variant === QualitySelector.VARIANT_PLAY) {
+                this.handlePlayTorrent(torrent)
+
+              } else {
+                this.handleStartDownload(torrent.quality)
+              }
+            }}
+          />
+        </Modal>
+      </React.Fragment>
     )
   }
 
