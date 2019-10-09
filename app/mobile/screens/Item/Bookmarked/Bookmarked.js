@@ -1,27 +1,13 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { StyleSheet } from 'react-native'
 import { useMutation } from '@apollo/react-hooks'
 
-import colors from 'modules/colors'
 import dimensions from 'modules/dimensions'
-import i18n from 'modules/i18n'
 
 import IconButton from 'components/IconButton'
+import { AddBookmarkMutation, RemoveBookmarkMutation } from 'modules/GraphQL/BookmarkedGraphQL'
 
-import { AddBookmarkMutation, RemoveBookmarkMutation } from './BookmarkedGraphQL'
-
-const styles = StyleSheet.create({
-
-  icon: {
-    minWidth: 80,
-    textAlign: 'center',
-    marginLeft: dimensions.UNIT,
-  },
-
-})
-
-export const Bookmarked = ({ _id, type, bookmarked }) => {
+export const Bookmarked = ({ _id, type, bookmarked, style }) => {
   const options = {
     variables: {
       _id,
@@ -29,22 +15,27 @@ export const Bookmarked = ({ _id, type, bookmarked }) => {
     },
   }
 
-  const [AddBookmark] = useMutation(
+  const [addBookmark] = useMutation(
     AddBookmarkMutation,
     options,
   )
 
-  const [RemoveBookmark] = useMutation(
+  const [removeBookmark] = useMutation(
     RemoveBookmarkMutation,
     options,
   )
 
+  const showBookmarkChangeAlert = bookmarked => () => {
+    // TODO:: Show nice snackbar
+
+  }
+
   const handleToggleBookmarked = () => {
     if (bookmarked) {
-      RemoveBookmark()
+      removeBookmark().then(showBookmarkChangeAlert(false))
 
     } else {
-      AddBookmark()
+      addBookmark().then(showBookmarkChangeAlert(true))
     }
   }
 
@@ -54,19 +45,18 @@ export const Bookmarked = ({ _id, type, bookmarked }) => {
         animation: 'fadeIn',
         useNativeDriver: true,
       }}
-      style={styles.icon}
+      style={style}
       onPress={handleToggleBookmarked}
+      emphasis={bookmarked
+        ? 'high'
+        : 'medium'
+      }
       name={bookmarked
-        ? 'check'
-        : 'plus'
+        ? 'playlist-check'
+        : 'playlist-plus'
       }
-      color={bookmarked
-        ? colors.ICON_ACTIVE
-        : colors.ICON_COLOR
-      }
-      size={dimensions.ITEM_ICONS}>
-      {i18n.t('My List')}
-    </IconButton>
+      color={'primary'}
+      size={dimensions.ICON_SIZE_MEDIUM} />
   )
 }
 

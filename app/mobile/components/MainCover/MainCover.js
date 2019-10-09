@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 import { StyleSheet, View } from 'react-native'
 import * as Animatable from 'react-native-animatable'
+import { withNavigation } from 'react-navigation'
 
 import dimensions from 'modules/dimensions'
 import constants from 'modules/constants'
@@ -92,7 +93,7 @@ const styles = StyleSheet.create({
   },
 })
 
-export const MainCover = ({ empty, item, handleItemOpen }) => {
+export const MainCover = ({ empty, item, handleItemOpen, navigation }) => {
   const [showQualitySelector, toggleSelecting] = useState(false)
   const genres = empty ? [] : item.genres ? [...item.genres].splice(0, 3) : []
 
@@ -100,7 +101,7 @@ export const MainCover = ({ empty, item, handleItemOpen }) => {
     <View style={styles.mainContainer}>
       <BaseButton onPress={() => {
         if (item && item.type === constants.TYPE_MOVIE) {
-           toggleSelecting(!showQualitySelector)
+          toggleSelecting(!showQualitySelector)
         }
       }}>
         <View style={styles.backgroundContainer}>
@@ -129,7 +130,8 @@ export const MainCover = ({ empty, item, handleItemOpen }) => {
               <QualitySelector
                 item={item}
                 visible={showQualitySelector}
-                onRequestClose={() => toggleSelecting(false)} />
+                onRequestClose={() => toggleSelecting(false)}
+                navigation={navigation} />
 
             </Animatable.View>
           )}
@@ -203,4 +205,4 @@ MainCover.defaultProps = {
   item: null,
 }
 
-export default MainCover
+export default withNavigation(MainCover)

@@ -5,6 +5,8 @@ import LottieView from 'lottie-react-native'
 import { useLazyQuery } from '@apollo/react-hooks'
 
 import i18n from 'modules/i18n'
+import dimensions from 'modules/dimensions'
+import constants from 'modules/constants'
 import { DownloadQuery } from 'modules/GraphQL/DownloadGraphQL'
 
 import BaseButton from 'components/BaseButton'
@@ -18,6 +20,12 @@ export const styles = StyleSheet.create({
 
   downloadStatus: {
     textAlign: 'center',
+  },
+
+  lottieContainer: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center'
   },
 
 })
@@ -61,12 +69,12 @@ export const QualityIcon = ({ handleOnPress, handleRemoveDownload, item, downloa
       : null
 
   if (variant === QualitySelector.VARIANT_DOWNLOAD) {
-    if (download && download.status !== 'removed') {
+    if (download && download.status !== constants.STATUS_REMOVED) {
       return (
         <BaseButton
           onPress={() => {
             ToastAndroid.show(
-              download.status === 'downloading'
+              download.status === constants.STATUS_DOWNLOADING
                 ? i18n.t('Hold long to cancel')
                 : i18n.t('Hold long to remove'),
               ToastAndroid.SHORT,
@@ -84,38 +92,46 @@ export const QualityIcon = ({ handleOnPress, handleRemoveDownload, item, downloa
           }}
         >
           <Animatable.View
+            style={[
+              style,
+              styles.lottieContainer,
+            ]}
             animation={'fadeIn'}
             useNativeDriver>
-            {download.status === 'downloading' && (
+            {download.status === constants.STATUS_DOWNLOADING && (
               <LottieView
                 style={{
-                  width: 24,
-                  height: 24,
+                  width: dimensions.ICON_SIZE_DEFAULT,
+                  height: dimensions.ICON_SIZE_DEFAULT,
                 }}
                 source={require('assets/lottie/cloud-download.json')}
                 autoPlay
                 loop />
             )}
 
-            {['queued', 'connecting', 'complete'].indexOf(download.status) > -1 && (
-              <Icon
-                size={24}
-                name={download.status === 'complete'
-                  ? 'cloud-check'
-                  : 'cloud'
-                }
-                color={'primary'}
-                emphasis={'high'} />
-            )}
+            {[
+               constants.STATUS_QUEUED,
+               constants.STATUS_CONNECTING,
+               constants.STATUS_COMPLETE,
+             ].indexOf(download.status) > -1 && (
+               <Icon
+                 size={dimensions.ICON_SIZE_DEFAULT}
+                 name={download.status === constants.STATUS_COMPLETE
+                   ? 'cloud-check'
+                   : 'cloud'
+                 }
+                 color={'primary'}
+                 emphasis={'high'} />
+             )}
 
-            {download.status !== 'complete' && (
+            {download.status !== constants.STATUS_COMPLETE && (
               <Typography
                 style={styles.downloadStatus}
                 emphasis={'medium'}
                 variant={'captionSmall'}>
                 {
-                  download.status === 'downloading'
-                    ? download.progress
+                  download.status === constants.STATUS_DOWNLOADING
+                    ? `${download.progress}%`
                     : download.status
                 }
               </Typography>
@@ -127,8 +143,9 @@ export const QualityIcon = ({ handleOnPress, handleRemoveDownload, item, downloa
 
     return (
       <IconButton
-        size={24}
+        size={dimensions.ICON_SIZE_DEFAULT}
         onPress={handleOnPress}
+        style={style}
         color={'primary'}
         emphasis={'medium'}
         name={'cloud-download'} />
@@ -137,7 +154,7 @@ export const QualityIcon = ({ handleOnPress, handleRemoveDownload, item, downloa
 
   return (
     <IconButton
-      handleOnPress={handleOnPress}
+      onPress={handleOnPress}
       style={style}
       name={'play-circle-outline'}
       size={itemType === 'my-episode'
@@ -147,8 +164,20 @@ export const QualityIcon = ({ handleOnPress, handleRemoveDownload, item, downloa
   )
 }
 
-QualityIcon.propTypes = {}
+QualityIcon.propTypes = {
+  handleOnPress: PropTypes.func.isRequired,
+  handleRemoveDownload: PropTypes.func.isRequired,
+  item: PropTypes.object.isRequired,
+  download: PropTypes.object,
+  variant: PropTypes.string.isRequired,
+  itemType: PropTypes.string,
+  style: PropTypes.object,
+}
 
-QualityIcon.defaultProps = {}
+QualityIcon.defaultProps = {
+  download: null,
+  style: null,
+  itemType: null,
+}
 
 export default QualityIcon

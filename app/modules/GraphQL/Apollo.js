@@ -13,7 +13,19 @@ const SCHEMA_VERSION_KEY = 'apollo-schema-version'
 
 export default async() => {
   const cache = new InMemoryCache({
-    dataIdFromObject: object => object._id || null,
+    dataIdFromObject: object => {
+      if (object._id) {
+        console.log(object)
+        // We need something else for download otherwise it overwrites the movie
+        if (object.__typename === 'Download') {
+          return `${object.__typename}-${object._id}`
+        }
+
+        return object._id
+      }
+
+      return null
+    },
 
     cacheRedirects: {
       Query: {
@@ -26,12 +38,6 @@ export default async() => {
         show: (_, args, { getCacheKey }) => {
           return getCacheKey({
             __typename: 'Show',
-            _id: args._id,
-          })
-        },
-        download: (_, args, { getCacheKey }) => {
-          return getCacheKey({
-            __typename: 'Download',
             _id: args._id,
           })
         },

@@ -1,21 +1,15 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { StyleSheet, Text, ToastAndroid, View } from 'react-native'
+import { StyleSheet } from 'react-native'
 import * as Animatable from 'react-native-animatable'
-import { Mutation, Query } from '@apollo/react-components'
 
 import dimensions from 'modules/dimensions'
 import withApollo from 'modules/GraphQL/withApollo'
-import i18n from 'modules/i18n'
-import { DownloadQuery, RemoveDownloadMutation, StartDownloadMutation } from 'modules/GraphQL/DownloadGraphQL'
+import { RemoveDownloadMutation, StartDownloadMutation } from 'modules/GraphQL/DownloadGraphQL'
 
 import Card from 'components/Card'
-import Icon from 'components/Icon'
-import IconButton from 'components/IconButton'
 import Typography from 'components/Typography'
 import Modal from 'components/Modal'
-import TextButton from 'components/TextButton'
-
 
 import Qualities from './Qualities'
 import QualityIcon from './QualityIcon'
@@ -57,31 +51,33 @@ export default class QualitySelector extends React.Component {
 
   static propTypes = {
     style: PropTypes.object,
-    fetchingBetter: PropTypes.bool,
     variant: PropTypes.oneOf(['play', 'download']),
     navigation: PropTypes.object.isRequired,
     apollo: PropTypes.object.isRequired,
+    item: PropTypes.object.isRequired,
+    itemType: PropTypes.string,
   }
 
   static defaultProps = {
     style: {},
     variant: 'play',
+    itemType: null,
   }
 
   static getDerivedStateFromProps(props, state) {
-    const { item } = props
+    const { item, visible } = props
 
     let download = state.download || null
 
-    if (item.download && !state.download) {
+    if (item.download && item.download.downloadStatus && !state.download) {
       download = {
-        status: item.download.status,
+        status: item.download.downloadStatus,
         progress: 0,
       }
     }
 
     return {
-      visible: state.visible || false,
+      visible: visible || state.visible,
       download,
     }
   }
@@ -114,6 +110,12 @@ export default class QualitySelector extends React.Component {
   }
 
   handleRequestClose = () => {
+    const { onRequestClose } = this.props
+
+    if (onRequestClose) {
+      onRequestClose()
+    }
+
     this.setState({
       visible: false,
     })

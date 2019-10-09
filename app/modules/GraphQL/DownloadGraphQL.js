@@ -12,6 +12,7 @@ export const DownloadQuery = gql`
       numPeers
       speed
       timeRemaining
+      __typename
     }
   }
 `
@@ -28,6 +29,7 @@ export const StartStreamMutation = gql`
       numPeers
       speed
       timeRemaining
+      __typename
     }
   }
 `
@@ -44,6 +46,7 @@ export const StopStreamMutation = gql`
       numPeers
       speed
       timeRemaining
+      __typename
     }
   }
 `
@@ -60,6 +63,7 @@ export const StartDownloadMutation = gql`
       numPeers
       speed
       timeRemaining
+      __typename
     }
   }
 `
@@ -76,6 +80,7 @@ export const RemoveDownloadMutation = gql`
       numPeers
       speed
       timeRemaining
+      __typename
     }
   }
 `

@@ -10,9 +10,10 @@ import dimensions from 'modules/dimensions'
 import constants from 'modules/constants'
 
 import ScrollViewWithStatusBar from 'components/ScrollViewWithStatusBar'
+import QualitySelector from 'mobile/components/QualitySelector'
 import MainCover from 'mobile/components/MainCover'
 
-import { MovieQuery, ShowQuery, AddBookmarkMutation } from './ItemGraphQL'
+import { MovieQuery, ShowQuery } from './ItemGraphQL'
 
 import Bookmarked from './Bookmarked'
 import SeasonsAndEpisodes from './SeasonsAndEpisodes'
@@ -27,6 +28,7 @@ const styles = StyleSheet.create({
   iconsContainer: {
     display: 'flex',
     flexDirection: 'row',
+    justifyContent: 'center',
     marginLeft: dimensions.UNIT * 2,
     marginRight: dimensions.UNIT * 2,
     marginBottom: dimensions.UNIT * 2,
@@ -35,19 +37,20 @@ const styles = StyleSheet.create({
   },
 
   icon: {
-    minWidth: 80,
+    width: dimensions.UNIT * 5,
+    marginLeft: dimensions.UNIT * 5,
+    marginRight: dimensions.UNIT * 5,
     textAlign: 'center',
   },
 
   synopsis: {
-    marginTop: dimensions.UNIT * 3,
     marginBottom: dimensions.UNIT * 3,
     marginLeft: dimensions.UNIT * 2,
     marginRight: dimensions.UNIT * 2,
   },
 })
 
-export const Item = ({ navigation: { state: { params } } }) => {
+export const Item = ({ navigation, navigation: { state: { params } } }) => {
   const Query = params.type === 'movie'
     ? MovieQuery
     : ShowQuery
@@ -93,14 +96,24 @@ export const Item = ({ navigation: { state: { params } } }) => {
           empty={loading}
           item={item} />
 
-        {/*<View style={styles.iconsContainer}>*/}
-        {/*  {!loading && (*/}
-        {/*    <Bookmarked*/}
-        {/*      styles={styles}*/}
-        {/*      Query={Query}*/}
-        {/*      {...item}*/}
-        {/*    />*/}
-        {/*  )}*/}
+        <View style={styles.iconsContainer}>
+          {!loading && item.type === constants.TYPE_MOVIE && (
+            <QualitySelector
+              item={item}
+              variant={QualitySelector.VARIANT_DOWNLOAD}
+              navigation={navigation}
+              style={styles.icon}
+            />
+          )}
+
+          {!loading && (
+            <Bookmarked
+              style={styles.icon}
+              Query={Query}
+              {...item}
+            />
+          )}
+        </View>
 
         {/*  /!*{!loading && item.type === constants.TYPE_MOVIE && (*!/*/}
         {/*  /!*  <IconButton*!/*/}

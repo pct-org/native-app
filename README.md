@@ -1,13 +1,22 @@
 <h1 align="center">
   <img height="200" width="200" src="https://github.com/pct-org/getting-started/blob/master/.github/logo.png" alt="logo" />
   <br />
-  Getting Started
+  Native App
 </h1>
 
 <div align="center">
   <a target="_blank" href="https://gitter.im/pct-org/app?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge">
     <img src="https://badges.gitter.im/popcorn-time-desktop.svg" alt="Gitter" />
   </a>
+  <a target="_blank" href="https://david-dm.org/pct-org/native-app" title="dependencies status">
+    <img src="https://david-dm.org/pct-org/native-app/status.svg" />
+  </a>
+  <a target="_blank" href="https://david-dm.org/pct-org/native-app?type=dev" title="devDependencies status">
+    <img src="https://david-dm.org/pct-org/native-app/dev-status.svg" />
+  </a>
+    <a target="_blank" href="https://github.com/pct-org/native-app/pulls">
+      <img src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg" alt="PRs Welcome" />
+    </a>
 </div>
 
 ---
@@ -27,14 +36,20 @@ Popcorn Time consists of several projects, each doing it's own part.
 ## Installation
 
 ```bash
-// TODO
+# Install dependencies
+$ yarn
 ```
 
 ## Running the app
 
+First start your emulator then run the following command
 ```bash
-// TODO
+$ yarn start:android
 ```
+
+## Screenshots
+
+> // TODO
 
 ## Contributing:
 
