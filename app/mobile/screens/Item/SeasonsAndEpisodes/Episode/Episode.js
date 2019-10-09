@@ -10,10 +10,8 @@ import Overlay from 'components/Overlay'
 import BaseButton from 'components/BaseButton'
 import Image from 'components/Image'
 import Container from 'components/Container'
-import IconButton from 'components/IconButton'
 
 import QualitySelector from 'mobile/components/QualitySelector'
-import EpisodeStatus from './EpisodeStatus'
 
 export const styles = StyleSheet.create({
 
@@ -47,8 +45,7 @@ export const styles = StyleSheet.create({
   titleContainer: {
     width: dimensions.SCREEN_WIDTH
            - dimensions.EPISODE_CARD_WIDTH
-           - dimensions.UNIT * 3
-           - 45,
+           - (dimensions.UNIT * 12),
   },
 
   summary: {
@@ -59,6 +56,11 @@ export const styles = StyleSheet.create({
   image: {
     width: dimensions.EPISODE_CARD_WIDTH,
     height: dimensions.EPISODE_CARD_HEIGHT,
+  },
+
+  downloadIcon: {
+    width: dimensions.UNIT * 8,
+    textAlign: 'center',
   },
 
 })
@@ -158,6 +160,7 @@ export default class Episode extends React.Component {
             item={this.props}
             variant={QualitySelector.VARIANT_DOWNLOAD}
             navigation={navigation}
+            style={styles.downloadIcon}
           />
         </View>
 

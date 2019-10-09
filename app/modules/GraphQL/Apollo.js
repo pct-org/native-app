@@ -15,7 +15,6 @@ export default async() => {
   const cache = new InMemoryCache({
     dataIdFromObject: object => {
       if (object._id) {
-        console.log(object)
         // We need something else for download otherwise it overwrites the movie
         if (object.__typename === 'Download') {
           return `${object.__typename}-${object._id}`
