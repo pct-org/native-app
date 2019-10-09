@@ -1,7 +1,6 @@
 import React from 'react'
 import { StyleSheet, View, Text, FlatList } from 'react-native'
 import * as Animatable from 'react-native-animatable'
-import { material } from 'react-native-typography'
 
 import BaseButton from 'components/BaseButton'
 import IconButton from 'components/IconButton'
@@ -42,7 +41,7 @@ const styles = StyleSheet.create({
   },
 
   sub: {
-    ...material.titleWhiteObject,
+
     margin   : 8,
     textAlign: 'center',
     zIndex   : 1000,

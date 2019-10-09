@@ -1,12 +1,12 @@
 import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 import { StyleSheet, View } from 'react-native'
-import { Constants } from 'popcorn-sdk'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import * as Animatable from 'react-native-animatable'
 
 import colors from 'modules/colors'
 import dimensions from 'modules/dimensions'
+import constants from 'modules/constants'
 
 import CoverGradient from 'components/CoverGradient'
 import BaseButton from 'components/BaseButton'
@@ -103,7 +103,7 @@ export const BasicInfo = ({ loading, item }) => {
 
       <View style={styles.mainContainer}>
         <BaseButton onPress={() => {
-          if (item && item.type === Constants.TYPE_MOVIE) {
+          if (item && item.type === constants.TYPE_MOVIE) {
             toggleSelecting(!showQualitySelector)
           }
         }}>
@@ -124,7 +124,7 @@ export const BasicInfo = ({ loading, item }) => {
 
             <CoverGradient start={{ x: 0, y: 0.1 }} />
 
-            {!loading && item.type === Constants.TYPE_MOVIE && (
+            {!loading && item.type === constants.TYPE_MOVIE && (
               <Animatable.View
                 animation={'fadeIn'}
                 style={styles.playContainer}

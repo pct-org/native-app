@@ -5,10 +5,9 @@ import React from 'react'
 import { Text, View, FlatList, TVEventHandler, ScrollView } from 'react-native'
 import * as Animatable from 'react-native-animatable'
 import SplashScreen from 'react-native-splash-screen'
-import { Constants } from 'popcorn-sdk'
 
 import colors from 'modules/colors'
-
+import constants from 'modules/constants'
 import i18n from 'modules/i18n'
 
 import CardSlider from 'components/CardSlider'
@@ -60,7 +59,7 @@ export default class Home extends HomeScreenBase {
         onPress={this.handleItemOpen}
         title={i18n.t('Movies')}
         items={this.getMovies()}
-        onEndReached={this.handleEndReached(Constants.TYPE_MOVIE)} />
+        onEndReached={this.handleEndReached(constants.TYPE_MOVIE)} />
     )
   }
 

@@ -3,11 +3,11 @@ import React, { useEffect } from 'react'
 import { StyleSheet, View, Linking, InteractionManager } from 'react-native'
 import { useLazyQuery, useMutation } from '@apollo/react-hooks'
 import Orientation from 'react-native-orientation'
-import { Constants } from 'popcorn-sdk'
 
 import i18n from 'modules/i18n'
 import colors from 'modules/colors'
 import dimensions from 'modules/dimensions'
+import constants from 'modules/constants'
 
 import ScrollViewWithStatusBar from 'components/ScrollViewWithStatusBar'
 import MainCover from 'mobile/components/MainCover'
@@ -102,7 +102,7 @@ export const Item = ({ navigation: { state: { params } } }) => {
         {/*    />*/}
         {/*  )}*/}
 
-        {/*  /!*{!loading && item.type === Constants.TYPE_MOVIE && (*!/*/}
+        {/*  /!*{!loading && item.type === constants.TYPE_MOVIE && (*!/*/}
         {/*  /!*  <IconButton*!/*/}
         {/*  /!*    animatable={{*!/*/}
         {/*  /!*      animation: 'fadeIn',*!/*/}
@@ -144,7 +144,7 @@ export const Item = ({ navigation: { state: { params } } }) => {
           </View>
         )}
 
-        {item && item.type === Constants.TYPE_SHOW && item.seasons.length > 0 && (
+        {item && item.type === constants.TYPE_SHOW && item.seasons.length > 0 && (
           <SeasonsAndEpisodes
             item={item}
           />
