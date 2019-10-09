@@ -99,6 +99,9 @@ export default class QualitySelector extends React.Component {
       playItem(item, torrent.quality)
 
     } else {
+      // Make sure whe are closed
+      this.handleRequestClose()
+
       navigate(
         'Player',
         {
