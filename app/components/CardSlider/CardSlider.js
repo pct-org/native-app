@@ -6,6 +6,8 @@ import dimensions from 'modules/dimensions'
 
 import Card from '../Card'
 import Typography from '../Typography'
+import Icon from '../Icon'
+import BaseButton from '../BaseButton'
 
 export const styles = StyleSheet.create({
 
@@ -14,7 +16,11 @@ export const styles = StyleSheet.create({
   titleContainer: {
     marginTop: dimensions.UNIT,
     marginLeft: dimensions.UNIT * 2,
+    display: 'flex',
+    flexDirection: 'row',
   },
+
+  goToMoreIcon: {},
 
   container: {
     marginBottom: dimensions.UNIT * 2,
@@ -45,11 +51,24 @@ export const CardSlider = ({ title, items, onPress, onEndReached, goToMore, load
     <View style={styles.root}>
 
       {(title || goToMore) && (
-        <View style={styles.titleContainer}>
-          <Typography variant={'headline6'}>
-            {title}
-          </Typography>
-        </View>
+        <BaseButton
+          rippleColor={null}
+          onPress={goToMore}>
+          <View style={styles.titleContainer}>
+            <Typography variant={'headline6'}>
+              {title}
+            </Typography>
+
+            {goToMore && (
+              <Icon
+                style={styles.goToMoreIcon}
+                color={'white'}
+                name={'chevron-right'}
+                size={dimensions.ICON_SIZE_DEFAULT}
+              />
+            )}
+          </View>
+        </BaseButton>
       )}
 
       <FlatList

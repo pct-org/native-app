@@ -19,12 +19,22 @@ export const styles = StyleSheet.create({
     width: dimensions.CARD_WIDTH,
   },
 
+  small: {
+    height: dimensions.CARD_HEIGHT_SMALL,
+    width: dimensions.CARD_WIDTH_SMALL,
+    margin: dimensions.UNIT / 2,
+  },
+
 })
 
-export const Card = ({ item, elevation, empty, style, ...rest }) => (
+export const Card = ({ item, variant, elevation, empty, style, ...rest }) => (
   <Container
     elevation={elevation}
-    style={[styles.root, style]}>
+    style={[
+      styles.root,
+      variant === 'small' && styles.small,
+      style,
+    ]}>
     <BaseButton
       // onLongPress={() => console.warn(item.title)}
       // onPress={() => console.log('press')}
@@ -52,6 +62,7 @@ Card.propTypes = {
   empty: PropTypes.bool,
   style: PropTypes.object,
   elevation: PropTypes.number,
+  variant: PropTypes.oneOf(['default', 'small']),
 }
 
 Card.defaultProps = {
@@ -60,6 +71,7 @@ Card.defaultProps = {
   style: null,
   component: BaseButton,
   elevation: 1,
+  variant: 'default',
 }
 
 export default Card

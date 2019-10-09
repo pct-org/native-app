@@ -31,6 +31,8 @@ export default {
 
   CARD_HEIGHT: getHeight(130),
   CARD_WIDTH: getWidth(90),
+  CARD_HEIGHT_SMALL: getHeight(116),
+  CARD_WIDTH_SMALL: getWidth(81),
 
   MY_EPISODE_CARD_HEIGHT: getHeight(100),
   MY_EPISODE_CARD_WIDTH: getWidth(178),

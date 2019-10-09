@@ -4,14 +4,13 @@ import { useQuery } from '@apollo/react-hooks'
 
 import i18n from 'modules/i18n'
 import fetchMoreUpdateQuery from 'modules/GraphQL/helpers/fetchMoreUpdateQuery'
+import ShowsQuery from 'modules/GraphQL/ShowsQuery'
 
 import CardSlider from 'components/CardSlider'
 
-import ShowsSliderQuery from './ShowsSliderQuery'
-
 export const ShowsSlider = ({ handleGoTo, onPress }) => {
   const { loading, data, fetchMore } = useQuery(
-    ShowsSliderQuery,
+    ShowsQuery,
     {
       variables: {
         offset: 0,

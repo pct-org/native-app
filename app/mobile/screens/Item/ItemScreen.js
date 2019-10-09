@@ -77,8 +77,6 @@ export const Item = ({ navigation, navigation: { state: { params } } }) => {
   const loading = itemLoading || !data
   const item = loading ? null : data.item
 
-  console.log('item', error, loading, item)
-
   const handleToggleWatched = () => {
 
   }
