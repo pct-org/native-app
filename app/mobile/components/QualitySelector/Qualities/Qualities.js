@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { StyleSheet, View } from 'react-native'
+import { StyleSheet, View, TouchableNativeFeedback } from 'react-native'
 import * as Animatable from 'react-native-animatable'
 
 import dimensions from 'modules/dimensions'
@@ -54,11 +54,10 @@ export const Qualities = ({ variant, item, handleQualityPress }) => (
 
     <View style={styles.qualitiesContainer}>
       {item && item.torrents && item.torrents.map((torrent) => (
-        <View
-          key={torrent.quality}
-
+        <View key={torrent.quality}
           style={styles.quality}>
           <TextButton
+            component={TouchableNativeFeedback}
             color={'primary'}
             onPress={() => {
               handleQualityPress(torrent)

@@ -1,10 +1,9 @@
 import Typography from 'components/Typography'
 import React, { useEffect } from 'react'
-import { StyleSheet, View, Linking, InteractionManager } from 'react-native'
-import { useLazyQuery, useMutation } from '@apollo/react-hooks'
+import { StyleSheet, View, InteractionManager } from 'react-native'
+import { useLazyQuery } from '@apollo/react-hooks'
 import Orientation from 'react-native-orientation'
 
-import i18n from 'modules/i18n'
 import colors from 'modules/colors'
 import dimensions from 'modules/dimensions'
 import constants from 'modules/constants'
@@ -29,18 +28,20 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'center',
+    marginTop: dimensions.UNIT * 3,
+    marginBottom: dimensions.UNIT * 3,
     marginLeft: dimensions.UNIT * 2,
     marginRight: dimensions.UNIT * 2,
-    marginBottom: dimensions.UNIT * 2,
-
-    minHeight: 70,
   },
 
   icon: {
-    width: dimensions.UNIT * 5,
     marginLeft: dimensions.UNIT * 5,
     marginRight: dimensions.UNIT * 5,
     textAlign: 'center',
+  },
+
+  iconDownload: {
+    marginTop: dimensions.UNIT / 2,
   },
 
   synopsis: {
@@ -55,7 +56,7 @@ export const Item = ({ navigation, navigation: { state: { params } } }) => {
     ? MovieQuery
     : ShowQuery
 
-  const [executeQuery, { called: queryCalled, loading: itemLoading, data, error }] = useLazyQuery(
+  const [executeQuery, { loading: itemLoading, data }] = useLazyQuery(
     Query,
     {
       variables: {
@@ -68,10 +69,10 @@ export const Item = ({ navigation, navigation: { state: { params } } }) => {
     Orientation.lockToPortrait()
 
     // Execute the query after the component is done navigation
-    //InteractionManager.runAfterInteractions(() => {
-    // Execute the query
-    executeQuery()
-    //})
+    InteractionManager.runAfterInteractions(() => {
+      // Execute the query
+      executeQuery()
+    })
   }, [])
 
   const loading = itemLoading || !data
@@ -100,7 +101,10 @@ export const Item = ({ navigation, navigation: { state: { params } } }) => {
               item={item}
               variant={QualitySelector.VARIANT_DOWNLOAD}
               navigation={navigation}
-              style={styles.icon}
+              style={[
+                styles.icon,
+                styles.iconDownload,
+              ]}
             />
           )}
 

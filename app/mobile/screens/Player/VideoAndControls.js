@@ -1,7 +1,8 @@
 import React from 'react'
-import { Dimensions, StyleSheet, TouchableWithoutFeedback, View, ScrollView } from 'react-native'
+import { Dimensions, StyleSheet, View, ScrollView } from 'react-native'
 import * as Animatable from 'react-native-animatable'
 import Orientation from 'react-native-orientation'
+import { TouchableWithoutFeedback } from 'react-native-gesture-handler'
 
 import VlcPlayer from 'components/VlcPlayer'
 import Overlay from 'components/Overlay'

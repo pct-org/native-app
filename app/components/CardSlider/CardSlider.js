@@ -52,7 +52,7 @@ export const CardSlider = ({ title, items, onPress, onEndReached, goToMore, load
 
       {(title || goToMore) && (
         <BaseButton
-          rippleColor={null}
+          rippleColor={'transparent'}
           onPress={goToMore}>
           <View style={styles.titleContainer}>
             <Typography variant={'headline6'}>
@@ -77,7 +77,7 @@ export const CardSlider = ({ title, items, onPress, onEndReached, goToMore, load
         scrollEnabled={items.length > 0}
         contentContainerStyle={styles.container}
         data={items.length === 0
-          ? Array(4).fill()
+          ? Array(4).fill(null)
           : items
         }
         initialNumToRender={4}
@@ -94,7 +94,7 @@ export const CardSlider = ({ title, items, onPress, onEndReached, goToMore, load
             ? onEndReached
             : null
         }
-        onEndReachedThreshold={dimensions.CARD_WIDTH * 3}
+        onEndReachedThreshold={dimensions.CARD_WIDTH * 4}
       />
 
     </View>

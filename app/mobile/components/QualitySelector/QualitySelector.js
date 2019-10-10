@@ -5,6 +5,7 @@ import * as Animatable from 'react-native-animatable'
 
 import dimensions from 'modules/dimensions'
 import withApollo from 'modules/GraphQL/withApollo'
+import withDownloadManager from 'modules/DownloadManager/withDownloadManager'
 import { RemoveDownloadMutation, StartDownloadMutation } from 'modules/GraphQL/DownloadGraphQL'
 
 import Card from 'components/Card'
@@ -44,6 +45,7 @@ const styles = StyleSheet.create({
 })
 
 @withApollo
+@withDownloadManager
 export default class QualitySelector extends React.Component {
 
   static VARIANT_PLAY = 'play'
@@ -56,6 +58,12 @@ export default class QualitySelector extends React.Component {
     apollo: PropTypes.object.isRequired,
     item: PropTypes.object.isRequired,
     itemType: PropTypes.string,
+    downloadManager: PropTypes.shape({
+      addDownload: PropTypes.func.isRequired,
+      updateDownload: PropTypes.func.isRequired,
+      getDownload: PropTypes.func.isRequired,
+      downloadExists: PropTypes.func.isRequired,
+    }),
   }
 
   static defaultProps = {
@@ -125,9 +133,9 @@ export default class QualitySelector extends React.Component {
   }
 
   handleOnIconPress = () => {
-    const { download } = this.state
+    const { downloadManager, item } = this.props
 
-    if (download) {
+    if (downloadManager.downloadExists(item._id)) {
       this.handlePlayTorrent({
         quality: 'download',
       })
@@ -146,7 +154,7 @@ export default class QualitySelector extends React.Component {
    * @return {Promise<void>}
    */
   handleStartDownload = async(quality) => {
-    const { apollo, item } = this.props
+    const { apollo, item, downloadManager } = this.props
 
     const { data: { download } } = await apollo.mutate({
       variables: {
@@ -161,6 +169,8 @@ export default class QualitySelector extends React.Component {
       download,
       visible: false,
     })
+
+    downloadManager.addDownload(download)
   }
 
   /**
@@ -169,7 +179,7 @@ export default class QualitySelector extends React.Component {
    * @return {Promise<void>}
    */
   handleRemoveDownload = async() => {
-    const { apollo, item } = this.props
+    const { apollo, item, downloadManager } = this.props
 
     apollo.mutate({
       variables: {
@@ -181,6 +191,8 @@ export default class QualitySelector extends React.Component {
     this.setState({
       download: null,
     })
+
+    downloadManager.removeDownload(item._id)
   }
 
   isVisible = () => {

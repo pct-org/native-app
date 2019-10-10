@@ -45,7 +45,7 @@ export const MyEpisodesSlider = ({ title, items }) => {
         horizontal
         removeClippedSubviews
         contentContainerStyle={styles.container}
-        data={items.length === 0 ? Array(2).fill() : items}
+        data={items.length === 0 ? Array(2).fill(null) : items}
         initialNumToRender={4}
         windowSize={5}
         renderItem={renderEpisode}

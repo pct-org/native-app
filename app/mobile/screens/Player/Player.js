@@ -156,7 +156,7 @@ export const Player = ({ navigation: { state: { params: { item, playQuality } } 
       {!isBuffering && download && (
         <VideoAndControls
           item={item}
-          url={`http://10.0.2.2:3000/watch/${download._id}`}
+          url={`http://192.168.43.228:3000/watch/${download._id}`}
           playOtherEpisode={playItem}>
 
           <PlayingItemInfo

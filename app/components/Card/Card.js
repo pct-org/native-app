@@ -27,7 +27,7 @@ export const styles = StyleSheet.create({
 
 })
 
-export const Card = ({ item, variant, elevation, empty, style, ...rest }) => (
+export const Card = React.memo(({ item, variant, elevation, empty, style, ...rest }) => (
   <Container
     elevation={elevation}
     style={[
@@ -36,8 +36,6 @@ export const Card = ({ item, variant, elevation, empty, style, ...rest }) => (
       style,
     ]}>
     <BaseButton
-      // onLongPress={() => console.warn(item.title)}
-      // onPress={() => console.log('press')}
       {...rest}>
       <View>
         <Image
@@ -55,7 +53,7 @@ export const Card = ({ item, variant, elevation, empty, style, ...rest }) => (
       </View>
     </BaseButton>
   </Container>
-)
+))
 
 Card.propTypes = {
   item: PropTypes.object,

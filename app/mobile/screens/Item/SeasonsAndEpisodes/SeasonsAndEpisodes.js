@@ -165,11 +165,10 @@ export default class SeasonsAndEpisodes extends React.PureComponent {
         <FlatList
           removeClippedSubviews
           contentContainerStyle={[styles.container, styles.seasonSelector]}
-          data={seasons.length === 0 ? Array(4).fill() : seasons}
+          data={seasons.length === 0 ? Array(4).fill(null) : seasons}
           initialNumToRender={4}
           windowSize={4}
           renderItem={this.renderSeason}
-          ItemSeparatorComponent={() => <View style={{ width: dimensions.UNIT }} />}
           ListFooterComponent={() => <View style={{ width: dimensions.UNIT * 4 }} />}
           keyExtractor={(item, index) => item
             ? item._id
@@ -183,7 +182,7 @@ export default class SeasonsAndEpisodes extends React.PureComponent {
         <FlatList
           removeClippedSubviews
           contentContainerStyle={styles.container}
-          data={episodes.length === 0 ? Array(6).fill() : episodes}
+          data={episodes.length === 0 ? Array(6).fill(null) : episodes}
           initialNumToRender={4}
           windowSize={5}
           renderItem={this.renderEpisode}

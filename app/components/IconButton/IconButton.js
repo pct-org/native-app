@@ -18,7 +18,10 @@ export const styles = StyleSheet.create({
 })
 
 export const IconButton = ({ onPress, onLongPress, animatable, animatableStyle, buttonProps, children, ...rest }) => (
-  <BaseButton onPress={onPress} onLongPress={onLongPress} {...buttonProps}>
+  <BaseButton
+    onPress={onPress}
+    onLongPress={onLongPress}
+    {...buttonProps}>
     <Animatable.View
       {...animatable}
       style={[styles.container, animatableStyle]}>

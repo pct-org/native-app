@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import PropTypes from 'prop-types'
-import { View, Modal as RnModal, StyleSheet } from 'react-native'
+import { View, Modal as RnModal, StyleSheet, TouchableNativeFeedback } from 'react-native'
 
 import colors from 'modules/colors'
 import dimensions from 'modules/dimensions'
@@ -56,6 +56,10 @@ export const Modal = ({ children, visible, onRequestClose }) => {
         <View style={[styles.root, styles.listContainer]}>
           <View style={styles.closeIcon}>
             <IconButton
+              buttonProps={{
+                component: TouchableNativeFeedback,
+                rippleColor: null
+              }}
               onPress={onRequestClose}
               name={'close'}
               color={'primary'}

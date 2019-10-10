@@ -25,7 +25,7 @@ export const styles = StyleSheet.create({
   lottieContainer: {
     display: 'flex',
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
   },
 
 })
@@ -73,22 +73,32 @@ export const QualityIcon = ({ handleOnPress, handleRemoveDownload, item, downloa
       return (
         <BaseButton
           onPress={() => {
-            ToastAndroid.show(
-              download.status === constants.STATUS_DOWNLOADING
-                ? i18n.t('Hold long to cancel')
-                : i18n.t('Hold long to remove'),
-              ToastAndroid.SHORT,
-            )
-          }}
-          onLongPress={() => {
-            if (stopPollingDownload) {
-              stopPollingDownload()
+            let message = i18n.t('Hold long to remove')
+
+            if (download.status === constants.STATUS_FAILED) {
+              message = i18n.t('Hold long to retry')
+
+            } else if (download.status === constants.STATUS_DOWNLOADING) {
+              message = i18n.t('Hold long to cancel')
             }
 
-            // TODO:: Show snackbar instead of toast
-            ToastAndroid.show(i18n.t('"{{title}}" removed', { title: item.title }), ToastAndroid.SHORT)
+            ToastAndroid.show(message, ToastAndroid.SHORT)
+          }}
+          onLongPress={() => {
+            // If status is failed we retry on long press
+            if (download.status === constants.STATUS_FAILED) {
+              handleOnPress()
 
-            handleRemoveDownload()
+            } else {
+              if (stopPollingDownload) {
+                stopPollingDownload()
+              }
+
+              // TODO:: Show snackbar instead of toast
+              ToastAndroid.show(i18n.t('"{{title}}" removed', { title: item.title }), ToastAndroid.SHORT)
+
+              handleRemoveDownload()
+            }
           }}
         >
           <Animatable.View
@@ -118,7 +128,9 @@ export const QualityIcon = ({ handleOnPress, handleRemoveDownload, item, downloa
                  size={dimensions.ICON_SIZE_DEFAULT}
                  name={download.status === constants.STATUS_COMPLETE
                    ? 'cloud-check'
-                   : 'cloud'
+                   : download.status === constants.STATUS_FAILED
+                     ? 'cloud-alert'
+                     : 'cloud'
                  }
                  color={'primary'}
                  emphasis={'high'} />
@@ -171,7 +183,10 @@ QualityIcon.propTypes = {
   download: PropTypes.object,
   variant: PropTypes.string.isRequired,
   itemType: PropTypes.string,
-  style: PropTypes.object,
+  style: PropTypes.oneOfType([
+    PropTypes.object,
+    PropTypes.array,
+  ]),
 }
 
 QualityIcon.defaultProps = {

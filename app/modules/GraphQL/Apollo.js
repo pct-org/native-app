@@ -82,10 +82,10 @@ export default async() => {
         )
       },
       new WebSocketLink({
-        uri: 'ws://10.0.2.2:3000/graphql',
+        uri: 'ws://192.168.43.228:3000/graphql',
       }),
       new HttpLink({
-        uri: 'http://10.0.2.2:3000/graphql',
+        uri: 'http://192.168.43.228:3000/graphql',
       }),
     ),
 
