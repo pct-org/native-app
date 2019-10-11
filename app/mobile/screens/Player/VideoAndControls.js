@@ -1,8 +1,7 @@
 import React from 'react'
-import { Dimensions, StyleSheet, View, ScrollView } from 'react-native'
+import { Dimensions, StyleSheet, View, ScrollView, TouchableWithoutFeedback } from 'react-native'
 import * as Animatable from 'react-native-animatable'
 import Orientation from 'react-native-orientation'
-import { TouchableWithoutFeedback } from 'react-native-gesture-handler'
 
 import VlcPlayer from 'components/VlcPlayer'
 import Overlay from 'components/Overlay'
@@ -37,7 +36,7 @@ export class VideoAndControls extends React.Component {
       paused: false,
       resizeMode: 'contain', // 'contain', 'cover', null, 'stretch'
 
-      currentTime: 0,
+      currentTime: props.currentTime || 0,
     }
   }
 
@@ -203,13 +202,13 @@ export class VideoAndControls extends React.Component {
 
   handleResizeModeChange = (resizeMode) => {
     this.setState({
-      resizeMode
+      resizeMode,
     })
   }
 
   toggleControls = (withTimeout = true) => {
     const { showControls } = this.state
-
+console.log('toggleControls')
     if (this.controlsTimer) {
       clearTimeout(this.controlsTimer)
     }
@@ -246,7 +245,7 @@ export class VideoAndControls extends React.Component {
   }
 
   render() {
-    const { url, item, children, forcePaused } = this.props
+    const { url, renderCastButton, children, forcePaused } = this.props
     const { isPortrait, resizeMode, progress } = this.state
     const { showControls, paused } = this.state
 
@@ -265,39 +264,8 @@ export class VideoAndControls extends React.Component {
             style={styles.video}
             paused={paused || forcePaused}
             resizeMode={resizeMode}
-
-            // // onVLCProgress={this.handleVideoProgress}
-            // onVLCProgress={(...a) => {
-            //   console.log('onVLCProgress', a)
-            //   console.log('onVLCProgress')
-            // }}
-            // onVLCEnded={(...a) => {
-            //   Orientation.lockToPortrait()
-            //
-            //   console.log('onVLCEnded')
-            //   console.log('onVLCEnded', a)
-            // }}
-            // onVLCStopped={(...a) => {
-            //   Orientation.lockToPortrait()
-            //
-            //   console.log('onVLCStopped')
-            //   console.log('onVLCStopped', a)
-            // }}
             onPlaying={this.handleOnPlaying}
             onProgress={this.handleOnProgress}
-            // onVLCBuffering={(...a) => {
-            //   console.log('onVLCBuffering')
-            //   console.log('onVLCBuffering', a)
-            // }}
-            // onVLCPaused={(...a) => {
-            //   console.log('onVLCPaused')
-            //   console.log('onVLCPaused', a)
-            // }}
-
-            // onError={console.warn}
-
-            // onAudioBecomingNoisy={this.handlePauseVideo}
-            // onSeek={this.handlePlayVideo}
           />
         )}
 
@@ -322,17 +290,6 @@ export class VideoAndControls extends React.Component {
             />
 
             {children}
-
-            {/*<Slider*/}
-            {/*  value={progress}*/}
-            {/*  thumbTintColor={'#FFF'}*/}
-            {/*  minimumTrackTintColor={'#FFF'}*/}
-            {/*  maximumTrackTintColor={'#FFF'}*/}
-            {/*  maximumValue={100}*/}
-            {/*  step={5}*/}
-            {/*  disabled*/}
-            {/*  style={styles.slider}*/}
-            {/*  onValueChange={this.onSliderPositionChange} />*/}
 
             <ScrollView
               ref={ref => this.scrollViewRef = ref}

@@ -15,8 +15,11 @@ import VideoAndControls from './VideoAndControls'
 import PlayingItemInfo from './PlayingItemInfo'
 import DownloadInfo from './DownloadInfo'
 import EpisodePlaying from './EpisodePlaying'
+import PlayerManager from './PlayerManager'
 
 export const Player = ({ navigation: { state: { params: { item, playQuality } } } }) => {
+
+  // TODO:: Move below to PlayerManager
   useEffect(() => {
       if (!calledStartStream) {
         // Start the stream
@@ -119,58 +122,67 @@ export const Player = ({ navigation: { state: { params: { item, playQuality } } 
   console.log('error', error)
 
   return (
-    <View style={styles.root}>
+    <PlayerManager
+      item={item}
+      isBuffering={isBuffering}
+      style={styles.root}>
 
-      {isBuffering && (
-        <View style={[styles.fullScreen, styles.bufferingContainer]}>
+      {({ casting, renderCastButton }) => (
+        <React.Fragment>
+          {isBuffering && (
+            <View style={[styles.fullScreen, styles.bufferingContainer]}>
 
-          <EpisodePlaying
-            item={item}
-          />
+              <EpisodePlaying
+                item={item}
+              />
 
-          <ActivityIndicator
-            size={50}
-            style={{ marginTop: dimensions.UNIT * 5 }}
-            color={colors.PRIMARY_COLOR_200} />
+              <ActivityIndicator
+                size={50}
+                style={{ marginTop: dimensions.UNIT * 5 }}
+                color={colors.PRIMARY_COLOR_200} />
 
-          {download && download.status !== 'connecting' && (
-            <Typography style={{ marginTop: dimensions.UNIT * 3 }}>
-              {i18n.t('Buffering')}
-            </Typography>
+              {download && download.status !== 'connecting' && (
+                <Typography style={{ marginTop: dimensions.UNIT * 3 }}>
+                  {i18n.t('Buffering')}
+                </Typography>
+              )}
+
+              {!download || download.status === 'connecting' && (
+                <Typography style={{ marginTop: dimensions.UNIT * 3 }}>
+                  {download ? i18n.t('Connecting') : i18n.t('Queued')}
+                </Typography>
+              )}
+
+              {download && (
+                <Typography variant={'body2'} style={{ marginTop: dimensions.UNIT / 2 }}>
+                  {(download.progress / 3 * 100).toFixed(2)}% / {download.speed}
+                </Typography>
+              )}
+            </View>
           )}
 
-          {!download || download.status === 'connecting' && (
-            <Typography style={{ marginTop: dimensions.UNIT * 3 }}>
-              {download ? i18n.t('Connecting') : i18n.t('Queued')}
-            </Typography>
-          )}
+          {!isBuffering && download && (
+            <VideoAndControls
+              item={item}
+              url={`http://192.168.71.4:3000/watch/${download._id}`}
+              playOtherEpisode={playItem}>
 
-          {download && (
-            <Typography variant={'body2'} style={{ marginTop: dimensions.UNIT / 2 }}>
-              {(download.progress / 3 * 100).toFixed(2)}% / {download.speed}
-            </Typography>
+              <PlayingItemInfo
+                item={item}
+              />
+
+              <DownloadInfo
+                {...download}
+              />
+
+              {renderCastButton({  backgroundColor: 'pink' })}
+
+            </VideoAndControls>
           )}
-        </View>
+        </React.Fragment>
       )}
 
-      {!isBuffering && download && (
-        <VideoAndControls
-          item={item}
-          url={`http://192.168.43.228:3000/watch/${download._id}`}
-          playOtherEpisode={playItem}>
-
-          <PlayingItemInfo
-            item={item}
-          />
-
-          <DownloadInfo
-            {...download}
-          />
-
-        </VideoAndControls>
-      )}
-
-    </View>
+    </PlayerManager>
   )
 }
 
@@ -195,58 +207,6 @@ const styles = StyleSheet.create({
     left: 0,
     bottom: 0,
     right: 0,
-  },
-
-  slider: {
-    position: 'absolute',
-    bottom: 24,
-    width: '100%',
-  },
-
-  castButton: {
-    position: 'absolute',
-    right: 24,
-    top: 32,
-    width: 50,
-    height: 50,
-
-    zIndex: 1001,
-  },
-
-  castingAdditionalControls: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    bottom: 0,
-    right: 0,
-    zIndex: 1000,
-  },
-
-  subsButton: {
-    position: 'absolute',
-    left: 18,
-    top: 24,
-    width: 50,
-    height: 50,
-
-    zIndex: 1001,
-  },
-
-  stats: {
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-
-    position: 'absolute',
-    bottom: 24,
-    left: 16,
-    right: 16,
-  },
-
-  statItem: {
-    width: 120,
-    alignItems: 'center',
-    zIndex: 1001,
   },
 
 })

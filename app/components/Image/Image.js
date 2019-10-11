@@ -13,6 +13,9 @@ const styles = StyleSheet.create({
 
 })
 
+// https://github.com/DylanVann/react-native-fast-image
+// https://github.com/DylanVann/react-native-fast-image#sourcecache-enum
+
 export default class Image extends React.PureComponent {
 
   static getDerivedStateFromProps(props) {
