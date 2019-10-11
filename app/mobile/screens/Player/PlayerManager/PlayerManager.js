@@ -5,22 +5,21 @@ import GoogleCast, { CastButton } from 'react-native-google-cast'
 import Orientation from 'react-native-orientation'
 
 import dimensions from 'modules/dimensions'
+import colors from 'modules/colors'
 
 const styles = StyleSheet.create({
 
   container: {
     position: 'absolute',
-    top: dimensions.UNIT * 4,
-    right: dimensions.UNIT * 4,
-    zIndex: 1000,
-    width: 40,
-    height: 40,
+    zIndex: 2000,
+    width: dimensions.ICON_CAST_SIZE,
+    height: dimensions.ICON_CAST_SIZE,
   },
 
   castButton: {
-    width: 30,
-    height: 30,
-    tintColor: 'white',
+    width: dimensions.ICON_CAST_SIZE,
+    height: dimensions.ICON_CAST_SIZE,
+    tintColor: colors.PRIMARY_COLOR_200,
   },
 
 })
@@ -37,6 +36,14 @@ export default class PlayerManager extends React.Component {
     GoogleCast.EventEmitter.addListener(GoogleCast.SESSION_ENDED, this.handleCastSessionEnded)
     GoogleCast.EventEmitter.addListener(GoogleCast.MEDIA_PLAYBACK_STARTED, this.handleMediaPlaybackStarted)
     GoogleCast.EventEmitter.addListener(GoogleCast.MEDIA_PROGRESS_UPDATED, this.handleMediaProgressUpdate)
+
+    GoogleCast.getCastState().then((state) => {
+      if (state.toLowerCase() === 'connected') {
+        this.setState({
+          casting: true,
+        })
+      }
+    })
   }
 
   componentWillUnmount() {
@@ -53,14 +60,24 @@ export default class PlayerManager extends React.Component {
     }
   }
 
-  handleStartCasting = (force) => {
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    const { isBuffering: wasBuffering } = prevProps
+    const { isBuffering } = this.props
+
+    if (wasBuffering && !isBuffering) {
+      // Buffering is done, check if we need to cast it
+      this.handleStartCasting()
+    }
+  }
+
+  handleStartCasting = (force = false) => {
     const { item } = this.props
     const { casting } = this.state
-
+console.log('handleStartCasting', casting)
     if (force || casting) {
       Orientation.lockToPortrait()
 
-      console.log(`http://192.168.71.4:3000/watch/${item._id}`)
+      console.log(`http://192.168.1.67:3000/watch/${item._id}`)
 
       GoogleCast.castMedia({
         title: (
@@ -69,7 +86,7 @@ export default class PlayerManager extends React.Component {
             : item.title
         ),
         subtitle: item.synopsis,
-        mediaUrl: `http://192.168.71.4:3000/watch/${item._id}`,
+        mediaUrl: `http://192.168.1.67:3000/watch/${item._id}`,
         posterUrl: item.type === 'episode'
           ? item.show.images.poster.high
           : item.images.poster.high,
@@ -82,6 +99,7 @@ export default class PlayerManager extends React.Component {
   }
 
   handleCastSessionEnded = () => {
+    console.log('handleCastSessionEnded')
     this.setState({
       casting: false,
     })

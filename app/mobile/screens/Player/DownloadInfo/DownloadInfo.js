@@ -2,6 +2,7 @@ import React from 'react'
 import { View } from 'react-native'
 
 import dimensions from 'modules/dimensions'
+import constants from 'modules/constants'
 
 import Typography from 'components/Typography'
 
@@ -32,18 +33,20 @@ export const styles = {
   },
 }
 
-export const DownloadInfo = ({ status, progress, speed, timeRemaining, numPeers }) => (
+export const DownloadInfo = ({ status, progress, speed, timeRemaining, numPeers, type }) => (
   <View style={styles.root}>
     <View style={styles.container}>
-      <Typography
-        style={styles.text}
-        emphasis={'high'}
-        color={'white'}
-        variant={'caption'}>
-        {status}
-      </Typography>
+      {(status !== constants.STATUS_COMPLETE || type === constants.TYPE_STREAM) && (
+        <Typography
+          style={styles.text}
+          emphasis={'high'}
+          color={'white'}
+          variant={'caption'}>
+          {status}
+        </Typography>
+      )}
 
-      {status !== 'complete' && (
+      {status !== constants.STATUS_COMPLETE && (
         <React.Fragment>
           <Typography
             style={styles.text}

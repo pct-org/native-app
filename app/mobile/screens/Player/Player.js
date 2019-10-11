@@ -7,6 +7,7 @@ import Orientation from 'react-native-orientation'
 import colors from 'modules/colors'
 import i18n from 'modules/i18n'
 import dimensions from 'modules/dimensions'
+import constants from 'modules/constants'
 import { StartStreamMutation, StopStreamMutation, DownloadQuery } from 'modules/GraphQL/DownloadGraphQL'
 
 import Typography from 'components/Typography'
@@ -129,42 +130,69 @@ export const Player = ({ navigation: { state: { params: { item, playQuality } } 
 
       {({ casting, renderCastButton }) => (
         <React.Fragment>
-          {isBuffering && (
+          {(isBuffering || casting) && (
             <View style={[styles.fullScreen, styles.bufferingContainer]}>
 
               <EpisodePlaying
                 item={item}
               />
 
-              <ActivityIndicator
-                size={50}
-                style={{ marginTop: dimensions.UNIT * 5 }}
-                color={colors.PRIMARY_COLOR_200} />
+              {renderCastButton({
+                right: (dimensions.SCREEN_WIDTH / 2 )- (dimensions.ICON_CAST_SIZE / 2),
+                bottom: dimensions.UNIT * 5,
+              })}
 
-              {download && download.status !== 'connecting' && (
-                <Typography style={{ marginTop: dimensions.UNIT * 3 }}>
-                  {i18n.t('Buffering')}
-                </Typography>
+              {!casting && (
+                <ActivityIndicator
+                  size={50}
+                  style={{ marginTop: dimensions.UNIT * 5 }}
+                  color={colors.PRIMARY_COLOR_200} />
               )}
 
-              {!download || download.status === 'connecting' && (
-                <Typography style={{ marginTop: dimensions.UNIT * 3 }}>
-                  {download ? i18n.t('Connecting') : i18n.t('Queued')}
-                </Typography>
+              {isBuffering && (
+                <React.Fragment>
+                  {download && download.status !== constants.STATUS_CONNECTING && (
+                    <Typography style={{ marginTop: dimensions.UNIT * 3 }}>
+                      {i18n.t('Buffering')}
+                    </Typography>
+                  )}
+
+                  {!download || download.status === constants.STATUS_CONNECTING && (
+                    <Typography style={{ marginTop: dimensions.UNIT * 3 }}>
+                      {download ? i18n.t('Connecting') : i18n.t('Queued')}
+                    </Typography>
+                  )}
+
+                  {download && (
+                    <Typography variant={'body2'} style={{ marginTop: dimensions.UNIT / 2 }}>
+                      {(download.progress / 3 * 100).toFixed(2)}% / {download.speed}
+                    </Typography>
+                  )}
+                </React.Fragment>
               )}
 
-              {download && (
-                <Typography variant={'body2'} style={{ marginTop: dimensions.UNIT / 2 }}>
-                  {(download.progress / 3 * 100).toFixed(2)}% / {download.speed}
-                </Typography>
+              {(!isBuffering && download.status !== constants.STATUS_COMPLETE) && (
+                <React.Fragment>
+                  <Typography style={{ marginTop: dimensions.UNIT * 3 }}>
+                    {download.status}
+                  </Typography>
+
+                  <Typography variant={'body2'} style={{ marginTop: dimensions.UNIT / 2 }}>
+                    {download.progress}% / {download.speed}
+                  </Typography>
+
+                  <Typography variant={'body2'} style={{ marginTop: dimensions.UNIT / 2 }}>
+                    {download.timeRemaining}
+                  </Typography>
+                </React.Fragment>
               )}
             </View>
           )}
 
-          {!isBuffering && download && (
+          {!isBuffering && !casting && download && (
             <VideoAndControls
               item={item}
-              url={`http://192.168.71.4:3000/watch/${download._id}`}
+              url={`http://192.168.1.67:3000/watch/${download._id}`}
               playOtherEpisode={playItem}>
 
               <PlayingItemInfo
@@ -175,7 +203,10 @@ export const Player = ({ navigation: { state: { params: { item, playQuality } } 
                 {...download}
               />
 
-              {renderCastButton({  backgroundColor: 'pink' })}
+              {renderCastButton({
+                right: dimensions.UNIT * 14,
+                bottom: dimensions.UNIT * 4,
+              })}
 
             </VideoAndControls>
           )}

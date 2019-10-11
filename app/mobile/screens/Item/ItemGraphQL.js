@@ -32,6 +32,7 @@ export const MovieQuery = gql`
         }
         poster {
           thumb
+          high
         }
       }
     }
@@ -56,6 +57,7 @@ export const ShowQuery = gql`
         }
         poster {
           thumb
+          high
         }
       }
       seasons {

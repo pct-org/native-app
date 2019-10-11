@@ -22,6 +22,8 @@ export default {
   ICON_SIZE_DEFAULT: 24,
   ICON_SIZE_MEDIUM: 32,
 
+  ICON_CAST_SIZE: UNIT * 6,
+
   SCREEN_WIDTH: screenWidth,
   SCREEN_HEIGHT: screenHeight,
 

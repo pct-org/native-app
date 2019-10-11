@@ -1,3 +1,4 @@
+import constants from 'modules/constants'
 import React from 'react'
 import PropTypes from 'prop-types'
 import { ActivityIndicator, StyleSheet, View } from 'react-native'
@@ -12,67 +13,67 @@ import EpisodePlaying from '../EpisodePlaying'
 
 const styles = StyleSheet.create({
 
-  root: {
-    flex: 1,
-    backgroundColor: colors.BACKGROUND,
-    justifyContent: 'center',
-    alignItems: 'center',
-    alignContent: 'center',
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    bottom: 0,
-    right: 0,
-  },
 
-  castButton: {
-    position: 'absolute',
-    right: dimensions.UNIT * 4,
-    top: dimensions.UNIT * 4,
-    width: 50,
-    height: 50,
-
-    zIndex: 1001,
-  },
 
 })
 
-export const BufferingCastingState = ({ download, item, casting, renderCastButton }) => {
+export const BufferingCastingState = ({ casting, isBuffering, download, item, renderCastButton }) => {
 
   return (
-    <View style={styles.root}>
+    <View style={[styles.fullScreen, styles.bufferingContainer]}>
 
       <EpisodePlaying
         item={item}
       />
 
-      <ActivityIndicator
-        size={50}
-        style={{ marginTop: dimensions.UNIT * 5 }}
-        color={colors.PRIMARY_COLOR_200} />
+      {renderCastButton({
+        right: (dimensions.SCREEN_WIDTH / 2) - (dimensions.ICON_CAST_SIZE / 2),
+        bottom: dimensions.UNIT * 5,
+      })}
 
-      {download && download.status !== 'connecting' && (
-        <Typography style={{ marginTop: dimensions.UNIT * 3 }}>
-          {i18n.t('Buffering')}
-        </Typography>
+      {!casting && (
+        <ActivityIndicator
+          size={50}
+          style={{ marginTop: dimensions.UNIT * 5 }}
+          color={colors.PRIMARY_COLOR_200} />
       )}
 
-      {!download || download.status === 'connecting' && (
-        <Typography style={{ marginTop: dimensions.UNIT * 3 }}>
-          {
-            download
-              ? i18n.t('Connecting')
-              : i18n.t('Queued')
-          }
-        </Typography>
+      {isBuffering && (
+        <React.Fragment>
+          {download && download.status !== constants.STATUS_CONNECTING && (
+            <Typography style={{ marginTop: dimensions.UNIT * 3 }}>
+              {i18n.t('Buffering')}
+            </Typography>
+          )}
+
+          {!download || download.status === constants.STATUS_CONNECTING && (
+            <Typography style={{ marginTop: dimensions.UNIT * 3 }}>
+              {download ? i18n.t('Connecting') : i18n.t('Queued')}
+            </Typography>
+          )}
+
+          {download && (
+            <Typography variant={'body2'} style={{ marginTop: dimensions.UNIT / 2 }}>
+              {(download.progress / 3 * 100).toFixed(2)}% / {download.speed}
+            </Typography>
+          )}
+        </React.Fragment>
       )}
 
-      {download && (
-        <Typography variant={'body2'} style={{ marginTop: dimensions.UNIT / 2 }}>
-          {(download.progress / 3 * 100).toFixed(2)}% / {download.speed}
-        </Typography>
-      )}
+      {(!isBuffering && download.status !== constants.STATUS_COMPLETE) && (
+        <React.Fragment>
+          <Typography style={{ marginTop: dimensions.UNIT * 3 }}>
+            {download.status}
+          </Typography>
 
+          <Typography variant={'body2'} style={{ marginTop: dimensions.UNIT / 2 }}>
+            {download.progress.toFixed(2)}% / {download.speed}
+          </Typography>
+          <Typography variant={'body2'} style={{ marginTop: dimensions.UNIT / 2 }}>
+            {download.timeRemaining}
+          </Typography>
+        </React.Fragment>
+      )}
     </View>
   )
 }

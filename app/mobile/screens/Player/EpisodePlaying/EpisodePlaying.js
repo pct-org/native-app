@@ -11,17 +11,17 @@ export const styles = {
     display: 'flex',
     flexDirection: 'row',
     marginRight: dimensions.UNIT * 2,
-    marginLeft: dimensions.UNIT * 2
+    marginLeft: dimensions.UNIT * 2,
   },
 
   container: {
     marginTop: dimensions.UNIT,
     marginLeft: dimensions.UNIT,
+    width: dimensions.SCREEN_WIDTH - dimensions.CARD_WIDTH - (dimensions.UNIT * 5),
   },
 
   synopsis: {
     marginTop: dimensions.UNIT / 2,
-    width: dimensions.SCREEN_WIDTH - dimensions.CARD_WIDTH - (dimensions.UNIT * 5)
   },
 }
 
@@ -40,7 +40,11 @@ export const EpisodePlaying = ({ item }) => (
       <Typography
         emphasis={'high'}
         color={'white'}
-        variant={'subtitle2'}>
+        variant={'subtitle2'}
+        textProps={{
+          numberOfLines: 2,
+          ellipsizeMode: 'tail',
+        }}>
         {
           item.type === 'episode'
             ? item.show.title
