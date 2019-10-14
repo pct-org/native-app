@@ -135,7 +135,11 @@ export default class QualitySelector extends React.Component {
   handleOnIconPress = () => {
     const { downloadManager, item } = this.props
 
-    if (item.download || downloadManager.downloadExists(item._id)) {
+    // Check if download status is not null or failed
+    const hasDownload = ![null, 'failed'].includes(item.download.downloadStatus)
+
+    // If we have download or the manager has one, play the download
+    if (hasDownload || downloadManager.downloadExists(item._id)) {
       this.handlePlayTorrent({
         quality: 'download',
       })

@@ -11,7 +11,7 @@ import { getMainDefinition } from 'apollo-utilities'
 const SCHEMA_VERSION = '1' // Must be a string.
 const SCHEMA_VERSION_KEY = 'apollo-schema-version'
 
-export default async() => {
+export default async(host) => {
   const cache = new InMemoryCache({
     dataIdFromObject: object => {
       if (object._id) {
@@ -82,10 +82,10 @@ export default async() => {
         )
       },
       new WebSocketLink({
-        uri: 'ws://192.168.1.67:3000/graphql',
+        uri: `ws://${host}/graphql`,
       }),
       new HttpLink({
-        uri: 'http://192.168.1.67:3000/graphql',
+        uri: `http://${host}/graphql`,
       }),
     ),
 

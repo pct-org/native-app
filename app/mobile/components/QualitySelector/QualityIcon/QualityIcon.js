@@ -183,10 +183,7 @@ QualityIcon.propTypes = {
   download: PropTypes.object,
   variant: PropTypes.string.isRequired,
   itemType: PropTypes.string,
-  style: PropTypes.oneOfType([
-    PropTypes.object,
-    PropTypes.array,
-  ]),
+  style: PropTypes.object,
 }
 
 QualityIcon.defaultProps = {

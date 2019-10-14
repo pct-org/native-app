@@ -12,7 +12,9 @@ export default class ApolloLoader extends React.PureComponent {
   client = null
 
   async componentDidMount() {
-    this.client = await getClient()
+    const { host } = this.props
+
+    this.client = await getClient(host)
 
     this.setState({
       loading: false,

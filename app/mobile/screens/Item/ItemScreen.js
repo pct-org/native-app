@@ -101,10 +101,10 @@ export const Item = ({ navigation, navigation: { state: { params } } }) => {
               item={item}
               variant={QualitySelector.VARIANT_DOWNLOAD}
               navigation={navigation}
-              style={[
-                styles.icon,
-                styles.iconDownload,
-              ]}
+              style={{
+                ...styles.icon,
+                ...styles.iconDownload,
+              }}
             />
           )}
 

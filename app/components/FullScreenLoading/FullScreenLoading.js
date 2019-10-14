@@ -7,25 +7,27 @@ import colors from 'modules/colors'
 
 import Logo from 'images/logo.png'
 
+import Typography from 'components/Typography'
+
 export const styles = StyleSheet.create({
 
   root: {
     position: 'absolute',
-    top     : 0,
-    bottom  : 0,
-    right   : 0,
-    left    : 0,
+    top: 0,
+    bottom: 0,
+    right: 0,
+    left: 0,
 
     backgroundColor: colors.BACKGROUND,
 
-    display       : 'flex',
+    display: 'flex',
     justifyContent: 'center',
-    alignItems    : 'center',
-    zIndex        : 100,
+    alignItems: 'center',
+    zIndex: 100,
   },
 
   logo: {
-    width : 100,
+    width: 100,
     height: 100,
   },
 
@@ -46,7 +48,7 @@ export default class FullScreenLoading extends React.PureComponent {
 
   state = {
     hidden: false,
-    first : true,
+    first: true,
   }
 
   getAnimation = () => {
@@ -67,7 +69,7 @@ export default class FullScreenLoading extends React.PureComponent {
   handleAnimationEnd = () => {
     this.setState({
       hidden: true,
-      first : false,
+      first: false,
     })
   }
 
@@ -78,7 +80,7 @@ export default class FullScreenLoading extends React.PureComponent {
   }
 
   render() {
-    const { enabled } = this.props
+    const { enabled, children } = this.props
     const { hidden } = this.state
 
     if (hidden && !enabled) {
@@ -101,7 +103,11 @@ export default class FullScreenLoading extends React.PureComponent {
         <ActivityIndicator
           size={40}
           style={styles.loader}
-          color={'#FFF'} />
+          color={colors.PRIMARY_COLOR_200} />
+
+        <Typography variant={'caption'}>
+          {children}
+        </Typography>
 
       </Animatable.View>
     )

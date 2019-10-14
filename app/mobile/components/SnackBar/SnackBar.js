@@ -1,60 +1,8 @@
-import * as React from 'react';
-import {
-  Animated,
-  SafeAreaView,
-  StyleProp,
-  StyleSheet,
-  ViewStyle,
-} from 'react-native';
+import React from 'react'
+import { Animated, SafeAreaView, StyleSheet } from 'react-native'
 
-import Button from './Button';
-import Surface from './Surface';
-import Text from './Typography/Text';
-import { withTheme } from '../core/theming';
-import { Theme } from '../types';
-
-type Props = {
-  /**
-   * Whether the Snackbar is currently visible.
-   */
-  visible: boolean;
-/**
- * Label and press callback for the action button. It should contain the following properties:
- * - `label` - Label of the action button
- * - `onPress` - Callback that is called when action button is pressed.
- */
-action?: {
-  label: string;
-accessibilityLabel?: string;
-onPress: () => void;
-};
-/**
- * The duration for which the Snackbar is shown.
- */
-duration?: number;
-/**
- * Callback called when Snackbar is dismissed. The `visible` prop needs to be updated when this is called.
- */
-onDismiss: () => void;
-/**
- * Text content of the Snackbar.
- */
-children: React.ReactNode;
-style?: StyleProp<ViewStyle>;
-/**
- * @optional
- */
-theme: Theme;
-};
-
-type State = {
-  opacity: Animated.Value;
-hidden: boolean;
-};
-
-const DURATION_SHORT = 4000;
-const DURATION_MEDIUM = 7000;
-const DURATION_LONG = 10000;
+import Container from 'components/Container'
+import Typography from 'components/Typography'
 
 /**
  * Snackbars provide brief feedback about an operation through a message at the bottom of the screen.
@@ -108,85 +56,85 @@ const DURATION_LONG = 10000;
  * });
  * ```
  */
-class Snackbar extends React.Component<Props, State> {
+class Snackbar extends React.Component {
   /**
    * Show the Snackbar for a short duration.
    */
-  static DURATION_SHORT = DURATION_SHORT;
+  static DURATION_SHORT = 4000
 
   /**
    * Show the Snackbar for a medium duration.
    */
-  static DURATION_MEDIUM = DURATION_MEDIUM;
+  static DURATION_MEDIUM = 7000
 
   /**
    * Show the Snackbar for a long duration.
    */
-  static DURATION_LONG = DURATION_LONG;
+  static DURATION_LONG = 10000
 
   static defaultProps = {
-    duration: DURATION_MEDIUM,
-  };
+    duration: Snackbar.DURATION_MEDIUM,
+  }
 
   state = {
     opacity: new Animated.Value(0.0),
     hidden: !this.props.visible,
-  };
+  }
 
   componentDidMount() {
     if (this.props.visible) {
-      this._show();
+      this._show()
     }
   }
 
   componentDidUpdate(prevProps: Props) {
     if (prevProps.visible !== this.props.visible) {
-      this._toggle();
+      this._toggle()
     }
   }
 
   componentWillUnmount() {
     if (this._hideTimeout) {
-      clearTimeout(this._hideTimeout);
+      clearTimeout(this._hideTimeout)
     }
   }
 
   _toggle = () => {
     if (this.props.visible) {
-      this._show();
+      this._show()
     } else {
-      this._hide();
+      this._hide()
     }
-  };
+  }
 
   _show = () => {
     if (this._hideTimeout) {
-      clearTimeout(this._hideTimeout);
+      clearTimeout(this._hideTimeout)
     }
     this.setState({
       hidden: false,
-    });
+    })
     Animated.timing(this.state.opacity, {
       toValue: 1,
       duration: 200,
       useNativeDriver: true,
     }).start(({ finished }) => {
       if (finished) {
-        const { duration } = this.props;
+        const { duration } = this.props
         const isInfinity =
           duration === Number.POSITIVE_INFINITY ||
-          duration === Number.NEGATIVE_INFINITY;
+          duration === Number.NEGATIVE_INFINITY
 
         if (finished && !isInfinity) {
-          this._hideTimeout = setTimeout(this.props.onDismiss, duration);
+          this._hideTimeout = setTimeout(this.props.onDismiss, duration)
         }
       }
-    });
-  };
+    })
+  }
 
   _hide = () => {
     if (this._hideTimeout) {
-      clearTimeout(this._hideTimeout);
+      clearTimeout(this._hideTimeout)
     }
 
     Animated.timing(this.state.opacity, {
@@ -195,26 +143,26 @@ class Snackbar extends React.Component<Props, State> {
       useNativeDriver: true,
     }).start(({ finished }) => {
       if (finished) {
-        this.setState({ hidden: true });
+        this.setState({ hidden: true })
       }
-    });
-  };
+    })
+  }
 
-  _hideTimeout?: number;
+  _hideTimeout
 
   render() {
-    const { children, visible, action, onDismiss, theme, style } = this.props;
-    const { colors, roundness } = theme;
+    const { children, visible, action, theme, style } = this.props
+    const { colors, roundness } = theme
 
     if (this.state.hidden) {
-      return null;
+      return null
     }
 
     return (
-      <SafeAreaView pointerEvents="box-none" style={styles.wrapper}>
-        <Surface
-          pointerEvents="box-none"
-          accessibilityLiveRegion="polite"
+      <SafeAreaView
+        pointerEvents="box-none"
+        style={styles.wrapper}>
+        <Container
           style={
             [
               styles.container,
@@ -234,35 +182,20 @@ class Snackbar extends React.Component<Props, State> {
               },
               { backgroundColor: colors.onSurface },
               style,
-            ] as StyleProp<ViewStyle>
+            ]
           }
         >
-          <Text
+          <Typography
             style={[
               styles.content,
               { marginRight: action ? 0 : 16, color: colors.surface },
             ]}
           >
             {children}
-          </Text>
-          {action ? (
-            <Button
-              accessibilityLabel={action.accessibilityLabel}
-              onPress={() => {
-                action.onPress();
-                onDismiss();
-              }}
-              style={styles.button}
-              color={colors.accent}
-              compact
-              mode="text"
-            >
-              {action.label}
-            </Button>
-          ) : null}
-        </Surface>
+          </Typography>
+        </Container>
       </SafeAreaView>
-    );
+    )
   }
 }
 
@@ -290,6 +223,6 @@ const styles = StyleSheet.create({
     marginHorizontal: 8,
     marginVertical: 6,
   },
-});
+})
 
-export default withTheme(Snackbar);
+export default Snackbar

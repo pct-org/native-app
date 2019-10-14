@@ -43,5 +43,6 @@
   "Hold long to cancel": "Inhouden om te cancellen",
   "Hold long to remove": "Inhouden om te verwijderen",
   "\"{{title}}\" removed": "\"{{title}}\" verwijderd",
-  "Hold long to retry": "Inhouden om opniew te proberen"
+  "Hold long to retry": "Inhouden om opniew te proberen",
+  "Searching for GraphQL API...": "GraphQL API zoeken..."
 }
