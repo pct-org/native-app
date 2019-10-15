@@ -1,53 +1,46 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { StyleSheet, View, Dimensions } from 'react-native'
-import Device from 'modules/DeviceDetection'
+import { StyleSheet, View } from 'react-native'
 
-import colors from 'modules/colors'
 import dimensions from 'modules/dimensions'
 
 import BaseButton from '../BaseButton'
 import Overlay from '../Overlay'
 import Image from '../Image'
+import Container from '../Container'
 
-const { width } = Dimensions.get('window')
-
-const rootWidth = (width - (Device.isTablet ? 40 : 32)) / (Device.isTablet ? 4 : 3)
-
-const styles = StyleSheet.create({
+export const styles = StyleSheet.create({
 
   root: {
-    height         : (rootWidth * 1.5),
-    width          : rootWidth,
-    alignSelf      : 'stretch',
-    position       : 'relative',
-    borderRadius   : dimensions.BORDER_RADIUS,
-    overflow       : 'hidden',
-    backgroundColor: colors.BACKGROUND_LIGHTER,
+    borderRadius: dimensions.BORDER_RADIUS,
+    overflow: 'hidden',
+    margin: dimensions.UNIT,
+    height: dimensions.CARD_HEIGHT,
+    width: dimensions.CARD_WIDTH,
   },
-
-  default: {},
 
   small: {
-    height: dimensions.CARD_SMALL_HEIGHT,
-    width : dimensions.CARD_SMALL_WIDTH,
-  },
-
-  medium: {
-    height: dimensions.CARD_MEDIUM_HEIGHT,
-    width : dimensions.CARD_MEDIUM_WIDTH,
+    height: dimensions.CARD_HEIGHT_SMALL,
+    width: dimensions.CARD_WIDTH_SMALL,
+    margin: dimensions.UNIT / 2,
   },
 
 })
 
-export const Card = ({ item, variant, empty, ...rest }) => {
-  return (
+export const Card = React.memo(({ item, variant, elevation, empty, style, ...rest }) => (
+  <Container
+    elevation={elevation}
+    style={[
+      styles.root,
+      variant === 'small' && styles.small,
+      style,
+    ]}>
     <BaseButton
-      // onLongPress={() => console.warn(item.title)}
-      // onPress={() => this.openItem(item)}
       {...rest}>
-      <View style={[styles.root, styles[variant]]}>
+      <View>
         <Image
+          type={'poster'}
+          size={'thumb'}
           images={
             empty
               ? {}
@@ -57,25 +50,25 @@ export const Card = ({ item, variant, empty, ...rest }) => {
         {item && item.watched && item.watched.complete && (
           <Overlay variant={'dark'} />
         )}
-
       </View>
     </BaseButton>
-  )
-}
+  </Container>
+))
 
 Card.propTypes = {
-  item   : PropTypes.object,
-  empty  : PropTypes.bool,
-  variant: PropTypes.oneOf([
-    'default',
-    'medium',
-    'small',
-  ]),
+  item: PropTypes.object,
+  empty: PropTypes.bool,
+  style: PropTypes.object,
+  elevation: PropTypes.number,
+  variant: PropTypes.oneOf(['default', 'small']),
 }
 
 Card.defaultProps = {
-  item   : null,
-  empty  : false,
+  item: null,
+  empty: false,
+  style: null,
+  component: BaseButton,
+  elevation: 1,
   variant: 'default',
 }
 

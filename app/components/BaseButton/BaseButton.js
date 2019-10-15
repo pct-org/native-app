@@ -1,24 +1,31 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { TouchableNativeFeedback } from 'react-native'
+import { TouchableNativeFeedback } from 'react-native-gesture-handler'
 
-export const BaseButton = ({ children, rippleColor, ...rest }) => (
-  <TouchableNativeFeedback
+export const BaseButton = ({ children, component: Component, innerRef, rippleColor, ...rest }) => (
+  <Component
     useForeground
+    ref={innerRef}
     // eslint-disable-next-line babel/new-cap
-    background={TouchableNativeFeedback.Ripple(rippleColor)}
+    background={
+      rippleColor !== null
+        ? TouchableNativeFeedback.Ripple(rippleColor, true)
+        : null
+    }
     {...rest}>
     {children}
-  </TouchableNativeFeedback>
+  </Component>
 )
 
 BaseButton.propTypes = {
-  children   : PropTypes.node.isRequired,
-  rippleColor: PropTypes.string,
+  children: PropTypes.node.isRequired,
+  rippleColor: PropTypes.oneOf([null, 'rgba(0, 0, 0, .3)', 'transparent']),
 }
 
 BaseButton.defaultProps = {
   rippleColor: 'rgba(0, 0, 0, .3)',
+  component: TouchableNativeFeedback,
+  innerRef: null,
 }
 
 export default BaseButton

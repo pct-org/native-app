@@ -1,37 +1,50 @@
 import { Dimensions, StatusBar } from 'react-native'
 
-const { width, height, fontScale } = Dimensions.get('window')
+const { width: screenWidth, height: screenHeight } = Dimensions.get('window')
 
 const UNIT = 8
+const SKETCH_DEFAULT_WIDTH = 360
 
-const CARD_MEDIUM_WIDTH = (width - 40) / 3.1
-const CARD_MEDIUM_HEIGHT = ((height - StatusBar.currentHeight) / 4) * fontScale
+const sketchAdjuster = screenWidth / SKETCH_DEFAULT_WIDTH
+
+const getWidth = (sketchSize) => {
+  return sketchSize * sketchAdjuster
+}
+
+const getHeight = (sketchSize) => {
+  return sketchSize * sketchAdjuster
+}
 
 export default {
 
   UNIT,
 
-  SCREEN_WIDTH : width,
-  SCREEN_HEIGHT: height,
+  ICON_SIZE_DEFAULT: 24,
+  ICON_SIZE_MEDIUM: 32,
+
+  ICON_CAST_SIZE: UNIT * 6,
+
+  SCREEN_WIDTH: screenWidth,
+  SCREEN_HEIGHT: screenHeight,
 
   STATUSBAR_HEIGHT: StatusBar.currentHeight,
 
   BORDER_RADIUS: 5,
 
-  CARD_SMALL_WIDTH: CARD_MEDIUM_WIDTH - UNIT,
-  CARD_SMALL_HEIGHT: CARD_MEDIUM_HEIGHT - UNIT,
+  CARD_HEIGHT: getHeight(130),
+  CARD_WIDTH: getWidth(90),
+  CARD_HEIGHT_SMALL: getHeight(116),
+  CARD_WIDTH_SMALL: getWidth(81),
 
-  CARD_MEDIUM_WIDTH,
-  CARD_MEDIUM_HEIGHT,
+  MY_EPISODE_CARD_HEIGHT: getHeight(100),
+  MY_EPISODE_CARD_WIDTH: getWidth(178),
 
-  MY_EPISODE_CARD_WIDTH : CARD_MEDIUM_WIDTH * 2.5,
-  MY_EPISODE_CARD_HEIGHT: CARD_MEDIUM_HEIGHT - UNIT,
+  EPISODE_CARD_HEIGHT: getHeight(68),
+  EPISODE_CARD_WIDTH: getWidth(121),
 
-  EPISODE_CARD_WIDTH : 150,
-  EPISODE_CARD_HEIGHT: 100,
+  QUALITY_WIDTH: getWidth(74),
+  QUALITY_HEIGHT: getHeight(36),
 
-  ICON_PLAY_SMALL: 45,  // My Episode
-  ICON_PLAY_MEDIUM: 50, // Home, Item
-
-  ITEM_ICONS: 35,
+  getWidth,
+  getHeight,
 }

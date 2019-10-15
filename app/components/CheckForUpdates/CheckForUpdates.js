@@ -3,7 +3,6 @@ import { StyleSheet, Image, View, ScrollView, ActivityIndicator } from 'react-na
 import * as Animatable from 'react-native-animatable'
 import Updater from 'update-react-native-app'
 import Markdown from 'react-native-markdown-renderer'
-import { material } from 'react-native-typography'
 
 import i18n from 'modules/i18n'
 import colors from 'modules/colors'
@@ -72,9 +71,13 @@ export const styles = StyleSheet.create({
 
 export const mdStyle = StyleSheet.create({
 
-  heading2: material.titleWhiteObject,
+  heading2: {
 
-  text: material.body1WhiteObject,
+  },
+
+  text: {
+
+  },
 
 })
 

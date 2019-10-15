@@ -5,6 +5,7 @@
   "Movies": "Films",
   "Shows": "Series",
   "Season {{number}}": "Seizoen {{number}}",
+  "Seasons": "Seizoenen",
   "Buffering": "Bufferen...",
   "Connecting": "Verbinding maken...",
   "progress": "vooruitgang",
@@ -35,5 +36,13 @@
   "No qualities available! Try to search": "Niks beschikbaar! Probeer zoeken",
   "more": "meer",
   "refresh": "refreshen",
-  "Refreshing": "Refreshen"
+  "Refreshing": "Refreshen",
+  "Size: {{size}}": "Groote: {{size}}",
+  "Watch in": "Bekijken in",
+  "Download in": "Download in",
+  "Hold long to cancel": "Inhouden om te cancellen",
+  "Hold long to remove": "Inhouden om te verwijderen",
+  "\"{{title}}\" removed": "\"{{title}}\" verwijderd",
+  "Hold long to retry": "Inhouden om opniew te proberen",
+  "Searching for GraphQL API...": "GraphQL API zoeken..."
 }

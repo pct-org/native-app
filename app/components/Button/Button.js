@@ -8,11 +8,11 @@ import dimensions from 'modules/dimensions'
 import TextButton from '../TextButton'
 
 const defaultPadding = {
-  paddingLeft  : dimensions.UNIT * 2,
-  paddingRight : dimensions.UNIT * 2,
-  paddingTop   : dimensions.UNIT,
+  paddingLeft: dimensions.UNIT * 2,
+  paddingRight: dimensions.UNIT * 2,
+  paddingTop: dimensions.UNIT,
   paddingBottom: dimensions.UNIT,
-  borderRadius : dimensions.BORDER_RADIUS,
+  borderRadius: dimensions.BORDER_RADIUS,
 }
 
 export const styles = StyleSheet.create({
@@ -20,20 +20,21 @@ export const styles = StyleSheet.create({
   default: {
     ...defaultPadding,
 
+    borderWidth: dimensions.BORDER_WIDTH,
     backgroundColor: colors.BUTTON_DEFAULT,
   },
 
   primary: {
     ...defaultPadding,
 
+    borderWidth: dimensions.BORDER_WIDTH,
     backgroundColor: colors.BUTTON_PRIMARY,
   },
 
 })
 
-export const Button = ({ children, onPress, variant, style, ...rest }) => (
+export const Button = ({ children, variant, style, ...rest }) => (
   <TextButton
-    onPress={onPress}
     style={{
       ...styles[variant],
       ...style,
@@ -45,14 +46,14 @@ export const Button = ({ children, onPress, variant, style, ...rest }) => (
 )
 
 Button.propTypes = {
-  onPress : PropTypes.func.isRequired,
+  onPress: PropTypes.func.isRequired,
   children: PropTypes.string.isRequired,
-  variant : PropTypes.oneOf(['default', 'primary']),
+  variant: PropTypes.oneOf(['default', 'primary']),
 }
 
 Button.defaultProps = {
   variant: 'default',
-  style  : {},
+  style: {},
 }
 
 export default Button

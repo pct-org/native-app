@@ -1,6 +1,6 @@
 {
-  "parser"  : "babel-eslint",
-  "extends" : [
+  "parser": "babel-eslint",
+  "extends": [
     "standard",
     "standard-react",
     "airbnb",
@@ -14,17 +14,19 @@
     "jest"
   ],
   "root": true,
-  "globals" : {
+  "globals": {
     "__DEV__": false
   },
   "env": {
-    "browser" : true,
+    "browser": true,
     "jest/globals": true
   },
   "settings": {
     "import/resolver": {
       "node": {
-        "paths": ["app"]
+        "paths": [
+          "app"
+        ]
       }
     }
   },

@@ -5,6 +5,7 @@
   "Movies": "Movies",
   "Shows": "Shows",
   "Season {{number}}": "Season {{number}}",
+  "Seasons": "Seasons",
   "Buffering": "Buffering...",
   "Connecting": "Connecting...",
   "progress": "progress",
@@ -35,5 +36,13 @@
   "No qualities available! Try to search": "No qualities available! Try to search",
   "more": "more",
   "refresh": "refresh",
-  "Refreshing": "Refreshing"
+  "Refreshing": "Refreshing",
+  "Size: {{size}}": "Size: {{size}}",
+  "Watch in": "Watch in",
+  "Download in": "Download in",
+  "Hold long to cancel": "Hold long to cancel",
+  "Hold long to remove": "Hold long to remove",
+  "\"{{title}}\" removed": "\"{{title}}\" removed",
+  "Hold long to retry": "Hold long to retry",
+  "Searching for GraphQL API...": "Searching for GraphQL API..."
 }

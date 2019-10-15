@@ -3,24 +3,28 @@ import PropTypes from 'prop-types'
 import { StyleSheet } from 'react-native'
 import * as Animatable from 'react-native-animatable'
 
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
-
 import BaseButton from '../BaseButton'
 import Typography from '../Typography'
+import Icon from '../Icon'
 
 export const styles = StyleSheet.create({
 
   container: {
-    display       : 'flex',
+    display: 'flex',
     justifyContent: 'center',
-    alignItems    : 'center',
+    alignItems: 'center',
   },
 
 })
 
-export const IconButton = ({ onPress, animatable, buttonProps, children, ...rest }) => (
-  <BaseButton onPress={onPress} {...buttonProps}>
-    <Animatable.View {...animatable} style={styles.container}>
+export const IconButton = ({ onPress, onLongPress, animatable, animatableStyle, buttonProps, children, ...rest }) => (
+  <BaseButton
+    onPress={onPress}
+    onLongPress={onLongPress}
+    {...buttonProps}>
+    <Animatable.View
+      {...animatable}
+      style={[styles.container, animatableStyle]}>
       <Icon
         {...rest}
       />
@@ -37,17 +41,19 @@ export const IconButton = ({ onPress, animatable, buttonProps, children, ...rest
 )
 
 IconButton.propTypes = {
-  onPress    : PropTypes.func,
-  children   : PropTypes.string,
+  onPress: PropTypes.func,
+  onLongPress: PropTypes.func,
+  children: PropTypes.string,
   buttonProps: PropTypes.object,
-  animatable : PropTypes.object,
+  animatable: PropTypes.object,
 }
 
 IconButton.defaultProps = {
   buttonProps: {},
-  animatable : {},
-  onPress    : null,
-  children   : null,
+  animatable: {},
+  onPress: null,
+  children: null,
+  animatableStyle: {},
 }
 
 export default IconButton

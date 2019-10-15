@@ -1,13 +1,10 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { ScrollView, StatusBar, SafeAreaView } from 'react-native'
-import { withNavigationFocus } from 'react-navigation'
 
 import StatusBarController from 'modules/StatusBarController'
 
-@withNavigationFocus
-export default class ScrollViewWithStatusBar extends React.Component {
-
+export default class ScrollViewWithStatusBar extends React.PureComponent {
 
   static propTypes = {
     children: PropTypes.node.isRequired,
@@ -19,17 +16,8 @@ export default class ScrollViewWithStatusBar extends React.Component {
 
   yOffset = 0
 
-  componentWillMount() {
+  componentDidMount() {
     this.forceUpdateScroll()
-  }
-
-  componentWillReceiveProps(nextProps) {
-    const { isFocused } = nextProps
-    const { isFocused: wasFocused } = this.props
-
-    if (isFocused && !wasFocused) {
-      this.forceUpdateScroll()
-    }
   }
 
   forceUpdateScroll = () => this.handleScroll({ nativeEvent: { contentOffset: { y: this.yOffset } } }, true)
@@ -58,10 +46,10 @@ export default class ScrollViewWithStatusBar extends React.Component {
   }
 
   render() {
-    const { children } = this.props
+    const { children, style } = this.props
 
     return (
-      <SafeAreaView>
+      <SafeAreaView style={style}>
         <StatusBar
           backgroundColor={'rgba(0, 0, 0, 0)'}
           translucent

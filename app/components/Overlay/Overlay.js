@@ -5,19 +5,19 @@ import { StyleSheet, View } from 'react-native'
 export const styles = StyleSheet.create({
 
   root: {
-    position       : 'absolute',
-    top            : 0,
-    right          : 0,
-    bottom         : 0,
-    left           : 0,
+    position: 'absolute',
+    top: 0,
+    right: 0,
+    bottom: 0,
+    left: 0,
     backgroundColor: 'black',
-    opacity        : 0.32,
+    opacity: 0.50,
   },
 
   default: {},
 
   dark: {
-    opacity: 0.75,
+    opacity: 0.70,
   },
 
 })
@@ -35,7 +35,7 @@ Overlay.propTypes = {
 
 Overlay.defaultProps = {
   variant: 'default',
-  style  : {},
+  style: {},
 }
 
 export default Overlay
