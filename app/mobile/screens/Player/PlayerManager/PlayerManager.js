@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
 import { StyleSheet, View } from 'react-native'
 import GoogleCast, { CastButton } from 'react-native-google-cast'
 import Orientation from 'react-native-orientation'
 
+import withIpFinder from 'modules/IpFinder/withIpFinder'
 import dimensions from 'modules/dimensions'
 import colors from 'modules/colors'
 
@@ -24,11 +25,19 @@ const styles = StyleSheet.create({
 
 })
 
+@withIpFinder
 export default class PlayerManager extends React.Component {
 
-  state = {
-    currentTime: 0,
-    casting: false,
+  constructor(props) {
+    super(props)
+
+    const { ipFinder, item } = props
+
+    this.state = {
+      mediaUrl: `http://${ipFinder.host}/watch/${item._id}`,
+      currentTime: 0,
+      casting: false,
+    }
   }
 
   componentDidMount() {
@@ -72,12 +81,12 @@ export default class PlayerManager extends React.Component {
 
   handleStartCasting = (force = false) => {
     const { item } = this.props
-    const { casting } = this.state
-console.log('handleStartCasting', casting)
+    const { casting, mediaUrl } = this.state
+
     if (force || casting) {
       Orientation.lockToPortrait()
 
-      console.log(`http://192.168.1.67:3000/watch/${item._id}`)
+      console.log(mediaUrl)
 
       GoogleCast.castMedia({
         title: (
@@ -86,7 +95,7 @@ console.log('handleStartCasting', casting)
             : item.title
         ),
         subtitle: item.synopsis,
-        mediaUrl: `http://192.168.1.67:3000/watch/${item._id}`,
+        mediaUrl,
         posterUrl: item.type === 'episode'
           ? item.show.images.poster.high
           : item.images.poster.high,
@@ -98,7 +107,8 @@ console.log('handleStartCasting', casting)
     this.handleStartCasting(true)
   }
 
-  handleCastSessionEnded = () => {
+  handleCastSessionEnded = (error) => {
+    // TODO:: Check what the error is and maybe then add the device flag?
     console.log('handleCastSessionEnded')
     this.setState({
       casting: false,
@@ -135,13 +145,14 @@ console.log('handleStartCasting', casting)
 
   render() {
     const { style, children } = this.props
-    const { casting } = this.state
+    const { casting, mediaUrl } = this.state
 
     return (
       <View style={style}>
 
         {children({
           casting,
+          mediaUrl,
           renderCastButton: this.renderCastButton,
           setCurrentTime: this.handleSetCurrentTime,
         })}

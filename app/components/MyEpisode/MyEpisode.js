@@ -1,7 +1,8 @@
-import React, { useState } from 'react'
+import React, { useState, createRef } from 'react'
 import PropTypes from 'prop-types'
 import { StyleSheet, View } from 'react-native'
 import * as Animatable from 'react-native-animatable'
+import {withNavigation} from 'react-navigation'
 
 import dimensions from 'modules/dimensions'
 import QualitySelector from 'mobile/components/QualitySelector'
@@ -50,8 +51,8 @@ const styles = StyleSheet.create({
 
 })
 
-export const MyEpisode = ({ item, style, empty, ...rest }) => {
-  const [showQualitySelector, toggleSelecting] = useState(false)
+export const MyEpisode = ({ item, style, empty, navigation, ...rest }) => {
+  const playSelectorRef = createRef()
 
   const getEpisodeNumber = () => {
     const season = empty ? '00' : `0${item.season}`
@@ -66,8 +67,9 @@ export const MyEpisode = ({ item, style, empty, ...rest }) => {
       style={[styles.root, style]}>
       <BaseButton
         onPress={() => {
-          if (!empty) {
-            toggleSelecting(!showQualitySelector)
+          if (!empty && playSelectorRef && playSelectorRef.current) {
+            console.log(playSelectorRef.current)
+            playSelectorRef.current.handleOnIconPress()
           }
         }}
         {...rest}>
@@ -88,14 +90,10 @@ export const MyEpisode = ({ item, style, empty, ...rest }) => {
               style={styles.iconContainer}
               useNativeDriver>
               <QualitySelector
-                visible={showQualitySelector}
+                ref={playSelectorRef}
                 itemType={'my-episode'}
-                onRequestClose={() => toggleSelecting(false)}
-                item={
-                  empty
-                    ? {}
-                    : item
-                }
+                item={item}
+                navigation={navigation}
               />
             </Animatable.View>
           )}
@@ -142,4 +140,4 @@ MyEpisode.defaultProps = {
   style: null,
 }
 
-export default MyEpisode
+export default withNavigation(MyEpisode)

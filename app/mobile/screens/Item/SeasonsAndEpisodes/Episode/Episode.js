@@ -156,12 +156,14 @@ export default class Episode extends React.Component {
             </Typography>
           </View>
 
-          <QualitySelector
-            item={this.props}
-            variant={QualitySelector.VARIANT_DOWNLOAD}
-            navigation={navigation}
-            style={styles.downloadIcon}
-          />
+          {hasAired && (
+            <QualitySelector
+              item={this.props}
+              variant={QualitySelector.VARIANT_DOWNLOAD}
+              navigation={navigation}
+              style={styles.downloadIcon}
+            />
+          )}
         </View>
 
         <Typography

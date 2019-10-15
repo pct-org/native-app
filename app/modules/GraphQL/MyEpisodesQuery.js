@@ -5,11 +5,27 @@ export default gql`
     episodes: myEpisodes{
       _id
       title
-      season
       number
+      season
+      synopsis
+      firstAired
       type
+      show {
+        title
+        images {
+          poster {
+            thumb
+          }
+        }
+      }
       watched {
         complete
+        progress
+      }
+      download {
+        downloadStatus
+        downloading
+        downloadComplete
       }
       images {
         poster {
@@ -19,14 +35,6 @@ export default gql`
       torrents {
         quality
         sizeString
-      }
-      show {
-        title
-        images {
-          poster {
-            thumb
-          }
-        }
       }
     }
   }

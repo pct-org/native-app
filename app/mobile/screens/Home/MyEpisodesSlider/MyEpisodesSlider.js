@@ -3,15 +3,14 @@ import PropTypes from 'prop-types'
 import { useQuery } from '@apollo/react-hooks'
 
 import i18n from 'modules/i18n'
+import MyEpisodesQuery from 'modules/GraphQL/MyEpisodesQuery'
 import fetchMoreUpdateQuery from 'modules/GraphQL/helpers/fetchMoreUpdateQuery'
 
 import EpisodesSlider from 'components/MyEpisodesSlider'
 
-import MyEpisodesSliderQuery from './MyEpisodesSliderQuery'
-
 export const MyEpisodesSlider = () => {
   const { loading, data, fetchMore } = useQuery(
-    MyEpisodesSliderQuery,
+    MyEpisodesQuery,
     {
       variables: {
         offset: 0,

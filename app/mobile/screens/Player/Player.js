@@ -18,7 +18,7 @@ import DownloadInfo from './DownloadInfo'
 import EpisodePlaying from './EpisodePlaying'
 import PlayerManager from './PlayerManager'
 
-export const Player = ({ navigation: { state: { params: { item, playQuality } } } }) => {
+export const Player = ({ ipFinder, navigation: { state: { params: { item, playQuality } } } }) => {
 
   // TODO:: Move below to PlayerManager
   useEffect(() => {
@@ -128,7 +128,7 @@ export const Player = ({ navigation: { state: { params: { item, playQuality } } 
       isBuffering={isBuffering}
       style={styles.root}>
 
-      {({ casting, renderCastButton }) => (
+      {({ casting, renderCastButton, mediaUrl }) => (
         <React.Fragment>
           {(isBuffering || casting) && (
             <View style={[styles.fullScreen, styles.bufferingContainer]}>
@@ -192,7 +192,7 @@ export const Player = ({ navigation: { state: { params: { item, playQuality } } 
           {!isBuffering && !casting && download && (
             <VideoAndControls
               item={item}
-              url={`http://192.168.1.67:3000/watch/${download._id}`}
+              url={mediaUrl}
               playOtherEpisode={playItem}>
 
               <PlayingItemInfo

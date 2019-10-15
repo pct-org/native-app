@@ -109,6 +109,7 @@ export default class IpFinder extends React.Component {
 
   getValue = () => {
     const { host } = this.state
+
     return {
       host,
     }
