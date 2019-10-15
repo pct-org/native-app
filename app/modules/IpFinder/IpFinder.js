@@ -122,7 +122,7 @@ export default class IpFinder extends React.Component {
     if (loading) {
       return (
         <FullScreenLoading>
-          {i18n.t('Searching for GraphQL API...')}
+          {i18n.t('Searching for GraphQL API')}
         </FullScreenLoading>
       )
     }

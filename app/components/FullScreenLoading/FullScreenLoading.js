@@ -1,3 +1,4 @@
+import dimensions from 'modules/dimensions'
 import React from 'react'
 import PropTypes from 'prop-types'
 import { StyleSheet, Image, ActivityIndicator } from 'react-native'
@@ -105,7 +106,11 @@ export default class FullScreenLoading extends React.PureComponent {
           style={styles.loader}
           color={colors.PRIMARY_COLOR_200} />
 
-        <Typography variant={'caption'}>
+        <Typography
+          style={{
+            marginTop: dimensions.UNIT,
+          }}
+          variant={'caption'}>
           {children}
         </Typography>
 

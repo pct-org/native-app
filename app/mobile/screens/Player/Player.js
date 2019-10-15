@@ -117,11 +117,6 @@ export const Player = ({ ipFinder, navigation: { state: { params: { item, playQu
     stopPolling()
   }
 
-  console.log('item', item, isBuffering)
-  console.log('download', download)
-  console.log('downloadData', downloadData)
-  console.log('error', error)
-
   return (
     <PlayerManager
       item={item}
