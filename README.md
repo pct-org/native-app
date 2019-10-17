@@ -5,7 +5,7 @@
 </h1>
 
 <div align="center">
-  <a target="_blank" href="https://gitter.im/pct-org/app?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge">
+  <a target="_blank" href="https://gitter.im/pct-org/Lobby">
     <img src="https://badges.gitter.im/popcorn-time-desktop.svg" alt="Gitter" />
   </a>
   <a target="_blank" href="https://david-dm.org/pct-org/native-app" title="dependencies status">
