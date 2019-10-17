@@ -57,8 +57,6 @@ export const Home = ({ navigation }) => {
   }
 
   const handleItemOpen = (item) => {
-    console.log('handleItemOpen', item, navigation)
-
     navigation.navigate('Item', item)
   }
 

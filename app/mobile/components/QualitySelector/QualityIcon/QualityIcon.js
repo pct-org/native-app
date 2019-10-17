@@ -56,7 +56,6 @@ export const QualityIcon = ({ handleOnPress, handleRemoveDownload, item, downloa
 
     return () => {
       if (stopPollingDownload) {
-        console.log('stopPollingDownload')
         stopPollingDownload()
       }
     }

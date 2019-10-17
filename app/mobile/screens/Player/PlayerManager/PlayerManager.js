@@ -45,6 +45,7 @@ export default class PlayerManager extends React.Component {
     GoogleCast.EventEmitter.addListener(GoogleCast.SESSION_ENDED, this.handleCastSessionEnded)
     GoogleCast.EventEmitter.addListener(GoogleCast.MEDIA_PLAYBACK_STARTED, this.handleMediaPlaybackStarted)
     GoogleCast.EventEmitter.addListener(GoogleCast.MEDIA_PROGRESS_UPDATED, this.handleMediaProgressUpdate)
+    GoogleCast.EventEmitter.addListener(GoogleCast.MEDIA_PLAYBACK_ENDED, this.handleMediaPlaybackEnded)
 
     GoogleCast.getCastState().then((state) => {
       if (state.toLowerCase() === 'connected') {
@@ -86,8 +87,6 @@ export default class PlayerManager extends React.Component {
     if (force || casting) {
       Orientation.lockToPortrait()
 
-      console.log(mediaUrl)
-
       GoogleCast.castMedia({
         title: (
           item.type === 'episode'
@@ -95,7 +94,7 @@ export default class PlayerManager extends React.Component {
             : item.title
         ),
         subtitle: item.synopsis,
-        mediaUrl,
+        mediaUrl: `${mediaUrl}?device=chromecast`,
         posterUrl: item.type === 'episode'
           ? item.show.images.poster.high
           : item.images.poster.high,
@@ -104,12 +103,17 @@ export default class PlayerManager extends React.Component {
   }
 
   handleCastSessionStarted = () => {
-    this.handleStartCasting(true)
+    this.setState({
+      casting: true,
+    }, () => {
+      this.handleStartCasting(true)
+    })
   }
 
   handleCastSessionEnded = (error) => {
     // TODO:: Check what the error is and maybe then add the device flag?
-    console.log('handleCastSessionEnded')
+    console.log('handleCastSessionEnded', error)
+
     this.setState({
       casting: false,
     })
@@ -123,8 +127,12 @@ export default class PlayerManager extends React.Component {
     }
   }
 
+  handleMediaPlaybackEnded = (...a) => {
+    console.log('handleMediaPlaybackEnded', a)
+  }
+
   handleMediaProgressUpdate = (...a) => {
-    console.log(a)
+    console.log('handleMediaProgressUpdate', a)
   }
 
   handleSetCurrentTime = (currentTime) => {
@@ -146,6 +154,8 @@ export default class PlayerManager extends React.Component {
   render() {
     const { style, children } = this.props
     const { casting, mediaUrl } = this.state
+
+    console.log('casting', casting)
 
     return (
       <View style={style}>

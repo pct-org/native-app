@@ -10,6 +10,7 @@ export const MovieQuery = gql`
       synopsis
       type
       bookmarked
+      trailer
       rating {
         percentage
       }
@@ -48,6 +49,7 @@ export const ShowQuery = gql`
       synopsis
       type
       bookmarked
+      trailer
       rating {
         percentage
       }

@@ -137,8 +137,6 @@ export class VideoAndControls extends React.Component {
       }
     }
 
-    console.log('episodes', episodes)
-
     return episodes
   }
 
@@ -208,7 +206,7 @@ export class VideoAndControls extends React.Component {
 
   toggleControls = (withTimeout = true) => {
     const { showControls } = this.state
-console.log('toggleControls')
+
     if (this.controlsTimer) {
       clearTimeout(this.controlsTimer)
     }

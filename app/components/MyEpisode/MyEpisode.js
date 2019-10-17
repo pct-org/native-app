@@ -68,7 +68,6 @@ export const MyEpisode = ({ item, style, empty, navigation, ...rest }) => {
       <BaseButton
         onPress={() => {
           if (!empty && playSelectorRef && playSelectorRef.current) {
-            console.log(playSelectorRef.current)
             playSelectorRef.current.handleOnIconPress()
           }
         }}

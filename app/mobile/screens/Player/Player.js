@@ -19,7 +19,6 @@ import EpisodePlaying from './EpisodePlaying'
 import PlayerManager from './PlayerManager'
 
 export const Player = ({ ipFinder, navigation: { state: { params: { item, playQuality } } } }) => {
-
   // TODO:: Move below to PlayerManager
   useEffect(() => {
       if (!calledStartStream) {

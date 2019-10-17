@@ -1,6 +1,6 @@
 import Typography from 'components/Typography'
 import React, { useEffect } from 'react'
-import { StyleSheet, View, InteractionManager } from 'react-native'
+import { StyleSheet, View, InteractionManager, Linking } from 'react-native'
 import { useLazyQuery } from '@apollo/react-hooks'
 import Orientation from 'react-native-orientation'
 
@@ -9,6 +9,7 @@ import dimensions from 'modules/dimensions'
 import constants from 'modules/constants'
 
 import ScrollViewWithStatusBar from 'components/ScrollViewWithStatusBar'
+import IconButton from 'components/IconButton'
 import QualitySelector from 'mobile/components/QualitySelector'
 import MainCover from 'mobile/components/MainCover'
 
@@ -83,7 +84,9 @@ export const Item = ({ navigation, navigation: { state: { params } } }) => {
   }
 
   const handleTrailer = () => {
-
+    if (item && item.trailer) {
+      Linking.openURL(item.trailer)
+    }
   }
 
   return (
@@ -115,6 +118,20 @@ export const Item = ({ navigation, navigation: { state: { params } } }) => {
               {...item}
             />
           )}
+
+          {!loading && item.trailer && (
+            <IconButton
+              animatable={{
+                animation: 'fadeIn',
+                useNativeDriver: true,
+              }}
+              style={styles.icon}
+              onPress={handleTrailer}
+              name={'youtube'}
+              color={'primary'}
+              emphasis={'medium'}
+              size={dimensions.ICON_SIZE_MEDIUM} />
+          )}
         </View>
 
         {/*  /!*{!loading && item.type === constants.TYPE_MOVIE && (*!/*/}
@@ -134,22 +151,6 @@ export const Item = ({ navigation, navigation: { state: { params } } }) => {
         {/*  /!*    {i18n.t(item.watched.complete ? 'Mark Unwatched' : 'Mark Watched')}*!/*/}
         {/*  /!*  </IconButton>*!/*/}
         {/*  /!*)}*!/*/}
-
-        {/*  /!*{!loading && item.trailer && (*!/*/}
-        {/*  /!*  <IconButton*!/*/}
-        {/*  /!*    animatable={{*!/*/}
-        {/*  /!*      animation: 'fadeIn',*!/*/}
-        {/*  /!*      useNativeDriver: true,*!/*/}
-        {/*  /!*    }}*!/*/}
-        {/*  /!*    style={styles.icon}*!/*/}
-        {/*  /!*    onPress={handleTrailer}*!/*/}
-        {/*  /!*    name={'youtube'}*!/*/}
-        {/*  /!*    color={colors.ICON_COLOR}*!/*/}
-        {/*  /!*    size={dimensions.ITEM_ICONS}>*!/*/}
-        {/*  /!*    {i18n.t('Trailer')}*!/*/}
-        {/*  /!*  </IconButton>*!/*/}
-        {/*  /!*)}*!/*/}
-        {/*</View>*/}
 
         {item && (
           <View style={styles.synopsis}>
