@@ -2,8 +2,8 @@ import React from 'react'
 import { Text } from 'react-native'
 import NetInfo from '@react-native-community/netinfo'
 import AsyncStorage from '@react-native-community/async-storage'
-import { NetworkInfo } from 'react-native-network-info'
 import SplashScreen from 'react-native-splash-screen'
+import deviceInfo from 'react-native-device-info'
 
 import i18n from 'modules/i18n'
 
@@ -29,10 +29,23 @@ export default class IpFinder extends React.Component {
     // Check if we have host or that current is still available and if we are connected to wifi
     // other check for host
     if ((!host || !(await this.isHost(host))) && newState.connectedToWifi) {
-      SplashScreen.hide()
-      const deviceIp = await NetworkInfo.getIPV4Address()
+      host = null
 
-      host = await this.getHost(deviceIp)
+      SplashScreen.hide()
+
+      if (await deviceInfo.isEmulator()) {
+        // If we are a emulator then check the host ip
+        if (await this.isHost('10.0.2.2:5000')) {
+          host = '10.0.2.2:5000'
+        }
+      }
+
+      // Check if host is still null
+      if (!host) {
+        const deviceIp = await deviceInfo.getIpAddress()
+
+        host = await this.getHost(deviceIp)
+      }
     }
 
     newState.loading = false
