@@ -102,7 +102,7 @@ export const Item = ({ navigation, navigation: { state: { params } } }) => {
           {!loading && item.type === constants.TYPE_MOVIE && (
             <QualitySelector
               item={item}
-              variant={QualitySelector.VARIANT_DOWNLOAD}
+              variant={constants.TYPE_DOWNLOAD}
               navigation={navigation}
               style={{
                 ...styles.icon,

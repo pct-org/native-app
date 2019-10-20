@@ -4,6 +4,7 @@ import { StyleSheet } from 'react-native'
 import * as Animatable from 'react-native-animatable'
 
 import dimensions from 'modules/dimensions'
+import constants from 'modules/constants'
 import withApollo from 'modules/GraphQL/withApollo'
 import withDownloadManager from 'modules/DownloadManager/withDownloadManager'
 import { RemoveDownloadMutation, StartDownloadMutation } from 'modules/GraphQL/DownloadGraphQL'
@@ -48,12 +49,12 @@ const styles = StyleSheet.create({
 @withDownloadManager
 export default class QualitySelector extends React.Component {
 
-  static VARIANT_PLAY = 'play'
-  static VARIANT_DOWNLOAD = 'download'
-
   static propTypes = {
     style: PropTypes.object,
-    variant: PropTypes.oneOf(['play', 'download']),
+    variant: PropTypes.oneOf([
+      constants.TYPE_STREAM,
+      constants.TYPE_DOWNLOAD
+    ]),
     navigation: PropTypes.object.isRequired,
     apollo: PropTypes.object.isRequired,
     item: PropTypes.object.isRequired,
@@ -68,7 +69,7 @@ export default class QualitySelector extends React.Component {
 
   static defaultProps = {
     style: {},
-    variant: 'play',
+    variant: constants.TYPE_STREAM,
     itemType: null,
   }
 
@@ -257,7 +258,7 @@ export default class QualitySelector extends React.Component {
             item={item}
             variant={variant}
             handleQualityPress={(torrent) => {
-              if (variant === QualitySelector.VARIANT_PLAY) {
+              if (variant === constants.TYPE_STREAM) {
                 this.handlePlayTorrent(torrent)
 
               } else {

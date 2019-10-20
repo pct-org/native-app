@@ -4,6 +4,7 @@ import { StyleSheet, View } from 'react-native'
 import { withNavigation } from 'react-navigation'
 
 import dimensions from 'modules/dimensions'
+import constants from 'modules/constants'
 
 import Typography from 'components/Typography'
 import Overlay from 'components/Overlay'
@@ -159,7 +160,7 @@ export default class Episode extends React.Component {
           {hasAired && (
             <QualitySelector
               item={this.props}
-              variant={QualitySelector.VARIANT_DOWNLOAD}
+              variant={constants.TYPE_DOWNLOAD}
               navigation={navigation}
               style={styles.downloadIcon}
             />

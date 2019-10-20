@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import { StyleSheet, ToastAndroid } from 'react-native'
 import LottieView from 'lottie-react-native'
 import { useLazyQuery } from '@apollo/react-hooks'
+import * as Animatable from 'react-native-animatable'
 
 import i18n from 'modules/i18n'
 import dimensions from 'modules/dimensions'
@@ -13,8 +14,6 @@ import BaseButton from 'components/BaseButton'
 import IconButton from 'components/IconButton'
 import Icon from 'components/Icon'
 import Typography from 'components/Typography'
-import * as Animatable from 'react-native-animatable'
-import QualitySelector from '../QualitySelector'
 
 export const styles = StyleSheet.create({
 
@@ -67,7 +66,7 @@ export const QualityIcon = ({ handleOnPress, handleRemoveDownload, item, downloa
       ? data.download
       : null
 
-  if (variant === QualitySelector.VARIANT_DOWNLOAD) {
+  if (variant === constants.TYPE_DOWNLOAD) {
     if (download && download.status !== constants.STATUS_REMOVED) {
       return (
         <BaseButton

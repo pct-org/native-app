@@ -4,12 +4,11 @@ import { StyleSheet, View, TouchableNativeFeedback } from 'react-native'
 import * as Animatable from 'react-native-animatable'
 
 import dimensions from 'modules/dimensions'
+import constants from 'modules/constants'
 import i18n from 'modules/i18n'
 
 import Typography from 'components/Typography'
 import TextButton from 'components/TextButton'
-
-import QualitySelector from '../QualitySelector'
 
 const styles = StyleSheet.create({
 
@@ -46,7 +45,7 @@ export const Qualities = ({ variant, item, handleQualityPress }) => (
     style={styles.container}
     useNativeDriver>
     <Typography variant={'subtitle1'}>
-      {i18n.t(variant === QualitySelector.VARIANT_PLAY
+      {i18n.t(variant === constants.TYPE_STREAM
         ? 'Watch in'
         : 'Download in',
       )}
@@ -78,7 +77,10 @@ export const Qualities = ({ variant, item, handleQualityPress }) => (
 
 Qualities.propTypes = {
   item: PropTypes.object.isRequired,
-  variant: PropTypes.oneOf(['play', 'download']),
+  variant: PropTypes.oneOf([
+    constants.TYPE_STREAM,
+    constants.TYPE_DOWNLOAD
+  ]),
   handleQualityPress: PropTypes.func.isRequired,
 }
 
