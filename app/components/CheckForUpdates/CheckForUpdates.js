@@ -6,6 +6,7 @@ import Markdown from 'react-native-markdown-renderer'
 
 import i18n from 'modules/i18n'
 import colors from 'modules/colors'
+import dimensions from 'modules/dimensions'
 
 import Logo from 'images/logo.png'
 
@@ -16,68 +17,78 @@ export const styles = StyleSheet.create({
 
   root: {
     position: 'absolute',
-    top     : 0,
-    bottom  : 0,
-    right   : 0,
-    left    : 0,
+    top: 0,
+    bottom: 0,
+    right: 0,
+    left: 0,
 
     backgroundColor: colors.BACKGROUND,
 
-    display       : 'flex',
+    display: 'flex',
     justifyContent: 'center',
-    alignItems    : 'center',
+    alignItems: 'center',
   },
 
   title: {
-    marginBottom: 16,
+    marginBottom: dimensions.UNIT * 2,
   },
 
   logo: {
-    width       : 100,
-    height      : 100,
-    marginBottom: 8,
+    width: 100,
+    height: 100,
+    marginBottom: dimensions.UNIT,
   },
 
   loader: {
-    display   : 'flex',
+    display: 'flex',
     alignItems: 'center',
   },
 
   bodyContainer: {
-    width    : '100%',
-    maxHeight: '30%',
+    width: '100%',
+    maxHeight: '60%',
 
-    paddingLeft : 16,
-    paddingRight: 16,
+    paddingLeft: dimensions.UNIT * 2,
+    paddingRight: dimensions.UNIT * 2,
   },
 
   actions: {
-    display       : 'flex',
+    display: 'flex',
     justifyContent: 'center',
-    alignItems    : 'center',
-    width         : '100%',
-    flexDirection : 'row',
+    alignItems: 'center',
+    width: '100%',
+    flexDirection: 'row',
 
     position: 'absolute',
-    bottom  : 16,
-    right   : 0,
-    left    : 0,
+    bottom: dimensions.UNIT * 2,
+    right: 0,
+    left: 0,
   },
 
   action: {
-    margin: 4,
+    margin: dimensions.UNIT / 2,
   },
 })
 
 export const mdStyle = StyleSheet.create({
 
-  heading2: {
+  heading1: Typography.getTextStyle({
+    variant: 'subtitle1',
+    asObject: true,
+  }),
 
-  },
+  heading2: Typography.getTextStyle({
+    variant: 'subtitle2',
+    asObject: true,
+  }),
 
-  text: {
-
-  },
+  text: Typography.getTextStyle({
+    variant: 'body2',
+    asObject: true,
+    style: {
+      margin: 0,
+    },
+  }),
 
 })
 
@@ -85,22 +96,22 @@ export default class CheckForUpdates extends React.Component {
 
   state = {
     updateAvailable: false,
-    animating      : false,
+    animating: false,
 
     updating: false,
     progress: 0,
 
-    update       : null,
+    update: null,
     githubRelease: {},
   }
 
   componentDidMount() {
     const updater = new Updater({
-      repo: 'tripss/popcorn-native',
+      repo: 'pct-org/getting-started',
 
       onUpdateAvailable: this.onUpdateAvailable,
-      onDownloadStart  : this.onDownloadStart,
-      onProgress       : this.onProgress,
+      onDownloadStart: this.onDownloadStart,
+      onProgress: this.onProgress,
     })
 
     // Don't check for newer versions in dev
@@ -112,7 +123,7 @@ export default class CheckForUpdates extends React.Component {
   onUpdateAvailable = (githubRelease, update) => {
     this.setState({
       updateAvailable: true,
-      animating      : true,
+      animating: true,
       githubRelease,
       update,
     })
@@ -133,7 +144,7 @@ export default class CheckForUpdates extends React.Component {
   handleCancelUpdate = () => {
     this.setState({
       updateAvailable: false,
-      animating      : true,
+      animating: true,
     })
   }
 
@@ -163,7 +174,7 @@ export default class CheckForUpdates extends React.Component {
           style={styles.logo}
           source={Logo} />
 
-        <Typography variant={'headline'} style={styles.title}>
+        <Typography variant={'headline6'}>
           {
             !updating
               ? i18n.t('New version available {{version}}', { version: githubRelease.name })
@@ -188,7 +199,7 @@ export default class CheckForUpdates extends React.Component {
             <ActivityIndicator
               size={40}
               style={{ marginBottom: 8 }}
-              color={'#FFF'} />
+              color={colors.PRIMARY_COLOR_200} />
 
             <Typography variant={'caption'}>
               {`${progress}%`}
