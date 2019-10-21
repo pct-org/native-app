@@ -10,6 +10,11 @@ export default gql`
       synopsis
       type
       bookmarked
+      download {
+        downloadStatus
+        downloading
+        downloadComplete
+      }
       rating {
         percentage
       }
