@@ -120,7 +120,7 @@ export default class Episode extends React.Component {
 
                   {hasAired && (
                     <QualitySelector
-                      ref={ref => this.playSelectorRef = ref}
+                      onRef={ref => this.playSelectorRef = ref}
                       item={this.props}
                     />
                   )}

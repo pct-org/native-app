@@ -89,7 +89,7 @@ export const MyEpisode = ({ item, style, empty, navigation, ...rest }) => {
               style={styles.iconContainer}
               useNativeDriver>
               <QualitySelector
-                ref={playSelectorRef}
+                onRef={playSelectorRef}
                 itemType={'my-episode'}
                 item={item}
               />

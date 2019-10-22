@@ -94,47 +94,20 @@ export default class IpFinder extends React.Component {
 
   /**
    * Checks whether an ip is the GraphQL API
+   *
    * @param ip
-   * @return {Promise<unknown>}
+   * @return {Promise<>}
    */
   isHost = async(ip) => new Promise((resolve) => {
-    let didTimeOut = false
-
-    const timeout = setTimeout(() => {
-      didTimeOut = true
-      resolve(false)
-
-    }, 3000)
-
     fetch(`http://${ip}/status`)
       .then(() => {
-        // Clear the timeout as cleanup
-        clearTimeout(timeout)
-
-        if (!didTimeOut) {
-          resolve(true)
-        }
+        resolve(true)
 
       })
       .catch(() => {
-        // Rejection already happened with setTimeout
-        if (didTimeOut) {
-          return
-        }
-
-        // Reject with error
         resolve(false)
       })
   })
-
-
-  getValue = () => {
-    const { host } = this.state
-
-    return {
-      host,
-    }
-  }
 
   render() {
     const { children } = this.props
@@ -156,7 +129,7 @@ export default class IpFinder extends React.Component {
     }
 
     return (
-      <IpFinderContext.Provider value={this.getValue()}>
+      <IpFinderContext.Provider value={{ host }}>
         {children(host)}
       </IpFinderContext.Provider>
     )
