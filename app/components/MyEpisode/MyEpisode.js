@@ -92,7 +92,6 @@ export const MyEpisode = ({ item, style, empty, navigation, ...rest }) => {
                 ref={playSelectorRef}
                 itemType={'my-episode'}
                 item={item}
-                navigation={navigation}
               />
             </Animatable.View>
           )}

@@ -133,7 +133,7 @@ export default class Disclaimer extends React.Component {
   render() {
     const { children } = this.props
     const { animating, accepted } = this.state
-    console.log('accepted', accepted)
+
     return (
       <React.Fragment>
 
@@ -161,7 +161,9 @@ export default class Disclaimer extends React.Component {
               {i18n.t('Terms of Service')}
             </Typography>
 
-            <ScrollView style={styles.bodyScroll}>
+            <ScrollView
+              showshorizontalscrollindicator={false}
+              style={styles.bodyScroll}>
               <View style={styles.bodyContainer}>
                 <Markdown style={mdStyle}>
                   {`## Your Acceptance

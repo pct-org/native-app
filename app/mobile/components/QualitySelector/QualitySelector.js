@@ -2,6 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { StyleSheet } from 'react-native'
 import * as Animatable from 'react-native-animatable'
+import { withNavigation } from 'react-navigation'
 
 import dimensions from 'modules/dimensions'
 import constants from 'modules/constants'
@@ -47,6 +48,7 @@ const styles = StyleSheet.create({
 
 @withApollo
 @withDownloadManager
+@withNavigation
 export default class QualitySelector extends React.Component {
 
   static propTypes = {

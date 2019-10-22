@@ -103,7 +103,6 @@ export const Item = ({ navigation, navigation: { state: { params } } }) => {
             <QualitySelector
               item={item}
               variant={constants.TYPE_DOWNLOAD}
-              navigation={navigation}
               style={{
                 ...styles.icon,
                 ...styles.iconDownload,

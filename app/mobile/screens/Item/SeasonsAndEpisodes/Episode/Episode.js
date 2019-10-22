@@ -1,7 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { StyleSheet, View } from 'react-native'
-import { withNavigation } from 'react-navigation'
 
 import dimensions from 'modules/dimensions'
 import constants from 'modules/constants'
@@ -66,9 +65,7 @@ export const styles = StyleSheet.create({
 
 })
 
-
 // TODO:: Refactor to dump component with useState
-@withNavigation
 export default class Episode extends React.Component {
 
   static propTypes = {
@@ -103,7 +100,7 @@ export default class Episode extends React.Component {
   }
 
   render() {
-    const { title, synopsis, number, hasAired, images, navigation } = this.props
+    const { title, synopsis, number, hasAired, images } = this.props
 
     return (
       <View style={styles.container}>
@@ -125,7 +122,6 @@ export default class Episode extends React.Component {
                     <QualitySelector
                       ref={ref => this.playSelectorRef = ref}
                       item={this.props}
-                      navigation={navigation}
                     />
                   )}
 
@@ -161,7 +157,6 @@ export default class Episode extends React.Component {
             <QualitySelector
               item={this.props}
               variant={constants.TYPE_DOWNLOAD}
-              navigation={navigation}
               style={styles.downloadIcon}
             />
           )}

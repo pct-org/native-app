@@ -130,8 +130,7 @@ export const MainCover = ({ empty, item, handleItemOpen, navigation }) => {
               <QualitySelector
                 item={item}
                 visible={showQualitySelector}
-                onRequestClose={() => toggleSelecting(false)}
-                navigation={navigation} />
+                onRequestClose={() => toggleSelecting(false)} />
 
             </Animatable.View>
           )}

@@ -37,21 +37,16 @@ export const styles = StyleSheet.create({
 
 // TODO:: Refactor
 
-export default class SeasonsAndEpisodes extends React.PureComponent {
+export default class SeasonsAndEpisodes extends React.Component {
 
   static getDerivedStateFromProps(nextProps, state) {
-    const { item: nextItem } = nextProps
-    const { activeSeason, onlyWhenHigherThen } = state
-
-    const newSeasonCount = nextItem && nextItem.seasons && nextItem.seasons.length > 0
-      ? nextItem.seasons[nextItem.seasons.length - 1].number
-      : 0
+    const { item } = nextProps
+    const { activeSeason } = state
 
     // If we retrieve more season then update to the latest one
-    if (newSeasonCount > activeSeason && newSeasonCount > onlyWhenHigherThen) {
+    if (!activeSeason) {
       return {
-        activeSeason: nextItem.seasons[nextItem.seasons.length - 1].number,
-        onlyWhenHigherThen: nextItem.seasons.length,
+        activeSeason: item.seasons[item.seasons.length - 1].number,
       }
     }
 
@@ -64,7 +59,6 @@ export default class SeasonsAndEpisodes extends React.PureComponent {
 
   state = {
     activeSeason: null,
-    onlyWhenHigherThen: 0,
   }
 
   constructor(props) {
@@ -138,9 +132,15 @@ export default class SeasonsAndEpisodes extends React.PureComponent {
 
         <Typography
           style={styles.seasonNumber}
-          color={activeSeason === item.number ? 'primary' : 'white'}
+          color={activeSeason === item.number
+            ? 'primary'
+            : 'white'
+          }
           variant={'overline'}
-          emphasis={activeSeason === item.number ? 'high' : 'medium'}>
+          emphasis={activeSeason === item.number
+            ? 'high'
+            : 'medium'
+          }>
           {i18n.t('Season {{number}}', { number: item.number })}
         </Typography>
       </View>
@@ -165,7 +165,9 @@ export default class SeasonsAndEpisodes extends React.PureComponent {
         <FlatList
           removeClippedSubviews
           contentContainerStyle={[styles.container, styles.seasonSelector]}
-          data={seasons.length === 0 ? Array(4).fill(null) : seasons}
+          data={seasons.length === 0
+            ? Array(4).fill(null)
+            : seasons}
           initialNumToRender={4}
           windowSize={4}
           renderItem={this.renderSeason}
@@ -182,9 +184,11 @@ export default class SeasonsAndEpisodes extends React.PureComponent {
         <FlatList
           removeClippedSubviews
           contentContainerStyle={styles.container}
-          data={episodes.length === 0 ? Array(6).fill(null) : episodes}
+          data={episodes.length === 0
+            ? Array(6).fill(null)
+            : episodes}
           initialNumToRender={4}
-          windowSize={5}
+          windowSize={6}
           renderItem={this.renderEpisode}
           ListHeaderComponent={() => <View style={{ marginBottom: dimensions.UNIT }} />}
           ItemSeparatorComponent={() => <View style={{ marginBottom: dimensions.UNIT }} />}
