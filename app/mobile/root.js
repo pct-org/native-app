@@ -12,13 +12,13 @@ export default () => (
   <IpFinder>
     {host => (
       <ApolloLoader host={host}>
-        <CheckForUpdates>
-          <DownloadManager>
-            {/*<Disclaimer>*/}
-            <Screens />
-            {/*</Disclaimer>*/}
-          </DownloadManager>
-        </CheckForUpdates>
+        <DownloadManager>
+          {/*<Disclaimer>*/}
+          <CheckForUpdates />
+
+          <Screens />
+          {/*</Disclaimer>*/}
+        </DownloadManager>
       </ApolloLoader>
     )}
   </IpFinder>

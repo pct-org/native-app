@@ -41,10 +41,12 @@ export default class FullScreenLoading extends React.PureComponent {
 
   static propTypes = {
     enabled: PropTypes.bool,
+    withLoader: PropTypes.bool,
   }
 
   static defaultProps = {
     enabled: true,
+    withLoader: true,
   }
 
   state = {
@@ -81,7 +83,7 @@ export default class FullScreenLoading extends React.PureComponent {
   }
 
   render() {
-    const { enabled, children } = this.props
+    const { enabled, children, withLoader } = this.props
     const { hidden } = this.state
 
     if (hidden && !enabled) {
@@ -101,10 +103,12 @@ export default class FullScreenLoading extends React.PureComponent {
           style={styles.logo}
           source={Logo} />
 
-        <ActivityIndicator
-          size={40}
-          style={styles.loader}
-          color={colors.PRIMARY_COLOR_200} />
+        {withLoader && (
+          <ActivityIndicator
+            size={40}
+            style={styles.loader}
+            color={colors.PRIMARY_COLOR_200} />
+        )}
 
         <Typography
           style={{

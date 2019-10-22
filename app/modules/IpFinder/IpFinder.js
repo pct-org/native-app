@@ -16,6 +16,7 @@ export default class IpFinder extends React.Component {
     host: null,
     loading: true,
     connectedToWifi: false,
+    failed: false,
   }
 
   async componentDidMount() {
@@ -50,6 +51,7 @@ export default class IpFinder extends React.Component {
 
     newState.loading = false
     newState.host = host
+    newState.failed = host === null
 
     this.setState(newState)
   }
@@ -69,13 +71,18 @@ export default class IpFinder extends React.Component {
 
     let hostIp = null
 
-    // Loop true all the possible ip's until we get the correct one
-    for (let i = 1; i < 255; i++) {
-      if (i !== blacklistIp && hostIp === null) {
-        if (await this.isHost(`${baseIp}.${i}:5000`)) {
-          hostIp = i
+    await Promise.all(
+      Array(255).fill().forEach(async(empty, index) => {
+        if (index !== blacklistIp && hostIp === null) {
+          if (await this.isHost(`${baseIp}.${index}:5000`)) {
+            hostIp = index
+          }
         }
-      }
+      }),
+    )
+
+    if (hostIp === null) {
+      return null
     }
 
     const host = `${baseIp}.${hostIp}:5000`
@@ -97,10 +104,10 @@ export default class IpFinder extends React.Component {
       didTimeOut = true
       resolve(false)
 
-    }, 300)
+    }, 1000)
 
     fetch(`http://${ip}/status`)
-      .then(function(response) {
+      .then(() => {
         // Clear the timeout as cleanup
         clearTimeout(timeout)
 
@@ -109,11 +116,12 @@ export default class IpFinder extends React.Component {
         }
 
       })
-      .catch(function() {
+      .catch(() => {
         // Rejection already happened with setTimeout
         if (didTimeOut) {
           return
         }
+
         // Reject with error
         resolve(false)
       })
@@ -130,12 +138,15 @@ export default class IpFinder extends React.Component {
 
   render() {
     const { children } = this.props
-    const { loading, host, connectedToWifi } = this.state
+    const { loading, failed, host, connectedToWifi } = this.state
 
-    if (loading) {
+    if (loading || failed) {
       return (
-        <FullScreenLoading>
-          {i18n.t('Searching for GraphQL API')}
+        <FullScreenLoading withLoader={!failed}>
+          {i18n.t(failed
+            ? 'Could not find GraphQL API'
+            : 'Searching for GraphQL API',
+          )}
         </FullScreenLoading>
       )
     }
