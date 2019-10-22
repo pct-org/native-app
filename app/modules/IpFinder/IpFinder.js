@@ -72,7 +72,7 @@ export default class IpFinder extends React.Component {
     let hostIp = null
 
     await Promise.all(
-      Array(255).fill().forEach(async(empty, index) => {
+      Array(255).fill().map(async(empty, index) => {
         if (index !== blacklistIp && hostIp === null) {
           if (await this.isHost(`${baseIp}.${index}:5000`)) {
             hostIp = index
@@ -104,7 +104,7 @@ export default class IpFinder extends React.Component {
       didTimeOut = true
       resolve(false)
 
-    }, 1000)
+    }, 3000)
 
     fetch(`http://${ip}/status`)
       .then(() => {
