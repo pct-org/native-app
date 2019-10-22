@@ -7,51 +7,44 @@ import SplashScreen from 'react-native-splash-screen'
 
 import i18n from 'modules/i18n'
 import colors from 'modules/colors'
+import dimensions from 'modules/dimensions'
 import Settings from 'modules/db/Settings'
 
-import Typography from '../Typography'
-import Button from '../Button'
+import Typography from 'components/Typography'
+import Button from 'components/Button'
 
 export const styles = StyleSheet.create({
 
   root: {
     position: 'absolute',
-    top     : 0,
-    bottom  : 0,
-    right   : 0,
-    left    : 0,
+    top: 0,
+    bottom: 0,
+    right: 0,
+    left: 0,
 
     backgroundColor: colors.BACKGROUND,
 
-    display       : 'flex',
+    display: 'flex',
     justifyContent: 'center',
-    alignItems    : 'center',
+    alignItems: 'center',
   },
 
   title: {
-    minHeight: 70,
-
-    paddingTop: 24,
-    padding   : 8,
-  },
-
-  logo: {
-    width       : 100,
-    height      : 100,
-    marginBottom: 8,
+    marginTop: dimensions.STATUSBAR_HEIGHT + dimensions.UNIT,
+    marginBottom: dimensions.UNIT,
   },
 
   loader: {
-    display   : 'flex',
+    display: 'flex',
     alignItems: 'center',
   },
 
   bodyScroll: {
-    width    : '100%',
+    width: '100%',
     maxHeight: '100%',
 
-    paddingLeft : 16,
-    paddingRight: 16,
+    paddingLeft: dimensions.UNIT * 2,
+    paddingRight: dimensions.UNIT * 2,
   },
 
   bodyContainer: {
@@ -59,16 +52,16 @@ export const styles = StyleSheet.create({
   },
 
   actions: {
-    display       : 'flex',
+    display: 'flex',
     justifyContent: 'center',
-    alignItems    : 'center',
-    width         : '100%',
-    flexDirection : 'row',
+    alignItems: 'center',
+    width: '100%',
+    flexDirection: 'row',
 
     position: 'absolute',
-    bottom  : 8,
-    right   : 0,
-    left    : 0,
+    bottom: 8,
+    right: 0,
+    left: 0,
   },
 
   action: {
@@ -78,33 +71,32 @@ export const styles = StyleSheet.create({
 
 export const mdStyle = StyleSheet.create({
 
+  heading1: Typography.getTextStyle({
+    variant: 'subtitle1',
+    asObject: true,
+  }),
+
   heading2: Typography.getTextStyle({
-    variant   : 'title',
-    fontWeight: 'bold',
-    asObject  : true,
+    variant: 'subtitle2',
+    asObject: true,
   }),
 
   text: Typography.getTextStyle({
-    variant: 'body1',
-
+    variant: 'body2',
     asObject: true,
   }),
 
 })
 
-export default class CheckForUpdates extends React.Component {
+export default class Disclaimer extends React.Component {
 
   static propTypes = {
     children: PropTypes.node.isRequired,
   }
 
-  constructor(props, context) {
-    super(props, context)
-
-    this.state = {
-      accepted : false,
-      animating: false,
-    }
+  state = {
+    accepted: false,
+    animating: false,
   }
 
   componentWillMount() {
@@ -131,7 +123,7 @@ export default class CheckForUpdates extends React.Component {
 
   handleAccept = () => {
     this.setState({
-      accepted : true,
+      accepted: true,
       animating: true,
     }, () => {
       Settings.setItem(Settings.DISCLAIMER_ACCEPTED, 'y')
@@ -141,23 +133,31 @@ export default class CheckForUpdates extends React.Component {
   render() {
     const { children } = this.props
     const { animating, accepted } = this.state
-
+    console.log('accepted', accepted)
     return (
       <React.Fragment>
 
-        {children}
+        {accepted && (children)}
 
         {(!accepted || animating) && (
           <Animatable.View
-            animation={!accepted ? 'fadeIn' : 'fadeOut'}
+            animation={!accepted
+              ? 'fadeIn'
+              : 'fadeOut'
+            }
             duration={500}
             style={styles.root}
             onAnimationEnd={this.handleAnimationEnd}
             useNativeDriver>
 
-            <StatusBar backgroundColor={colors.BACKGROUND} animated translucent />
+            <StatusBar
+              animated
+              translucent
+              backgroundColor={colors.BACKGROUND} />
 
-            <Typography variant={'display1'} fontWeight={'black'} style={styles.title}>
+            <Typography
+              variant={'headline6'}
+              style={styles.title}>
               {i18n.t('Terms of Service')}
             </Typography>
 

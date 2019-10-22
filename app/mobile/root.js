@@ -7,20 +7,21 @@ import ApolloLoader from 'components/ApolloLoader'
 import CheckForUpdates from 'components/CheckForUpdates'
 
 import Screens from './screens'
+import Disclaimer from './screens/Disclaimer'
 
 export default () => (
-  <IpFinder>
-    {host => (
-      <ApolloLoader host={host}>
-        <DownloadManager>
-          {/*<Disclaimer>*/}
-          <Screens />
+  <Disclaimer>
+    <IpFinder>
+      {host => (
+        <ApolloLoader host={host}>
+          <DownloadManager>
+            <Screens />
 
-          <CheckForUpdates />
+            <CheckForUpdates />
 
-          {/*</Disclaimer>*/}
-        </DownloadManager>
-      </ApolloLoader>
-    )}
-  </IpFinder>
+          </DownloadManager>
+        </ApolloLoader>
+      )}
+    </IpFinder>
+  </Disclaimer>
 )
