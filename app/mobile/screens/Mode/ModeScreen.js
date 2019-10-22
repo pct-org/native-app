@@ -54,7 +54,7 @@ export const Mode = ({ mode, navigation }) => {
     : data[mode]
 
   const renderCard = ({ item }) => {
-    const empty = !item
+    const empty = item.loading
 
     return (
       <Card
@@ -82,7 +82,7 @@ export const Mode = ({ mode, navigation }) => {
         contentContainerStyle={styles.container}
         data={items.length > 0
           ? items
-          : Array(24).fill(1)
+          : Array(24).fill({ loading: true })
         }
         scrollEnabled={items.length > 0}
         numColumns={4}

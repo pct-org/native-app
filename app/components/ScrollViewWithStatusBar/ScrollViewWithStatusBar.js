@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { ScrollView, StatusBar, SafeAreaView } from 'react-native'
+import { ScrollView, StatusBar, SafeAreaView, RefreshControl } from 'react-native'
 
 import StatusBarController from 'modules/StatusBarController'
 
@@ -8,6 +8,13 @@ export default class ScrollViewWithStatusBar extends React.PureComponent {
 
   static propTypes = {
     children: PropTypes.node.isRequired,
+    onRefresh: PropTypes.func,
+    refreshing: PropTypes.bool,
+  }
+
+  static defaultProps = {
+    onRefresh: null,
+    refreshing: false,
   }
 
   state = {
@@ -46,10 +53,18 @@ export default class ScrollViewWithStatusBar extends React.PureComponent {
   }
 
   render() {
-    const { children, style } = this.props
+    const { children, style, refreshing, onRefresh } = this.props
 
     return (
-      <SafeAreaView style={style}>
+      <SafeAreaView
+        style={style}
+        refreshControl={
+          onRefresh
+            ? <RefreshControl
+              refreshing={refreshing}
+              onRefresh={onRefresh} />
+            : null
+        }>
         <StatusBar
           backgroundColor={'rgba(0, 0, 0, 0)'}
           translucent

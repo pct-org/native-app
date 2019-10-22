@@ -58,7 +58,7 @@ export const Container = ({ children, elevation, style }) => (
           styles.elevationRoot,
           styles[`elevation${elevation}`],
         ]}
-        pointerEvents={'none'}/>
+        pointerEvents={'none'} />
     )}
 
     {children}
