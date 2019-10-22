@@ -48,6 +48,7 @@ export const styles = StyleSheet.create({
     width: '100%',
     maxHeight: '60%',
 
+    marginTop: dimensions.UNIT * 2,
     paddingLeft: dimensions.UNIT * 2,
     paddingRight: dimensions.UNIT * 2,
   },
@@ -85,11 +86,21 @@ export const mdStyle = StyleSheet.create({
   text: Typography.getTextStyle({
     variant: 'body2',
     asObject: true,
-    style: {
-      margin: 0,
-    },
   }),
 
+  listUnorderedItemIcon: {
+    lineHeight: dimensions.UNIT * 4,
+    marginLeft: dimensions.UNIT,
+    marginRight: dimensions.UNIT,
+  },
+
+  listItem: {
+    flex: 1,
+    flexWrap: 'wrap',
+    alignItems: 'center',
+    justifyContent: 'center',
+    maxHeight: dimensions.UNIT * 4,
+  },
 })
 
 export default class CheckForUpdates extends React.Component {
@@ -184,7 +195,8 @@ export default class CheckForUpdates extends React.Component {
 
         {!updating && githubRelease && githubRelease.body && (
           <ScrollView style={styles.bodyContainer}>
-            <Markdown style={mdStyle}>
+            <Markdown
+              style={mdStyle}>
               {githubRelease.body}
             </Markdown>
           </ScrollView>

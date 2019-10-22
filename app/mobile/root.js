@@ -14,9 +14,10 @@ export default () => (
       <ApolloLoader host={host}>
         <DownloadManager>
           {/*<Disclaimer>*/}
+          <Screens />
+
           <CheckForUpdates />
 
-          <Screens />
           {/*</Disclaimer>*/}
         </DownloadManager>
       </ApolloLoader>

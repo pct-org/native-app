@@ -11,6 +11,8 @@ export default {
 
   BACKGROUND_OVERLAY: '#000000',
 
+  BUTTON_PRIMARY: PRIMARY_COLOR_500,
+
   ICON: {
     WHITE: '#ffffff',
     PRIMARY: PRIMARY_COLOR_200,

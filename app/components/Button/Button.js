@@ -20,14 +20,12 @@ export const styles = StyleSheet.create({
   default: {
     ...defaultPadding,
 
-    borderWidth: dimensions.BORDER_WIDTH,
-    backgroundColor: colors.BUTTON_DEFAULT,
+    // backgroundColor: colors.BUTTON_DEFAULT,
   },
 
   primary: {
     ...defaultPadding,
 
-    borderWidth: dimensions.BORDER_WIDTH,
     backgroundColor: colors.BUTTON_PRIMARY,
   },
 
