@@ -30,7 +30,9 @@ export const styles = StyleSheet.create({
     opacity: 0.05,
   },
 
-  elevation2: {},
+  elevation2: {
+    opacity: 0.07,
+  },
 
   elevation3: {},
 

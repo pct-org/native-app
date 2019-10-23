@@ -1,15 +1,18 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
 import { StyleSheet, View, StatusBar, FlatList, InteractionManager } from 'react-native'
 import { useLazyQuery } from '@apollo/react-hooks'
 
-import fetchMoreUpdateQuery from 'modules/GraphQL/helpers/fetchMoreUpdateQuery'
+import i18n from 'modules/i18n'
 import colors from 'modules/colors'
 import dimensions from 'modules/dimensions'
 import MoviesQuery from 'modules/GraphQL/MoviesQuery'
 import ShowsQuery from 'modules/GraphQL/ShowsQuery'
+import fetchMoreUpdateQuery from 'modules/GraphQL/helpers/fetchMoreUpdateQuery'
 
 import Card from 'components/Card'
+import Typography from 'components/Typography'
+import SearchBar from './SearchBar'
 import { BookmarksQuery } from './ModeQuery'
 
 const styles = StyleSheet.create({
@@ -25,9 +28,14 @@ const styles = StyleSheet.create({
     marginRight: dimensions.UNIT / 2,
   },
 
+  noResults: {
+    marginTop: dimensions.UNIT * 2,
+    textAlign: 'center',
+  },
 })
 
 export const Mode = ({ mode, navigation }) => {
+  const [query, setQuery] = useState(null)
   const [executeQuery, { loading, data, fetchMore }] = useLazyQuery(
     mode === 'movies'
       ? MoviesQuery
@@ -37,6 +45,7 @@ export const Mode = ({ mode, navigation }) => {
     {
       variables: {
         offset: 0,
+        query,
       },
     },
   )
@@ -70,6 +79,18 @@ export const Mode = ({ mode, navigation }) => {
     )
   }
 
+  const renderSearch = () => (
+    <SearchBar query={query} setQuery={setQuery} />
+  )
+
+  const renderNothingFound = () => (
+    <Typography
+      style={styles.noResults}
+      variant={'subtitle1'}>
+      {i18n.t('No results found')}
+    </Typography>
+  )
+
   return (
     <View style={styles.root}>
 
@@ -80,16 +101,17 @@ export const Mode = ({ mode, navigation }) => {
       <FlatList
         removeClippedSubviews
         contentContainerStyle={styles.container}
-        data={items.length > 0
-          ? items
-          : Array(24).fill({ loading: true })
+        data={items.length === 0 && !query
+          ? Array(24).fill({ loading: true })
+          : items
         }
         scrollEnabled={items.length > 0}
         numColumns={4}
         initialNumToRender={24}
         windowSize={24}
         renderItem={renderCard}
-        ListHeaderComponent={() => <View style={{ marginTop: StatusBar.currentHeight }} />}
+        ListEmptyComponent={renderNothingFound}
+        ListHeaderComponent={renderSearch}
         ListFooterComponent={() => <View style={{ width: dimensions.UNIT * 2 }} />}
         keyExtractor={(item, index) => item
           ? `${item._id}-${index}`

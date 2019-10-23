@@ -1,8 +1,8 @@
 import gql from 'graphql-tag'
 
 export const MoviesQuery = gql`
-  query movies($offset: Float!) {
-    movies(limit: 25, offset: $offset) {
+  query movies($offset: Float!, $query: String) {
+    movies(limit: 25, offset: $offset, query: $query) {
       _id
       __typename
       title

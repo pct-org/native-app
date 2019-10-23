@@ -45,5 +45,6 @@
   "\"{{title}}\" removed": "\"{{title}}\" verwijderd",
   "Hold long to retry": "Inhouden om opniew te proberen",
   "Searching for GraphQL API": "GraphQL API zoeken...",
-  "Could not find GraphQL API": "Kon GraphQL API niet vinden"
+  "Could not find GraphQL API": "Kon GraphQL API niet vinden",
+  "No results found": "Geen resultaten gevonden..."
 }

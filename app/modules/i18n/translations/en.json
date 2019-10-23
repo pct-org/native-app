@@ -45,5 +45,6 @@
   "\"{{title}}\" removed": "\"{{title}}\" removed",
   "Hold long to retry": "Hold long to retry",
   "Searching for GraphQL API": "Searching for GraphQL API...",
-  "Could not find GraphQL API": "Could not find GraphQL API"
+  "Could not find GraphQL API": "Could not find GraphQL API",
+  "No results found": "No results found..."
 }
