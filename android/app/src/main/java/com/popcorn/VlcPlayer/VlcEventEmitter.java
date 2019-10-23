@@ -1,9 +1,6 @@
 package com.popcorn.VlcPlayer;
 
-import android.util.Log;
 import android.view.View;
-
-import androidx.annotation.StringDef;
 
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.ReactContext;
@@ -11,9 +8,6 @@ import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.uimanager.events.RCTEventEmitter;
 
 import org.videolan.libvlc.MediaPlayer;
-
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
 
 class VlcEventEmitter implements MediaPlayer.EventListener {
 
@@ -31,8 +25,10 @@ class VlcEventEmitter implements MediaPlayer.EventListener {
   }
 
   public enum Events {
+    BUFFERING("onBuffering"),
     PLAYING("onPlaying"),
     PAUSED("onPaused"),
+    ENDED("onEnd"),
     PROGRESS("onProgress");
 
     private final String mName;
@@ -59,8 +55,11 @@ class VlcEventEmitter implements MediaPlayer.EventListener {
   public void onEvent(MediaPlayer.Event event) {
     WritableMap eventMap = Arguments.createMap();
 
-
     switch (event.type) {
+//      case MediaPlayer.Event.Buffering:
+//        this.receiveEvent(Events.BUFFERING.toString(), null);
+//        break;
+
       case MediaPlayer.Event.Playing:
         eventMap.putDouble(PROP_DURATION, this.mediaPlayer.getLength());
 
@@ -69,6 +68,10 @@ class VlcEventEmitter implements MediaPlayer.EventListener {
 
       case MediaPlayer.Event.Paused:
         this.receiveEvent(Events.PAUSED.toString(), null);
+        break;
+
+      case MediaPlayer.Event.EndReached:
+        this.receiveEvent(Events.ENDED.toString(), null);
         break;
 
       case MediaPlayer.Event.TimeChanged:
@@ -80,36 +83,8 @@ class VlcEventEmitter implements MediaPlayer.EventListener {
         break;
 
 
-//      case MediaPlayer.Event.EndReached:
-//        pausedState = false;
-//        eventMap.putBoolean(EVENT_PROP_END, true);
-//        mEventEmitter.receiveEvent(getId(), VlcPlayerView.Events.EVENT_ENDED.toString(), eventMap);
-//        break;
-//      case MediaPlayer.Event.Stopped:
-//        mEventEmitter.receiveEvent(getId(), VlcPlayerView.Events.EVENT_STOPPED.toString(), null);
-//        break;
-//      case MediaPlayer.Event.Playing:
-//        Log.d("TYCHO", "Playing event");
-//        eventMap.putDouble(EVENT_PROP_DURATION, mMediaPlayer.getLength());
-//        mEventEmitter.receiveEvent(getId(), VlcPlayerView.Events.EVENT_PLAYING.toString(), eventMap);
-//
-//        this.eventEmitter.startedPlaying();
-//
-//        break;
-////            case MediaPlayer.Event.Buffering:
-////                mEventEmitter.receiveEvent(getId(), Events.EVENT_PLAYING.toString(), null);
-////                break;
-//      case MediaPlayer.Event.Paused:
-//        mEventEmitter.receiveEvent(getId(), VlcPlayerView.Events.EVENT_PAUSED.toString(), null);
-//        break;
 //      case MediaPlayer.Event.EncounteredError:
 //        mEventEmitter.receiveEvent(getId(), VlcPlayerView.Events.EVENT_ERROR.toString(), null);
-//        break;
-//      case MediaPlayer.Event.TimeChanged:
-//        eventMap.putDouble(EVENT_PROP_CURRENT_TIME, mMediaPlayer.getTime());
-//        eventMap.putDouble(EVENT_PROP_DURATION, mMediaPlayer.getLength());
-//        eventMap.putDouble(EVENT_PROP_POSITION, mMediaPlayer.getPosition());
-//        mEventEmitter.receiveEvent(getId(), VlcPlayerView.Events.EVENT_PROGRESS.toString(), eventMap);
 //        break;
     }
   }

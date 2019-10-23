@@ -52,6 +52,7 @@ public class VlcPlayerModule extends ViewGroupManager<VlcPlayerView> {
   @Override
   public Map getExportedCustomDirectEventTypeConstants() {
     MapBuilder.Builder builder = MapBuilder.builder();
+
     for (VlcEventEmitter.Events event : VlcEventEmitter.Events.values()) {
       builder.put(event.toString(), MapBuilder.of("registrationName", event.toString()));
     }
@@ -94,6 +95,7 @@ public class VlcPlayerModule extends ViewGroupManager<VlcPlayerView> {
       int resizeModeOrdinal = Integer.parseInt(resizeModeOrdinalString);
       return ResizeMode.toResizeMode(resizeModeOrdinal);
     }
+
     return ResizeMode.RESIZE_MODE_FIT;
   }
 }

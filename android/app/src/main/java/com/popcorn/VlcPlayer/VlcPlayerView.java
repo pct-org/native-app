@@ -48,7 +48,6 @@ public class VlcPlayerView extends FrameLayout implements IVLCVout.Callback, Lif
   private MediaPlayer mMediaPlayer = null;
   private boolean autoPlay;
 
-
   public VlcPlayerView(ThemedReactContext context) {
     this(context, null);
   }

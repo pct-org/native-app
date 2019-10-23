@@ -18,7 +18,7 @@ import DownloadInfo from './DownloadInfo'
 import EpisodePlaying from './EpisodePlaying'
 import PlayerManager from './PlayerManager'
 
-export const Player = ({ ipFinder, navigation: { state: { params: { item, playQuality } } } }) => {
+export const Player = ({ navigation: { state: { params: { item, playQuality } } } }) => {
   // TODO:: Move below to PlayerManager
   useEffect(() => {
       if (!calledStartStream) {
@@ -132,7 +132,7 @@ export const Player = ({ ipFinder, navigation: { state: { params: { item, playQu
               />
 
               {renderCastButton({
-                right: (dimensions.SCREEN_WIDTH / 2 )- (dimensions.ICON_CAST_SIZE / 2),
+                right: (dimensions.SCREEN_WIDTH / 2) - (dimensions.ICON_CAST_SIZE / 2),
                 bottom: dimensions.UNIT * 5,
               })}
 

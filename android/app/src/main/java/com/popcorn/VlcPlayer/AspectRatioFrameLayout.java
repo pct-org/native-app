@@ -17,7 +17,6 @@ package com.popcorn.VlcPlayer;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.widget.FrameLayout;
 
 /**
@@ -105,8 +104,6 @@ public final class AspectRatioFrameLayout extends FrameLayout {
     int width = measuredWidth;
     int height = measuredHeight;
 
-    Log.d("TYCHO", "w:" + measuredWidth + " h:" + measuredHeight);
-
     float viewAspectRatio = (float) measuredWidth / measuredHeight;
     float aspectDeformation = videoAspectRatio / viewAspectRatio - 1;
     if (Math.abs(aspectDeformation) <= MAX_ASPECT_RATIO_DEFORMATION_FRACTION) {
@@ -118,12 +115,15 @@ public final class AspectRatioFrameLayout extends FrameLayout {
       case ResizeMode.RESIZE_MODE_FIXED_WIDTH:
         height = (int) (measuredWidth / videoAspectRatio);
         break;
+
       case ResizeMode.RESIZE_MODE_FIXED_HEIGHT:
         width = (int) (measuredHeight * videoAspectRatio);
         break;
+
       case ResizeMode.RESIZE_MODE_FILL:
         // Do nothing width and height is the same as the view
         break;
+
       case ResizeMode.RESIZE_MODE_CENTER_CROP:
         width = (int) (measuredHeight * videoAspectRatio);
 
@@ -134,6 +134,7 @@ public final class AspectRatioFrameLayout extends FrameLayout {
           height = (int) (measuredHeight * scaleFactor);
         }
         break;
+
       default:
         if (aspectDeformation > 0) {
           height = (int) (measuredWidth / videoAspectRatio);
