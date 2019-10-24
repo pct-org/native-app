@@ -19,4 +19,7 @@ export default {
     PRIMARY: PRIMARY_COLOR_200,
     '01DP': '#2B2C30',
   },
+
+  STATUS_BAR_TRANSPARENT: 'rgba(0, 0, 0, 0.20)',
+  STATUS_BAR_GONE: 'rgba(0, 0, 0, 0)'
 }

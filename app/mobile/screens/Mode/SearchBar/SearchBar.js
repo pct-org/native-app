@@ -13,10 +13,10 @@ import IconButton from 'components/IconButton'
 export const styles = StyleSheet.create({
 
   root: {
+    position: 'absolute',
     width: '100%',
     height: 50,
-    marginTop: StatusBar.currentHeight + dimensions.UNIT,
-    marginBottom: dimensions.UNIT,
+    top: StatusBar.currentHeight + dimensions.UNIT,
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
@@ -55,6 +55,7 @@ export const SearchBar = ({ query: searchedQuery, setQuery: search }) => {
   const [timeout, setTheTimeout] = useState(null)
 
   const cancelSearch = () => {
+    setQuery(null)
     search(null)
 
     if (timeout) {
@@ -73,10 +74,7 @@ export const SearchBar = ({ query: searchedQuery, setQuery: search }) => {
           <Animatable.View
             style={styles.cancel}
             animation={searchedQuery.trim().length > 0 ? 'zoomIn' : 'zoomOut'}
-            duration={searchedQuery
-              ? 1
-              : 300
-            }
+            duration={300}
             useNativeDriver>
             <IconButton
               name={'close-circle'}

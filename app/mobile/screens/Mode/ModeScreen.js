@@ -79,10 +79,6 @@ export const Mode = ({ mode, navigation }) => {
     )
   }
 
-  const renderSearch = () => (
-    <SearchBar query={query} setQuery={setQuery} />
-  )
-
   const renderNothingFound = () => (
     <Typography
       style={styles.noResults}
@@ -95,8 +91,12 @@ export const Mode = ({ mode, navigation }) => {
     <View style={styles.root}>
 
       <StatusBar
-        backgroundColor={'rgba(0, 0, 0, 0.20)'}
+        backgroundColor={colors.STATUS_BAR_TRANSPARENT}
         animated />
+
+      <SearchBar
+        query={query}
+        setQuery={setQuery} />
 
       <FlatList
         removeClippedSubviews
@@ -111,7 +111,11 @@ export const Mode = ({ mode, navigation }) => {
         windowSize={24}
         renderItem={renderCard}
         ListEmptyComponent={renderNothingFound}
-        ListHeaderComponent={renderSearch}
+        ListHeaderComponent={() => (
+          <View style={{
+            marginTop: 50 + dimensions.STATUSBAR_HEIGHT + dimensions.UNIT,
+          }} />
+        )}
         ListFooterComponent={() => <View style={{ width: dimensions.UNIT * 2 }} />}
         keyExtractor={(item, index) => item
           ? `${item._id}-${index}`
