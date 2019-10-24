@@ -1,7 +1,6 @@
 package com.popcorn.VlcPlayer;
 
 import androidx.annotation.IntDef;
-
 import java.lang.annotation.Retention;
 
 import static java.lang.annotation.RetentionPolicy.SOURCE;
@@ -12,18 +11,22 @@ class ResizeMode {
    * Either the width or height is decreased to obtain the desired aspect ratio.
    */
   static final int RESIZE_MODE_FIT = 0;
+
   /**
    * The width is fixed and the height is increased or decreased to obtain the desired aspect ratio.
    */
   static final int RESIZE_MODE_FIXED_WIDTH = 1;
+
   /**
    * The height is fixed and the width is increased or decreased to obtain the desired aspect ratio.
    */
   static final int RESIZE_MODE_FIXED_HEIGHT = 2;
+
   /**
    * The height and the width is increased or decreased to fit the size of the view.
    */
   static final int RESIZE_MODE_FILL = 3;
+
   /**
    * Keeps the aspect ratio but takes up the view's size.
    */
@@ -55,7 +58,6 @@ class ResizeMode {
       case ResizeMode.RESIZE_MODE_CENTER_CROP:
         return ResizeMode.RESIZE_MODE_CENTER_CROP;
 
-      case ResizeMode.RESIZE_MODE_FIT:
       default:
         return ResizeMode.RESIZE_MODE_FIT;
     }

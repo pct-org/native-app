@@ -2,6 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { ScrollView, StatusBar, SafeAreaView, RefreshControl } from 'react-native'
 
+import colors from 'modules/colors'
 import StatusBarController from 'modules/StatusBarController'
 
 export default class ScrollViewWithStatusBar extends React.PureComponent {
@@ -37,10 +38,10 @@ export default class ScrollViewWithStatusBar extends React.PureComponent {
     this.yOffset = y
 
     if (y > 10 && y < 400 && (statusBarColor !== 'transparent' || force)) {
-      this.handleUpdateBackgroundColor('rgba(0, 0, 0, 0.2)', 'transparent')
+      this.handleUpdateBackgroundColor(colors.STATUS_BAR_TRANSPARENT, 'transparent')
 
     } else if (y < 10 && (statusBarColor !== 'default' || force)) {
-      this.handleUpdateBackgroundColor('rgba(0, 0, 0, 0)', 'default')
+      this.handleUpdateBackgroundColor(colors.STATUS_BAR_GONE, 'default')
     }
   }
 
