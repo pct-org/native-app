@@ -1,9 +1,11 @@
 import { Dimensions, StatusBar } from 'react-native'
 
+import useCorrect from 'modules/useCorrect'
+
 const { width: screenWidth, height: screenHeight } = Dimensions.get('window')
 
 const UNIT = 8
-const SKETCH_DEFAULT_WIDTH = 360
+const SKETCH_DEFAULT_WIDTH = useCorrect(360, null, 1920)
 
 const sketchAdjuster = screenWidth / SKETCH_DEFAULT_WIDTH
 
@@ -17,7 +19,7 @@ const getHeight = (sketchSize) => {
 
 export default {
 
-  UNIT,
+  UNIT: useCorrect(UNIT, null, UNIT * 2),
 
   ICON_SIZE_DEFAULT: 24,
   ICON_SIZE_MEDIUM: 32,
@@ -33,8 +35,8 @@ export default {
 
   CARD_HEIGHT: getHeight(130),
   CARD_WIDTH: getWidth(90),
-  CARD_HEIGHT_SMALL: getHeight(116),
-  CARD_WIDTH_SMALL: getWidth(81),
+  CARD_HEIGHT_SMALL: getHeight(useCorrect(116, null, 252)),
+  CARD_WIDTH_SMALL: getWidth(useCorrect(81, null, 175)),
 
   MY_EPISODE_CARD_HEIGHT: getHeight(100),
   MY_EPISODE_CARD_WIDTH: getWidth(178),

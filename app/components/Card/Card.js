@@ -27,7 +27,7 @@ export const styles = StyleSheet.create({
 
 })
 
-export const Card = React.memo(({ item, variant, elevation, empty, style, ...rest }) => (
+export const Card = React.memo(({ item, variant, elevation, empty, style, hide, ...rest }) => (
   <Container
     elevation={elevation}
     style={[
@@ -47,7 +47,7 @@ export const Card = React.memo(({ item, variant, elevation, empty, style, ...res
               : item.images
           } />
 
-        {item && item.watched && item.watched.complete && (
+        {((item && item.watched && item.watched.complete) || hide) && (
           <Overlay variant={'dark'} />
         )}
       </View>
@@ -61,6 +61,7 @@ Card.propTypes = {
   style: PropTypes.object,
   elevation: PropTypes.number,
   variant: PropTypes.oneOf(['default', 'small']),
+  hide: PropTypes.bool,
 }
 
 Card.defaultProps = {
@@ -70,6 +71,7 @@ Card.defaultProps = {
   component: BaseButton,
   elevation: 1,
   variant: 'default',
+  hide: false,
 }
 
 export default Card
