@@ -14,6 +14,7 @@ import Card from 'components/Card'
 import Typography from 'components/Typography'
 
 import BackgroundImage from './BackgroundImage'
+import ActiveItemInfo from './ActiveItemInfo'
 import { BookmarksQuery } from './ModeQuery'
 
 const styles = StyleSheet.create({
@@ -26,7 +27,7 @@ const styles = StyleSheet.create({
   container: {
     position: 'absolute',
     bottom: dimensions.UNIT * 2,
-    left: dimensions.CARD_WIDTH_SMALL + (dimensions.UNIT * 2),
+    left: dimensions.TV_LEFT - (dimensions.UNIT / 2),
     paddingRight: dimensions.CARD_WIDTH_SMALL,
   },
 
@@ -74,7 +75,8 @@ export const Mode = ({ mode, navigation }) => {
         empty={empty}
         item={item}
         hasTVPreferredFocus={index === 0}
-        hide={index < activeIndex}
+        forceOverlay={index < activeIndex}
+        isTvSelected={activeIndex === index}
         onFocus={() => {
           if (flatList.current && !empty && index !== activeIndex) {
             flatList.current.scrollToIndex({
@@ -87,7 +89,6 @@ export const Mode = ({ mode, navigation }) => {
           }
         }}
         onPress={() => {
-          console.log('press')
           if (!empty && !loading) {
             navigation.navigate('Item', item)
           }
@@ -111,8 +112,12 @@ export const Mode = ({ mode, navigation }) => {
 
       {activeItem && (
         <BackgroundImage
-          uri={activeItem.images.backdrop.high}
+          uri={activeItem.images.backdrop.full}
         />
+      )}
+
+      {activeItem && (
+        <ActiveItemInfo {...activeItem} />
       )}
 
       <FlatList

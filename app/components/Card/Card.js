@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { StyleSheet, View } from 'react-native'
+import { StyleSheet, View, Platform } from 'react-native'
 
 import dimensions from 'modules/dimensions'
 
@@ -27,7 +27,15 @@ export const styles = StyleSheet.create({
 
 })
 
-export const Card = React.memo(({ item, variant, elevation, empty, style, hide, ...rest }) => (
+export const Card = React.memo(({
+  item,
+  variant,
+  elevation,
+  empty,
+  style,
+  forceOverlay,
+  ...rest
+}) => (
   <Container
     elevation={elevation}
     style={[
@@ -47,7 +55,7 @@ export const Card = React.memo(({ item, variant, elevation, empty, style, hide, 
               : item.images
           } />
 
-        {((item && item.watched && item.watched.complete) || hide) && (
+        {((item && item.watched && item.watched.complete) || forceOverlay) && (
           <Overlay variant={'dark'} />
         )}
       </View>

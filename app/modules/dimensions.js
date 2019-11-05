@@ -47,6 +47,10 @@ export default {
   QUALITY_WIDTH: getWidth(74),
   QUALITY_HEIGHT: getHeight(36),
 
+  TV_LEFT: getWidth(310),
+
+  getTop: getHeight,
+  getBottom: getHeight,
   getWidth,
   getHeight,
 }

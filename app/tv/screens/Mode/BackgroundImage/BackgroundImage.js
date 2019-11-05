@@ -1,6 +1,8 @@
-import React, { useState, createRef, useEffect } from 'react'
+import React, { createRef, useEffect, useState, memo } from 'react'
 import { Image, StyleSheet } from 'react-native'
 import * as Animatable from 'react-native-animatable'
+
+import usePrevious from 'modules/hooks/usePrevious'
 
 import Overlay from 'components/Overlay'
 
@@ -14,29 +16,46 @@ const styles = StyleSheet.create({
     right: 0,
     width: '100%',
     height: '100%',
-  }
+  },
 
 })
 
-export const BackgroundImage = ({ uri }) => {
-  const [prevUri, setPrevUri] = useState(null)
+let backgroundSwitchTimeout = null
+
+export const BackgroundImage = memo(({ uri }) => {
+  const [currentUri, setCurrentUri] = useState(uri)
   const imageRef = createRef()
 
-  useEffect(() => {
-    if (!prevUri || prevUri !== uri) {
-      setPrevUri(uri)
+  let prevUri = usePrevious(currentUri)
 
+  useEffect(() => {
+    if (prevUri !== currentUri) {
       if (imageRef && imageRef.current) {
         imageRef.current[BackgroundImage.ANIMATION](BackgroundImage.ANIMATION_DURATION)
       }
     }
+
+  }, [currentUri])
+
+  useEffect(() => {
+    if (currentUri !== uri) {
+      if (backgroundSwitchTimeout) {
+        clearTimeout(backgroundSwitchTimeout)
+      }
+
+      backgroundSwitchTimeout = setTimeout(() => {
+        setCurrentUri(uri)
+
+      }, BackgroundImage.ANIMATION_DURATION)
+    }
+
   }, [uri])
 
   return (
     <React.Fragment>
       {prevUri && (
         <Image
-          style={styles.root}
+          style={[styles.root, { zIndex: -1 }]}
           source={{
             uri: prevUri,
           }} />
@@ -44,19 +63,19 @@ export const BackgroundImage = ({ uri }) => {
 
       <Animatable.Image
         ref={imageRef}
-        style={styles.root}
+        style={[styles.root, { zIndex: 0 }]}
         animation={BackgroundImage.ANIMATION}
         duration={BackgroundImage.ANIMATION_DURATION}
         source={{
-          uri,
+          uri: currentUri,
         }}
         useNativeDriver
       />
 
-      <Overlay  />
+      <Overlay />
     </React.Fragment>
   )
-}
+})
 
 BackgroundImage.ANIMATION = 'fadeIn'
 BackgroundImage.ANIMATION_DURATION = 310

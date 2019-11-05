@@ -171,7 +171,7 @@ export const MainCover = ({ empty, item, handleItemOpen, navigation }) => {
                 style={styles.likedIcon}
                 name={'heart'}
                 color={'01dp'}
-                size={24} />
+                size={dimensions.ICON_SIZE_DEFAULT} />
 
               <Typography
                 style={styles.genres}

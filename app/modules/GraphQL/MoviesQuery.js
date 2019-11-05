@@ -28,6 +28,7 @@ export default gql`
       }
       images {
         backdrop {
+          full
           high
         }
         poster {

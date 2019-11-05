@@ -74,6 +74,7 @@ Container.propTypes = {
 
 Container.defaultProps = {
   elevation: 0,
+  style: null,
 }
 
 export default Container

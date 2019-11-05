@@ -20,7 +20,7 @@ export const MoviesQuery = gql`
       }
       images {
         backdrop {
-          high
+          full
         }
         poster {
           thumb
