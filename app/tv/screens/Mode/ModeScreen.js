@@ -1,6 +1,6 @@
 import React, { useEffect, useState, createRef } from 'react'
 import PropTypes from 'prop-types'
-import { StyleSheet, View, StatusBar, FlatList, InteractionManager } from 'react-native'
+import { StyleSheet, View, ImageBackground, FlatList, InteractionManager } from 'react-native'
 import { useLazyQuery } from '@apollo/react-hooks'
 
 import i18n from 'modules/i18n'
@@ -12,6 +12,8 @@ import fetchMoreUpdateQuery from 'modules/GraphQL/helpers/fetchMoreUpdateQuery'
 
 import Card from 'components/Card'
 import Typography from 'components/Typography'
+
+import BackgroundImage from './BackgroundImage'
 import { BookmarksQuery } from './ModeQuery'
 
 const styles = StyleSheet.create({
@@ -74,7 +76,6 @@ export const Mode = ({ mode, navigation }) => {
         hasTVPreferredFocus={index === 0}
         hide={index < activeIndex}
         onFocus={() => {
-          console.log('focus')
           if (flatList.current && !empty && index !== activeIndex) {
             flatList.current.scrollToIndex({
               index,
@@ -103,8 +104,16 @@ export const Mode = ({ mode, navigation }) => {
     </Typography>
   )
 
+  const activeItem = items.find((item, index) => index === activeIndex)
+
   return (
     <View style={styles.root}>
+
+      {activeItem && (
+        <BackgroundImage
+          uri={activeItem.images.backdrop.high}
+        />
+      )}
 
       <FlatList
         horizontal
