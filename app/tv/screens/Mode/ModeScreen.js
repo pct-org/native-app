@@ -12,8 +12,8 @@ import fetchMoreUpdateQuery from 'modules/GraphQL/helpers/fetchMoreUpdateQuery'
 
 import Card from 'components/Card'
 import Typography from 'components/Typography'
+import BackgroundImage from 'tv/components/BackgroundImage'
 
-import BackgroundImage from './BackgroundImage'
 import ActiveItemInfo from './ActiveItemInfo'
 import { BookmarksQuery } from './ModeQuery'
 

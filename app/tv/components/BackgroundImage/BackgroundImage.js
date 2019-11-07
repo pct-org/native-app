@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
 
 let backgroundSwitchTimeout = null
 
-export const BackgroundImage = memo(({ uri }) => {
+export const BackgroundImage = memo(({ uri, withBlur }) => {
   const [currentUri, setCurrentUri] = useState(uri)
   const imageRef = createRef()
 
@@ -70,6 +70,11 @@ export const BackgroundImage = memo(({ uri }) => {
           uri: currentUri,
         }}
         useNativeDriver
+        blurRadius={
+          withBlur
+            ? 1
+            : 0
+        }
       />
 
       <Overlay />

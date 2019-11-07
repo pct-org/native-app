@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { StyleSheet, View, Platform } from 'react-native'
+import { StyleSheet, View } from 'react-native'
 
 import dimensions from 'modules/dimensions'
 
@@ -25,15 +25,22 @@ export const styles = StyleSheet.create({
     margin: dimensions.UNIT / 2,
   },
 
+  big: {
+    height: dimensions.CARD_HEIGHT_BIG,
+    width: dimensions.CARD_WIDTH_BIG,
+    margin: dimensions.UNIT / 2,
+  },
+
 })
 
-export const Card = React.memo(({
+export const Card = ({
   item,
   variant,
   elevation,
   empty,
   style,
   forceOverlay,
+  overlayVariant,
   ...rest
 }) => (
   <Container
@@ -56,20 +63,21 @@ export const Card = React.memo(({
           } />
 
         {((item && item.watched && item.watched.complete) || forceOverlay) && (
-          <Overlay variant={'dark'} />
+          <Overlay variant={overlayVariant} />
         )}
       </View>
     </BaseButton>
   </Container>
-))
+)
 
 Card.propTypes = {
   item: PropTypes.object,
   empty: PropTypes.bool,
   style: PropTypes.object,
   elevation: PropTypes.number,
-  variant: PropTypes.oneOf(['default', 'small']),
+  variant: PropTypes.oneOf(['default', 'small', 'big']),
   hide: PropTypes.bool,
+  overlayVariant: PropTypes.string,
 }
 
 Card.defaultProps = {
@@ -79,6 +87,7 @@ Card.defaultProps = {
   component: BaseButton,
   elevation: 1,
   variant: 'default',
+  overlayVariant: 'dark',
   hide: false,
 }
 
