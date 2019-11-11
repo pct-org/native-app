@@ -13,6 +13,7 @@ import fetchMoreUpdateQuery from 'modules/GraphQL/helpers/fetchMoreUpdateQuery'
 import Card from 'components/Card'
 import Typography from 'components/Typography'
 import BackgroundImage from 'tv/components/BackgroundImage'
+import Menu from 'tv/components/Menu'
 
 import ActiveItemInfo from './ActiveItemInfo'
 import { BookmarksQuery } from './ModeQuery'
@@ -28,6 +29,13 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: dimensions.UNIT * 2,
     left: dimensions.TV_LEFT - (dimensions.UNIT / 2),
+    paddingRight: dimensions.CARD_WIDTH_SMALL,
+  },
+
+  header: {
+    position: 'absolute',
+    bottom: (dimensions.UNIT * 2.5) + dimensions.CARD_HEIGHT_SMALL,
+    left: dimensions.TV_LEFT,
     paddingRight: dimensions.CARD_WIDTH_SMALL,
   },
 
@@ -108,7 +116,7 @@ export const Mode = ({ mode, navigation }) => {
   const activeItem = items.find((item, index) => index === activeIndex)
 
   return (
-    <View style={styles.root}>
+    <Menu style={styles.root}>
 
       {activeItem && (
         <BackgroundImage
@@ -119,6 +127,14 @@ export const Mode = ({ mode, navigation }) => {
       {activeItem && (
         <ActiveItemInfo {...activeItem} />
       )}
+
+      <Typography
+        variant={'subtitle1'}
+        fontWeight={'medium'}
+        emphasis={'high'}
+        style={styles.header}>
+        {i18n.t(mode)}
+      </Typography>
 
       <FlatList
         horizontal
@@ -148,7 +164,7 @@ export const Mode = ({ mode, navigation }) => {
         onEndReachedThreshold={dimensions.CARD_WIDTH_SMALL * 10}
       />
 
-    </View>
+    </Menu>
   )
 }
 

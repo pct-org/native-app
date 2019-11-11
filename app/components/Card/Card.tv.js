@@ -30,6 +30,7 @@ export const styles = StyleSheet.create({
   active: {
     borderColor: colors.PRIMARY_COLOR_200,
   },
+
 })
 
 export const Card = React.memo(({
