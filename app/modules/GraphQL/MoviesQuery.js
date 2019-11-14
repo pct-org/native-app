@@ -10,6 +10,7 @@ export default gql`
       synopsis
       type
       bookmarked
+      trailer
       download {
         downloadStatus
         downloading

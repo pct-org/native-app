@@ -25,9 +25,13 @@ export const styles = StyleSheet.create({
 
 })
 
-export const Overlay = ({ style, variant }) => (
+export const Overlay = ({ style, variant, withAnimation }) => (
   <Animatable.View
-    animation={'fadeIn'}
+    animation={
+      withAnimation
+        ? 'fadeIn'
+        : null
+    }
     pointerEvents={'box-none'}
     style={styles.root}
     useNativeDriver>
@@ -40,11 +44,13 @@ Overlay.propTypes = {
     'default',
     'dark',
   ]),
+  withAnimation: PropTypes.bool,
 }
 
 Overlay.defaultProps = {
   variant: 'default',
   style: {},
+  withAnimation: false,
 }
 
 export default Overlay

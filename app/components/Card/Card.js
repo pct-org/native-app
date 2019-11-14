@@ -63,7 +63,9 @@ export const Card = ({
           } />
 
         {((item && item.watched && item.watched.complete) || forceOverlay) && (
-          <Overlay variant={overlayVariant} />
+          <Overlay
+            withAnimation={forceOverlay}
+            variant={overlayVariant} />
         )}
       </View>
     </BaseButton>

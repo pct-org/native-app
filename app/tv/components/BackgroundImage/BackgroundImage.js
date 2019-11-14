@@ -1,5 +1,6 @@
 import React, { createRef, useEffect, useState, memo } from 'react'
 import { Image, StyleSheet } from 'react-native'
+import WebView from 'react-native-webview'
 import * as Animatable from 'react-native-animatable'
 
 import usePrevious from 'modules/hooks/usePrevious'
@@ -22,10 +23,10 @@ const styles = StyleSheet.create({
 
 let backgroundSwitchTimeout = null
 
-export const BackgroundImage = memo(({ uri, withBlur }) => {
+export const BackgroundImage = memo(({ uri, withBlur, trailerID }) => {
   const [currentUri, setCurrentUri] = useState(uri)
   const imageRef = createRef()
-
+  console.log(trailerID)
   let prevUri = usePrevious(currentUri)
 
   useEffect(() => {
@@ -76,6 +77,28 @@ export const BackgroundImage = memo(({ uri, withBlur }) => {
             : 0
         }
       />
+
+      {trailerID && (
+        <Animatable.View
+          style={{
+            ...StyleSheet.absoluteFillObject,
+            top: 0,
+            zIndex: 1,
+          }}
+          animation={BackgroundImage.ANIMATION}
+          duration={BackgroundImage.ANIMATION_DURATION}
+          useNativeDriver
+        >
+          {/*<WebView*/}
+          {/*  ref={(ref) => { this.videoPlayer = ref}}*/}
+          {/*  scalesPageToFit={true}*/}
+          {/*  style={StyleSheet.absoluteFill}*/}
+          {/*  source={{ html: '<html><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport" /><iframe src="https://www.youtube.com/embed/' + trailerID + '?modestbranding=1&playsinline=1&showinfo=0&rel=0" frameborder="0" style="overflow:hidden;overflow-x:hidden;overflow-y:hidden;height:100%;width:100%;position:absolute;top:0px;left:0px;right:0px;bottom:0px" height="100%" width="100%"></iframe></html>' }}*/}
+          {/*  // onShouldStartLoadWithRequest={this.onShouldStartLoadWithRequest} //for iOS*/}
+          {/*  // onNavigationStateChange ={this.onShouldStartLoadWithRequest} //for Android*/}
+          {/*/>*/}
+        </Animatable.View>
+      )}
 
       <Overlay />
     </React.Fragment>

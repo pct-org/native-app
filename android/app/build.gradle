@@ -122,21 +122,11 @@ android {
 }
 
 dependencies {
-    implementation project(':@react-native-community_async-storage')
-    implementation project(':react-native-gesture-handler')
-    implementation project(':react-native-splash-screen')
-    implementation project(':react-native-languages')
-    implementation project(':update-react-native-app')
-    implementation project(':react-native-vector-icons')
-    implementation project(':react-native-fs')
-    implementation project(':react-native-static-server')
-    implementation project(':react-native-google-cast')
-    implementation project(':react-native-orientation')
-    implementation project(':react-native-linear-gradient')
-
     implementation fileTree(dir: "libs", include: ["*.jar"])
 
-    implementation 'androidx.appcompat:appcompat:1.0.0'
+    implementation "com.google.android.gms:play-services-cast-framework:$rootProject.ext.castFrameworkVersion"
+    implementation 'androidx.appcompat:appcompat:1.1.0'
+    implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0-alpha03'
     implementation 'com.facebook.react:react-native:+'
     implementation 'de.mrmaffen:vlc-android-sdk:1.9.8'
 

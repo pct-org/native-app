@@ -121,6 +121,7 @@ export const Mode = ({ mode, navigation }) => {
       {activeItem && (
         <BackgroundImage
           uri={activeItem.images.backdrop.full}
+          // trailerID={activeItem.trailer.split('v=').reverse().shift()}
         />
       )}
 

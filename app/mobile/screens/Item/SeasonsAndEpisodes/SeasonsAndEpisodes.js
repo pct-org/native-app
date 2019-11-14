@@ -183,12 +183,15 @@ export default class SeasonsAndEpisodes extends React.Component {
 
         <FlatList
           removeClippedSubviews
+          scrollEnabled={false}
           contentContainerStyle={styles.container}
-          data={episodes.length === 0
-            ? Array(6).fill(null)
-            : episodes}
+          data={
+            episodes.length === 0
+              ? Array(6).fill(null)
+              : episodes
+          }
           initialNumToRender={4}
-          windowSize={6}
+          windowSize={4}
           renderItem={this.renderEpisode}
           ListHeaderComponent={() => <View style={{ marginBottom: dimensions.UNIT }} />}
           ItemSeparatorComponent={() => <View style={{ marginBottom: dimensions.UNIT }} />}

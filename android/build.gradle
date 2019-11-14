@@ -7,7 +7,7 @@ buildscript {
         compileSdkVersion = 28
         targetSdkVersion = 27
         supportLibVersion = "28.0.0"
-        castFrameworkVersion = '16.1.2'
+        castFrameworkVersion = '17.1.0'
     }
 
     repositories {
