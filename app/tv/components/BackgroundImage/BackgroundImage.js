@@ -26,7 +26,7 @@ let backgroundSwitchTimeout = null
 export const BackgroundImage = memo(({ uri, withBlur, trailerID }) => {
   const [currentUri, setCurrentUri] = useState(uri)
   const imageRef = createRef()
-  console.log(trailerID)
+
   let prevUri = usePrevious(currentUri)
 
   useEffect(() => {

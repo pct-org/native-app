@@ -156,8 +156,6 @@ export default class PlayerManager extends React.Component {
     const { style, children } = this.props
     const { casting, mediaUrl } = this.state
 
-    console.log('casting', casting)
-
     return (
       <View style={style}>
 

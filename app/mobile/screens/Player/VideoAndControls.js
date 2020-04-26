@@ -246,7 +246,7 @@ export class VideoAndControls extends React.Component {
     const { url, renderCastButton, children, forcePaused } = this.props
     const { isPortrait, resizeMode, progress } = this.state
     const { showControls, paused } = this.state
-console.log('render video', url)
+
     return (
       <React.Fragment>
         {url && (
