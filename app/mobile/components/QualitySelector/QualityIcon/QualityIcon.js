@@ -49,7 +49,7 @@ export const QualityIcon = ({ handleOnPress, handleRemoveDownload, item, downloa
   )
 
   useEffect(() => {
-    if (downloadProp) {
+    if (downloadProp && downloadProp.status === constants.STATUS_DOWNLOADING) {
       executeQuery()
     }
 

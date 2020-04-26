@@ -246,7 +246,7 @@ export class VideoAndControls extends React.Component {
     const { url, renderCastButton, children, forcePaused } = this.props
     const { isPortrait, resizeMode, progress } = this.state
     const { showControls, paused } = this.state
-
+console.log('render video', url)
     return (
       <React.Fragment>
         {url && (
@@ -257,7 +257,7 @@ export class VideoAndControls extends React.Component {
             source={{
               uri: url,
               autoplay: true,
-              // initOptions: ['--codec=avcodec'],
+              initOptions: ['--codec=avcodec'],
             }}
             style={styles.video}
             paused={paused || forcePaused}

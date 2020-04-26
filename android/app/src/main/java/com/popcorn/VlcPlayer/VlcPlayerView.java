@@ -6,14 +6,12 @@ import android.net.Uri;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.FrameLayout;
-import android.widget.Toast;
 
 import androidx.core.content.ContextCompat;
 
@@ -21,7 +19,6 @@ import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.LifecycleEventListener;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.uimanager.ThemedReactContext;
-import com.facebook.react.uimanager.events.RCTEventEmitter;
 
 import org.videolan.libvlc.IVLCVout;
 import org.videolan.libvlc.LibVLC;
@@ -31,7 +28,10 @@ import org.videolan.libvlc.util.VLCUtil;
 
 import java.util.ArrayList;
 
-public class VlcPlayerView extends FrameLayout implements IVLCVout.Callback, LifecycleEventListener {
+public class VlcPlayerView extends FrameLayout implements
+    IVLCVout.Callback,
+    IVLCVout.OnNewVideoLayoutListener,
+    LifecycleEventListener {
 
   private boolean pausedState;
 
@@ -118,7 +118,7 @@ public class VlcPlayerView extends FrameLayout implements IVLCVout.Callback, Lif
     }
 
     vout.addCallback(this);
-    vout.attachViews();
+    vout.attachViews(this);
   }
 
   private void initializePlayerIfNeeded() {
@@ -145,17 +145,18 @@ public class VlcPlayerView extends FrameLayout implements IVLCVout.Callback, Lif
       options.add("0");
       options.add("--subsdec-encoding");
       options.add("--stats");
+      options.add("--vout=android-display");
 
       if (networkCaching > 0) {
         options.add("--network-caching=" + networkCaching);
       }
 
-      options.add("--androidwindow-chroma");
+      // options.add("--androidwindow-chroma");
       options.add("RV32");
 
       options.add("-vv");
 
-      libvlc = new LibVLC(options);
+      libvlc = new LibVLC(getContext(), options);
 
       // Create media player
       mMediaPlayer = new MediaPlayer(libvlc);
@@ -173,8 +174,10 @@ public class VlcPlayerView extends FrameLayout implements IVLCVout.Callback, Lif
   private void setMedia(String filePath) {
     Uri uri = Uri.parse(filePath);
     Media media = new Media(libvlc, uri);
-    mMediaPlayer.setMedia(media);
+    media.setHWDecoderEnabled(true, true);
 
+    mMediaPlayer.setMedia(media);
+    // mMediaPlayer.setRenderer()
     if (autoPlay) {
       mMediaPlayer.play();
     }
@@ -262,8 +265,8 @@ public class VlcPlayerView extends FrameLayout implements IVLCVout.Callback, Lif
   }
 
   @Override
-  public void onNewLayout(IVLCVout vout, int width, int height, int visibleWidth, int visibleHeight, int sarNum, int sarDen) {
-    if (width * height == 0) {
+  public void onNewVideoLayout(IVLCVout vout, int width, int height, int visibleWidth, int visibleHeight, int sarNum, int sarDen) {
+    if (width * height <= 0) {
       return;
     }
 
@@ -301,13 +304,6 @@ public class VlcPlayerView extends FrameLayout implements IVLCVout.Callback, Lif
   }
 
   @Override
-  public void onHardwareAccelerationError(IVLCVout vout) {
-    // Handle errors with hardware acceleration
-    this.releasePlayer();
-    Toast.makeText(getContext(), "Error with hardware acceleration", Toast.LENGTH_LONG).show();
-  }
-
-  @Override
   public void onHostResume() {
     new Handler().post(new Runnable() {
       @Override
@@ -325,7 +321,7 @@ public class VlcPlayerView extends FrameLayout implements IVLCVout.Callback, Lif
 
   @Override
   public void onHostDestroy() {
-
+    this.releasePlayer();
   }
 
   /**
@@ -336,9 +332,9 @@ public class VlcPlayerView extends FrameLayout implements IVLCVout.Callback, Lif
   public void setResizeMode(@ResizeMode.Mode int resizeMode) {
     if (layout.getResizeMode() != resizeMode) {
       layout.setResizeMode(resizeMode);
+
       post(measureAndLayout);
     }
-
   }
 
   private final Runnable measureAndLayout = new Runnable() {
@@ -350,7 +346,6 @@ public class VlcPlayerView extends FrameLayout implements IVLCVout.Callback, Lif
       layout(getLeft(), getTop(), getRight(), getBottom());
     }
   };
-
 
   public void setFullscreen(boolean fullscreen) {
     if (fullscreen == isFullscreen) {

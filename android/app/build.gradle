@@ -128,7 +128,7 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0-alpha03'
     implementation 'com.facebook.react:react-native:+'
-    implementation 'de.mrmaffen:vlc-android-sdk:1.9.8'
+    implementation 'com.butterproject:vlc-android-sdk:3.0.10'
 
     if (useIntlJsc) {
         implementation 'org.webkit:android-jsc-intl:+'

@@ -95,6 +95,7 @@ export default class PlayerManager extends React.Component {
         ),
         subtitle: item.synopsis,
         mediaUrl: `${mediaUrl}?device=chromecast`,
+        // TODO:: Check this, not always working
         posterUrl: item.type === 'episode'
           ? item.show.images.poster.high
           : item.images.poster.high,
