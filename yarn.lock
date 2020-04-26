@@ -6162,9 +6162,10 @@ react-native-gesture-handler@1.5.0:
     invariant "^2.2.4"
     prop-types "^15.7.2"
 
-"react-native-google-cast@github:tripss/react-native-google-cast#v4":
-  version "4.0.0-pre.1"
-  resolved "https://codeload.github.com/tripss/react-native-google-cast/tar.gz/19544e39811c3d630d674e471fab987f839e5e91"
+react-native-google-cast@^3.3.0:
+  version "3.3.0"
+  resolved "https://registry.yarnpkg.com/react-native-google-cast/-/react-native-google-cast-3.3.0.tgz#857074f11d86e314cd43fbbbb8b818aed4383f60"
+  integrity sha512-0iIXxjyykOCm+zNHNF9cSzajjzrLkRtxz9RkNMGVEgtBQaAPBA/sopIUchewJf38PTsEL6pYc4Vp0QMn8FngSg==
   dependencies:
     prop-types "^15.6.0"
 

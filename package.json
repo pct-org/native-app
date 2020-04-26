@@ -47,7 +47,7 @@
     "react-native-device-info": "^4.0.1",
     "react-native-fs": "^2.14.1",
     "react-native-gesture-handler": "1.5.0",
-    "react-native-google-cast": "github:tripss/react-native-google-cast#v4",
+    "react-native-google-cast": "^3.3.0",
     "react-native-languages": "3.0.2",
     "react-native-linear-gradient": "2.5.6",
     "react-native-markdown-renderer": "^3.2.8",

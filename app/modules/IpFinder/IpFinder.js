@@ -53,6 +53,10 @@ export default class IpFinder extends React.Component {
     newState.host = host
     newState.failed = host === null
 
+    if (newState.failed) {
+      SplashScreen.hide()
+    }
+
     this.setState(newState)
   }
 
