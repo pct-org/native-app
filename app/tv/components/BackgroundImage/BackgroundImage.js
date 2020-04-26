@@ -1,6 +1,5 @@
 import React, { createRef, useEffect, useState, memo } from 'react'
 import { Image, StyleSheet } from 'react-native'
-import WebView from 'react-native-webview'
 import * as Animatable from 'react-native-animatable'
 
 import usePrevious from 'modules/hooks/usePrevious'

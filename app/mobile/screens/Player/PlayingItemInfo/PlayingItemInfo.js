@@ -2,8 +2,10 @@ import React from 'react'
 import { View } from 'react-native'
 
 import dimensions from 'modules/dimensions'
+import constants from 'modules/constants'
 
 import Typography from 'components/Typography'
+import Card from 'components/Card'
 
 export const styles = {
   root: {
@@ -27,42 +29,58 @@ export const styles = {
   },
 }
 
-export const PlayingItemInfo = ({ item }) => {
-  return (
-    <View style={styles.root}>
-      <View style={styles.container}>
+export const PlayingItemInfo = ({ item }) => (
+  <View style={styles.root}>
+    <Card
+      elevation={0}
+      item={
+        item.type === constants.TYPE_EPISODE
+          ? item.show
+          : item
+      }
+    />
+
+    <View style={styles.container}>
+      <Typography
+        emphasis={'high'}
+        color={'white'}
+        variant={'headline6'}>
+        {
+          item.type === constants.TYPE_EPISODE
+            ? item.show.title
+            : item.title
+        }
+      </Typography>
+
+      {item.type === constants.TYPE_EPISODE && (
         <Typography
           emphasis={'high'}
           color={'white'}
-          variant={'headline6'}>
-          {
-            item.type === 'episode'
-              ? item.show.title
-              : item.title
-          }
+          variant={'subtitle1'}>
+          {`${item.number}. ${item.title}`}
         </Typography>
+      )}
 
-        {item.type === 'episode' && (
-          <Typography
-            emphasis={'high'}
-            color={'white'}
-            variant={'subtitle1'}>
-            {`${item.number}. ${item.title}`}
-          </Typography>
-        )}
+      {item.type === constants.TYPE_MOVIE && (
+        <Typography
+          emphasis={'high'}
+          color={'white'}
+          variant={'subtitle1'}>
+          {item.description}
+        </Typography>
+      )}
 
-        {item.type === 'episode' && (
-          <Typography
-            style={styles.synopsis}
-            emphasis={'medium'}
-            color={'white'}
-            variant={'caption'}>
-            {item.synopsis}
-          </Typography>
-        )}
-      </View>
+      {item.type === constants.TYPE_EPISODE && (
+        <Typography
+          style={styles.synopsis}
+          emphasis={'medium'}
+          color={'white'}
+          variant={'caption'}>
+          {item.synopsis}
+        </Typography>
+      )}
     </View>
-  )
-}
+  </View>
+)
 
 export default PlayingItemInfo

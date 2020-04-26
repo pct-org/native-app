@@ -239,11 +239,11 @@ export class VideoAndControls extends React.Component {
       this.setState({
         showControls: false,
       })
-    }, 2200)
+    }, 5000)
   }
 
   render() {
-    const { url, renderCastButton, children, forcePaused } = this.props
+    const { url, children, forcePaused } = this.props
     const { isPortrait, resizeMode, progress } = this.state
     const { showControls, paused } = this.state
 
