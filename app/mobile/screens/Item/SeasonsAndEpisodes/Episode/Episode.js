@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 import { StyleSheet, View } from 'react-native'
 
@@ -65,110 +65,106 @@ export const styles = StyleSheet.create({
 
 })
 
-// TODO:: Refactor to dump component with useState
-export default class Episode extends React.Component {
+export const Episode = (props) => {
+  const [showQualitySelector, toggleSelecting] = useState(false)
+  const { title, synopsis, number, hasAired, images, firstAired } = props
 
-  static propTypes = {
-    title: PropTypes.string,
-    images: PropTypes.object,
-    number: PropTypes.number,
-    synopsis: PropTypes.string,
-    hasAired: PropTypes.bool,
-  }
-
-  static defaultProps = {
-    synopsis: null,
-    hasTorrents: false,
-    hasAired: false,
-
-    images: {
-      poster: {
-        thumb: null,
-      },
-    },
-  }
-
-  playSelectorRef
-
-  getAirsDate = () => {
-    const { firstAired } = this.props
-
+  const getAirsDate = () => {
     const airs = new Date()
     airs.setTime(firstAired)
 
     return `${`0${airs.getDate()}`.slice(-2)}-${`0${(airs.getMonth() + 1)}`.slice(-2)}-${airs.getFullYear()}`
   }
 
-  render() {
-    const { title, synopsis, number, hasAired, images } = this.props
+  return (
+    <View style={styles.container}>
 
-    return (
-      <View style={styles.container}>
+      <View style={styles.posterWithTitle}>
+        <Container
+          elevation={1}
+          style={styles.posterContainer}>
+          <BaseButton onPress={() => toggleSelecting(true)}>
+            <View>
+              <Image
+                style={styles.image}
+                images={images} />
 
-        <View style={styles.posterWithTitle}>
-          <Container
-            elevation={1}
-            style={styles.posterContainer}>
-            <BaseButton onPress={() => this.playSelectorRef.handleOnIconPress()}>
-              <View>
-                <Image
-                  style={styles.image}
-                  images={images} />
+              <View style={styles.playIconContainer}>
+                <Overlay />
 
-                <View style={styles.playIconContainer}>
-                  <Overlay />
+                {hasAired && (
+                  <QualitySelector
+                    visible={showQualitySelector}
+                    item={props}
+                    onRequestClose={() => toggleSelecting(false)}
+                  />
+                )}
 
-                  {hasAired && (
-                    <QualitySelector
-                      onRef={ref => this.playSelectorRef = ref}
-                      item={this.props}
-                    />
-                  )}
-
-                  {!hasAired && (
-                    <Typography variant={'caption'}>
-                      {this.getAirsDate()}
-                    </Typography>
-                  )}
-                </View>
+                {!hasAired && (
+                  <Typography variant={'caption'}>
+                    {getAirsDate()}
+                  </Typography>
+                )}
               </View>
-            </BaseButton>
-          </Container>
+            </View>
+          </BaseButton>
+        </Container>
 
-          <View style={styles.titleContainer}>
-            <Typography
-              variant={'overline'}
-              textProps={{
-                width: '100%',
-                numberOfLines: 2,
-                ellipsizeMode: 'tail',
-              }}>
-              {`${number}. ${title}`}
-            </Typography>
+        <View style={styles.titleContainer}>
+          <Typography
+            variant={'overline'}
+            textProps={{
+              width: '100%',
+              numberOfLines: 2,
+              ellipsizeMode: 'tail',
+            }}>
+            {`${number}. ${title}`}
+          </Typography>
 
-            <Typography
-              variant={'captionSmall'}
-              emphasis={'low'}>
-              {this.getAirsDate()}
-            </Typography>
-          </View>
-
-          {hasAired && (
-            <QualitySelector
-              item={this.props}
-              variant={constants.TYPE_DOWNLOAD}
-              style={styles.downloadIcon}
-            />
-          )}
+          <Typography
+            variant={'captionSmall'}
+            emphasis={'low'}>
+            {getAirsDate()}
+          </Typography>
         </View>
 
-        <Typography
-          style={styles.summary}
-          variant={'caption'}>
-          {synopsis}
-        </Typography>
-
+        {hasAired && (
+          <QualitySelector
+            item={props}
+            variant={constants.TYPE_DOWNLOAD}
+            style={styles.downloadIcon}
+          />
+        )}
       </View>
-    )
-  }
+
+      <Typography
+        style={styles.summary}
+        variant={'caption'}>
+        {synopsis}
+      </Typography>
+
+    </View>
+  )
 }
+
+Episode.propTypes = {
+  title: PropTypes.string,
+  images: PropTypes.object,
+  number: PropTypes.number,
+  synopsis: PropTypes.string,
+  hasAired: PropTypes.bool,
+}
+
+Episode.defaultProps = {
+  synopsis: null,
+  hasTorrents: false,
+  hasAired: false,
+
+  images: {
+    poster: {
+      thumb: null,
+    },
+  },
+}
+
+export default Episode

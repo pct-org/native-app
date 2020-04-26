@@ -1,32 +1,32 @@
 import React from 'react'
-import { createAppContainer } from 'react-navigation'
-import { createStackNavigator } from 'react-navigation-stack'
-
-import transitionConfig from 'modules/transitionConfig'
+import { createStackNavigator } from '@react-navigation/stack'
 
 import HomeScreen from './Home'
 import ItemScreen from './Item'
 import PlayerScreen from './Player'
 import ModeScreen from './Mode'
 
-export const AppNavigator = createStackNavigator({
+const Stack = createStackNavigator()
 
-  Main: HomeScreen,
+export default () => (
+  <Stack.Navigator
+    screenOptions={{
+      headerShown: false
+    }}>
+    <Stack.Screen name="Home" component={HomeScreen} />
+    <Stack.Screen name="Item" component={ItemScreen} />
+    <Stack.Screen name="Player" component={PlayerScreen} />
 
-  Item: ItemScreen,
+    <Stack.Screen name="Movies">
+      {(props) => <ModeScreen mode={'movies'} {...props} />}
+    </Stack.Screen>
 
-  Player: PlayerScreen,
+    <Stack.Screen name="Shows">
+      {(props) => <ModeScreen mode={'shows'} {...props} />}
+    </Stack.Screen>
 
-  Movies: ({ ...props }) => <ModeScreen mode={'movies'} {...props} />,
-
-  Shows: ({ ...props }) => <ModeScreen mode={'shows'} {...props} />,
-
-  MyList: ({ ...props }) => <ModeScreen mode={'bookmarks'} {...props} />,
-
-}, {
-  headerMode: 'none',
-
-  transitionConfig: transitionConfig,
-})
-
-export default createAppContainer(AppNavigator)
+    <Stack.Screen name="MyList">
+      {(props) => <ModeScreen mode={'bookmarks'} {...props} />}
+    </Stack.Screen>
+  </Stack.Navigator>
+)

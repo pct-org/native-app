@@ -18,7 +18,7 @@ import DownloadInfo from './DownloadInfo'
 import EpisodePlaying from './EpisodePlaying'
 import PlayerManager from './PlayerManager'
 
-export const Player = ({ navigation: { state: { params: { item, playQuality } } } }) => {
+export const Player = ({ route: { params: { item, playQuality } } }) => {
   // TODO:: Move below to PlayerManager
   useEffect(() => {
       if (!calledStartStream) {
@@ -40,7 +40,7 @@ export const Player = ({ navigation: { state: { params: { item, playQuality } } 
     [],
   )
 
-  const [startStream, { called: calledStartStream, loading, data, error }] = useMutation(
+  const [startStream, { called: calledStartStream, loading }] = useMutation(
     StartStreamMutation, { variables: { _id: item._id, itemType: item.type, quality: playQuality } },
   )
 

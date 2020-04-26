@@ -1,8 +1,7 @@
-import React, { useState, createRef } from 'react'
+import React, { createRef } from 'react'
 import PropTypes from 'prop-types'
 import { StyleSheet, View } from 'react-native'
 import * as Animatable from 'react-native-animatable'
-import {withNavigation} from 'react-navigation'
 
 import dimensions from 'modules/dimensions'
 import QualitySelector from 'mobile/components/QualitySelector'
@@ -51,7 +50,7 @@ const styles = StyleSheet.create({
 
 })
 
-export const MyEpisode = ({ item, style, empty, navigation, ...rest }) => {
+export const MyEpisode = ({ item, style, empty, ...rest }) => {
   const playSelectorRef = createRef()
 
   const getEpisodeNumber = () => {
@@ -138,4 +137,4 @@ MyEpisode.defaultProps = {
   style: null,
 }
 
-export default withNavigation(MyEpisode)
+export default MyEpisode

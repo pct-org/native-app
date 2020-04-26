@@ -2,7 +2,6 @@ import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 import { StyleSheet, View } from 'react-native'
 import * as Animatable from 'react-native-animatable'
-import { withNavigation } from 'react-navigation'
 
 import dimensions from 'modules/dimensions'
 import constants from 'modules/constants'
@@ -93,7 +92,7 @@ const styles = StyleSheet.create({
   },
 })
 
-export const MainCover = ({ empty, item, handleItemOpen, navigation }) => {
+export const MainCover = ({ empty, item, handleItemOpen }) => {
   const [showQualitySelector, toggleSelecting] = useState(false)
   const genres = empty ? [] : item.genres ? [...item.genres].splice(0, 3) : []
 
@@ -204,4 +203,4 @@ MainCover.defaultProps = {
   item: null,
 }
 
-export default withNavigation(MainCover)
+export default MainCover

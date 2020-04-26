@@ -52,7 +52,7 @@ const styles = StyleSheet.create({
   },
 })
 
-export const Item = ({ navigation, navigation: { state: { params } } }) => {
+export const Item = ({ route: { params } }) => {
   const Query = params.type === 'movie'
     ? MovieQuery
     : ShowQuery

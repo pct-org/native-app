@@ -2,8 +2,8 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { StyleSheet } from 'react-native'
 import * as Animatable from 'react-native-animatable'
-import { withNavigation } from 'react-navigation'
 
+import { navigate } from 'modules/RootNavigation'
 import dimensions from 'modules/dimensions'
 import constants from 'modules/constants'
 import withApollo from 'modules/GraphQL/withApollo'
@@ -48,16 +48,14 @@ const styles = StyleSheet.create({
 
 @withApollo
 @withDownloadManager
-@withNavigation
 export default class QualitySelector extends React.Component {
 
   static propTypes = {
     style: PropTypes.object,
     variant: PropTypes.oneOf([
       constants.TYPE_STREAM,
-      constants.TYPE_DOWNLOAD
+      constants.TYPE_DOWNLOAD,
     ]),
-    navigation: PropTypes.object.isRequired,
     apollo: PropTypes.object.isRequired,
     item: PropTypes.object.isRequired,
     itemType: PropTypes.string,
@@ -88,7 +86,7 @@ export default class QualitySelector extends React.Component {
     }
 
     return {
-      visible: visible || state.visible,
+      visible: state.visible,
       download,
     }
   }
@@ -98,13 +96,22 @@ export default class QualitySelector extends React.Component {
     download: null,
   }
 
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    const { visible: wasVisible } = prevProps
+    const { visible } = this.props
+
+    if (wasVisible !== visible && visible) {
+      this.handleOnIconPress()
+    }
+  }
+
   /**
    * Starts playing this torrent
    *
    * @param torrent
    */
   handlePlayTorrent = (torrent) => {
-    const { playItem, item, navigation: { navigate } } = this.props
+    const { playItem, item } = this.props
 
     if (playItem) {
       playItem(item, torrent.quality)
@@ -200,12 +207,6 @@ export default class QualitySelector extends React.Component {
     })
 
     downloadManager.removeDownload(item._id)
-  }
-
-  isVisible = () => {
-    const { visible } = this.state
-
-    return visible
   }
 
   render() {
