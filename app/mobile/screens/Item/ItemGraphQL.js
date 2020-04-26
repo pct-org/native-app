@@ -22,6 +22,7 @@ export const MovieQuery = gql`
         downloadStatus
         downloading
         downloadComplete
+        downloadQuality
       }
       torrents {
         quality
@@ -88,6 +89,7 @@ export const ShowQuery = gql`
             downloadStatus
             downloading
             downloadComplete
+            downloadQuality
           }
           images {
             poster {

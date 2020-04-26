@@ -26,6 +26,7 @@ const styles = StyleSheet.create({
     marginTop: dimensions.UNIT / 2,
     marginLeft: dimensions.UNIT / 2,
     marginRight: dimensions.UNIT / 2,
+    paddingBottom: dimensions.UNIT * 2,
   },
 
   noResults: {

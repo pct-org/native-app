@@ -118,7 +118,7 @@ export default class CheckForUpdates extends React.Component {
 
   componentDidMount() {
     const updater = new Updater({
-      repo: 'pct-org/getting-started',
+      repo: 'pct-org/native-app',
 
       onUpdateAvailable: this.onUpdateAvailable,
       onDownloadStart: this.onDownloadStart,

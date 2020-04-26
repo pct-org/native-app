@@ -74,19 +74,21 @@ export default class QualitySelector extends React.Component {
   }
 
   static getDerivedStateFromProps(props, state) {
-    const { item, visible } = props
+    const { item } = props
 
     let download = state.download || null
 
-    if (item.download && item.download.downloadStatus && !state.download) {
+    if (item.download && item.download.downloadStatus && !state.download && !state.removed) {
       download = {
         status: item.download.downloadStatus,
+        quality: item.download.downloadQuality,
         progress: 0,
       }
     }
 
     return {
       visible: state.visible,
+      removed: state.removed,
       download,
     }
   }
@@ -94,6 +96,7 @@ export default class QualitySelector extends React.Component {
   state = {
     visible: false,
     download: null,
+    removed: false
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
@@ -182,6 +185,7 @@ export default class QualitySelector extends React.Component {
     this.setState({
       download,
       visible: false,
+      removed: false,
     })
 
     downloadManager.addDownload(download)
@@ -204,6 +208,7 @@ export default class QualitySelector extends React.Component {
 
     this.setState({
       download: null,
+      removed: true
     })
 
     downloadManager.removeDownload(item._id)

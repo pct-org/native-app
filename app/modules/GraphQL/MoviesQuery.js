@@ -15,6 +15,7 @@ export default gql`
         downloadStatus
         downloading
         downloadComplete
+        downloadQuality
       }
       rating {
         percentage

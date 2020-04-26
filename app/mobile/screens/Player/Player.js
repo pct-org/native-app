@@ -110,7 +110,6 @@ export const Player = ({ route: { params: { item, playQuality } } }) => {
                       || !download
                       || download.progress < 3
 
-
   if (download && download.progress === 100) {
     // Stop polling when progress is 100
     stopPolling()

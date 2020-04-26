@@ -61,15 +61,13 @@ export const EpisodePlaying = ({ item }) => (
         </Typography>
       )}
 
-      {item.type === 'episode' && (
-        <Typography
-          style={styles.synopsis}
-          emphasis={'medium'}
-          color={'white'}
-          variant={'caption'}>
-          {item.synopsis}
-        </Typography>
-      )}
+      <Typography
+        style={styles.synopsis}
+        emphasis={'medium'}
+        color={'white'}
+        variant={'caption'}>
+        {item.synopsis}
+      </Typography>
     </View>
   </View>
 )

@@ -26,6 +26,7 @@ export default gql`
         downloadStatus
         downloading
         downloadComplete
+        downloadQuality
       }
       images {
         poster {

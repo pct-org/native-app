@@ -1,4 +1,4 @@
-import React, { createRef } from 'react'
+import React, { createRef, useState } from 'react'
 import PropTypes from 'prop-types'
 import { StyleSheet, View } from 'react-native'
 import * as Animatable from 'react-native-animatable'
@@ -51,8 +51,7 @@ const styles = StyleSheet.create({
 })
 
 export const MyEpisode = ({ item, style, empty, ...rest }) => {
-  const playSelectorRef = createRef()
-
+  const [showQualitySelector, toggleSelecting] = useState(false)
   const getEpisodeNumber = () => {
     const season = empty ? '00' : `0${item.season}`
     const episode = empty ? '00' : `0${item.number}`
@@ -65,11 +64,7 @@ export const MyEpisode = ({ item, style, empty, ...rest }) => {
       elevation={1}
       style={[styles.root, style]}>
       <BaseButton
-        onPress={() => {
-          if (!empty && playSelectorRef && playSelectorRef.current) {
-            playSelectorRef.current.handleOnIconPress()
-          }
-        }}
+        onPress={() => toggleSelecting(true)}
         {...rest}>
         <View>
           <Image images={
@@ -88,10 +83,11 @@ export const MyEpisode = ({ item, style, empty, ...rest }) => {
               style={styles.iconContainer}
               useNativeDriver>
               <QualitySelector
-                onRef={playSelectorRef}
-                itemType={'my-episode'}
+                visible={showQualitySelector}
                 item={item}
+                onRequestClose={() => toggleSelecting(false)}
               />
+
             </Animatable.View>
           )}
 

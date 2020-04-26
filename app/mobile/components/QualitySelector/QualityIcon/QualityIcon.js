@@ -49,7 +49,7 @@ export const QualityIcon = ({ handleOnPress, handleRemoveDownload, item, downloa
   )
 
   useEffect(() => {
-    if (downloadProp && downloadProp.status === constants.STATUS_DOWNLOADING) {
+    if (downloadProp && [constants.STATUS_FAILED, constants.STATUS_COMPLETE].indexOf(downloadProp.status) === -1) {
       executeQuery()
     }
 
@@ -62,9 +62,22 @@ export const QualityIcon = ({ handleOnPress, handleRemoveDownload, item, downloa
 
   const download = downloadProp && !data
     ? downloadProp
-    : data
+    : downloadProp && data
       ? data.download
       : null
+
+  const getStatusText = () => {
+    switch (download.status) {
+      case constants.STATUS_DOWNLOADING:
+        return `${download.progress}%`
+
+      case constants.STATUS_COMPLETE:
+        return download.quality
+
+      default:
+        return download.status
+    }
+  }
 
   if (variant === constants.TYPE_DOWNLOAD) {
     if (download && download.status !== constants.STATUS_REMOVED) {
@@ -134,15 +147,13 @@ export const QualityIcon = ({ handleOnPress, handleRemoveDownload, item, downloa
                  emphasis={'high'} />
              )}
 
-            {download.status !== constants.STATUS_COMPLETE && (
+            {download.status && (
               <Typography
                 style={styles.downloadStatus}
                 emphasis={'medium'}
                 variant={'captionSmall'}>
                 {
-                  download.status === constants.STATUS_DOWNLOADING
-                    ? `${download.progress}%`
-                    : download.status
+                  getStatusText()
                 }
               </Typography>
             )}

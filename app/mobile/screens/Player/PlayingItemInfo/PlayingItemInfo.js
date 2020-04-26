@@ -48,7 +48,7 @@ export const PlayingItemInfo = ({ item }) => (
         {
           item.type === constants.TYPE_EPISODE
             ? item.show.title
-            : item.title
+            : item.synopsis
         }
       </Typography>
 
@@ -66,7 +66,7 @@ export const PlayingItemInfo = ({ item }) => (
           emphasis={'high'}
           color={'white'}
           variant={'subtitle1'}>
-          {item.description}
+          {item.synopsis}
         </Typography>
       )}
 
