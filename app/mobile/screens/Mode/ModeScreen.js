@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
-import { StyleSheet, View, StatusBar, FlatList, InteractionManager } from 'react-native'
+import { StyleSheet, View, StatusBar, Animated, InteractionManager } from 'react-native'
 import { useLazyQuery } from '@apollo/react-hooks'
+import { useCollapsibleStack, CollapsibleStackSub } from 'react-navigation-collapsible'
+import { getDefaultHeaderHeight } from 'react-navigation-collapsible/lib/src/utils'
 
 import i18n from 'modules/i18n'
 import colors from 'modules/colors'
@@ -35,6 +37,7 @@ const styles = StyleSheet.create({
   },
 })
 
+//TODO:: The searchbar does not disapear correctly so that needs to be checked out
 export const Mode = ({ mode, navigation }) => {
   const [query, setQuery] = useState(null)
   const [executeQuery, { loading, data, fetchMore }] = useLazyQuery(
@@ -50,6 +53,8 @@ export const Mode = ({ mode, navigation }) => {
       },
     },
   )
+
+  const { onScroll, containerPaddingTop, scrollIndicatorInsetTop } = useCollapsibleStack()
 
   useEffect(() => {
     // Execute the query after the component is done navigation
@@ -95,13 +100,8 @@ export const Mode = ({ mode, navigation }) => {
         backgroundColor={colors.STATUS_BAR_TRANSPARENT}
         animated />
 
-      <SearchBar
-        query={query}
-        setQuery={setQuery} />
-
-      <FlatList
+      <Animated.FlatList
         removeClippedSubviews
-        contentContainerStyle={styles.container}
         data={items.length === 0 && !query
           ? Array(24).fill({ loading: true })
           : items
@@ -129,7 +129,19 @@ export const Mode = ({ mode, navigation }) => {
           : null
         }
         onEndReachedThreshold={dimensions.CARD_HEIGHT_SMALL * 4}
+        onScroll={onScroll}
+        contentContainerStyle={{
+          ...styles.container,
+          paddingTop: containerPaddingTop - getDefaultHeaderHeight(true),
+        }}
+        scrollIndicatorInsets={{ top: scrollIndicatorInsetTop - getDefaultHeaderHeight(true) }}
       />
+
+      <CollapsibleStackSub>
+        <SearchBar
+          query={query}
+          setQuery={setQuery} />
+      </CollapsibleStackSub>
 
     </View>
   )
