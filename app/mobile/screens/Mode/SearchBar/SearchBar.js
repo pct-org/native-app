@@ -1,7 +1,9 @@
 import React, { useState } from 'react'
 import PropTypes from 'prop-types'
-import { StyleSheet, StatusBar, View, TextInput } from 'react-native'
+import { StyleSheet, StatusBar, TextInput, Animated } from 'react-native'
 import * as Animatable from 'react-native-animatable'
+import { useNavigation } from '@react-navigation/native'
+import { useCollapsibleStack } from 'react-navigation-collapsible'
 
 import colors from 'modules/colors'
 import dimensions from 'modules/dimensions'
@@ -50,9 +52,12 @@ export const styles = StyleSheet.create({
 
 })
 
-export const SearchBar = ({ query: searchedQuery, setQuery: search }) => {
+export const SearchBar = ({ searchedQuery, search, flatListRef }) => {
+  const navigation = useNavigation()
   const [query, setQuery] = useState(searchedQuery)
   const [timeout, setTheTimeout] = useState(null)
+
+  const { translateY } = useCollapsibleStack()
 
   const cancelSearch = () => {
     setQuery(null)
@@ -63,8 +68,46 @@ export const SearchBar = ({ query: searchedQuery, setQuery: search }) => {
     }
   }
 
+  const handleSearch = (text) => {
+    if (text.trim().length === 0) {
+      cancelSearch()
+
+    } else {
+      setQuery(text)
+
+      if (timeout) {
+        clearTimeout(timeout)
+      }
+
+      setTheTimeout(setTimeout(() => {
+        search(text)
+
+        // Scroll to top
+        if (flatListRef && flatListRef.current) {
+          flatListRef.current.getNode().scrollToOffset({ offset: 0, animated: true })
+        }
+      }, 500))
+    }
+  }
+
+  const handleLayout = ({
+    nativeEvent: {
+      layout: { height = 0 },
+    },
+  }) => {
+    navigation.setParams({
+      collapsibleSubHeaderHeight: height + StatusBar.currentHeight,
+      isCollapsibleDirty: true,
+    })
+  }
+
   return (
-    <View style={styles.root}>
+    <Animated.View
+      onLayout={handleLayout}
+      style={{
+        transform: [{ translateY }],
+        ...styles.root,
+      }}>
 
       <Container
         elevation={1}
@@ -96,37 +139,22 @@ export const SearchBar = ({ query: searchedQuery, setQuery: search }) => {
           style={styles.input}
           selectionColor={'#FFF'}
           underlineColorAndroid={'transparent'}
-          onChangeText={(text) => {
-            if (text.trim().length === 0) {
-              cancelSearch()
-
-            } else {
-              setQuery(text)
-
-              if (timeout) {
-                clearTimeout(timeout)
-              }
-
-              setTheTimeout(setTimeout(() => {
-                search(text)
-              }, 500))
-            }
-          }}
+          onChangeText={handleSearch}
           value={query} />
 
       </Container>
 
-    </View>
+    </Animated.View>
   )
 }
 
 SearchBar.propTypes = {
-  query: PropTypes.string,
-  setQuery: PropTypes.func.isRequired,
+  searchedQuery: PropTypes.string,
+  search: PropTypes.func.isRequired,
 }
 
 SearchBar.defaultProps = {
-  query: null,
+  searchedQuery: null,
 }
 
 export default SearchBar

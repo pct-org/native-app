@@ -11,8 +11,9 @@ const Stack = createStackNavigator()
 
 export default () => (
   <Stack.Navigator
+    initialRouteName={'Home'}
     screenOptions={{
-      headerShown: false
+      headerShown: false,
     }}>
     <Stack.Screen name="Home" component={HomeScreen} />
     <Stack.Screen name="Item" component={ItemScreen} />
@@ -22,18 +23,24 @@ export default () => (
       <Stack.Screen name="Movies">
         {(props) => <ModeScreen mode={'movies'} {...props} />}
       </Stack.Screen>,
+      {},
+      1
     )}
 
     {createCollapsibleStack(
       <Stack.Screen name="Shows">
         {(props) => <ModeScreen mode={'shows'} {...props} />}
       </Stack.Screen>,
+      {},
+      1
     )}
 
     {createCollapsibleStack(
       <Stack.Screen name="MyList">
         {(props) => <ModeScreen mode={'bookmarks'} {...props} />}
       </Stack.Screen>,
+      {},
+      1
     )}
   </Stack.Navigator>
 )
