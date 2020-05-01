@@ -79,8 +79,8 @@ export const QualityIcon = ({ handleOnPress, handleRemoveDownload, item, downloa
     }
   }
 
-  if (variant === constants.TYPE_DOWNLOAD) {
-    if (download && download.status !== constants.STATUS_REMOVED) {
+  if (variant === constants.TYPE_DOWNLOAD || variant === 'downloads') {
+    if (download && download.status !== constants.STATUS_REMOVED && (variant !== 'downloads' || download?.status === constants.STATUS_DOWNLOADING)) {
       return (
         <BaseButton
           onPress={() => {
@@ -162,15 +162,17 @@ export const QualityIcon = ({ handleOnPress, handleRemoveDownload, item, downloa
       )
     }
 
-    return (
-      <IconButton
-        size={dimensions.ICON_SIZE_DEFAULT}
-        onPress={handleOnPress}
-        style={style}
-        color={'primary'}
-        emphasis={'medium'}
-        name={'cloud-download'} />
-    )
+    if (variant !== 'downloads') {
+      return (
+        <IconButton
+          size={dimensions.ICON_SIZE_DEFAULT}
+          onPress={handleOnPress}
+          style={style}
+          color={'primary'}
+          emphasis={'medium'}
+          name={'cloud-download'} />
+      )
+    }
   }
 
   return (
@@ -178,9 +180,10 @@ export const QualityIcon = ({ handleOnPress, handleRemoveDownload, item, downloa
       onPress={handleOnPress}
       style={style}
       name={'play-circle-outline'}
-      size={itemType === 'my-episode'
-        ? 30
-        : 45
+      size={
+        itemType === 'my-episode' || variant === 'downloads'
+          ? dimensions.ICON_PLAY_DEFAULT
+          : dimensions.ICON_PLAY_BIG
       } />
   )
 }
@@ -190,7 +193,7 @@ QualityIcon.propTypes = {
   handleRemoveDownload: PropTypes.func.isRequired,
   item: PropTypes.object.isRequired,
   download: PropTypes.object,
-  variant: PropTypes.string.isRequired,
+  variant: PropTypes.oneOf(['stream', 'download', 'downloads']).isRequired,
   itemType: PropTypes.string,
   style: PropTypes.object,
 }

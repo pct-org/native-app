@@ -1,24 +1,44 @@
 import React from 'react'
 
+import withApollo from 'modules/GraphQL/withApollo'
+import { RemoveDownloadMutation, StartDownloadMutation } from 'modules/GraphQL/DownloadGraphQL'
+
 import DownloadManagerContext from './DownloadManagerContext'
 
-export default class DownloadManager extends React.Component {
+export class DownloadManager extends React.Component {
 
   state = {
-    downloads: []
+    downloads: [],
   }
 
-  handleAddDownload = (download) => {
-    const { downloads } = this.state
+  handleStartDownload = async(item, quality) => {
+    let download = this.handleGetDownload(item._id)
 
-    if (!this.handleDownloadExists(download._id)) {
+    if (!download) {
+      const { apollo } = this.props
+
+      const { data: { download: newDownload } } = await apollo.mutate({
+        variables: {
+          _id: item._id,
+          itemType: item.type,
+          quality,
+        },
+        mutation: StartDownloadMutation,
+      })
+
+      const { downloads } = this.state
+
       this.setState({
         downloads: [
           ...downloads,
-          download,
+          newDownload,
         ],
       })
+
+      download = newDownload
     }
+
+    return download
   }
 
   handleUpdateDownload = (download) => {
@@ -38,11 +58,19 @@ export default class DownloadManager extends React.Component {
     })
   }
 
-  handleRemoveDownload = (_id) => {
+  handleRemoveDownload = async(item) => {
+    const { apollo } = this.props
     const { downloads } = this.state
 
+    await apollo.mutate({
+      variables: {
+        _id: item._id,
+      },
+      mutation: RemoveDownloadMutation,
+    })
+
     this.setState({
-      downloads: downloads.filter(down => down._id !== _id),
+      downloads: downloads.filter(down => down._id !== item._id),
     })
   }
 
@@ -58,7 +86,7 @@ export default class DownloadManager extends React.Component {
 
   getValue = () => {
     return {
-      addDownload: this.handleAddDownload,
+      startDownload: this.handleStartDownload,
       updateDownload: this.handleUpdateDownload,
       removeDownload: this.handleRemoveDownload,
       getDownload: this.handleGetDownload,
@@ -77,3 +105,5 @@ export default class DownloadManager extends React.Component {
   }
 
 }
+
+export default withApollo(DownloadManager)

@@ -6,9 +6,7 @@ import * as Animatable from 'react-native-animatable'
 import { navigate } from 'modules/RootNavigation'
 import dimensions from 'modules/dimensions'
 import constants from 'modules/constants'
-import withApollo from 'modules/GraphQL/withApollo'
 import withDownloadManager from 'modules/DownloadManager/withDownloadManager'
-import { RemoveDownloadMutation, StartDownloadMutation } from 'modules/GraphQL/DownloadGraphQL'
 
 import Card from 'components/Card'
 import Typography from 'components/Typography'
@@ -46,7 +44,6 @@ const styles = StyleSheet.create({
 
 })
 
-@withApollo
 @withDownloadManager
 export default class QualitySelector extends React.Component {
 
@@ -55,12 +52,12 @@ export default class QualitySelector extends React.Component {
     variant: PropTypes.oneOf([
       constants.TYPE_STREAM,
       constants.TYPE_DOWNLOAD,
+      'downloads'
     ]),
-    apollo: PropTypes.object.isRequired,
     item: PropTypes.object.isRequired,
     itemType: PropTypes.string,
     downloadManager: PropTypes.shape({
-      addDownload: PropTypes.func.isRequired,
+      startDownload: PropTypes.func.isRequired,
       updateDownload: PropTypes.func.isRequired,
       getDownload: PropTypes.func.isRequired,
       downloadExists: PropTypes.func.isRequired,
@@ -96,7 +93,7 @@ export default class QualitySelector extends React.Component {
   state = {
     visible: false,
     download: null,
-    removed: false
+    removed: false,
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
@@ -171,24 +168,15 @@ export default class QualitySelector extends React.Component {
    * @return {Promise<void>}
    */
   handleStartDownload = async(quality) => {
-    const { apollo, item, downloadManager } = this.props
+    const { item, downloadManager } = this.props
 
-    const { data: { download } } = await apollo.mutate({
-      variables: {
-        _id: item._id,
-        itemType: item.type,
-        quality,
-      },
-      mutation: StartDownloadMutation,
-    })
+    const download = await downloadManager.startDownload(item, quality)
 
     this.setState({
       download,
       visible: false,
       removed: false,
     })
-
-    downloadManager.addDownload(download)
   }
 
   /**
@@ -197,21 +185,14 @@ export default class QualitySelector extends React.Component {
    * @return {Promise<void>}
    */
   handleRemoveDownload = async() => {
-    const { apollo, item, downloadManager } = this.props
+    const { item, downloadManager } = this.props
 
-    apollo.mutate({
-      variables: {
-        _id: item._id,
-      },
-      mutation: RemoveDownloadMutation,
-    })
+    await downloadManager.removeDownload(item)
 
     this.setState({
       download: null,
-      removed: true
+      removed: true,
     })
-
-    downloadManager.removeDownload(item._id)
   }
 
   render() {
@@ -231,50 +212,52 @@ export default class QualitySelector extends React.Component {
           handleRemoveDownload={this.handleRemoveDownload}
         />
 
-        <Modal
-          onRequestClose={this.handleRequestClose}
-          visible={visible}>
+        {variant !== 'downloads' && (
+          <Modal
+            onRequestClose={this.handleRequestClose}
+            visible={visible}>
 
-          {item && item.title && (
-            <Animatable.View
-              style={styles.itemContainer}
-              animation={'fadeIn'}
-              duration={200}
-              useNativeDriver>
-              <Card
-                item={
-                  item.type === 'movie'
-                    ? item
-                    : item.show
+            {item && item.title && (
+              <Animatable.View
+                style={styles.itemContainer}
+                animation={'fadeIn'}
+                duration={200}
+                useNativeDriver>
+                <Card
+                  item={
+                    item.type === 'movie'
+                      ? item
+                      : item.show
+                  }
+                  onPress={null}
+                />
+
+                <Typography
+                  style={styles.title}
+                  variant={'headline5'}>
+                  {item.type === 'movie'
+                    ? item.title
+                    : `${item.show.title}: ${item.title}`
+                  }
+                </Typography>
+
+              </Animatable.View>
+            )}
+
+            <Qualities
+              item={item}
+              variant={variant}
+              handleQualityPress={(torrent) => {
+                if (variant === constants.TYPE_STREAM) {
+                  this.handlePlayTorrent(torrent)
+
+                } else {
+                  this.handleStartDownload(torrent.quality)
                 }
-                onPress={null}
-              />
-
-              <Typography
-                style={styles.title}
-                variant={'headline5'}>
-                {item.type === 'movie'
-                  ? item.title
-                  : `${item.show.title}: ${item.title}`
-                }
-              </Typography>
-
-            </Animatable.View>
-          )}
-
-          <Qualities
-            item={item}
-            variant={variant}
-            handleQualityPress={(torrent) => {
-              if (variant === constants.TYPE_STREAM) {
-                this.handlePlayTorrent(torrent)
-
-              } else {
-                this.handleStartDownload(torrent.quality)
-              }
-            }}
-          />
-        </Modal>
+              }}
+            />
+          </Modal>
+        )}
       </React.Fragment>
     )
   }

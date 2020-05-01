@@ -47,5 +47,7 @@
   "Searching for GraphQL API": "GraphQL API zoeken...",
   "Could not find GraphQL API": "Kon GraphQL API niet vinden",
   "No results found": "Geen resultaten gevonden...",
-  "movies": "Films"
+  "movies": "Films",
+  "Downloaded in {{quality}}": "Gedownload in {{quality}}",
+  "Downloading in {{quality}}": "Downloading in {{quality}}"
 }

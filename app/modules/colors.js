@@ -3,6 +3,8 @@ const PRIMARY_COLOR_500 = '#FB9B42'
 
 const BACKGROUND = '#202125'
 
+const ON_SURFACE_MEDIUM = '#A0A0A0'
+
 export default {
 
   PRIMARY_COLOR_200,
@@ -11,15 +13,26 @@ export default {
 
   BACKGROUND_OVERLAY: '#000000',
   BACKGROUND_SNACKBAR: '#E0E0E0',
+  BACKGROUND_TABS: '#343538',
 
   BUTTON_PRIMARY: PRIMARY_COLOR_500,
+
+  ON_SURFACE: {
+    HIGH: '',
+    MEDIUM: ON_SURFACE_MEDIUM,
+    DISABLED: '',
+  },
 
   ICON: {
     WHITE: '#ffffff',
     PRIMARY: PRIMARY_COLOR_200,
+    SURFACE_MEDIUM: ON_SURFACE_MEDIUM,
     '01DP': '#2B2C30',
+    '02DP': '#2F3034',
+    '03DP': '#313236',
+    '04DP': '#343538',
   },
 
   STATUS_BAR_TRANSPARENT: 'rgba(0, 0, 0, 0.20)',
-  STATUS_BAR_GONE: 'rgba(0, 0, 0, 0)'
+  STATUS_BAR_GONE: 'rgba(0, 0, 0, 0)',
 }

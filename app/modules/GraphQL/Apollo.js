@@ -40,6 +40,12 @@ export default async(host) => {
             _id: args._id,
           })
         },
+        download: (_, args, { getCacheKey }) => {
+          return getCacheKey({
+            __typename: 'Download',
+            _id: args._id,
+          })
+        },
       },
     },
   })

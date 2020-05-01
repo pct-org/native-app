@@ -45,12 +45,15 @@ export const Icon = ({ style, color: colorProp, emphasis: emphasisProp, ...rest 
 
 Icon.propTypes = {
 
+  name: PropTypes.string.isRequired,
+
   color: PropTypes.oneOf([
     'white',
     'black',
     'primary',
 
     '01dp',
+    'surface_medium',
   ]),
 
   emphasis: PropTypes.oneOf([

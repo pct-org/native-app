@@ -31,6 +31,13 @@ export const styles = StyleSheet.create({
     margin: dimensions.UNIT / 2,
   },
 
+  'full-width': {
+    height: dimensions.getHeight(180),
+    width: dimensions.SCREEN_WIDTH,
+    margin: 0,
+    borderRadius: 0,
+  },
+
 })
 
 export const Card = ({
@@ -41,6 +48,8 @@ export const Card = ({
   style,
   forceOverlay,
   overlayVariant,
+  overlayWithAnimation,
+  children,
   ...rest
 }) => (
   <Container
@@ -62,11 +71,13 @@ export const Card = ({
               : item.images
           } />
 
-        {((item && item.watched && item.watched.complete) || forceOverlay) && (
+        {(item?.watched?.complete || forceOverlay) && (
           <Overlay
-            withAnimation={forceOverlay}
+            withAnimation={overlayWithAnimation}
             variant={overlayVariant} />
         )}
+
+        {children}
       </View>
     </BaseButton>
   </Container>
@@ -80,6 +91,7 @@ Card.propTypes = {
   variant: PropTypes.oneOf(['default', 'small', 'big']),
   hide: PropTypes.bool,
   overlayVariant: PropTypes.string,
+  children: PropTypes.node,
 }
 
 Card.defaultProps = {
@@ -89,8 +101,11 @@ Card.defaultProps = {
   component: BaseButton,
   elevation: 1,
   variant: 'default',
+  forceOverlay: false,
   overlayVariant: 'dark',
+  overlayWithAnimation: false,
   hide: false,
+  children: null,
 }
 
 export default Card

@@ -95,11 +95,11 @@ export default class Disclaimer extends React.Component {
   }
 
   state = {
-    accepted: false,
+    accepted: null,
     animating: false,
   }
 
-  componentWillMount() {
+  componentDidMount() {
     Settings.getItem(Settings.DISCLAIMER_ACCEPTED).then((accepted) => {
       this.setState({
         accepted: accepted && accepted === 'y',
@@ -139,7 +139,7 @@ export default class Disclaimer extends React.Component {
 
         {accepted && (children)}
 
-        {(!accepted || animating) && (
+        {(!accepted || animating) && accepted !== null && (
           <Animatable.View
             animation={!accepted
               ? 'fadeIn'

@@ -94,6 +94,7 @@ export const ShowQuery = gql`
           images {
             poster {
               thumb
+              high
             }
           }
           torrents {

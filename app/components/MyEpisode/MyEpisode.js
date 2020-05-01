@@ -82,6 +82,7 @@ export const MyEpisode = ({ item, style, empty, ...rest }) => {
               animation={'fadeIn'}
               style={styles.iconContainer}
               useNativeDriver>
+
               <QualitySelector
                 visible={showQualitySelector}
                 item={item}

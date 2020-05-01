@@ -23,6 +23,7 @@ export const IconButton = ({ onPress, onLongPress, onFocus, onBlur, animatable, 
     onLongPress={onLongPress}
     onFocus={onFocus}
     onBlur={onBlur}
+
     {...buttonProps}>
     <Animatable.View
       {...animatable}

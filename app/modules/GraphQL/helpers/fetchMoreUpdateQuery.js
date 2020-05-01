@@ -1,3 +1,5 @@
+let fetchingMore = false
+
 /**
  * Helper method for the fetchMore queries
  *
@@ -7,6 +9,13 @@
  * @return {Function}
  */
 export default (type, data, fetchMore) => () => {
+  // Make sure we are only fetching more once
+  if (fetchingMore) {
+    return
+  }
+
+  fetchingMore = true
+
   return fetchMore({
     variables: {
       offset: data[type].length,
@@ -15,6 +24,8 @@ export default (type, data, fetchMore) => () => {
       if (!fetchMoreResult || !fetchMoreResult[type]) {
         return prev
       }
+
+      fetchingMore = false
 
       return {
         [type]: [...prev[type], ...fetchMoreResult[type]],

@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import PropTypes from 'prop-types'
-import { StyleSheet, View, ActivityIndicator } from 'react-native'
+import { StyleSheet, View, ActivityIndicator, InteractionManager } from 'react-native'
 import { useMutation, useLazyQuery } from '@apollo/react-hooks'
 import Orientation from 'react-native-orientation'
 
@@ -11,22 +11,24 @@ import constants from 'modules/constants'
 import { StartStreamMutation, StopStreamMutation, DownloadQuery } from 'modules/GraphQL/DownloadGraphQL'
 
 import Typography from 'components/Typography'
+import ItemInfo from 'mobile/components/ItemInfo'
 
 import VideoAndControls from './VideoAndControls'
-import PlayingItemInfo from './PlayingItemInfo'
 import DownloadInfo from './DownloadInfo'
-import EpisodePlaying from './EpisodePlaying'
 import PlayerManager from './PlayerManager'
 
 export const Player = ({ route: { params: { item, playQuality } } }) => {
   // TODO:: Move below to PlayerManager
   useEffect(() => {
-      if (!calledStartStream) {
-        // Start the stream
-        startStream().then(() => {
-          executeQuery()
-        })
-      }
+      // Execute the query after the component is done navigation
+      InteractionManager.runAfterInteractions(() => {
+        if (!calledStartStream) {
+          // Start the stream
+          startStream().then(() => {
+            executeQuery()
+          })
+        }
+      })
 
       return () => {
         Orientation.lockToPortrait()
@@ -126,7 +128,8 @@ export const Player = ({ route: { params: { item, playQuality } } }) => {
           {(isBuffering || casting) && (
             <View style={[styles.fullScreen, styles.bufferingContainer]}>
 
-              <EpisodePlaying
+              <ItemInfo
+                style={styles.playingInfo}
                 item={item}
               />
 
@@ -188,8 +191,10 @@ export const Player = ({ route: { params: { item, playQuality } } }) => {
               url={mediaUrl}
               playOtherEpisode={playItem}>
 
-              <PlayingItemInfo
+              <ItemInfo
+                style={styles.playingInfoInPlayer}
                 item={item}
+                truncateSynopsis
               />
 
               <DownloadInfo
@@ -231,6 +236,18 @@ const styles = StyleSheet.create({
     left: 0,
     bottom: 0,
     right: 0,
+  },
+
+  playingInfo: {
+    marginRight: dimensions.UNIT * 2,
+    marginLeft: dimensions.UNIT * 2,
+  },
+
+  playingInfoInPlayer: {
+    position: 'absolute',
+    top: dimensions.UNIT * 3,
+    left: dimensions.UNIT * 4,
+    zIndex: 1000,
   },
 
 })
