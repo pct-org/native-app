@@ -138,7 +138,7 @@ export const Player = ({ route: { params: { item, playQuality } } }) => {
                 bottom: dimensions.UNIT * 5,
               })}
 
-              {!casting && (
+              {(!casting || isBuffering) && (
                 <ActivityIndicator
                   size={50}
                   style={{ marginTop: dimensions.UNIT * 5 }}

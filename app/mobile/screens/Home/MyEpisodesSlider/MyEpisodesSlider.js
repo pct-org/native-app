@@ -7,7 +7,7 @@ import MyEpisodesQuery from 'modules/GraphQL/MyEpisodesQuery'
 import EpisodesSlider from 'components/MyEpisodesSlider'
 
 export const MyEpisodesSlider = () => {
-  const { loading, data, fetchMore } = useQuery(
+  const { loading, data } = useQuery(
     MyEpisodesQuery,
     {
       variables: {
@@ -21,7 +21,6 @@ export const MyEpisodesSlider = () => {
       title={i18n.t('My Episodes')}
       items={!data || !data.episodes ? [] : data.episodes.filter(episode => !episode.watched.complete)}
       loading={loading}
-      // onEndReached={fetchMoreUpdateQuery('episodes', data, fetchMore)}
     />
   )
 }
