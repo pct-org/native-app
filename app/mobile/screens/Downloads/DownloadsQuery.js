@@ -28,6 +28,7 @@ export const DownloadsQuery = gql`
         _id
         title
         number
+        season
         synopsis
         type
         download{ 

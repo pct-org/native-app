@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { View } from 'react-native'
 
 import i18n from 'modules/i18n'
@@ -38,7 +38,9 @@ export const styles = {
   },
 }
 
-export const ItemInfo = ({ item, quality, status, variant, onPress, style, truncateSynopsis, empty }) => {
+export const ItemInfo = ({ item, quality, status, variant, style, truncateSynopsis, empty }) => {
+  const [showQualitySelector, toggleSelecting] = useState(false)
+
   return (
     <View style={[styles.root, style]}>
       {variant === 'default' && (
@@ -62,16 +64,16 @@ export const ItemInfo = ({ item, quality, status, variant, onPress, style, trunc
               ? item?.show
               : item
           }
-          onPress={onPress}
+          onPress={() => toggleSelecting(true)}
           overlayVariant={'default'}
           forceOverlay>
           {!empty && (
             <View style={styles.playIconContainer}>
               <QualitySelector
                 variant={'downloads'}
-                // visible={showQualitySelector}
+                 visible={showQualitySelector}
                 item={item}
-                // onRequestClose={() => toggleSelecting(false)}
+                 onRequestClose={() => toggleSelecting(false)}
               />
             </View>
           )}
@@ -99,7 +101,7 @@ export const ItemInfo = ({ item, quality, status, variant, onPress, style, trunc
             emphasis={'high'}
             color={'white'}
             variant={'overline'}>
-            {`${item?.number}. ${item?.title}`}
+            {`S${item?.season}E${item?.number}. ${item?.title}`}
           </Typography>
         )}
 

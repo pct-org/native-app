@@ -8,7 +8,7 @@ import { HttpLink } from 'apollo-link-http'
 import { WebSocketLink } from 'apollo-link-ws'
 import { getMainDefinition } from 'apollo-utilities'
 
-const SCHEMA_VERSION = '1' // Must be a string.
+const SCHEMA_VERSION = '2' // Must be a string.
 const SCHEMA_VERSION_KEY = 'apollo-schema-version'
 
 export default async(host) => {
@@ -43,7 +43,7 @@ export default async(host) => {
         download: (_, args, { getCacheKey }) => {
           return getCacheKey({
             __typename: 'Download',
-            _id: args._id,
+            _id: `Download-${args._id}`,
           })
         },
       },

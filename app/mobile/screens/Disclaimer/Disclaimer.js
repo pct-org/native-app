@@ -102,7 +102,7 @@ export default class Disclaimer extends React.Component {
   componentDidMount() {
     Settings.getItem(Settings.DISCLAIMER_ACCEPTED).then((accepted) => {
       this.setState({
-        accepted: accepted && accepted === 'y',
+        accepted: !!(accepted && accepted === 'y'),
       }, () => {
         if (!accepted) {
           SplashScreen.hide()

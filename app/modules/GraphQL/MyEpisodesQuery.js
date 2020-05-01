@@ -15,6 +15,7 @@ export default gql`
         images {
           poster {
             thumb
+            high
           }
         }
       }

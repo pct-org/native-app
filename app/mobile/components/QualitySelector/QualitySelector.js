@@ -52,7 +52,7 @@ export default class QualitySelector extends React.Component {
     variant: PropTypes.oneOf([
       constants.TYPE_STREAM,
       constants.TYPE_DOWNLOAD,
-      'downloads'
+      'downloads',
     ]),
     item: PropTypes.object.isRequired,
     itemType: PropTypes.string,
@@ -235,9 +235,10 @@ export default class QualitySelector extends React.Component {
                 <Typography
                   style={styles.title}
                   variant={'headline5'}>
-                  {item.type === 'movie'
-                    ? item.title
-                    : `${item.show.title}: ${item.title}`
+                  {
+                    item.type === 'movie'
+                      ? item.title
+                      : `${item.show.title}: ${item.title}`
                   }
                 </Typography>
 

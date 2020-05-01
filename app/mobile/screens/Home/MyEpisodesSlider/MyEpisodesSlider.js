@@ -1,10 +1,8 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 import { useQuery } from '@apollo/react-hooks'
 
 import i18n from 'modules/i18n'
 import MyEpisodesQuery from 'modules/GraphQL/MyEpisodesQuery'
-import fetchMoreUpdateQuery from 'modules/GraphQL/helpers/fetchMoreUpdateQuery'
 
 import EpisodesSlider from 'components/MyEpisodesSlider'
 
