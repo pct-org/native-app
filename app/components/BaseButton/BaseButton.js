@@ -7,12 +7,11 @@ export const BaseButton = ({ children, component: Component, innerRef, rippleCol
     useForeground
     ref={innerRef}
     // eslint-disable-next-line babel/new-cap
-    rippleColor={rippleColor}
-    // background={
-    //   rippleColor !== null
-    //     ? TouchableNativeFeedback.Ripple(rippleColor, true)
-    //     : null
-    // }
+    background={
+      rippleColor !== null
+        ? TouchableNativeFeedback.Ripple(rippleColor, true)
+        : null
+    }
     {...rest}>
     {children}
   </Component>
