@@ -18,7 +18,7 @@ const styles = {
   },
 
   slider: {
-    width: dimensions.SCREEN_HEIGHT - dimensions.UNIT * 14,
+    width: dimensions.SCREEN_HEIGHT - dimensions.UNIT * 20,
   },
 
   track: {

@@ -67,7 +67,9 @@ export const Home = ({ navigation }) => {
   // Filter out bookmarks, when adding then this data is updated
   const movies = noMoviesYet
     ? null
-    : moviesData.movies.filter(movie => !movie.bookmarked)
+    : moviesData.movies
+      .filter(movie => !movie.bookmarked)
+      .filter(movie => !movie.watched.complete)
 
   return (
     <ScrollViewWithStatusBar>

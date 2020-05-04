@@ -1,0 +1,1 @@
+{"__schema":{"types":[{"kind":"UNION","name":"Progress","possibleTypes":[{"name":"Movie"},{"name":"Episode"}]}]}}

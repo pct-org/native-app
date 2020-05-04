@@ -4,6 +4,7 @@ import { StyleSheet, View } from 'react-native'
 
 import dimensions from 'modules/dimensions'
 import constants from 'modules/constants'
+import colors from 'modules/colors'
 
 import Typography from 'components/Typography'
 import Overlay from 'components/Overlay'
@@ -63,11 +64,19 @@ export const styles = StyleSheet.create({
     textAlign: 'center',
   },
 
+  progress: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    backgroundColor: colors.PRIMARY_COLOR_200,
+    width: 0,
+    height: 2,
+  },
 })
 
 export const Episode = (props) => {
   const [showQualitySelector, toggleSelecting] = useState(false)
-  const { title, synopsis, number, hasAired, images, firstAired } = props
+  const { title, synopsis, number, hasAired, images, firstAired, watched } = props
 
   const getAirsDate = () => {
     const airs = new Date()
@@ -104,6 +113,13 @@ export const Episode = (props) => {
                   <Typography variant={'caption'}>
                     {getAirsDate()}
                   </Typography>
+                )}
+
+                {watched.progress > 0 && (
+                  <View style={{
+                    ...styles.progress,
+                    width: `${watched.progress || 0}%`,
+                  }} />
                 )}
               </View>
             </View>

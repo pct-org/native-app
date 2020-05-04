@@ -1,8 +1,8 @@
 import gql from 'graphql-tag'
 
 export default gql`
-  query movies($offset: Float!, $query: String, $noWatched: Boolean = true) {
-    movies(limit: 25, offset: $offset, noWatched: $noWatched, query: $query) {
+  query movies($offset: Float!, $query: String) {
+    movies(limit: 25, offset: $offset, query: $query) {
       _id
       __typename
       title

@@ -1,16 +1,15 @@
-import Typography from 'components/Typography'
 import React, { useEffect } from 'react'
 import { StyleSheet, View, InteractionManager, Linking } from 'react-native'
 import { useLazyQuery } from '@apollo/react-hooks'
 import Orientation from 'react-native-orientation'
 
-import colors from 'modules/colors'
 import dimensions from 'modules/dimensions'
 import constants from 'modules/constants'
 
 import Container from 'components/Container'
 import ScrollViewWithStatusBar from 'components/ScrollViewWithStatusBar'
 import IconButton from 'components/IconButton'
+import Typography from 'components/Typography'
 import QualitySelector from 'mobile/components/QualitySelector'
 import MainCover from 'mobile/components/MainCover'
 
@@ -18,6 +17,7 @@ import { MovieQuery, ShowQuery } from './ItemGraphQL'
 
 import Bookmarked from './Bookmarked'
 import SeasonsAndEpisodes from './SeasonsAndEpisodes'
+import WatchedBar from './WatchedBar'
 
 const styles = StyleSheet.create({
 
@@ -50,6 +50,7 @@ const styles = StyleSheet.create({
     marginLeft: dimensions.UNIT * 2,
     marginRight: dimensions.UNIT * 2,
   },
+
 })
 
 export const Item = ({ route: { params } }) => {
@@ -133,6 +134,8 @@ export const Item = ({ route: { params } }) => {
           )}
         </View>
 
+        <WatchedBar item={item} />
+
         {/*  /!*{!loading && item.type === constants.TYPE_MOVIE && (*!/*/}
         {/*  /!*  <IconButton*!/*/}
         {/*  /!*    animatable={{*!/*/}
@@ -151,13 +154,11 @@ export const Item = ({ route: { params } }) => {
         {/*  /!*  </IconButton>*!/*/}
         {/*  /!*)}*!/*/}
 
-        {item && (
-          <View style={styles.synopsis}>
-            <Typography variant={'body2'}>
-              {item.synopsis}
-            </Typography>
-          </View>
-        )}
+        <View style={styles.synopsis}>
+          <Typography variant={'body2'}>
+            {item?.synopsis}
+          </Typography>
+        </View>
 
         {item && item.type === constants.TYPE_SHOW && item.seasons.length > 0 && (
           <SeasonsAndEpisodes

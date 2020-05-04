@@ -122,7 +122,7 @@ export const Player = ({ route: { params: { item, playQuality } } }) => {
       isBuffering={isBuffering}
       style={styles.root}>
 
-      {({ casting, renderCastButton, mediaUrl, setProgress }) => (
+      {({ casting, renderCastButton, mediaUrl, setProgress, startPosition }) => (
         <React.Fragment>
           {(isBuffering || casting) && (
             <View style={[styles.fullScreen, styles.bufferingContainer]}>
@@ -188,6 +188,7 @@ export const Player = ({ route: { params: { item, playQuality } } }) => {
             <VideoAndControls
               item={item}
               url={mediaUrl}
+              startPosition={startPosition}
               setProgress={setProgress}
               playOtherEpisode={playItem}>
 
@@ -202,8 +203,8 @@ export const Player = ({ route: { params: { item, playQuality } } }) => {
               />
 
               {renderCastButton({
-                right: dimensions.UNIT * 12,
-                bottom: dimensions.UNIT * 2,
+                right: dimensions.UNIT * 10,
+                bottom: dimensions.UNIT * 2.4,
               })}
 
             </VideoAndControls>

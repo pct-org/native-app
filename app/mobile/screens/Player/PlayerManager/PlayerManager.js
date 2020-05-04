@@ -4,6 +4,8 @@ import { StyleSheet, View } from 'react-native'
 import GoogleCast, { CastButton } from 'react-native-google-cast'
 import Orientation from 'react-native-orientation'
 
+import withApollo from 'modules/GraphQL/withApollo'
+import { progrssMutation } from 'modules/GraphQL/ProgressGraphQL'
 import withIpFinder from 'modules/IpFinder/withIpFinder'
 import dimensions from 'modules/dimensions'
 import colors from 'modules/colors'
@@ -26,6 +28,7 @@ const styles = StyleSheet.create({
 })
 
 @withIpFinder
+@withApollo
 export default class PlayerManager extends React.Component {
 
   constructor(props) {
@@ -37,6 +40,7 @@ export default class PlayerManager extends React.Component {
       mediaUrl: `http://${ipFinder.host}/watch/${item._id}`,
       progress: 0,
       casting: false,
+      lastProgressSend: 0,
     }
   }
 
@@ -137,12 +141,42 @@ export default class PlayerManager extends React.Component {
   }
 
   handleSetProgress = ({ currentTime, duration, progress }) => {
+    const { lastProgressSend } = this.state
+
+    let newLastProgressSend = lastProgressSend
+
+    // We don't want to spam the graph api
+    if ((lastProgressSend + 0.001) < progress) {
+      const progressToSend = parseFloat(`${progress * 100}`).toFixed(2)
+
+      newLastProgressSend = progress
+
+      // After 95 we don't update anymore
+      if (progressToSend > 95) {
+        newLastProgressSend = 100
+      }
+
+      this.doProgressUpdateMutation(progressToSend)
+    }
+
     this.setState({
       currentTime,
       duration,
       progress,
-    }, () => {
-      // console.log('progress',progress)
+      lastProgressSend: newLastProgressSend,
+    })
+  }
+
+  doProgressUpdateMutation = async(progress) => {
+    const { apollo, item } = this.props
+
+    await apollo.mutate({
+      variables: {
+        _id: item._id,
+        type: item.type,
+        progress: parseFloat(progress),
+      },
+      mutation: progrssMutation,
     })
   }
 
@@ -157,7 +191,7 @@ export default class PlayerManager extends React.Component {
   }
 
   render() {
-    const { style, children } = this.props
+    const { style, children, item } = this.props
     const { casting, mediaUrl } = this.state
 
     return (
@@ -166,6 +200,9 @@ export default class PlayerManager extends React.Component {
         {children({
           casting,
           mediaUrl,
+          startPosition: item.watched.progress === 100
+          ? 0
+          : item.watched.progress,
           renderCastButton: this.renderCastButton,
           setProgress: this.handleSetProgress,
         })}

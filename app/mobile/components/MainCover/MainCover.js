@@ -141,6 +141,7 @@ export const MainCover = ({ empty, item, handleItemOpen }) => {
           style={styles.poster}
           empty={empty}
           item={item}
+          overlayAllowed={false}
           onPress={() => {
             if (!empty && handleItemOpen) {
               handleItemOpen(item)

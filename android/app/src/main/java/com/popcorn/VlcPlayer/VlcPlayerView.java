@@ -258,9 +258,6 @@ public class VlcPlayerView extends FrameLayout implements
       mMediaPlayer.pause();
 
     } else {
-      Log.d("TYCHO", "go to " + pos);
-      Log.d("TYCHO", "length is " + mMediaPlayer.getLength());
-      Log.d("TYCHO", "check " + mMediaPlayer.isSeekable());
       mMediaPlayer.setTime((long) pos);
     }
   }

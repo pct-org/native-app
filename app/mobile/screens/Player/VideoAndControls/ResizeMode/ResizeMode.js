@@ -40,7 +40,7 @@ export const ResizeMode = ({ activeMode, changeResizeMode, toggleControls }) => 
         }}
         name={'cellphone-screenshot'}
         color={'primary'}
-        size={dimensions.ICON_SIZE_DEFAULT}>
+        size={dimensions.ICON_SIZE_MEDIUM}>
         {activeMode}
       </IconButton>
 

@@ -12,6 +12,46 @@ import SeekBar from './SeekBar'
 
 const { height: windowHeight, width: windowWidth } = Dimensions.get('window')
 
+const styles = StyleSheet.create({
+
+  listContainer: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    bottom: 0,
+    right: 0,
+    zIndex: 1000,
+  },
+
+  contentContainerStyle: {
+    flexGrow: 1,
+    flex: 1,
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+  },
+
+  video: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    bottom: 0,
+    right: 0,
+    zIndex: 800,
+  },
+
+  slider: {
+    position: 'absolute',
+    left: 16,
+    bottom: 64,
+    right: 16,
+    zIndex: 1001,
+  },
+
+})
+
+
 export class VideoAndControls extends React.Component {
 
   scrollViewRef
@@ -37,12 +77,13 @@ export class VideoAndControls extends React.Component {
       paused: false,
       resizeMode: 'contain', // 'contain', 'cover', null, 'stretch'
 
-      currentTime: props.currentTime || 0,
+      currentTime: 0,
     }
   }
 
   componentDidMount() {
     Orientation.addOrientationListener(this.handleOrientationChange)
+    Orientation.lockToLandscape()
 
     this.toggleControls()
   }
@@ -172,18 +213,16 @@ export class VideoAndControls extends React.Component {
   }
 
   handleOnPlaying = ({ duration }) => {
-    const { currentTime } = this.state
+    const { startPosition } = this.props
 
     this.setState({
       duration,
       loading: false,
       isFirstAnimation: false,
     }, () => {
-      if (currentTime > 0) {
-        this.videoRef.seek(currentTime)
+      if (startPosition > 0) {
+        this.videoRef.seek((duration / 100) * startPosition)
       }
-
-      Orientation.lockToLandscape()
     })
   }
 
@@ -200,7 +239,7 @@ export class VideoAndControls extends React.Component {
       setProgress({
         currentTime,
         duration,
-        progress
+        progress,
       })
     })
   }
@@ -253,7 +292,7 @@ export class VideoAndControls extends React.Component {
     const { url, children, forcePaused } = this.props
     const { isPortrait, resizeMode } = this.state
     const { showControls, paused } = this.state
-    const { currentTime, duration, progress, } = this.state
+    const { currentTime, duration, progress } = this.state
 
     return (
       <React.Fragment>
@@ -275,7 +314,7 @@ export class VideoAndControls extends React.Component {
           />
         )}
 
-        {!isPortrait && (
+        {!isPortrait && duration && (
           <Animatable.View
             style={[styles.listContainer]}
             animation={showControls ? 'fadeIn' : 'fadeOut'}
@@ -351,45 +390,5 @@ export class VideoAndControls extends React.Component {
     )
   }
 }
-
-const styles = StyleSheet.create({
-
-  listContainer: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    bottom: 0,
-    right: 0,
-    zIndex: 1000,
-  },
-
-  contentContainerStyle: {
-    flexGrow: 1,
-    flex: 1,
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-  },
-
-  video: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    bottom: 0,
-    right: 0,
-    zIndex: 800,
-  },
-
-  slider: {
-    position: 'absolute',
-    left: 16,
-    bottom: 64,
-    right: 16,
-    zIndex: 1001,
-  },
-
-})
-
 
 export default VideoAndControls

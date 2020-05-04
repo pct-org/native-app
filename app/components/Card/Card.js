@@ -49,6 +49,7 @@ export const Card = ({
   forceOverlay,
   overlayVariant,
   overlayWithAnimation,
+  overlayAllowed,
   children,
   ...rest
 }) => (
@@ -71,7 +72,7 @@ export const Card = ({
               : item.images
           } />
 
-        {(item?.watched?.complete || forceOverlay) && (
+        {(item?.watched?.complete || forceOverlay) && overlayAllowed && (
           <Overlay
             withAnimation={overlayWithAnimation}
             variant={overlayVariant} />
@@ -102,6 +103,7 @@ Card.defaultProps = {
   elevation: 1,
   variant: 'default',
   forceOverlay: false,
+  overlayAllowed: true,
   overlayVariant: 'dark',
   overlayWithAnimation: false,
   hide: false,

@@ -45,6 +45,7 @@ export const ItemInfo = ({ item, quality, status, variant, style, truncateSynops
     <View style={[styles.root, style]}>
       {variant === 'default' && (
         <Card
+          overlayAllowed={false}
           elevation={0}
           empty={empty}
           item={

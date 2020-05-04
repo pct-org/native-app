@@ -56,5 +56,6 @@
   "Status: {{status}}": "Status: {{status}}",
   "Uptime: {{uptime}}": "Uptime: {{uptime}}",
   "Last updated: {{update}}": "Last updated: {{update}}",
-  "Next update: {{update}}": "Next update: {{update}}"
+  "Next update: {{update}}": "Next update: {{update}}",
+  "Watched: {{percentage}}%": "Watched: {{percentage}}%"
 }
