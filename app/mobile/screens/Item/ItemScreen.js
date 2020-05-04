@@ -8,6 +8,7 @@ import colors from 'modules/colors'
 import dimensions from 'modules/dimensions'
 import constants from 'modules/constants'
 
+import Container from 'components/Container'
 import ScrollViewWithStatusBar from 'components/ScrollViewWithStatusBar'
 import IconButton from 'components/IconButton'
 import QualitySelector from 'mobile/components/QualitySelector'
@@ -22,7 +23,6 @@ const styles = StyleSheet.create({
 
   root: {
     flex: 1,
-    backgroundColor: colors.BACKGROUND,
   },
 
   iconsContainer: {
@@ -90,7 +90,7 @@ export const Item = ({ route: { params } }) => {
   }
 
   return (
-    <View style={styles.root}>
+    <Container style={styles.root}>
 
       <ScrollViewWithStatusBar>
 
@@ -167,7 +167,7 @@ export const Item = ({ route: { params } }) => {
 
       </ScrollViewWithStatusBar>
 
-    </View>
+    </Container>
   )
 }
 

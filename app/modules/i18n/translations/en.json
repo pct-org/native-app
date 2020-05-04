@@ -49,5 +49,12 @@
   "No results found": "No results found...",
   "movies": "Movies",
   "Downloading in {{quality}}": "Downloading in {{quality}}",
-  "Downloaded in {{quality}}": "Downloaded in {{quality}}"
+  "Downloaded in {{quality}}": "Downloaded in {{quality}}",
+  "Version: {{version}}": "Version: {{version}}",
+  "Movies: {{movies}}": "Movies: {{movies}}",
+  "Shows: {{shows}}": "Shows: {{shows}}",
+  "Status: {{status}}": "Status: {{status}}",
+  "Uptime: {{uptime}}": "Uptime: {{uptime}}",
+  "Last updated: {{update}}": "Last updated: {{update}}",
+  "Next update: {{update}}": "Next update: {{update}}"
 }

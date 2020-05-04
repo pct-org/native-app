@@ -14,9 +14,11 @@ import ScrollViewWithStatusBar from 'components/ScrollViewWithStatusBar'
 
 import Container from 'components/Container'
 import MainCover from 'mobile/components/MainCover'
+
 import ShowsSlider from './ShowsSlider'
 import BookmarksSlider from './BookmarksSlider'
 import MyEpisodesSlider from './MyEpisodesSlider'
+import SettingsIcon from './SettingsIcon'
 
 export const styles = StyleSheet.create({
 
@@ -79,6 +81,8 @@ export const Home = ({ navigation }) => {
             ? null
             : movies[0]
           } />
+
+        <SettingsIcon />
 
         <BookmarksSlider
           handleGoTo={handleGoTo}

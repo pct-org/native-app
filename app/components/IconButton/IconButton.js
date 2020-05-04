@@ -3,6 +3,8 @@ import PropTypes from 'prop-types'
 import { StyleSheet } from 'react-native'
 import * as Animatable from 'react-native-animatable'
 
+import dimensions from 'modules/dimensions'
+
 import BaseButton from '../BaseButton'
 import Typography from '../Typography'
 import Icon from '../Icon'
@@ -51,6 +53,7 @@ IconButton.propTypes = {
   children: PropTypes.string,
   buttonProps: PropTypes.object,
   animatable: PropTypes.object,
+  size: PropTypes.number,
 }
 
 IconButton.defaultProps = {
@@ -61,6 +64,7 @@ IconButton.defaultProps = {
   animatableStyle: {},
   onFocus: null,
   onBlur: null,
+  size: dimensions.ICON_SIZE_DEFAULT
 }
 
 export default IconButton

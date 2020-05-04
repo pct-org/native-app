@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import RNIcon from 'react-native-vector-icons/MaterialCommunityIcons'
 
 import colors from 'modules/colors'
+import dimensions from 'modules/dimensions'
 
 export const styles = {
 
@@ -63,11 +64,14 @@ Icon.propTypes = {
   ]),
 
   style: PropTypes.object,
+
+  size: PropTypes.number,
 }
 
 Icon.defaultProps = {
   emphasis: 'high',
   color: 'white',
+  size: dimensions.ICON_SIZE_DEFAULT
 }
 
 

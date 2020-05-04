@@ -49,5 +49,12 @@
   "No results found": "Geen resultaten gevonden...",
   "movies": "Films",
   "Downloaded in {{quality}}": "Gedownload in {{quality}}",
-  "Downloading in {{quality}}": "Downloading in {{quality}}"
+  "Downloading in {{quality}}": "Downloading in {{quality}}",
+  "Version: {{version}}": "Versie: {{version}}",
+  "Movies: {{movies}}": "Films: {{movies}}",
+  "Shows: {{shows}}": "Series: {{shows}}",
+  "Status: {{status}}": "Status: {{status}}",
+  "Uptime: {{uptime}}": "Uptime: {{uptime}}",
+  "Last updated: {{update}}": "Laatste update: {{update}}",
+  "Next update: {{update}}": "Volgende update: {{update}}"
 }

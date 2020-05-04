@@ -98,11 +98,12 @@ export const MainCover = ({ empty, item, handleItemOpen }) => {
 
   return (
     <View style={styles.mainContainer}>
-      <BaseButton onPress={() => {
-        if (item && item.type === constants.TYPE_MOVIE) {
-          toggleSelecting(!showQualitySelector)
-        }
-      }}>
+      <BaseButton
+        onPress={() => {
+          if (item && item.type === constants.TYPE_MOVIE) {
+            toggleSelecting(!showQualitySelector)
+          }
+        }}>
         <View style={styles.backgroundContainer}>
 
           <Image
@@ -130,10 +131,8 @@ export const MainCover = ({ empty, item, handleItemOpen }) => {
                 item={item}
                 visible={showQualitySelector}
                 onRequestClose={() => toggleSelecting(false)} />
-
             </Animatable.View>
           )}
-
         </View>
       </BaseButton>
 
