@@ -4,6 +4,10 @@ import { StyleSheet, View, requireNativeComponent, NativeModules, StatusBar } fr
 
 export default class VlcPLayer extends React.Component {
 
+  componentWillUnmount() {
+    StatusBar.setHidden(false)
+  }
+
   setNativeProps(nativeProps) {
     this._root.setNativeProps(nativeProps)
   }
