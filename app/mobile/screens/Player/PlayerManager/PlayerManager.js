@@ -35,7 +35,7 @@ export default class PlayerManager extends React.Component {
 
     this.state = {
       mediaUrl: `http://${ipFinder.host}/watch/${item._id}`,
-      currentTime: 0,
+      progress: 0,
       casting: false,
     }
   }
@@ -43,9 +43,9 @@ export default class PlayerManager extends React.Component {
   componentDidMount() {
     GoogleCast.EventEmitter.addListener(GoogleCast.SESSION_STARTED, this.handleCastSessionStarted)
     GoogleCast.EventEmitter.addListener(GoogleCast.SESSION_ENDED, this.handleCastSessionEnded)
-    GoogleCast.EventEmitter.addListener(GoogleCast.MEDIA_PLAYBACK_STARTED, this.handleMediaPlaybackStarted)
-    GoogleCast.EventEmitter.addListener(GoogleCast.MEDIA_PROGRESS_UPDATED, this.handleMediaProgressUpdate)
-    GoogleCast.EventEmitter.addListener(GoogleCast.MEDIA_PLAYBACK_ENDED, this.handleMediaPlaybackEnded)
+    GoogleCast.EventEmitter.addListener(GoogleCast.MEDIA_PLAYBACK_STARTED, this.handleCastMediaPlaybackStarted)
+    GoogleCast.EventEmitter.addListener(GoogleCast.MEDIA_PROGRESS_UPDATED, this.handleCastMediaProgressUpdate)
+    GoogleCast.EventEmitter.addListener(GoogleCast.MEDIA_PLAYBACK_ENDED, this.handleCastMediaPlaybackEnded)
 
     GoogleCast.getCastState().then((state) => {
       if (state.toLowerCase() === 'connected') {
@@ -120,25 +120,29 @@ export default class PlayerManager extends React.Component {
     })
   }
 
-  handleMediaPlaybackStarted = () => {
-    const { currentTime } = this.state
+  handleCastMediaPlaybackStarted = () => {
+    const { progress } = this.state
 
-    if (currentTime) {
-      GoogleCast.seek(currentTime)
+    if (progress) {
+      GoogleCast.seek(progress)
     }
   }
 
-  handleMediaPlaybackEnded = (...a) => {
+  handleCastMediaPlaybackEnded = (...a) => {
     console.log('handleMediaPlaybackEnded', a)
   }
 
-  handleMediaProgressUpdate = (...a) => {
+  handleCastMediaProgressUpdate = (...a) => {
     console.log('handleMediaProgressUpdate', a)
   }
 
-  handleSetCurrentTime = (currentTime) => {
+  handleSetProgress = ({ currentTime, duration, progress }) => {
     this.setState({
       currentTime,
+      duration,
+      progress,
+    }, () => {
+      // console.log('progress',progress)
     })
   }
 
@@ -163,7 +167,7 @@ export default class PlayerManager extends React.Component {
           casting,
           mediaUrl,
           renderCastButton: this.renderCastButton,
-          setCurrentTime: this.handleSetCurrentTime,
+          setProgress: this.handleSetProgress,
         })}
 
       </View>

@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.SurfaceView;
 import android.view.View;
@@ -15,9 +16,7 @@ import android.widget.FrameLayout;
 
 import androidx.core.content.ContextCompat;
 
-import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.LifecycleEventListener;
-import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.uimanager.ThemedReactContext;
 
 import org.videolan.libvlc.IVLCVout;
@@ -252,12 +251,18 @@ public class VlcPlayerView extends FrameLayout implements
     releasePlayer();
   }
 
-  public void seek(float seek) {
-    WritableMap event = Arguments.createMap();
-    // event.putDouble(EVENT_PROP_CURRENT_TIME, mMediaPlayer.getTime());
-    // event.putDouble(EVENT_PROP_SEEK_TIME, seek);
-    // mEventEmitter.receiveEvent(getId(), Events.EVENT_SEEK.toString(), event);
-    mMediaPlayer.setTime((long) (mMediaPlayer.getLength() * seek));
+  public void seek(long pos) {
+    if (!mMediaPlayer.isPlaying()) {
+      mMediaPlayer.play(); //otherwise not seekable for some silly reason
+      mMediaPlayer.setTime((long) pos);
+      mMediaPlayer.pause();
+
+    } else {
+      Log.d("TYCHO", "go to " + pos);
+      Log.d("TYCHO", "length is " + mMediaPlayer.getLength());
+      Log.d("TYCHO", "check " + mMediaPlayer.isSeekable());
+      mMediaPlayer.setTime((long) pos);
+    }
   }
 
   public void setVolume(int volume) {

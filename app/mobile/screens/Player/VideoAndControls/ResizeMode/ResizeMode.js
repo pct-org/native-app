@@ -5,8 +5,6 @@ import { View } from 'react-native'
 import dimensions from 'modules/dimensions'
 import IconButton from 'components/IconButton'
 
-const ICON_SIZE = dimensions.UNIT * 4
-
 export const ResizeMode = ({ activeMode, changeResizeMode, toggleControls }) => {
   const getNextMode = () => {
     if (activeMode === 'contain') {
@@ -23,11 +21,10 @@ export const ResizeMode = ({ activeMode, changeResizeMode, toggleControls }) => 
     <View
       style={{
         position: 'absolute',
-        width: ICON_SIZE + dimensions.UNIT * 2,
-        height: ICON_SIZE,
         zIndex: 2000,
+        width: dimensions.ICON_SIZE_MEDIUM + dimensions.UNIT,
         right: dimensions.UNIT * 5,
-        bottom: dimensions.UNIT * 5,
+        bottom: dimensions.UNIT * 2,
       }}
       pointerEvents={'box-none'}>
 
@@ -43,7 +40,7 @@ export const ResizeMode = ({ activeMode, changeResizeMode, toggleControls }) => 
         }}
         name={'cellphone-screenshot'}
         color={'primary'}
-        size={ICON_SIZE}>
+        size={dimensions.ICON_SIZE_DEFAULT}>
         {activeMode}
       </IconButton>
 

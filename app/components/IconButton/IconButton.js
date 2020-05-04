@@ -17,6 +17,9 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
   },
 
+  text: {
+    marginTop: -(dimensions.UNIT / 2)
+  }
 })
 
 export const IconButton = ({ onPress, onLongPress, onFocus, onBlur, animatable, animatableStyle, buttonProps, children, ...rest }) => (
@@ -36,7 +39,8 @@ export const IconButton = ({ onPress, onLongPress, onFocus, onBlur, animatable, 
 
       {children && (
         <Typography
-          variant={'caption'}
+          style={styles.text}
+          variant={'captionSmall'}
           emphasis={'medium'}>
           {children}
         </Typography>

@@ -8,6 +8,7 @@ import Overlay from 'components/Overlay'
 
 import PlayPauseIcon from './PlayPauseIcon'
 import ResizeMode from './ResizeMode'
+import SeekBar from './SeekBar'
 
 const { height: windowHeight, width: windowWidth } = Dimensions.get('window')
 
@@ -112,15 +113,11 @@ export class VideoAndControls extends React.Component {
   }
 
   onSliderPositionChange = (position) => {
-    this.handlePauseVideo()
-
     this.setState({
       progress: position,
 
     }, () => {
-      const { duration } = this.state
-
-      this.videoRef.seek(duration / position)
+      this.videoRef.seek(position)
     })
   }
 
@@ -191,10 +188,20 @@ export class VideoAndControls extends React.Component {
   }
 
   handleOnProgress = ({ currentTime, duration }) => {
+    const { setProgress } = this.props
+
+    const progress = parseFloat(((currentTime / 1000) / (duration / 1000)), 10)
+
     this.setState({
       currentTime,
       duration,
-      progress: parseInt(`${(parseInt(currentTime) / parseInt(duration)) * 100}`),
+      progress,
+    }, () => {
+      setProgress({
+        currentTime,
+        duration,
+        progress
+      })
     })
   }
 
@@ -244,8 +251,9 @@ export class VideoAndControls extends React.Component {
 
   render() {
     const { url, children, forcePaused } = this.props
-    const { isPortrait, resizeMode, progress } = this.state
+    const { isPortrait, resizeMode } = this.state
     const { showControls, paused } = this.state
+    const { currentTime, duration, progress, } = this.state
 
     return (
       <React.Fragment>
@@ -285,6 +293,13 @@ export class VideoAndControls extends React.Component {
               activeMode={resizeMode}
               changeResizeMode={this.handleResizeModeChange}
               toggleControls={this.toggleControls}
+            />
+
+            <SeekBar
+              currentTime={currentTime}
+              duration={duration}
+              progress={progress}
+              onSeek={this.onSliderPositionChange}
             />
 
             {children}

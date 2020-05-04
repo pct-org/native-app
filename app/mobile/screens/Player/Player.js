@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react'
-import PropTypes from 'prop-types'
 import { StyleSheet, View, ActivityIndicator, InteractionManager } from 'react-native'
 import { useMutation, useLazyQuery } from '@apollo/react-hooks'
 import Orientation from 'react-native-orientation'
@@ -123,7 +122,7 @@ export const Player = ({ route: { params: { item, playQuality } } }) => {
       isBuffering={isBuffering}
       style={styles.root}>
 
-      {({ casting, renderCastButton, mediaUrl }) => (
+      {({ casting, renderCastButton, mediaUrl, setProgress }) => (
         <React.Fragment>
           {(isBuffering || casting) && (
             <View style={[styles.fullScreen, styles.bufferingContainer]}>
@@ -189,6 +188,7 @@ export const Player = ({ route: { params: { item, playQuality } } }) => {
             <VideoAndControls
               item={item}
               url={mediaUrl}
+              setProgress={setProgress}
               playOtherEpisode={playItem}>
 
               <ItemInfo
@@ -202,8 +202,8 @@ export const Player = ({ route: { params: { item, playQuality } } }) => {
               />
 
               {renderCastButton({
-                right: dimensions.UNIT * 14,
-                bottom: dimensions.UNIT * 4,
+                right: dimensions.UNIT * 12,
+                bottom: dimensions.UNIT * 2,
               })}
 
             </VideoAndControls>
