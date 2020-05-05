@@ -229,7 +229,10 @@ export class VideoAndControls extends React.Component {
   handleOnProgress = ({ currentTime, duration }) => {
     const { setProgress } = this.props
 
-    const progress = parseFloat(((currentTime / 1000) / (duration / 1000)), 10)
+    const currentTimeSeconds = currentTime / 1000
+    const durationSeconds = duration / 1000
+
+    const progress = parseFloat((currentTimeSeconds / durationSeconds), 10)
 
     this.setState({
       currentTime,
@@ -237,8 +240,8 @@ export class VideoAndControls extends React.Component {
       progress,
     }, () => {
       setProgress({
-        currentTime,
-        duration,
+        currentTime: currentTimeSeconds,
+        duration: durationSeconds,
         progress,
       })
     })

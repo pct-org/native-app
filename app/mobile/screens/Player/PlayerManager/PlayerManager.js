@@ -41,6 +41,9 @@ export default class PlayerManager extends React.Component {
       progress: 0,
       casting: false,
       lastProgressSend: 0,
+      startPosition: item.watched.progress === 100
+        ? 0
+        : item.watched.progress,
     }
   }
 
@@ -94,7 +97,7 @@ export default class PlayerManager extends React.Component {
       GoogleCast.castMedia({
         title: (
           item.type === 'episode'
-            ? `${item.show.title}: ${item.number}. ${item.title}`
+            ? `${item.show.title}: ${item.title}`
             : item.title
         ),
         subtitle: item.synopsis,
@@ -108,27 +111,30 @@ export default class PlayerManager extends React.Component {
   }
 
   handleCastSessionStarted = () => {
+    const { progress } = this.state
+
     this.setState({
       casting: true,
+      startPosition: parseFloat(`${progress * 100}`).toFixed(2),
     }, () => {
       this.handleStartCasting(true)
     })
   }
 
   handleCastSessionEnded = (error) => {
-    // TODO:: Check what the error is and maybe then add the device flag?
-    console.log('handleCastSessionEnded', error)
+    const { progress } = this.state
 
     this.setState({
       casting: false,
+      startPosition: parseFloat(`${progress * 100}`).toFixed(2),
     })
   }
 
-  handleCastMediaPlaybackStarted = () => {
-    const { progress } = this.state
+  handleCastMediaPlaybackStarted = ({ mediaStatus}) => {
+    const { startPosition } = this.state
 
-    if (progress) {
-      GoogleCast.seek(progress)
+    if (mediaStatus?.streamDuration && startPosition) {
+      GoogleCast.seek(mediaStatus?.streamDuration * (startPosition / 100))
     }
   }
 
@@ -136,8 +142,10 @@ export default class PlayerManager extends React.Component {
     console.log('handleMediaPlaybackEnded', a)
   }
 
-  handleCastMediaProgressUpdate = (...a) => {
-    console.log('handleMediaProgressUpdate', a)
+  handleCastMediaProgressUpdate = ({ mediaProgress: { duration, progress: currentTime } }) => {
+    const progress = parseFloat((currentTime / duration), 10)
+
+    this.handleSetProgress({ currentTime, duration, progress })
   }
 
   handleSetProgress = ({ currentTime, duration, progress }) => {
@@ -191,8 +199,8 @@ export default class PlayerManager extends React.Component {
   }
 
   render() {
-    const { style, children, item } = this.props
-    const { casting, mediaUrl } = this.state
+    const { style, children } = this.props
+    const { casting, mediaUrl, startPosition } = this.state
 
     return (
       <View style={style}>
@@ -200,9 +208,7 @@ export default class PlayerManager extends React.Component {
         {children({
           casting,
           mediaUrl,
-          startPosition: item.watched.progress === 100
-          ? 0
-          : item.watched.progress,
+          startPosition,
           renderCastButton: this.renderCastButton,
           setProgress: this.handleSetProgress,
         })}
