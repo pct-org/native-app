@@ -8,7 +8,7 @@ import i18n from 'modules/i18n'
 import colors from 'modules/colors'
 import dimensions from 'modules/dimensions'
 
-import Logo from 'images/logo.png'
+import Logo from 'assets/images/logo.png'
 
 import Typography from '../Typography'
 import Button from '../Button'

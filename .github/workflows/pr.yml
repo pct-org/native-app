@@ -1,0 +1,24 @@
+name: PR
+
+on: [pull_request]
+
+jobs:
+  pr:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v1
+
+      - name: Use Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: 10.x
+
+      - name: Install dependencies
+        run: yarn
+
+      - name: Check Linting
+        run: yarn lint
+
+      - name: Run unit tests
+        run: yarn test:coverage

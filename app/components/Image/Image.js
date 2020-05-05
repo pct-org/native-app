@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { Image as RnImage, StyleSheet } from 'react-native'
 
-import posterHolderImage from 'images/posterholder.png'
+import posterHolderImage from 'assets/images/posterholder.png'
 
 const styles = StyleSheet.create({
 

@@ -7,19 +7,23 @@
     "url": "https://github.com/pct-org/native-app.git"
   },
   "scripts": {
-    "prebuild": "react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle",
     "build-and-install": "yarn build:prod && yarn install-on-device:prod",
     "build-and-install:dev": "yarn build:dev && yarn install-on-device:dev",
     "build:dev": "cd android && ./gradlew assembleDev && cd ../",
     "build:prod": "cd android && ./gradlew assembleProd && cd ../",
+    "postinstall": "npx jetify",
     "install-on-device:dev": "adb install -r ./android/app/build/outputs/apk/dev/release/app-dev-release.apk",
     "install-on-device:prod": "adb install -r ./android/app/build/outputs/apk/prod/release/app-prod-release.apk",
     "lint": "eslint ./app/**/*.js",
     "lint:fix": "yarn lint --fix",
+    "prebuild": "react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle",
     "start": "react-native start",
     "start:android": "react-native run-android --variant=devDebug",
-    "test": "jest",
-    "postinstall": "npx jetify"
+    "test": "jest --verbose",
+    "test:config": "jest --c jest.config.js",
+    "test:coverage": "yarn test --coverage",
+    "test:update": "yarn test --coverage --updateSnapshot",
+    "test:watch": "yarn test --watch"
   },
   "dependencies": {
     "@apollo/react-common": "3.1.4",
@@ -81,6 +85,8 @@
     "@commitlint/config-conventional": "8.3.4",
     "babel-eslint": "10.1.0",
     "babel-plugin-module-resolver": "4.0.0",
+    "enzyme": "^3.11.0",
+    "enzyme-adapter-react-16": "^1.15.2",
     "eslint": "6.8.0",
     "eslint-config-airbnb": "18.1.0",
     "eslint-config-standard": "14.1.1",
@@ -95,12 +101,12 @@
     "eslint-plugin-standard": "4.0.1",
     "get-dev-paths": "^0.1.1",
     "husky": "4.2.5",
-    "jest": "25.5.3",
+    "jest": "^26.0.1",
+    "jest-enzyme": "^7.1.2",
     "jest-react-native": "^18.0.0",
     "metro-react-native-babel-preset": "0.59.0",
+    "mock-async-storage": "^2.2.0",
+    "react-dom": "^16.13.1",
     "react-test-renderer": "16.13.1"
-  },
-  "jest": {
-    "preset": "react-native"
   }
 }
