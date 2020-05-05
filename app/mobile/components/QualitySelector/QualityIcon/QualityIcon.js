@@ -134,6 +134,7 @@ export const QualityIcon = ({ handleOnPress, handleRemoveDownload, item, downloa
                constants.STATUS_QUEUED,
                constants.STATUS_CONNECTING,
                constants.STATUS_COMPLETE,
+               constants.STATUS_FAILED,
              ].indexOf(download.status) > -1 && (
                <Icon
                  size={dimensions.ICON_SIZE_DEFAULT}
