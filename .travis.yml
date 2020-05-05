@@ -1,6 +1,13 @@
 language: android
+dist: trusty
+android:
+  components:
+    - build-tools-26.0.2
+    - android-26
+    - extra
 
 before_install:
+  - nvm install lts
   - nvm use lts
   - curl -o- -L https://yarnpkg.com/install.sh | bash
   - export PATH="$HOME/.yarn/bin:$PATH"
@@ -12,15 +19,6 @@ cache:
   yarn: true
   directories:
     - node_modules
-
-android:
-  components:
-    - build-tools-23.0.1
-    - android-23
-    - extra-android-m2repository
-    - extra-google-google_play_services
-    - extra-google-m2repository
-    - addon-google_apis-google-16
 
 script:
   - yarn build:prod
