@@ -8,14 +8,14 @@ import ApolloLoader from 'components/ApolloLoader'
 import Screens from './screens'
 
 export default () => (
-    <IpFinder>
-      {host => (
-        <ApolloLoader host={host}>
-          <DownloadManager>
-            <Screens />
+  <IpFinder>
+    {(host) => (
+      <ApolloLoader host={host}>
+        <DownloadManager>
+          <Screens />
 
-          </DownloadManager>
-        </ApolloLoader>
-      )}
-    </IpFinder>
+        </DownloadManager>
+      </ApolloLoader>
+    )}
+  </IpFinder>
 )

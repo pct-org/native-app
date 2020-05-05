@@ -9,13 +9,9 @@ const SKETCH_DEFAULT_WIDTH = useCorrect(360, null, 1920)
 
 const sketchAdjuster = screenWidth / SKETCH_DEFAULT_WIDTH
 
-const getWidth = (sketchSize) => {
-  return sketchSize * sketchAdjuster
-}
+export const getWidth = (sketchSize) => sketchSize * sketchAdjuster
 
-const getHeight = (sketchSize) => {
-  return sketchSize * sketchAdjuster
-}
+export const getHeight = (sketchSize) => sketchSize * sketchAdjuster
 
 export default {
 
