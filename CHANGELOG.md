@@ -1,3 +1,12 @@
+## [1.3.3](https://github.com/pct-org/native-app/compare/v1.3.2...v1.3.3) (2020-05-06)
+
+
+### Bug Fixes
+
+* Retrigger travis to test ([ef16ef9](https://github.com/pct-org/native-app/commit/ef16ef9bb798d441bbb77cb2ef319890da98b6ad))
+
+
+
 ## [1.3.2](https://github.com/pct-org/native-app/compare/v1.3.1...v1.3.2) (2020-05-06)
 
 
@@ -46,15 +55,6 @@
 * Implemented progress tracking for in app player ([ddf3dab](https://github.com/pct-org/native-app/commit/ddf3dab193f27736323f54b571d5285cac04d5bd))
 * Implemented seeking for chromecast ([7e9b673](https://github.com/pct-org/native-app/commit/7e9b6737c46e862e3bec6f42e7ad0c13f59d44ad))
 * Improved the player with progress bar ([97e6f14](https://github.com/pct-org/native-app/commit/97e6f146d1bbd2c0f4cfd4a406c9f1ca786b2c1d))
-
-
-
-# [1.1.0](https://github.com/pct-org/native-app/compare/v1.0.0...v1.1.0) (2020-04-28)
-
-
-### Features
-
-* Improved search on mode screens ([af0b971](https://github.com/pct-org/native-app/commit/af0b97195408569574fb4b0522a2908bfb582106))
 
 
 
