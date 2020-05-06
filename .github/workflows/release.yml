@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - master
+    paths-ignore:
+      - 'package.json'
+      - 'CHANGELOG.md'
 
 jobs:
   release:
@@ -20,4 +23,4 @@ jobs:
       - name: Conventional Changelog Action
         uses: TriPSs/conventional-changelog-action@v2.1.1
         with:
-          github-token: ${{ secrets.github_token }}
+          github-token: ${{ secrets.TOKEN_GITHUB }}
