@@ -19,6 +19,13 @@ module.exports = {
     '@babel/plugin-proposal-object-rest-spread',
 
     [
+      'inline-import',
+      {
+        'extensions': ['.md', '.text', '.txt'],
+      },
+    ],
+
+    [
       'module-resolver',
       {
         'root': [

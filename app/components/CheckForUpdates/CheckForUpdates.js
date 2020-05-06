@@ -2,7 +2,6 @@ import React from 'react'
 import { StyleSheet, Image, View, ScrollView, ActivityIndicator } from 'react-native'
 import * as Animatable from 'react-native-animatable'
 import Updater from 'update-react-native-app'
-import Markdown from 'react-native-markdown-renderer'
 
 import i18n from 'modules/i18n'
 import colors from 'modules/colors'
@@ -12,6 +11,7 @@ import Logo from 'assets/images/logo.png'
 
 import Typography from '../Typography'
 import Button from '../Button'
+import Markdown from '../Markdown'
 
 export const styles = StyleSheet.create({
 
@@ -68,38 +68,6 @@ export const styles = StyleSheet.create({
 
   action: {
     margin: dimensions.UNIT / 2,
-  },
-})
-
-export const mdStyle = StyleSheet.create({
-
-  heading1: Typography.getTextStyle({
-    variant: 'subtitle1',
-    asObject: true,
-  }),
-
-  heading2: Typography.getTextStyle({
-    variant: 'subtitle2',
-    asObject: true,
-  }),
-
-  text: Typography.getTextStyle({
-    variant: 'body2',
-    asObject: true,
-  }),
-
-  listUnorderedItemIcon: {
-    lineHeight: dimensions.UNIT * 4,
-    marginLeft: dimensions.UNIT,
-    marginRight: dimensions.UNIT,
-  },
-
-  listItem: {
-    flex: 1,
-    flexWrap: 'wrap',
-    alignItems: 'center',
-    justifyContent: 'center',
-    maxHeight: dimensions.UNIT * 4,
   },
 })
 
@@ -194,9 +162,11 @@ export default class CheckForUpdates extends React.Component {
         </Typography>
 
         {!updating && githubRelease && githubRelease.body && (
-          <ScrollView style={styles.bodyContainer}>
-            <Markdown
-              style={mdStyle}>
+          <ScrollView
+            showsHorizontalScrollIndicator={false}
+            showsVerticalScrollIndicator={false}
+            style={styles.bodyContainer}>
+            <Markdown>
               {githubRelease.body}
             </Markdown>
           </ScrollView>
