@@ -43,3 +43,4 @@ deploy:
   on:
     repo: pct-org/native-app
     tags: true
+    branch: master
