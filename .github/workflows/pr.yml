@@ -7,7 +7,8 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v1
+      - name: Checkout code
+        uses: actions/checkout@v1
 
       - name: Use Node.js
         uses: actions/setup-node@v1
@@ -17,10 +18,13 @@ jobs:
       - name: Install dependencies
         run: yarn
 
-      - name: Check Linting
+      - name: Check linting
         run: yarn lint
 
       - name: Run unit tests
         run: yarn test:coverage
 
-      - uses: codecov/codecov-action@v1
+      - name: Upload codecov
+        uses: codecov/codecov-action@v1
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
