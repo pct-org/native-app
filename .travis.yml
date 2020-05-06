@@ -9,7 +9,8 @@ android:
 
 branches:
   only:
-    - /v\d+\.\d+[a-z]/
+    - master
+    - /v\d+\.\d+\.\d+/
 
 before_install:
   - openssl aes-256-cbc -K $encrypted_67e51d456dce_key -iv $encrypted_67e51d456dce_iv -in pct.keystore.enc -out ./android/app/pct.keystore -d
