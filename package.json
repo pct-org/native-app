@@ -69,7 +69,7 @@
     "react-navigation-collapsible": "^5.5.0",
     "redux-persist-fs-storage": "^1.3.0",
     "subscriptions-transport-ws": "^0.9.16",
-    "update-react-native-app": "1.1.2"
+    "update-react-native-app": "^1.2.0"
   },
   "devDependencies": {
     "@babel/core": "7.9.6",

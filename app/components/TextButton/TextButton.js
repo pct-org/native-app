@@ -33,7 +33,8 @@ export const TextButton = ({
     innerRef={innerRef}
     onFocus={onFocus}
     onBlur={onBlur}
-    component={component}>
+    component={component}
+    rippleBorderless={false}>
     <Text style={[
       styles.root,
       Typography.getTextStyle(rest)
