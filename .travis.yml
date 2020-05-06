@@ -2,33 +2,35 @@ language: android
 dist: trusty
 android:
   components:
-    - build-tools-26.0.2
-    - android-26
-    - extra
+  - build-tools-28.0.3
+  - android-28
+  - extra
 
 before_install:
-  - nvm install 12
-  - nvm use 12
-  - curl -o- -L https://yarnpkg.com/install.sh | bash
-  - export PATH="$HOME/.yarn/bin:$PATH"
+- openssl aes-256-cbc -K $encrypted_67e51d456dce_key -iv $encrypted_67e51d456dce_iv
+  -in pct.keystore.enc -out ./android/app/pct.keystore -d
+- nvm install 12
+- nvm use 12
+- curl -o- -L https://yarnpkg.com/install.sh | bash
+- export PATH="$HOME/.yarn/bin:$PATH"
 
 install:
-  - yarn --ignore-engines
+- yarn --ignore-engines
 
 cache:
   yarn: true
   directories:
-    - node_modules
+  - node_modules
 
 script:
-  - yarn build:prod
+- yarn build:prod
 
 deploy:
   skip_cleanup: true
   provider: releases
   api_key:
     secure: cUlSGgafiH3xo5FuBRel1UYszO04zQKI1hMT6BMwa/kxYQ3j63zB3EBwXXOsg88dU9BSsvTNxO//EAAgmqWhk/xUqw6USYQUSuIL/LwnC5Cjt3UheqZTzRhxTBeNAEaYEAPovVFRvBj2N7ofhDBrpa4caDJcFQ0/BvRJPZ96PBm5I71c26GQJFNDyV8yW566RhwaNgUgfXIZ1Lv3Ynnsb81oOS6oXpu3r7uTkhDOSXG3blUc1pAWp9YPcNtJ0D7UqImN3IKEg1MHBXpv1GWB+Ibf1Q9OGSiwq0dGvuI/wkQwBPzCS+2Ej/NAeWLBEliSDZgnHohtdVcGIax+geteoC+/8cDfQxJAwE5eff5d55m1QiPG7ZVTzmVviC8FfNjYOR+lTD5tMpjHkFkvtbUe9zrIJyY73fuWHUd9O0aKlDLrHSaR8ytAgE0C1Fp4VWkDkjbzxQUW+qhzwAQZbhPybT9MLw0xys8AYdskHn9aCaqdP2hM3XIFMwqFGL0V2vFxsPx8dG4irPKU7VYyxKcrOm0sU0kVmdSgUuOQqaGXN7QPaMfBaeOzBAyH2hLeBpcecGAM/rUqEt3JBOGoCeBfM+YoKp67ElbUFMlo+AVnyXPK/uc6Z1ygL9npd7fFNcV2uS9UfrRodRH6VaLfG0mJCMIfDorAXpaIxKRlaJWJc4M=
-  file: $TRAVIS_BUILD_DIR/android/app/build/outputs/apk/prod/release/app-prod-release.apk
+  file: "$TRAVIS_BUILD_DIR/android/app/build/outputs/apk/prod/release/app-prod-release.apk"
   on:
     repo: pct-org/native-app
     tags: true
