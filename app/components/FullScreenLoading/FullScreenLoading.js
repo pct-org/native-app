@@ -6,7 +6,7 @@ import * as Animatable from 'react-native-animatable'
 
 import colors from 'modules/colors'
 
-import Logo from 'images/logo.png'
+import Logo from 'assets/images/logo.png'
 
 import Typography from 'components/Typography'
 

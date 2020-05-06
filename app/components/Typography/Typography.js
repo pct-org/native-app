@@ -78,7 +78,7 @@ export default class Typography extends Component {
     fontWeight = Typography.defaultProps.fontWeight,
     color = Typography.defaultProps.color,
     emphasis = Typography.defaultProps.emphasis,
-    style: styleProp = {},
+    style: styleProp = null,
     asObject = false,
   }) => {
     const styledColor = styles[`color${capitalizeFirstLetter(color)}`]
@@ -88,10 +88,16 @@ export default class Typography extends Component {
     const textStyles = [
       styledColor,
       styles[variant],
-      styledFont,
-      styleProp,
-      color !== 'primary' || emphasis !== 'high' ? styledEmphasis : {},
+      styledEmphasis,
     ]
+
+    if (styledFont) {
+      textStyles.push(styledFont)
+    }
+
+    if (styleProp) {
+      textStyles.push(styleProp)
+    }
 
     if (asObject) {
       let objectStyle = {}

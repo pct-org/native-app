@@ -1,0 +1,88 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`(Component) Typography should render captionSmall 1`] = `
+<Text
+  style={
+    Array [
+      Object {
+        "color": "#ffffff",
+      },
+      Object {
+        "fontFamily": "Quicksand-Regular",
+        "fontSize": 10,
+        "letterSpacing": 0.4,
+        "lineHeight": 16,
+      },
+      Object {
+        "opacity": 0.87,
+      },
+    ]
+  }
+>
+  captionSmall
+</Text>
+`;
+
+exports[`(Component) Typography should render captionSmall with primary color 1`] = `
+<Text
+  style={
+    Array [
+      Object {
+        "color": "#FECC91",
+      },
+      Object {
+        "fontFamily": "Quicksand-Regular",
+        "fontSize": 10,
+        "letterSpacing": 0.4,
+        "lineHeight": 16,
+      },
+      Object {
+        "opacity": 0.87,
+      },
+    ]
+  }
+>
+  captionSmall - primary color
+</Text>
+`;
+
+exports[`(Component) Typography should render captionSmall with primary color and high emphasis 1`] = `
+<Text
+  style={
+    Array [
+      Object {
+        "color": "#FECC91",
+      },
+      Object {
+        "fontFamily": "Quicksand-Regular",
+        "fontSize": 10,
+        "letterSpacing": 0.4,
+        "lineHeight": 16,
+      },
+      Object {
+        "opacity": 0.87,
+      },
+    ]
+  }
+>
+  captionSmall - primary color
+</Text>
+`;
+
+exports[`(Component) Typography should render with defaults 1`] = `
+<Text
+  style={
+    Array [
+      Object {
+        "color": "#ffffff",
+      },
+      undefined,
+      Object {
+        "opacity": 0.87,
+      },
+    ]
+  }
+>
+  test
+</Text>
+`;

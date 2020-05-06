@@ -1,0 +1,11 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`(Mobile) Root should match generated snapshot 1`] = `
+<ForwardRef(NavigationContainer)>
+  <Disclaimer>
+    <IpFinder>
+      <Component />
+    </IpFinder>
+  </Disclaimer>
+</ForwardRef(NavigationContainer)>
+`;

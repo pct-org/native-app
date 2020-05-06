@@ -9,6 +9,7 @@ project.ext.react = [
 ]
 
 apply from: "../../node_modules/react-native/react.gradle"
+apply from: "$rootDir/buildsystem/helpers.gradle"
 
 project.ext.vectoricons = [
         iconFontNames: ['MaterialCommunityIcons.ttf'] // Name of the font files you want to copy
@@ -59,8 +60,8 @@ android {
         applicationId "com.popcorn"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 24
-        versionName "v1.2.0"
+        versionCode getPopcornVersionCode()
+        versionName getPopcornVersionName()
         multiDexEnabled true
         ndk {
             abiFilters "armeabi-v7a", "x86"

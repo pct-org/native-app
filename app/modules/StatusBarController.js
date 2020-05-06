@@ -1,7 +1,7 @@
 import { StatusBar } from 'react-native'
 
 export default {
-  currentActiveBackgroundColor : 'rgba(0, 0, 0, 0)',
+  currentActiveBackgroundColor: 'rgba(0, 0, 0, 0)',
   previousActiveBackgroundColor: 'rgba(0, 0, 0, 0)',
 
   update: (newColor) => {
@@ -13,6 +13,6 @@ export default {
 
   setHidden: (hidden) => {
     StatusBar.setHidden(hidden, true)
-  }
+  },
 
 }

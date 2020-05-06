@@ -1,0 +1,23 @@
+name: Publish
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Use Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: 10.x
+
+      - name: Conventional Changelog Action
+        uses: TriPSs/conventional-changelog-action@v2.1.1
+        with:
+          github-token: ${{ secrets.github_token }}

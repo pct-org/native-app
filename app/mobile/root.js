@@ -15,7 +15,7 @@ export default () => (
   <NavigationContainer ref={navigationRef}>
     <Disclaimer>
       <IpFinder>
-        {host => (
+        {(host) => (
           <ApolloLoader host={host}>
             <DownloadManager>
 

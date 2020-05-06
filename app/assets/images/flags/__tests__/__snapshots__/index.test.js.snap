@@ -1,0 +1,126 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`(Images) Flags should match generated snapshot 1`] = `
+Object {
+  "ar": Object {
+    "testUri": "../../../app/assets/images/flags/arabic.png",
+  },
+  "bg": Object {
+    "testUri": "../../../app/assets/images/flags/bulgarian.png",
+  },
+  "bn": Object {
+    "testUri": "../../../app/assets/images/flags/bengali.png",
+  },
+  "bs": Object {
+    "testUri": "../../../app/assets/images/flags/bosnian.png",
+  },
+  "cs": Object {
+    "testUri": "../../../app/assets/images/flags/czech.png",
+  },
+  "da": Object {
+    "testUri": "../../../app/assets/images/flags/danish.png",
+  },
+  "de": Object {
+    "testUri": "../../../app/assets/images/flags/german.png",
+  },
+  "el": Object {
+    "testUri": "../../../app/assets/images/flags/greek.png",
+  },
+  "en": Object {
+    "testUri": "../../../app/assets/images/flags/english.png",
+  },
+  "es": Object {
+    "testUri": "../../../app/assets/images/flags/spanish.png",
+  },
+  "et": Object {
+    "testUri": "../../../app/assets/images/flags/estonian.png",
+  },
+  "eu": Object {
+    "testUri": "../../../app/assets/images/flags/basque.png",
+  },
+  "fa": Object {
+    "testUri": "../../../app/assets/images/flags/farsi.png",
+  },
+  "fi": Object {
+    "testUri": "../../../app/assets/images/flags/finnish.png",
+  },
+  "fr": Object {
+    "testUri": "../../../app/assets/images/flags/french.png",
+  },
+  "he": Object {
+    "testUri": "../../../app/assets/images/flags/hebrew.png",
+  },
+  "hr": Object {
+    "testUri": "../../../app/assets/images/flags/croatian.png",
+  },
+  "hu": Object {
+    "testUri": "../../../app/assets/images/flags/hungarian.png",
+  },
+  "hy": Object {
+    "testUri": "../../../app/assets/images/flags/armenian.png",
+  },
+  "id": Object {
+    "testUri": "../../../app/assets/images/flags/indonesian.png",
+  },
+  "it": Object {
+    "testUri": "../../../app/assets/images/flags/italian.png",
+  },
+  "lt": Object {
+    "testUri": "../../../app/assets/images/flags/lithuanian.png",
+  },
+  "lv": Object {
+    "testUri": "../../../app/assets/images/flags/latvian.png",
+  },
+  "mt": Object {
+    "testUri": "../../../app/assets/images/flags/maltese.png",
+  },
+  "nl": Object {
+    "testUri": "../../../app/assets/images/flags/dutch.png",
+  },
+  "no": Object {
+    "testUri": "../../../app/assets/images/flags/norwegian.png",
+  },
+  "pbr": Object {
+    "testUri": "../../../app/assets/images/flags/brazilian.png",
+  },
+  "pl": Object {
+    "testUri": "../../../app/assets/images/flags/polish.png",
+  },
+  "pt": Object {
+    "testUri": "../../../app/assets/images/flags/portuguese.png",
+  },
+  "ro": Object {
+    "testUri": "../../../app/assets/images/flags/romanian.png",
+  },
+  "ru": Object {
+    "testUri": "../../../app/assets/images/flags/russian.png",
+  },
+  "sk": Object {
+    "testUri": "../../../app/assets/images/flags/slovak.png",
+  },
+  "sl": Object {
+    "testUri": "../../../app/assets/images/flags/slovenian.png",
+  },
+  "sr": Object {
+    "testUri": "../../../app/assets/images/flags/serbian.png",
+  },
+  "sv": Object {
+    "testUri": "../../../app/assets/images/flags/swedish.png",
+  },
+  "th": Object {
+    "testUri": "../../../app/assets/images/flags/thai.png",
+  },
+  "tr": Object {
+    "testUri": "../../../app/assets/images/flags/turkish.png",
+  },
+  "uk": Object {
+    "testUri": "../../../app/assets/images/flags/ukrainian.png",
+  },
+  "vi": Object {
+    "testUri": "../../../app/assets/images/flags/vietnamese.png",
+  },
+  "zh": Object {
+    "testUri": "../../../app/assets/images/flags/chinese.png",
+  },
+}
+`;
