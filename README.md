@@ -14,9 +14,9 @@
   <a target="_blank" href="https://david-dm.org/pct-org/native-app?type=dev" title="devDependencies status">
     <img src="https://david-dm.org/pct-org/native-app/dev-status.svg" />
   </a>
-    <a target="_blank" href="https://github.com/pct-org/native-app/pulls">
-      <img src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg" alt="PRs Welcome" />
-    </a>
+  <a target="_blank" href="https://github.com/pct-org/native-app/pulls">
+    <img src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg" alt="PRs Welcome" />
+  </a>
   <a target="_blank" href="https://travis-ci.com/github/pct-org/native-app">
      <img src="https://travis-ci.com/pct-org/native-app.svg?branch=develop" alt="PRs Welcome" />
   </a>
