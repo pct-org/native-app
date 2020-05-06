@@ -74,4 +74,3 @@ This project is [MIT licensed](./LICENSE).
 [`@pct-org/native-app`]: https://github.com/pct-org/native-app
 [`@pct-org/scraper`]: https://github.com/pct-org/scraper
 [`@pct-org/updater`]: https://github.com/pct-org/updater
-
