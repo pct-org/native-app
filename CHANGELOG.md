@@ -1,4 +1,4 @@
-## [1.1.1](https://github.com/pct-org/native-app/compare/v1.2.0...v1.1.1) (2020-05-06)
+## [1.2.1](https://github.com/pct-org/native-app/compare/v1.2.0...v1.2.1) (2020-05-06)
 
 
 ### Bug Fixes
