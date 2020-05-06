@@ -1,3 +1,12 @@
+## [1.3.2](https://github.com/pct-org/native-app/compare/v1.3.1...v1.3.2) (2020-05-06)
+
+
+### Bug Fixes
+
+* Fixed travis regex ([570d1f4](https://github.com/pct-org/native-app/commit/570d1f4bd76c63ab511ae2597cd38aa0c7b89c25))
+
+
+
 ## [1.3.1](https://github.com/pct-org/native-app/compare/v1.2.3...v1.3.1) (2020-05-06)
 
 
@@ -46,29 +55,6 @@
 ### Features
 
 * Improved search on mode screens ([af0b971](https://github.com/pct-org/native-app/commit/af0b97195408569574fb4b0522a2908bfb582106))
-
-
-
-# [1.0.0](https://github.com/pct-org/native-app/compare/v0.16.0...v1.0.0) (2020-04-26)
-
-
-### Bug Fixes
-
-* Fixed app crashing in release mode ([676bd4f](https://github.com/pct-org/native-app/commit/676bd4f4a7a56d6a39b5b6dc3ec63a894d49e76d))
-* Fixed border around close icon of Quality Selector ([cbc4ceb](https://github.com/pct-org/native-app/commit/cbc4cebc21a8de992191ddc6f4d1e3e683ec08cb))
-* Fixed IpFinder ([47531c0](https://github.com/pct-org/native-app/commit/47531c0800e5dd5e46feb8244c0bd42d04f886be))
-* Fixed main cover missing download info ([af73a4c](https://github.com/pct-org/native-app/commit/af73a4c0bf7fa38353d95791e795b061c78ceb14))
-* Fixed some translations ([dd65e44](https://github.com/pct-org/native-app/commit/dd65e445055c53c3499adb356d3bd58e5d2550ff))
-* Fixed that quality selector did not close ([7db3a3a](https://github.com/pct-org/native-app/commit/7db3a3af2e6bd6c2352bd59f10118510acb22c36))
-* When adding bookmarks remove them from home ([b342181](https://github.com/pct-org/native-app/commit/b3421818cec733359acb32ef7d36581dafdad9ea))
-
-
-### Features
-
-* IpFinder now also works inside emulators ([b5b72c5](https://github.com/pct-org/native-app/commit/b5b72c5c5e3867d69a66a6eb8f6f8692d2efbeb4))
-* Update bookmarks with subscriptions ([5e6396c](https://github.com/pct-org/native-app/commit/5e6396c275eddd6b719cc5fa8ff07c3e49c916c4))
-* Updated some colors and added mode screens ([7414d18](https://github.com/pct-org/native-app/commit/7414d186103891618750dbaafac5e019c2878858))
-* **tv:** First very basic version ([3f55632](https://github.com/pct-org/native-app/commit/3f55632876f1254948fc6b364bd8f4678fac4c94))
 
 
 
