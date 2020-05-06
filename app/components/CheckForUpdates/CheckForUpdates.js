@@ -188,8 +188,8 @@ export default class CheckForUpdates extends React.Component {
         <Typography variant={'headline6'}>
           {
             !updating
-              ? i18n.t('New version available {{version}}', { version: githubRelease.name })
-              : i18n.t('Downloading {{version}}', { version: githubRelease.name })
+              ? i18n.t('New version available {{version}}', { version: githubRelease.tag_name })
+              : i18n.t('Downloading {{version}}', { version: githubRelease.tag_name })
           }
         </Typography>
 
