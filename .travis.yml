@@ -8,7 +8,6 @@ android:
 
 branches:
   only:
-    - master
     - /v\d+\.\d+\.\d+/
 
 before_install:
