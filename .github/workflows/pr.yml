@@ -22,3 +22,5 @@ jobs:
 
       - name: Run unit tests
         run: yarn test:coverage
+
+      - uses: codecov/codecov-action@v1

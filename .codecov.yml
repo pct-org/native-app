@@ -1,0 +1,12 @@
+coverage:
+  precision: 2
+  round: down
+  status:
+    patch:
+      default:
+        target: auto
+        threshold: 0%
+
+comment:
+  layout: "header, diff, changes, sunburst, suggestions, tree"
+  behavior: default
