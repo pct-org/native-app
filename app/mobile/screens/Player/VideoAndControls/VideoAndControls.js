@@ -1,16 +1,15 @@
 import React from 'react'
-import { Dimensions, StyleSheet, View, ScrollView, TouchableWithoutFeedback } from 'react-native'
+import { StyleSheet, View, ScrollView, TouchableWithoutFeedback } from 'react-native'
 import * as Animatable from 'react-native-animatable'
 import Orientation from 'react-native-orientation'
 
+import dimensions from 'modules/dimensions'
 import VlcPlayer from 'components/VlcPlayer'
 import Overlay from 'components/Overlay'
 
 import PlayPauseIcon from './PlayPauseIcon'
 import ResizeMode from './ResizeMode'
 import SeekBar from './SeekBar'
-
-const { height: windowHeight, width: windowWidth } = Dimensions.get('window')
 
 const styles = StyleSheet.create({
 
@@ -30,6 +29,7 @@ const styles = StyleSheet.create({
     top: 0,
     left: 0,
     right: 0,
+    bottom: 0,
   },
 
   video: {
@@ -47,6 +47,13 @@ const styles = StyleSheet.create({
     bottom: 64,
     right: 16,
     zIndex: 1001,
+  },
+
+  placeholderStyle: {
+    width: (dimensions.SCREEN_HEIGHT + dimensions.ON_SCREEN_NAVIGATION_HEIGHT),
+    height: (dimensions.SCREEN_WIDTH),
+    opacity: 0,
+    zIndex: 1500,
   },
 
 })
@@ -68,7 +75,6 @@ export class VideoAndControls extends React.Component {
     this.state = {
       showControls: true,
       isPortrait: Orientation.getInitialOrientation() === 'PORTRAIT',
-      isFirstAnimation: true,
 
       scrollViewHeight: 0,
       scrollViewHeightWithPlaceholder: 0,
@@ -109,26 +115,6 @@ export class VideoAndControls extends React.Component {
     }
   }
 
-  getPlaceholderStyle = () => {
-    const { isPortrait } = this.state
-
-    if (isPortrait) {
-      return {
-        width: windowWidth,
-        height: windowHeight,
-        opacity: 0,
-        zIndex: 1000,
-      }
-    }
-
-    return {
-      width: (windowHeight),
-      height: (windowWidth),
-      opacity: 0,
-      zIndex: 1000,
-    }
-  }
-
   positionScroller = (event = null) => {
     const { scrollViewHeight, scrollViewHeightWithPlaceholder } = this.state
 
@@ -147,7 +133,7 @@ export class VideoAndControls extends React.Component {
   onContentSizeChange = (contentWidth, contentHeight) => {
     // Save the content height in state
     this.setState({
-      scrollViewHeight: contentHeight - this.getPlaceholderStyle().height,
+      scrollViewHeight: contentHeight - styles.placeholderStyle.height,
 
       scrollViewHeightWithPlaceholder: contentHeight,
     })
@@ -203,7 +189,7 @@ export class VideoAndControls extends React.Component {
     })
   }
 
-  handlePlayVideo = (a) => {
+  handlePlayVideo = () => {
     this.setState({
       paused: false,
 
@@ -214,13 +200,14 @@ export class VideoAndControls extends React.Component {
 
   handleOnPlaying = ({ duration }) => {
     const { startPosition } = this.props
+    const { loading: wasLoading } = this.state
 
     this.setState({
       duration,
       loading: false,
-      isFirstAnimation: false,
     }, () => {
-      if (startPosition > 0) {
+      // If start position is bigger then 0 and it was loading then seek to it
+      if (startPosition > 0 && wasLoading) {
         this.videoRef.seek((duration / 100) * startPosition)
       }
     })
@@ -288,7 +275,7 @@ export class VideoAndControls extends React.Component {
       this.setState({
         showControls: false,
       })
-    }, 5000)
+    }, 4000)
   }
 
   render() {
@@ -296,6 +283,11 @@ export class VideoAndControls extends React.Component {
     const { isPortrait, resizeMode } = this.state
     const { showControls, paused } = this.state
     const { currentTime, duration, progress } = this.state
+
+    // Wait until we are in landscape
+    if (isPortrait) {
+      return null
+    }
 
     return (
       <React.Fragment>
@@ -359,7 +351,7 @@ export class VideoAndControls extends React.Component {
               <Overlay variant={'dark'} />
 
               <TouchableWithoutFeedback onPress={this.toggleControls}>
-                <View style={this.getPlaceholderStyle()} />
+                <View style={styles.placeholderStyle} />
               </TouchableWithoutFeedback>
 
               {/*<ScrollView*/}

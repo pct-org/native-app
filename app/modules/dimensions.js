@@ -28,6 +28,7 @@ export default {
   SCREEN_WIDTH: screenWidth,
   SCREEN_HEIGHT: screenHeight,
 
+  ON_SCREEN_NAVIGATION_HEIGHT: 55,
   STATUSBAR_HEIGHT: StatusBar.currentHeight,
 
   BORDER_RADIUS: 5,

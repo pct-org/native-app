@@ -38,11 +38,11 @@ export const styles = {
   },
 }
 
-export const ItemInfo = ({ item, quality, status, variant, style, truncateSynopsis, empty }) => {
+export const ItemInfo = ({ item, quality, status, variant, style, truncateSynopsis, empty, pointerEvents }) => {
   const [showQualitySelector, toggleSelecting] = useState(false)
 
   return (
-    <View style={[styles.root, style]}>
+    <View style={[styles.root, style]} pointerEvents={pointerEvents}>
       {variant === 'default' && (
         <Card
           overlayAllowed={false}
@@ -144,6 +144,7 @@ ItemInfo.defaultProps = {
   empty: false,
   variant: 'default',
   quality: null,
+  pointerEvents: null,
 }
 
 export default ItemInfo
