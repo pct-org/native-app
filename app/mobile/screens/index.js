@@ -7,6 +7,7 @@ import ItemScreen from './Item'
 import PlayerScreen from './Player'
 import ModeScreen from './Mode'
 import SettingsScreen from './Settings'
+import AppChangelogScreen from './AppChangelog'
 
 const Stack = createStackNavigator()
 
@@ -21,6 +22,7 @@ export default () => (
     <Stack.Screen name="Item" component={ItemScreen} />
     <Stack.Screen name="Player" component={PlayerScreen} />
     <Stack.Screen name="Settings" component={SettingsScreen} />
+    <Stack.Screen name="AppChangelog" component={AppChangelogScreen} />
 
     {createCollapsibleStack(
       <Stack.Screen name="Movies">

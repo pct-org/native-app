@@ -1,30 +1,27 @@
-import React, { useEffect } from 'react'
-import { StyleSheet, View, InteractionManager, Linking } from 'react-native'
-import { useLazyQuery } from '@apollo/react-hooks'
-
-import colors from 'modules/colors'
+import React from 'react'
 
 import Container from 'components/Container'
 
 import ApisStatus from './ApisStatus'
+import AppStatus from './AppStatus'
 
-const styles = StyleSheet.create({
+export const styles = {
 
   root: {
     flex: 1,
 
   },
 
-})
-
-export const Settings = () => {
-  return (
-    <Container style={styles.root}>
-
-      <ApisStatus />
-
-    </Container>
-  )
 }
+
+export const Settings = () => (
+  <Container style={styles.root}>
+
+    <ApisStatus />
+
+    <AppStatus />
+
+  </Container>
+)
 
 export default Settings

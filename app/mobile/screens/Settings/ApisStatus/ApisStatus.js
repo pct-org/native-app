@@ -26,7 +26,7 @@ export const styles = {
 
   container: {
     paddingTop: dimensions.UNIT / 2,
-    paddingBottom: dimensions.UNIT / 2,
+    paddingBottom: dimensions.UNIT,
 
     display: 'flex',
     flexDirection: 'row',
@@ -44,7 +44,7 @@ export const styles = {
 }
 
 export const ApisStatus = () => {
-  const [executeQuery, { loading, data }] = useLazyQuery(
+  const [executeQuery, { data }] = useLazyQuery(
     SettingsQuery,
   )
 

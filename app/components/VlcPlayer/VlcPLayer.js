@@ -2,6 +2,15 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { StyleSheet, View, requireNativeComponent, NativeModules, StatusBar } from 'react-native'
 
+export const styles = {
+
+  base: {
+    overflow: 'hidden',
+  },
+
+}
+
+
 export default class VlcPLayer extends React.Component {
 
   componentWillUnmount() {
@@ -134,11 +143,5 @@ VlcPLayer.propTypes = {
 VlcPLayer.defaultProps = {
   resizeMode: 'contain',
 }
-
-const styles = StyleSheet.create({
-  base: {
-    overflow: 'hidden',
-  },
-})
 
 const RCTVlcPlayer = requireNativeComponent('VlcPlayer', VlcPLayer)

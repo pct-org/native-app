@@ -69,7 +69,7 @@ export const DownloadInfo = ({ status, progress, speed, timeRemaining, numPeers,
             emphasis={'medium'}
             color={'white'}
             variant={'caption'}>
-            {numPeers}
+            {`${numPeers} peer${numPeers > 1 ? 's' : ''}`}
           </Typography>
         </React.Fragment>
       )}

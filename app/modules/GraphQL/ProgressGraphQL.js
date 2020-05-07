@@ -1,6 +1,6 @@
 import gql from 'graphql-tag'
 
-export const progrssMutation = gql`
+export const progressMutation = gql`
   mutation($_id: String!, $type: String!, $progress: Float!) {
     
     progress(_id: $_id, type: $type, progress: $progress) {

@@ -1,11 +1,12 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { StyleSheet, View } from 'react-native'
+import { StyleSheet, View, InteractionManager } from 'react-native'
 import GoogleCast, { CastButton } from 'react-native-google-cast'
 import Orientation from 'react-native-orientation'
 
 import withApollo from 'modules/GraphQL/withApollo'
-import { progrssMutation } from 'modules/GraphQL/ProgressGraphQL'
+import { progressMutation } from 'modules/GraphQL/ProgressGraphQL'
+import { StartStreamMutation, StopStreamMutation, DownloadQuery } from 'modules/GraphQL/DownloadGraphQL'
 import withIpFinder from 'modules/IpFinder/withIpFinder'
 import dimensions from 'modules/dimensions'
 import colors from 'modules/colors'
@@ -31,6 +32,8 @@ const styles = StyleSheet.create({
 @withApollo
 export default class PlayerManager extends React.Component {
 
+  downloadPolling = null
+
   constructor(props) {
     super(props)
 
@@ -40,6 +43,8 @@ export default class PlayerManager extends React.Component {
       mediaUrl: `http://${ipFinder.host}/watch/${item._id}`,
       progress: 0,
       casting: false,
+      isBuffering: true,
+      download: null,
       lastProgressSend: 0,
       startPosition: item.watched.progress === 100
         ? 0
@@ -61,6 +66,14 @@ export default class PlayerManager extends React.Component {
         })
       }
     })
+
+    // Execute the query after the component is done navigation
+    InteractionManager.runAfterInteractions(() => {
+      // Start the stream
+      this.startStream().then(() => {
+        this.pollDownload()
+      })
+    })
   }
 
   componentWillUnmount() {
@@ -75,6 +88,14 @@ export default class PlayerManager extends React.Component {
       // Stop casting but keep the connection
       GoogleCast.stop()
     }
+
+    Orientation.lockToPortrait()
+
+    // Stop polling for the download info
+    this.downloadPolling?.unsubscribe()
+
+    // Stop the stream
+    this.stopStream()
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
@@ -130,7 +151,7 @@ export default class PlayerManager extends React.Component {
     })
   }
 
-  handleCastMediaPlaybackStarted = ({ mediaStatus}) => {
+  handleCastMediaPlaybackStarted = ({ mediaStatus }) => {
     const { startPosition } = this.state
 
     if (mediaStatus?.streamDuration && startPosition) {
@@ -175,16 +196,80 @@ export default class PlayerManager extends React.Component {
     })
   }
 
+  /**
+   * Does the start stream mutation
+   *
+   * @returns {Promise<void>}
+   */
+  startStream = async() => {
+    const { apollo, item, playQuality } = this.props
+
+    return await apollo.mutate({
+      mutation: StartStreamMutation,
+      variables: {
+        _id: item._id,
+        itemType: item.type,
+        quality: playQuality,
+      },
+    })
+  }
+
+  /**
+   * Does the stop stream mutation
+   *
+   * @returns {Promise<void>}
+   */
+  stopStream = async() => {
+    const { apollo, item } = this.props
+
+    await apollo.mutate({
+      mutation: StopStreamMutation,
+      variables: {
+        _id: item._id,
+      },
+    })
+  }
+
+  /**
+   * Does the stop stream mutation
+   *
+   * @returns {Promise<void>}
+   */
+  pollDownload = () => {
+    const { apollo, item } = this.props
+
+    this.downloadPolling = apollo.watchQuery({
+      query: DownloadQuery,
+      pollInterval: 1000,
+      variables: {
+        _id: item._id,
+      },
+    })
+      .subscribe(({ data }) => {
+      const isBuffering = data.download.progress < 3
+
+      // If the progress is 100 then stop polling
+      if (data.download.progress === 100) {
+        this.downloadPolling?.unsubscribe()
+      }
+
+      this.setState({
+        isBuffering,
+        download: data.download,
+      })
+    })
+  }
+
   doProgressUpdateMutation = async(progress) => {
     const { apollo, item } = this.props
 
     await apollo.mutate({
+      mutation: progressMutation,
       variables: {
         _id: item._id,
         type: item.type,
         progress: parseFloat(progress),
       },
-      mutation: progrssMutation,
     })
   }
 
@@ -201,6 +286,7 @@ export default class PlayerManager extends React.Component {
   render() {
     const { style, children } = this.props
     const { casting, mediaUrl, startPosition } = this.state
+    const { download, isBuffering } = this.state
 
     return (
       <View style={style}>
@@ -209,6 +295,8 @@ export default class PlayerManager extends React.Component {
           casting,
           mediaUrl,
           startPosition,
+          download,
+          isBuffering,
           renderCastButton: this.renderCastButton,
           setProgress: this.handleSetProgress,
         })}
