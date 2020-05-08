@@ -21,7 +21,25 @@ jobs:
         with:
           node-version: 10.x
 
+      - name: Run unit tests
+        run: yarn test:coverage
+
+      - name: Upload codecov
+        uses: codecov/codecov-action@v1
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+
       - name: Conventional Changelog Action
-        uses: TriPSs/conventional-changelog-action@v2.1.1
+        id: changelog
+        uses: TriPSs/conventional-changelog-action@v2
         with:
           github-token: ${{ secrets.TOKEN_GITHUB }}
+
+      - name: Create Release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.github_token }}
+        with:
+          tag_name: ${{ steps.changelog.outputs.tag }}
+          release_name: ${{ steps.changelog.outputs.tag }}
+          body: ${{ steps.changelog.outputs.clean_changelog }}

@@ -1,0 +1,98 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`(Component) Container should render with defaults 1`] = `
+<View
+  elevation={0}
+  pointerEvents="box-none"
+  style={
+    Array [
+      Object {
+        "backgroundColor": "#202125",
+        "position": "relative",
+        "zIndex": 2,
+      },
+      null,
+    ]
+  }
+>
+  test
+</View>
+`;
+
+exports[`(Component) Container should render with elevation 1 1`] = `
+<View
+  elevation={1}
+  pointerEvents="box-none"
+  style={
+    Array [
+      Object {
+        "backgroundColor": "#202125",
+        "position": "relative",
+        "zIndex": 2,
+      },
+      null,
+    ]
+  }
+>
+  <View
+    pointerEvents="none"
+    style={
+      Array [
+        Object {
+          "backgroundColor": "#ffffff",
+          "bottom": 0,
+          "left": 0,
+          "position": "absolute",
+          "right": 0,
+          "top": 0,
+          "zIndex": 1,
+        },
+        Object {
+          "opacity": 0.05,
+        },
+      ]
+    }
+  />
+  test
+</View>
+`;
+
+exports[`(Component) Container should render with elevation 2 and custom style 1`] = `
+<View
+  elevation={1}
+  pointerEvents="box-none"
+  style={
+    Array [
+      Object {
+        "backgroundColor": "#202125",
+        "position": "relative",
+        "zIndex": 2,
+      },
+      Object {
+        "margin": 20,
+      },
+    ]
+  }
+>
+  <View
+    pointerEvents="none"
+    style={
+      Array [
+        Object {
+          "backgroundColor": "#ffffff",
+          "bottom": 0,
+          "left": 0,
+          "position": "absolute",
+          "right": 0,
+          "top": 0,
+          "zIndex": 1,
+        },
+        Object {
+          "opacity": 0.05,
+        },
+      ]
+    }
+  />
+  test
+</View>
+`;
