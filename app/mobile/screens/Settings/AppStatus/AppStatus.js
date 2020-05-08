@@ -1,5 +1,6 @@
 import React from 'react'
 import { View } from 'react-native'
+import Updater from 'update-react-native-app'
 
 import dimensions from 'modules/dimensions'
 import i18n from 'modules/i18n'
@@ -9,8 +10,6 @@ import Container from 'components/Container'
 import Icon from 'components/Icon'
 import Typography from 'components/Typography'
 import TextButton from 'components/TextButton'
-
-import packageJson from '../../../../../package.json'
 
 export const styles = {
 
@@ -63,7 +62,7 @@ export const AppStatus = () => (
 
       <View style={styles.textContainer}>
         <Typography variant={'caption'}>
-          {i18n.t('Version: {{version}}', { version: packageJson?.version ?? 'unknown' })}
+          {i18n.t('Version: {{version}}', { version: Updater.UpdateRNApp.versionName ?? 'unknown' })}
         </Typography>
       </View>
     </Container>
