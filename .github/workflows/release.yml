@@ -21,6 +21,14 @@ jobs:
         with:
           node-version: 10.x
 
+      - name: Run unit tests
+        run: yarn test:coverage
+
+      - name: Upload codecov
+        uses: codecov/codecov-action@v1
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+
       - name: Conventional Changelog Action
         id: changelog
         uses: TriPSs/conventional-changelog-action@v2
