@@ -1,4 +1,4 @@
-name: Publish
+name: Release
 
 on:
   push:
@@ -20,6 +20,9 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: 10.x
+
+      - name: Install dependencies
+        run: yarn
 
       - name: Run unit tests
         run: yarn test:coverage
