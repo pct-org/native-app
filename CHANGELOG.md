@@ -1,3 +1,12 @@
+## [1.4.1](https://github.com/pct-org/native-app/compare/v1.4.0...v1.4.1) (2020-05-08)
+
+
+### Bug Fixes
+
+* Fixed auto updater always giving a update ([9758db0](https://github.com/pct-org/native-app/commit/9758db066e16436f22e3c25430755d012ba667fc))
+
+
+
 # [1.4.0](https://github.com/pct-org/native-app/compare/v1.3.4...v1.4.0) (2020-05-07)
 
 
@@ -32,16 +41,6 @@
 ### Bug Fixes
 
 * Fixed travis regex ([570d1f4](https://github.com/pct-org/native-app/commit/570d1f4bd76c63ab511ae2597cd38aa0c7b89c25))
-
-
-
-## [1.3.1](https://github.com/pct-org/native-app/compare/v1.2.3...v1.3.1) (2020-05-06)
-
-
-### Bug Fixes
-
-* Update travis ([9954303](https://github.com/pct-org/native-app/commit/9954303aaa1e0d7509a168a261a4034e2986f47a))
-* Updated travis ([1226f24](https://github.com/pct-org/native-app/commit/1226f24df411884a63c7bc0edf8df11c7083f47b))
 
 
 
