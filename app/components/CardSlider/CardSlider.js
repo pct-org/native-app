@@ -89,12 +89,8 @@ export const CardSlider = ({ title, items, onPress, onEndReached, goToMore, load
           : `${index}`
         }
         showsHorizontalScrollIndicator={false}
-        onEndReached={
-          items.length > 0
-            ? onEndReached
-            : null
-        }
-        onEndReachedThreshold={dimensions.CARD_WIDTH * 4}
+        onEndReached={onEndReached}
+        onEndReachedThreshold={3}
       />
 
     </View>

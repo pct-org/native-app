@@ -125,11 +125,8 @@ export const Mode = ({ mode, navigation }) => {
         }
         showsHorizontalScrollIndicator={false}
         showsVerticalScrollIndicator={false}
-        onEndReached={items.length > 0
-          ? fetchMoreUpdateQuery(mode, data, fetchMore)
-          : null
-        }
-        onEndReachedThreshold={dimensions.CARD_HEIGHT_SMALL * 4}
+        onEndReached={fetchMoreUpdateQuery(mode, data, fetchMore)}
+        onEndReachedThreshold={3}
         onScroll={onScroll}
         contentContainerStyle={styles.container}
         scrollIndicatorInsets={{ top: scrollIndicatorInsetTop - getDefaultHeaderHeight(true) }}

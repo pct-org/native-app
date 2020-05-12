@@ -158,11 +158,8 @@ export const Mode = ({ mode, navigation }) => {
         }
         showsHorizontalScrollIndicator={false}
         showsVerticalScrollIndicator={false}
-        onEndReached={items.length > 0
-          ? fetchMoreUpdateQuery(mode, data, fetchMore)
-          : null
-        }
-        onEndReachedThreshold={dimensions.CARD_WIDTH_SMALL * 10}
+        onEndReached={fetchMoreUpdateQuery(mode, data, fetchMore)}
+        onEndReachedThreshold={3}
       />
 
     </Menu>

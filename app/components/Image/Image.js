@@ -67,7 +67,7 @@ export default class Image extends React.PureComponent {
     return { uri: images[type][size] }
   }
 
-  handleImageError = (a) => {
+  handleImageError = () => {
     this.setState({
       showPlaceholder: true,
     })
@@ -88,6 +88,7 @@ export default class Image extends React.PureComponent {
           styles.image,
           style,
         ]}
+        onError={this.handleImageError}
         source={this.getImage()}
         {...props}
       />
