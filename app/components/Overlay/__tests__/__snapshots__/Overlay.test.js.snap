@@ -1,0 +1,179 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`(Component) Overlay should render dark variant 1`] = `
+<withAnimatable(View)
+  animation={null}
+  delay={0}
+  direction="normal"
+  iterationCount={1}
+  iterationDelay={0}
+  onAnimationBegin={[Function]}
+  onAnimationEnd={[Function]}
+  onTransitionBegin={[Function]}
+  onTransitionEnd={[Function]}
+  pointerEvents="box-none"
+  style={
+    Object {
+      "bottom": 0,
+      "left": 0,
+      "position": "absolute",
+      "right": 0,
+      "top": 0,
+    }
+  }
+  useNativeDriver={true}
+>
+  <View
+    style={
+      Array [
+        Object {
+          "bottom": 0,
+          "left": 0,
+          "position": "absolute",
+          "right": 0,
+          "top": 0,
+        },
+        Object {
+          "backgroundColor": "black",
+          "opacity": 0.7,
+        },
+        Object {},
+      ]
+    }
+  />
+</withAnimatable(View)>
+`;
+
+exports[`(Component) Overlay should render with animation 1`] = `
+<withAnimatable(View)
+  animation="fadeIn"
+  delay={0}
+  direction="normal"
+  iterationCount={1}
+  iterationDelay={0}
+  onAnimationBegin={[Function]}
+  onAnimationEnd={[Function]}
+  onTransitionBegin={[Function]}
+  onTransitionEnd={[Function]}
+  pointerEvents="box-none"
+  style={
+    Object {
+      "bottom": 0,
+      "left": 0,
+      "position": "absolute",
+      "right": 0,
+      "top": 0,
+    }
+  }
+  useNativeDriver={true}
+>
+  <View
+    style={
+      Array [
+        Object {
+          "bottom": 0,
+          "left": 0,
+          "position": "absolute",
+          "right": 0,
+          "top": 0,
+        },
+        Object {
+          "backgroundColor": "black",
+          "opacity": 0.5,
+        },
+        Object {},
+      ]
+    }
+  />
+</withAnimatable(View)>
+`;
+
+exports[`(Component) Overlay should render with custom style 1`] = `
+<withAnimatable(View)
+  animation={null}
+  delay={0}
+  direction="normal"
+  iterationCount={1}
+  iterationDelay={0}
+  onAnimationBegin={[Function]}
+  onAnimationEnd={[Function]}
+  onTransitionBegin={[Function]}
+  onTransitionEnd={[Function]}
+  pointerEvents="box-none"
+  style={
+    Object {
+      "bottom": 0,
+      "left": 0,
+      "position": "absolute",
+      "right": 0,
+      "top": 0,
+    }
+  }
+  useNativeDriver={true}
+>
+  <View
+    style={
+      Array [
+        Object {
+          "bottom": 0,
+          "left": 0,
+          "position": "absolute",
+          "right": 0,
+          "top": 0,
+        },
+        Object {
+          "backgroundColor": "black",
+          "opacity": 0.5,
+        },
+        Object {
+          "margin": 5,
+        },
+      ]
+    }
+  />
+</withAnimatable(View)>
+`;
+
+exports[`(Component) Overlay should render with defaults 1`] = `
+<withAnimatable(View)
+  animation={null}
+  delay={0}
+  direction="normal"
+  iterationCount={1}
+  iterationDelay={0}
+  onAnimationBegin={[Function]}
+  onAnimationEnd={[Function]}
+  onTransitionBegin={[Function]}
+  onTransitionEnd={[Function]}
+  pointerEvents="box-none"
+  style={
+    Object {
+      "bottom": 0,
+      "left": 0,
+      "position": "absolute",
+      "right": 0,
+      "top": 0,
+    }
+  }
+  useNativeDriver={true}
+>
+  <View
+    style={
+      Array [
+        Object {
+          "bottom": 0,
+          "left": 0,
+          "position": "absolute",
+          "right": 0,
+          "top": 0,
+        },
+        Object {
+          "backgroundColor": "black",
+          "opacity": 0.5,
+        },
+        Object {},
+      ]
+    }
+  />
+</withAnimatable(View)>
+`;

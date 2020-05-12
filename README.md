@@ -20,6 +20,9 @@
   <a target="_blank" href="https://travis-ci.com/github/pct-org/native-app">
      <img src="https://travis-ci.com/pct-org/native-app.svg?branch=develop" alt="PRs Welcome" />
   </a>
+  <a href="https://codecov.io/gh/pct-org/native-app">
+    <img src="https://codecov.io/gh/pct-org/native-app/branch/develop/graph/badge.svg" />
+  </a>
 </div>
 
 ---

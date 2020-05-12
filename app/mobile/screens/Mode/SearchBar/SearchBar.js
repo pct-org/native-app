@@ -96,7 +96,7 @@ export const SearchBar = ({ searchedQuery, search, flatListRef }) => {
     },
   }) => {
     navigation.setParams({
-      collapsibleSubHeaderHeight: height + StatusBar.currentHeight,
+      collapsibleSubHeaderHeight: height + StatusBar.currentHeight + dimensions.UNIT,
       isCollapsibleDirty: true,
     })
   }

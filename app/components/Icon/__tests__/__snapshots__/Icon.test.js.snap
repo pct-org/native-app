@@ -1,0 +1,93 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`(Component) Icon should render with a different color 1`] = `
+<Icon
+  allowFontScaling={false}
+  color="#FECC91"
+  name="settings"
+  size={24}
+  style={
+    Array [
+      null,
+      Object {},
+    ]
+  }
+/>
+`;
+
+exports[`(Component) Icon should render with a different size 1`] = `
+<Icon
+  allowFontScaling={false}
+  color="#ffffff"
+  name="settings"
+  size={15}
+  style={
+    Array [
+      null,
+      Object {},
+    ]
+  }
+/>
+`;
+
+exports[`(Component) Icon should render with custom style 1`] = `
+<Icon
+  allowFontScaling={false}
+  color="#ffffff"
+  name="settings"
+  size={24}
+  style={
+    Array [
+      Object {
+        "padding": 20,
+      },
+      Object {},
+    ]
+  }
+/>
+`;
+
+exports[`(Component) Icon should render with defaults 1`] = `
+<Icon
+  allowFontScaling={false}
+  color="#ffffff"
+  name="settings"
+  size={24}
+  style={
+    Array [
+      null,
+      Object {},
+    ]
+  }
+/>
+`;
+
+exports[`(Component) Icon should render with emphasis low 1`] = `
+<Icon
+  allowFontScaling={false}
+  color="#ffffff38"
+  name="settings"
+  size={24}
+  style={
+    Array [
+      null,
+      Object {},
+    ]
+  }
+/>
+`;
+
+exports[`(Component) Icon should render with emphasis medium 1`] = `
+<Icon
+  allowFontScaling={false}
+  color="#ffffff80"
+  name="settings"
+  size={24}
+  style={
+    Array [
+      null,
+      Object {},
+    ]
+  }
+/>
+`;

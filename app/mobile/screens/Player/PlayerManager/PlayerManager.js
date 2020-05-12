@@ -99,8 +99,8 @@ export default class PlayerManager extends React.Component {
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
-    const { isBuffering: wasBuffering } = prevProps
-    const { isBuffering } = this.props
+    const { isBuffering: wasBuffering } = prevState
+    const { isBuffering } = this.state
 
     if (wasBuffering && !isBuffering) {
       // Buffering is done, check if we need to cast it
