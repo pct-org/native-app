@@ -1,3 +1,14 @@
+## [1.4.2](https://github.com/pct-org/native-app/compare/v1.4.1...v1.4.2) (2020-05-12)
+
+
+### Bug Fixes
+
+* Fixed chromecast not casting while connected and opening item ([c4d8617](https://github.com/pct-org/native-app/commit/c4d8617ab3c2b345661e031c917453d24a634f76))
+* Fixed issue where fetch more kept being called ([e0e7139](https://github.com/pct-org/native-app/commit/e0e71399836a5c54400dc04a53994ada1bfb301b))
+* Fixed search bar not completely hiding ([dda417b](https://github.com/pct-org/native-app/commit/dda417bf221333e662642419d48f47d2e08eb03b))
+
+
+
 ## [1.4.1](https://github.com/pct-org/native-app/compare/v1.4.0...v1.4.1) (2020-05-08)
 
 
@@ -32,15 +43,6 @@
 ### Bug Fixes
 
 * Retrigger travis to test ([ef16ef9](https://github.com/pct-org/native-app/commit/ef16ef9bb798d441bbb77cb2ef319890da98b6ad))
-
-
-
-## [1.3.2](https://github.com/pct-org/native-app/compare/v1.3.1...v1.3.2) (2020-05-06)
-
-
-### Bug Fixes
-
-* Fixed travis regex ([570d1f4](https://github.com/pct-org/native-app/commit/570d1f4bd76c63ab511ae2597cd38aa0c7b89c25))
 
 
 
