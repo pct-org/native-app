@@ -71,7 +71,8 @@ Icon.propTypes = {
 Icon.defaultProps = {
   emphasis: 'high',
   color: 'white',
-  size: dimensions.ICON_SIZE_DEFAULT
+  size: dimensions.ICON_SIZE_DEFAULT,
+  style: null
 }
 
 
