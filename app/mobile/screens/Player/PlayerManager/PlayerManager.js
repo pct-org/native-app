@@ -34,8 +34,6 @@ const styles = StyleSheet.create({
 @withApollo
 export default class PlayerManager extends React.Component {
 
-  downloadPolling = null
-
   constructor(props) {
     super(props)
 
@@ -55,8 +53,6 @@ export default class PlayerManager extends React.Component {
   }
 
   componentDidMount() {
-    const { downloadManager, item } = this.props
-
     GoogleCast.EventEmitter.addListener(GoogleCast.SESSION_STARTED, this.handleCastSessionStarted)
     GoogleCast.EventEmitter.addListener(GoogleCast.SESSION_ENDED, this.handleCastSessionEnded)
     GoogleCast.EventEmitter.addListener(GoogleCast.MEDIA_PLAYBACK_STARTED, this.handleCastMediaPlaybackStarted)

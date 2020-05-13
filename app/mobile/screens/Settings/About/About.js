@@ -111,7 +111,7 @@ export const About = ({ data }) => (
       <View style={styles.textContainer}>
         <Typography variant={'subtitle2'}>App</Typography>
         <Typography variant={'caption'}>
-          {i18n.t('Version: {{version}}', { version: Updater.UpdateRNApp.versionName ?? 'unknown' })}
+          {i18n.t('Version: {{version}}', { version: Updater?.UpdateRNApp?.versionName ?? 'unknown' })}
         </Typography>
       </View>
     </Container>
