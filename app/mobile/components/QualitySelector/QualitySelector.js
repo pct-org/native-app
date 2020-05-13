@@ -77,6 +77,7 @@ export default class QualitySelector extends React.Component {
 
     if (item.download && item.download.downloadStatus && !state.download && !state.removed) {
       download = {
+        _id: item._id,
         status: item.download.downloadStatus,
         quality: item.download.downloadQuality,
         progress: 0,
@@ -196,7 +197,7 @@ export default class QualitySelector extends React.Component {
   }
 
   render() {
-    const { itemType, variant, style, item } = this.props
+    const { itemType, variant, style, item, downloadManager } = this.props
     const { visible, download } = this.state
 
     return (
@@ -210,6 +211,7 @@ export default class QualitySelector extends React.Component {
           handleOnPress={this.handleOnIconPress}
           handleStartDownload={this.handleStartDownload}
           handleRemoveDownload={this.handleRemoveDownload}
+          downloadManager={downloadManager}
         />
 
         {variant !== 'downloads' && (

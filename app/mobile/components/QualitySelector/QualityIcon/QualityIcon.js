@@ -1,14 +1,14 @@
 import React, { useEffect } from 'react'
 import PropTypes from 'prop-types'
-import { StyleSheet, ToastAndroid } from 'react-native'
+import { StyleSheet } from 'react-native'
 import LottieView from 'lottie-react-native'
 import { useLazyQuery } from '@apollo/react-hooks'
 import * as Animatable from 'react-native-animatable'
 
-import i18n from 'modules/i18n'
 import dimensions from 'modules/dimensions'
 import constants from 'modules/constants'
 import { DownloadQuery } from 'modules/GraphQL/DownloadGraphQL'
+import usePollingForDownload from 'modules/GraphQL/usePollingForDownload'
 
 import BaseButton from 'components/BaseButton'
 import IconButton from 'components/IconButton'
@@ -29,41 +29,27 @@ export const styles = StyleSheet.create({
 
 })
 
-export const QualityIcon = ({ handleOnPress, handleRemoveDownload, item, download: downloadProp, variant, itemType, style }) => {
-  const [
-    executeQuery,
-    {
-      called: queryCalled,
-      data,
-      stopPolling: stopPollingDownload,
-    },
-  ] = useLazyQuery(
-    DownloadQuery,
-    {
-      pollInterval: 1000,
-      skip: queryCalled,
-      variables: {
-        _id: item._id,
-      },
-    },
+export const QualityIcon = ({
+  handleOnPress,
+  handleRemoveDownload,
+  item,
+  download: downloadProp,
+  downloadManager,
+  variant,
+  itemType,
+  style,
+}) => {
+  const data = usePollingForDownload(
+    variant !== constants.TYPE_STREAM
+      ? downloadProp
+      : null,
+    downloadManager
   )
-
-  useEffect(() => {
-    if (downloadProp && [constants.STATUS_FAILED, constants.STATUS_COMPLETE].indexOf(downloadProp.status) === -1) {
-      executeQuery()
-    }
-
-    return () => {
-      if (stopPollingDownload) {
-        stopPollingDownload()
-      }
-    }
-  }, [downloadProp])
 
   const download = downloadProp && !data
     ? downloadProp
     : downloadProp && data
-      ? data.download
+      ? data
       : null
 
   const getStatusText = () => {
@@ -83,31 +69,13 @@ export const QualityIcon = ({ handleOnPress, handleRemoveDownload, item, downloa
     if (download && download.status !== constants.STATUS_REMOVED && (variant !== 'downloads' || download?.status === constants.STATUS_DOWNLOADING)) {
       return (
         <BaseButton
-          onPress={() => {
-            let message = i18n.t('Hold long to remove')
-
-            if (download.status === constants.STATUS_FAILED) {
-              message = i18n.t('Hold long to retry')
-
-            } else if (download.status === constants.STATUS_DOWNLOADING) {
-              message = i18n.t('Hold long to cancel')
-            }
-
-            ToastAndroid.show(message, ToastAndroid.SHORT)
-          }}
+          onPress={() => downloadManager.onPress(download)}
           onLongPress={() => {
             // If status is failed we retry on long press
             if (download.status === constants.STATUS_FAILED) {
               handleOnPress()
 
             } else {
-              if (stopPollingDownload) {
-                stopPollingDownload()
-              }
-
-              // TODO:: Show snackbar instead of toast
-              ToastAndroid.show(i18n.t('"{{title}}" removed', { title: item.title }), ToastAndroid.SHORT)
-
               handleRemoveDownload()
             }
           }}

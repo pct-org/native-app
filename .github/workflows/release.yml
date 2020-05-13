@@ -37,6 +37,7 @@ jobs:
         uses: TriPSs/conventional-changelog-action@v2
         with:
           github-token: ${{ secrets.TOKEN_GITHUB }}
+          release-count: '10'
 
       - name: Create Release
         uses: actions/create-release@v1
