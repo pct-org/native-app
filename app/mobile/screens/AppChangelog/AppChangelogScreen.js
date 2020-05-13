@@ -15,10 +15,10 @@ const styles = {
   },
 
   container: {
-    marginTop: dimensions.STATUSBAR_HEIGHT,
-    marginLeft: dimensions.UNIT,
-    marginRight: dimensions.UNIT,
-    marginBottom: dimensions.UNIT,
+    marginTop: dimensions.STATUSBAR_HEIGHT + dimensions.UNIT,
+    marginLeft: dimensions.UNIT * 2,
+    marginRight: dimensions.UNIT * 2,
+    marginBottom: dimensions.UNIT * 2,
   },
 
 }

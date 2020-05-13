@@ -1,11 +1,16 @@
 import React from 'react'
+import { ToastAndroid } from 'react-native'
 
+import constants from 'modules/constants'
+import i18n from 'modules/i18n/i18n'
 import withApollo from 'modules/GraphQL/withApollo'
-import { RemoveDownloadMutation, StartDownloadMutation } from 'modules/GraphQL/DownloadGraphQL'
+import { DownloadQuery, RemoveDownloadMutation, StartDownloadMutation } from 'modules/GraphQL/DownloadGraphQL'
 
 import DownloadManagerContext from './DownloadManagerContext'
 
 export class DownloadManager extends React.Component {
+
+  pollingDownloads = []
 
   state = {
     downloads: [],
@@ -69,9 +74,15 @@ export class DownloadManager extends React.Component {
       mutation: RemoveDownloadMutation,
     })
 
+    // Also stop polling if we where
+    this.handleStopPollDownload(item)
+
     this.setState({
       downloads: downloads.filter(down => down._id !== item._id),
     })
+
+    // TODO:: Show snackbar instead of toast
+    ToastAndroid.show(i18n.t('"{{title}}" removed', { title: item.title }), ToastAndroid.SHORT)
   }
 
   handleGetDownload = (_id) => {
@@ -84,6 +95,57 @@ export class DownloadManager extends React.Component {
     return !!this.handleGetDownload(_id)
   }
 
+  /**
+   * Shows the correct message for a download on press
+   *
+   * @param download
+   */
+  handleDownloadPress = (download) => {
+    let message = i18n.t('Hold long to remove')
+
+    if (download.status === constants.STATUS_FAILED) {
+      message = i18n.t('Hold long to retry')
+
+    } else if (download.status === constants.STATUS_DOWNLOADING) {
+      message = i18n.t('Hold long to cancel')
+    }
+
+    ToastAndroid.show(message, ToastAndroid.SHORT)
+  }
+
+  /**
+   * Does the stop stream mutation
+   *
+   * @returns {Promise<void>}
+   */
+  handlePollDownload = (download, callback) => {
+    const { apollo } = this.props
+
+    this.pollingDownloads[download._id] = apollo.watchQuery({
+      query: DownloadQuery,
+      pollInterval: 1000,
+      variables: {
+        _id: download._id,
+      },
+    })
+      .subscribe(({ data }) => {
+        callback(data?.download ?? null)
+      })
+  }
+
+  /**
+   * Stops polling the download
+   *
+   * @param download
+   */
+  handleStopPollDownload = (download) => {
+    // Unsubscribe
+    this.pollingDownloads[download._id]?.unsubscribe()
+
+    // Remove it from the polling downloads
+    delete this.pollingDownloads[download._id]
+  }
+
   getValue = () => {
     return {
       startDownload: this.handleStartDownload,
@@ -91,6 +153,9 @@ export class DownloadManager extends React.Component {
       removeDownload: this.handleRemoveDownload,
       getDownload: this.handleGetDownload,
       downloadExists: this.handleDownloadExists,
+      onPress: this.handleDownloadPress,
+      pollDownload: this.handlePollDownload,
+      stopPollDownload: this.handleStopPollDownload,
     }
   }
 

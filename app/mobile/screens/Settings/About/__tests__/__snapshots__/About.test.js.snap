@@ -1,0 +1,1093 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`(Screens) Settings > About should render 1`] = `
+<Container
+  elevation={0}
+  style={
+    Object {
+      "paddingTop": 16,
+    }
+  }
+>
+  <Typography
+    color="white"
+    component={null}
+    emphasis="high"
+    fontWeight="default"
+    style={
+      Object {
+        "marginBottom": 4,
+        "marginLeft": 8,
+        "marginRight": 8,
+      }
+    }
+    textProps={Object {}}
+    variant="headline6"
+  >
+    About
+  </Typography>
+  <Container
+    elevation={2}
+    style={
+      Object {
+        "display": "flex",
+        "flexDirection": "row",
+        "paddingBottom": 8,
+        "paddingTop": 4,
+      }
+    }
+  >
+    <View
+      style={
+        Object {
+          "display": "flex",
+          "justifyContent": "center",
+          "margin": 8,
+        }
+      }
+    >
+      <Icon
+        color="white"
+        emphasis="high"
+        name="filmstrip"
+        size={24}
+        style={null}
+      />
+    </View>
+    <View>
+      <Typography
+        color="white"
+        component={null}
+        emphasis="high"
+        fontWeight="default"
+        style={null}
+        textProps={Object {}}
+        variant="subtitle2"
+      >
+        GraphQL-API
+      </Typography>
+      <Typography
+        color="white"
+        component={null}
+        emphasis="high"
+        fontWeight="default"
+        style={null}
+        textProps={Object {}}
+        variant="caption"
+      >
+        Version: test
+      </Typography>
+      <Typography
+        color="white"
+        component={null}
+        emphasis="high"
+        fontWeight="default"
+        style={null}
+        textProps={Object {}}
+        variant="caption"
+      >
+        Movies: 1
+      </Typography>
+      <Typography
+        color="white"
+        component={null}
+        emphasis="high"
+        fontWeight="default"
+        style={null}
+        textProps={Object {}}
+        variant="caption"
+      >
+        Shows: 1
+      </Typography>
+    </View>
+  </Container>
+  <Container
+    elevation={2}
+    style={
+      Array [
+        Object {
+          "display": "flex",
+          "flexDirection": "row",
+          "paddingBottom": 8,
+          "paddingTop": 4,
+        },
+        Object {
+          "marginTop": 1,
+        },
+      ]
+    }
+  >
+    <View
+      style={
+        Object {
+          "display": "flex",
+          "justifyContent": "center",
+          "margin": 8,
+        }
+      }
+    >
+      <Icon
+        color="white"
+        emphasis="high"
+        name="database-import"
+        size={24}
+        style={null}
+      />
+    </View>
+    <View>
+      <Typography
+        color="white"
+        component={null}
+        emphasis="high"
+        fontWeight="default"
+        style={null}
+        textProps={Object {}}
+        variant="subtitle2"
+      >
+        Scraper
+      </Typography>
+      <Typography
+        color="white"
+        component={null}
+        emphasis="high"
+        fontWeight="default"
+        style={null}
+        textProps={Object {}}
+        variant="caption"
+      >
+        Version: test
+      </Typography>
+      <Typography
+        color="white"
+        component={null}
+        emphasis="high"
+        fontWeight="default"
+        style={null}
+        textProps={Object {}}
+        variant="caption"
+      >
+        Status: idle
+      </Typography>
+      <Typography
+        color="white"
+        component={null}
+        emphasis="high"
+        fontWeight="default"
+        style={null}
+        textProps={Object {}}
+        variant="caption"
+      >
+        Uptime: 10
+      </Typography>
+      <Typography
+        color="white"
+        component={null}
+        emphasis="high"
+        fontWeight="default"
+        style={null}
+        textProps={Object {}}
+        variant="caption"
+      >
+        Last updated: test
+      </Typography>
+      <Typography
+        color="white"
+        component={null}
+        emphasis="high"
+        fontWeight="default"
+        style={null}
+        textProps={Object {}}
+        variant="caption"
+      >
+        Next update: test
+      </Typography>
+    </View>
+  </Container>
+  <Container
+    elevation={2}
+    style={
+      Array [
+        Object {
+          "display": "flex",
+          "flexDirection": "row",
+          "paddingBottom": 8,
+          "paddingTop": 4,
+        },
+        Object {
+          "marginTop": 1,
+        },
+      ]
+    }
+  >
+    <View
+      style={
+        Object {
+          "display": "flex",
+          "justifyContent": "center",
+          "margin": 8,
+        }
+      }
+    >
+      <Icon
+        color="white"
+        emphasis="high"
+        name="popcorn"
+        size={24}
+        style={null}
+      />
+    </View>
+    <View>
+      <Typography
+        color="white"
+        component={null}
+        emphasis="high"
+        fontWeight="default"
+        style={null}
+        textProps={Object {}}
+        variant="subtitle2"
+      >
+        App
+      </Typography>
+      <Typography
+        color="white"
+        component={null}
+        emphasis="high"
+        fontWeight="default"
+        style={null}
+        textProps={Object {}}
+        variant="caption"
+      >
+        Version: test version
+      </Typography>
+    </View>
+  </Container>
+  <TextButton
+    color="white"
+    emphasis="high"
+    onPress={[Function]}
+    upperCase={true}
+    variant="button"
+  >
+    Changelog
+  </TextButton>
+</Container>
+`;
+
+exports[`(Screens) Settings > About should render with app version 1`] = `
+<Container
+  elevation={0}
+  style={
+    Object {
+      "paddingTop": 16,
+    }
+  }
+>
+  <Typography
+    color="white"
+    component={null}
+    emphasis="high"
+    fontWeight="default"
+    style={
+      Object {
+        "marginBottom": 4,
+        "marginLeft": 8,
+        "marginRight": 8,
+      }
+    }
+    textProps={Object {}}
+    variant="headline6"
+  >
+    About
+  </Typography>
+  <Container
+    elevation={2}
+    style={
+      Object {
+        "display": "flex",
+        "flexDirection": "row",
+        "paddingBottom": 8,
+        "paddingTop": 4,
+      }
+    }
+  >
+    <View
+      style={
+        Object {
+          "display": "flex",
+          "justifyContent": "center",
+          "margin": 8,
+        }
+      }
+    >
+      <Icon
+        color="white"
+        emphasis="high"
+        name="filmstrip"
+        size={24}
+        style={null}
+      />
+    </View>
+    <View>
+      <Typography
+        color="white"
+        component={null}
+        emphasis="high"
+        fontWeight="default"
+        style={null}
+        textProps={Object {}}
+        variant="subtitle2"
+      >
+        GraphQL-API
+      </Typography>
+      <Typography
+        color="white"
+        component={null}
+        emphasis="high"
+        fontWeight="default"
+        style={null}
+        textProps={Object {}}
+        variant="caption"
+      >
+        Version: unknown
+      </Typography>
+      <Typography
+        color="white"
+        component={null}
+        emphasis="high"
+        fontWeight="default"
+        style={null}
+        textProps={Object {}}
+        variant="caption"
+      >
+        Movies: unknown
+      </Typography>
+      <Typography
+        color="white"
+        component={null}
+        emphasis="high"
+        fontWeight="default"
+        style={null}
+        textProps={Object {}}
+        variant="caption"
+      >
+        Shows: unknown
+      </Typography>
+    </View>
+  </Container>
+  <Container
+    elevation={2}
+    style={
+      Array [
+        Object {
+          "display": "flex",
+          "flexDirection": "row",
+          "paddingBottom": 8,
+          "paddingTop": 4,
+        },
+        Object {
+          "marginTop": 1,
+        },
+      ]
+    }
+  >
+    <View
+      style={
+        Object {
+          "display": "flex",
+          "justifyContent": "center",
+          "margin": 8,
+        }
+      }
+    >
+      <Icon
+        color="white"
+        emphasis="high"
+        name="database-import"
+        size={24}
+        style={null}
+      />
+    </View>
+    <View>
+      <Typography
+        color="white"
+        component={null}
+        emphasis="high"
+        fontWeight="default"
+        style={null}
+        textProps={Object {}}
+        variant="subtitle2"
+      >
+        Scraper
+      </Typography>
+      <Typography
+        color="white"
+        component={null}
+        emphasis="high"
+        fontWeight="default"
+        style={null}
+        textProps={Object {}}
+        variant="caption"
+      >
+        Version: unknown
+      </Typography>
+      <Typography
+        color="white"
+        component={null}
+        emphasis="high"
+        fontWeight="default"
+        style={null}
+        textProps={Object {}}
+        variant="caption"
+      >
+        Status: unknown
+      </Typography>
+      <Typography
+        color="white"
+        component={null}
+        emphasis="high"
+        fontWeight="default"
+        style={null}
+        textProps={Object {}}
+        variant="caption"
+      >
+        Uptime: unknown
+      </Typography>
+      <Typography
+        color="white"
+        component={null}
+        emphasis="high"
+        fontWeight="default"
+        style={null}
+        textProps={Object {}}
+        variant="caption"
+      >
+        Last updated: unknown
+      </Typography>
+      <Typography
+        color="white"
+        component={null}
+        emphasis="high"
+        fontWeight="default"
+        style={null}
+        textProps={Object {}}
+        variant="caption"
+      >
+        Next update: unknown
+      </Typography>
+    </View>
+  </Container>
+  <Container
+    elevation={2}
+    style={
+      Array [
+        Object {
+          "display": "flex",
+          "flexDirection": "row",
+          "paddingBottom": 8,
+          "paddingTop": 4,
+        },
+        Object {
+          "marginTop": 1,
+        },
+      ]
+    }
+  >
+    <View
+      style={
+        Object {
+          "display": "flex",
+          "justifyContent": "center",
+          "margin": 8,
+        }
+      }
+    >
+      <Icon
+        color="white"
+        emphasis="high"
+        name="popcorn"
+        size={24}
+        style={null}
+      />
+    </View>
+    <View>
+      <Typography
+        color="white"
+        component={null}
+        emphasis="high"
+        fontWeight="default"
+        style={null}
+        textProps={Object {}}
+        variant="subtitle2"
+      >
+        App
+      </Typography>
+      <Typography
+        color="white"
+        component={null}
+        emphasis="high"
+        fontWeight="default"
+        style={null}
+        textProps={Object {}}
+        variant="caption"
+      >
+        Version: test version
+      </Typography>
+    </View>
+  </Container>
+  <TextButton
+    color="white"
+    emphasis="high"
+    onPress={[Function]}
+    upperCase={true}
+    variant="button"
+  >
+    Changelog
+  </TextButton>
+</Container>
+`;
+
+exports[`(Screens) Settings > About should render with everything unknown 1`] = `
+<Container
+  elevation={0}
+  style={
+    Object {
+      "paddingTop": 16,
+    }
+  }
+>
+  <Typography
+    color="white"
+    component={null}
+    emphasis="high"
+    fontWeight="default"
+    style={
+      Object {
+        "marginBottom": 4,
+        "marginLeft": 8,
+        "marginRight": 8,
+      }
+    }
+    textProps={Object {}}
+    variant="headline6"
+  >
+    About
+  </Typography>
+  <Container
+    elevation={2}
+    style={
+      Object {
+        "display": "flex",
+        "flexDirection": "row",
+        "paddingBottom": 8,
+        "paddingTop": 4,
+      }
+    }
+  >
+    <View
+      style={
+        Object {
+          "display": "flex",
+          "justifyContent": "center",
+          "margin": 8,
+        }
+      }
+    >
+      <Icon
+        color="white"
+        emphasis="high"
+        name="filmstrip"
+        size={24}
+        style={null}
+      />
+    </View>
+    <View>
+      <Typography
+        color="white"
+        component={null}
+        emphasis="high"
+        fontWeight="default"
+        style={null}
+        textProps={Object {}}
+        variant="subtitle2"
+      >
+        GraphQL-API
+      </Typography>
+      <Typography
+        color="white"
+        component={null}
+        emphasis="high"
+        fontWeight="default"
+        style={null}
+        textProps={Object {}}
+        variant="caption"
+      >
+        Version: unknown
+      </Typography>
+      <Typography
+        color="white"
+        component={null}
+        emphasis="high"
+        fontWeight="default"
+        style={null}
+        textProps={Object {}}
+        variant="caption"
+      >
+        Movies: unknown
+      </Typography>
+      <Typography
+        color="white"
+        component={null}
+        emphasis="high"
+        fontWeight="default"
+        style={null}
+        textProps={Object {}}
+        variant="caption"
+      >
+        Shows: unknown
+      </Typography>
+    </View>
+  </Container>
+  <Container
+    elevation={2}
+    style={
+      Array [
+        Object {
+          "display": "flex",
+          "flexDirection": "row",
+          "paddingBottom": 8,
+          "paddingTop": 4,
+        },
+        Object {
+          "marginTop": 1,
+        },
+      ]
+    }
+  >
+    <View
+      style={
+        Object {
+          "display": "flex",
+          "justifyContent": "center",
+          "margin": 8,
+        }
+      }
+    >
+      <Icon
+        color="white"
+        emphasis="high"
+        name="database-import"
+        size={24}
+        style={null}
+      />
+    </View>
+    <View>
+      <Typography
+        color="white"
+        component={null}
+        emphasis="high"
+        fontWeight="default"
+        style={null}
+        textProps={Object {}}
+        variant="subtitle2"
+      >
+        Scraper
+      </Typography>
+      <Typography
+        color="white"
+        component={null}
+        emphasis="high"
+        fontWeight="default"
+        style={null}
+        textProps={Object {}}
+        variant="caption"
+      >
+        Version: unknown
+      </Typography>
+      <Typography
+        color="white"
+        component={null}
+        emphasis="high"
+        fontWeight="default"
+        style={null}
+        textProps={Object {}}
+        variant="caption"
+      >
+        Status: unknown
+      </Typography>
+      <Typography
+        color="white"
+        component={null}
+        emphasis="high"
+        fontWeight="default"
+        style={null}
+        textProps={Object {}}
+        variant="caption"
+      >
+        Uptime: unknown
+      </Typography>
+      <Typography
+        color="white"
+        component={null}
+        emphasis="high"
+        fontWeight="default"
+        style={null}
+        textProps={Object {}}
+        variant="caption"
+      >
+        Last updated: unknown
+      </Typography>
+      <Typography
+        color="white"
+        component={null}
+        emphasis="high"
+        fontWeight="default"
+        style={null}
+        textProps={Object {}}
+        variant="caption"
+      >
+        Next update: unknown
+      </Typography>
+    </View>
+  </Container>
+  <Container
+    elevation={2}
+    style={
+      Array [
+        Object {
+          "display": "flex",
+          "flexDirection": "row",
+          "paddingBottom": 8,
+          "paddingTop": 4,
+        },
+        Object {
+          "marginTop": 1,
+        },
+      ]
+    }
+  >
+    <View
+      style={
+        Object {
+          "display": "flex",
+          "justifyContent": "center",
+          "margin": 8,
+        }
+      }
+    >
+      <Icon
+        color="white"
+        emphasis="high"
+        name="popcorn"
+        size={24}
+        style={null}
+      />
+    </View>
+    <View>
+      <Typography
+        color="white"
+        component={null}
+        emphasis="high"
+        fontWeight="default"
+        style={null}
+        textProps={Object {}}
+        variant="subtitle2"
+      >
+        App
+      </Typography>
+      <Typography
+        color="white"
+        component={null}
+        emphasis="high"
+        fontWeight="default"
+        style={null}
+        textProps={Object {}}
+        variant="caption"
+      >
+        Version: unknown
+      </Typography>
+    </View>
+  </Container>
+  <TextButton
+    color="white"
+    emphasis="high"
+    onPress={[Function]}
+    upperCase={true}
+    variant="button"
+  >
+    Changelog
+  </TextButton>
+</Container>
+`;
+
+exports[`(Screens) Settings > About should render with everything unknown when data incorrect 1`] = `
+<Container
+  elevation={0}
+  style={
+    Object {
+      "paddingTop": 16,
+    }
+  }
+>
+  <Typography
+    color="white"
+    component={null}
+    emphasis="high"
+    fontWeight="default"
+    style={
+      Object {
+        "marginBottom": 4,
+        "marginLeft": 8,
+        "marginRight": 8,
+      }
+    }
+    textProps={Object {}}
+    variant="headline6"
+  >
+    About
+  </Typography>
+  <Container
+    elevation={2}
+    style={
+      Object {
+        "display": "flex",
+        "flexDirection": "row",
+        "paddingBottom": 8,
+        "paddingTop": 4,
+      }
+    }
+  >
+    <View
+      style={
+        Object {
+          "display": "flex",
+          "justifyContent": "center",
+          "margin": 8,
+        }
+      }
+    >
+      <Icon
+        color="white"
+        emphasis="high"
+        name="filmstrip"
+        size={24}
+        style={null}
+      />
+    </View>
+    <View>
+      <Typography
+        color="white"
+        component={null}
+        emphasis="high"
+        fontWeight="default"
+        style={null}
+        textProps={Object {}}
+        variant="subtitle2"
+      >
+        GraphQL-API
+      </Typography>
+      <Typography
+        color="white"
+        component={null}
+        emphasis="high"
+        fontWeight="default"
+        style={null}
+        textProps={Object {}}
+        variant="caption"
+      >
+        Version: unknown
+      </Typography>
+      <Typography
+        color="white"
+        component={null}
+        emphasis="high"
+        fontWeight="default"
+        style={null}
+        textProps={Object {}}
+        variant="caption"
+      >
+        Movies: unknown
+      </Typography>
+      <Typography
+        color="white"
+        component={null}
+        emphasis="high"
+        fontWeight="default"
+        style={null}
+        textProps={Object {}}
+        variant="caption"
+      >
+        Shows: unknown
+      </Typography>
+    </View>
+  </Container>
+  <Container
+    elevation={2}
+    style={
+      Array [
+        Object {
+          "display": "flex",
+          "flexDirection": "row",
+          "paddingBottom": 8,
+          "paddingTop": 4,
+        },
+        Object {
+          "marginTop": 1,
+        },
+      ]
+    }
+  >
+    <View
+      style={
+        Object {
+          "display": "flex",
+          "justifyContent": "center",
+          "margin": 8,
+        }
+      }
+    >
+      <Icon
+        color="white"
+        emphasis="high"
+        name="database-import"
+        size={24}
+        style={null}
+      />
+    </View>
+    <View>
+      <Typography
+        color="white"
+        component={null}
+        emphasis="high"
+        fontWeight="default"
+        style={null}
+        textProps={Object {}}
+        variant="subtitle2"
+      >
+        Scraper
+      </Typography>
+      <Typography
+        color="white"
+        component={null}
+        emphasis="high"
+        fontWeight="default"
+        style={null}
+        textProps={Object {}}
+        variant="caption"
+      >
+        Version: unknown
+      </Typography>
+      <Typography
+        color="white"
+        component={null}
+        emphasis="high"
+        fontWeight="default"
+        style={null}
+        textProps={Object {}}
+        variant="caption"
+      >
+        Status: unknown
+      </Typography>
+      <Typography
+        color="white"
+        component={null}
+        emphasis="high"
+        fontWeight="default"
+        style={null}
+        textProps={Object {}}
+        variant="caption"
+      >
+        Uptime: unknown
+      </Typography>
+      <Typography
+        color="white"
+        component={null}
+        emphasis="high"
+        fontWeight="default"
+        style={null}
+        textProps={Object {}}
+        variant="caption"
+      >
+        Last updated: unknown
+      </Typography>
+      <Typography
+        color="white"
+        component={null}
+        emphasis="high"
+        fontWeight="default"
+        style={null}
+        textProps={Object {}}
+        variant="caption"
+      >
+        Next update: unknown
+      </Typography>
+    </View>
+  </Container>
+  <Container
+    elevation={2}
+    style={
+      Array [
+        Object {
+          "display": "flex",
+          "flexDirection": "row",
+          "paddingBottom": 8,
+          "paddingTop": 4,
+        },
+        Object {
+          "marginTop": 1,
+        },
+      ]
+    }
+  >
+    <View
+      style={
+        Object {
+          "display": "flex",
+          "justifyContent": "center",
+          "margin": 8,
+        }
+      }
+    >
+      <Icon
+        color="white"
+        emphasis="high"
+        name="popcorn"
+        size={24}
+        style={null}
+      />
+    </View>
+    <View>
+      <Typography
+        color="white"
+        component={null}
+        emphasis="high"
+        fontWeight="default"
+        style={null}
+        textProps={Object {}}
+        variant="subtitle2"
+      >
+        App
+      </Typography>
+      <Typography
+        color="white"
+        component={null}
+        emphasis="high"
+        fontWeight="default"
+        style={null}
+        textProps={Object {}}
+        variant="caption"
+      >
+        Version: unknown
+      </Typography>
+    </View>
+  </Container>
+  <TextButton
+    color="white"
+    emphasis="high"
+    onPress={[Function]}
+    upperCase={true}
+    variant="button"
+  >
+    Changelog
+  </TextButton>
+</Container>
+`;

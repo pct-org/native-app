@@ -1,9 +1,14 @@
-import React from 'react'
+import React, { useEffect } from 'react'
+import { InteractionManager, RefreshControl, ScrollView } from 'react-native'
+import { useLazyQuery } from '@apollo/react-hooks'
+
+import colors from 'modules/colors'
 
 import Container from 'components/Container'
 
-import ApisStatus from './ApisStatus'
-import AppStatus from './AppStatus'
+import { AboutQuery, ActiveDownloads } from './SettingsQuery'
+import About from './About'
+import Downloads from './Downloads'
 
 export const styles = {
 
@@ -14,14 +19,53 @@ export const styles = {
 
 }
 
-export const Settings = () => (
-  <Container style={styles.root}>
+export const Settings = () => {
+  const [executeAboutQuery, { data: aboutData, loading: aboutLoading }] = useLazyQuery(
+    AboutQuery,
+  )
 
-    <ApisStatus />
+  const [executeActiveDownloadsQuery, { data: downloadsData, loading: downloadsLoading }] = useLazyQuery(
+    ActiveDownloads,
+  )
 
-    <AppStatus />
+  useEffect(() => {
+    // Execute the query after the component is done navigation
+    InteractionManager.runAfterInteractions(() => {
+      // Execute the query
+      executeAboutQuery()
+      executeActiveDownloadsQuery()
+    })
+  }, [])
 
-  </Container>
-)
+  return (
+    <Container style={styles.root}>
+
+      <ScrollView
+        refreshControl={
+          <RefreshControl
+            refreshing={(downloadsLoading || aboutLoading) && !!aboutData}
+            onRefresh={() => {
+              executeAboutQuery()
+              executeActiveDownloadsQuery()
+            }}
+            colors={[colors.PRIMARY_COLOR_200]}
+            progressBackgroundColor={colors.BACKGROUND_TABS}
+          />
+        }>
+
+        <About
+          data={aboutData}
+        />
+
+        <Downloads
+          data={downloadsData}
+          executeQuery={executeActiveDownloadsQuery}
+        />
+
+      </ScrollView>
+
+    </Container>
+  )
+}
 
 export default Settings

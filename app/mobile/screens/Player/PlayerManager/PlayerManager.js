@@ -4,6 +4,7 @@ import { StyleSheet, View, InteractionManager } from 'react-native'
 import GoogleCast, { CastButton } from 'react-native-google-cast'
 import Orientation from 'react-native-orientation'
 
+import withDownloadManager from 'modules/DownloadManager/withDownloadManager'
 import withApollo from 'modules/GraphQL/withApollo'
 import { progressMutation } from 'modules/GraphQL/ProgressGraphQL'
 import { StartStreamMutation, StopStreamMutation, DownloadQuery } from 'modules/GraphQL/DownloadGraphQL'
@@ -28,11 +29,10 @@ const styles = StyleSheet.create({
 
 })
 
+@withDownloadManager
 @withIpFinder
 @withApollo
 export default class PlayerManager extends React.Component {
-
-  downloadPolling = null
 
   constructor(props) {
     super(props)
@@ -77,6 +77,7 @@ export default class PlayerManager extends React.Component {
   }
 
   componentWillUnmount() {
+    const { downloadManager, item } = this.props
     const { casting } = this.state
 
     GoogleCast.EventEmitter.removeAllListeners(GoogleCast.SESSION_STARTED)
@@ -92,7 +93,7 @@ export default class PlayerManager extends React.Component {
     Orientation.lockToPortrait()
 
     // Stop polling for the download info
-    this.downloadPolling?.unsubscribe()
+    downloadManager.stopPollDownload(item)
 
     // Stop the stream
     this.stopStream()
@@ -230,32 +231,18 @@ export default class PlayerManager extends React.Component {
     })
   }
 
-  /**
-   * Does the stop stream mutation
-   *
-   * @returns {Promise<void>}
-   */
   pollDownload = () => {
-    const { apollo, item } = this.props
+    const { downloadManager, item } = this.props
 
-    this.downloadPolling = apollo.watchQuery({
-      query: DownloadQuery,
-      pollInterval: 1000,
-      variables: {
-        _id: item._id,
-      },
-    })
-      .subscribe(({ data }) => {
-      const isBuffering = data.download.progress < 3
-
+    downloadManager.pollDownload(item, (data) => {
       // If the progress is 100 then stop polling
-      if (data.download.progress === 100) {
-        this.downloadPolling?.unsubscribe()
+      if (data.progress === 100) {
+        downloadManager.stopPollDownload(item)
       }
 
       this.setState({
-        isBuffering,
-        download: data.download,
+        isBuffering: data.progress < 3,
+        download: data,
       })
     })
   }
