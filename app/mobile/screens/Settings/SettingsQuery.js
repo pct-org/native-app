@@ -1,6 +1,6 @@
 import gql from 'graphql-tag'
 
-export default gql`
+export const AboutQuery =  gql`
   query {
     
     status {
@@ -18,5 +18,35 @@ export default gql`
       nextUpdate
     }
     
+  }
+`
+
+export const ActiveDownloads =  gql`
+  query {
+
+    activeDownloads {
+      _id
+      type
+      itemType
+      status
+      quality
+      progress
+      numPeers
+      speed
+      timeRemaining
+      movie {
+        title
+      }
+      episode {
+        title
+        season
+        number
+        show {
+          title
+        }
+      }
+      __typename
+    }
+
   }
 `
