@@ -121,10 +121,10 @@ export const About = ({ data, ipFinder }) => (
       Changelog
     </TextButton>
 
-    <TextButton onPress={() => Linking.openURL(`http://${ipFinder.host}:5001/files`)}>
+    <TextButton onPress={() => Linking.openURL(`http://${ipFinder.ip}:${ipFinder.SCRAPER_PORT}/files`)}>
       Log files
     </TextButton>
-    
+
   </Container>
 )
 

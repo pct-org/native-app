@@ -2,7 +2,7 @@ import gql from 'graphql-tag'
 
 export default gql`
   query episodes {
-    episodes: myEpisodes{
+    episodes: myEpisodes {
       _id
       title
       number

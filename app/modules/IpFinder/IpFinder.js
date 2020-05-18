@@ -12,6 +12,9 @@ import IpFinderContext from './IpFinderContext'
 
 export default class IpFinder extends React.Component {
 
+  static GRAPH_PORT = 5000
+  static SCRAPER_PORT = 5001
+
   state = {
     host: null,
     loading: true,
@@ -25,6 +28,7 @@ export default class IpFinder extends React.Component {
     let newState = {}
     newState.connectedToWifi = state.type === 'wifi' && state.isConnected
 
+    let ip = await AsyncStorage.getItem('@ipFinder.ip')
     let host = await AsyncStorage.getItem('@ipFinder.host')
 
     // Check if we have host or that current is still available and if we are connected to wifi
@@ -36,8 +40,9 @@ export default class IpFinder extends React.Component {
 
       if (await deviceInfo.isEmulator()) {
         // If we are a emulator then check the host ip
-        if (await this.isHost('10.0.2.2:5000')) {
-          host = '10.0.2.2:5000'
+        if (await this.isHost(`10.0.2.2:${IpFinder.GRAPH_PORT}`)) {
+          ip = '10.0.2.2'
+          host = `${ip}:${IpFinder.GRAPH_PORT}`
         }
       }
 
@@ -45,13 +50,20 @@ export default class IpFinder extends React.Component {
       if (!host) {
         const deviceIp = await deviceInfo.getIpAddress()
 
-        host = await this.getHost(deviceIp)
+        ip = await this.getIP(deviceIp)
+        host = `${ip}:${IpFinder.GRAPH_PORT}`
       }
     }
 
     newState.loading = false
     newState.host = host
-    newState.failed = host === null
+    newState.ip = ip
+    newState.failed = ip === null
+
+    if (ip !== null) {
+      await AsyncStorage.setItem('@ipFinder.ip', ip)
+      await AsyncStorage.setItem('@ipFinder.host', host)
+    }
 
     if (newState.failed) {
       SplashScreen.hide()
@@ -66,7 +78,7 @@ export default class IpFinder extends React.Component {
    * @param deviceIp
    * @return {Promise<string>}
    */
-  getHost = async(deviceIp) => {
+  getIP = async(deviceIp) => {
     const ipParts = deviceIp.split('.')
     const blacklistIp = ipParts.pop()
 
@@ -89,11 +101,7 @@ export default class IpFinder extends React.Component {
       return null
     }
 
-    const host = `${baseIp}.${hostIp}:5000`
-
-    await AsyncStorage.setItem('@ipFinder.host', host)
-
-    return host
+    return `${baseIp}.${hostIp}`
   }
 
   /**
@@ -115,7 +123,7 @@ export default class IpFinder extends React.Component {
 
   render() {
     const { children } = this.props
-    const { loading, failed, host, connectedToWifi } = this.state
+    const { loading, failed, host, ip, connectedToWifi } = this.state
 
     if (loading || failed) {
       return (
@@ -133,7 +141,13 @@ export default class IpFinder extends React.Component {
     }
 
     return (
-      <IpFinderContext.Provider value={{ host }}>
+      <IpFinderContext.Provider value={{
+        host,
+        ip,
+
+        GRAPH_PORT: IpFinder.GRAPH_PORT,
+        SCRAPER_PORT: IpFinder.SCRAPER_PORT
+      }}>
         {children(host)}
       </IpFinderContext.Provider>
     )
