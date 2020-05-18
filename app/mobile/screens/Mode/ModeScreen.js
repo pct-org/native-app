@@ -10,12 +10,12 @@ import colors from 'modules/colors'
 import dimensions from 'modules/dimensions'
 import MoviesQuery from 'modules/GraphQL/MoviesQuery'
 import ShowsQuery from 'modules/GraphQL/ShowsQuery'
+import BookmarksQuery from 'modules/GraphQL/BookmarksQuery'
 import fetchMoreUpdateQuery from 'modules/GraphQL/helpers/fetchMoreUpdateQuery'
 
 import Card from 'components/Card'
 import Typography from 'components/Typography'
 import SearchBar from './SearchBar'
-import { BookmarksQuery } from './ModeQuery'
 
 const styles = StyleSheet.create({
 
