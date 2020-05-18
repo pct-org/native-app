@@ -1,0 +1,241 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`(Screens) Settings > Downloads > Download should render downloading correctly for movie 1`] = `
+<BaseButton
+  innerRef={null}
+  onLongPress={[Function]}
+  onPress={[Function]}
+  rippleBorderless={false}
+  rippleColor="rgba(0, 0, 0, .3)"
+>
+  <Container
+    elevation={2}
+    style={
+      Array [
+        Object {
+          "display": "flex",
+          "flexDirection": "row",
+          "paddingBottom": 8,
+          "paddingTop": 4,
+        },
+        Object {
+          "marginBottom": 1,
+        },
+      ]
+    }
+  >
+    <View
+      style={
+        Object {
+          "display": "flex",
+          "justifyContent": "center",
+          "margin": 8,
+        }
+      }
+    >
+      <Icon
+        color="white"
+        emphasis="high"
+        name="movie"
+        size={24}
+        style={null}
+      />
+    </View>
+    <View>
+      <Typography
+        color="white"
+        component={null}
+        emphasis="high"
+        fontWeight="default"
+        style={null}
+        textProps={Object {}}
+        variant="subtitle2"
+      >
+        movie
+      </Typography>
+      <Typography
+        color="white"
+        component={null}
+        emphasis="high"
+        fontWeight="default"
+        style={null}
+        textProps={Object {}}
+        variant="caption"
+      >
+        downloading
+      </Typography>
+      <Typography
+        color="white"
+        component={null}
+        emphasis="high"
+        fontWeight="default"
+        style={null}
+        textProps={Object {}}
+        variant="caption"
+      >
+        10% / 50 kbs
+      </Typography>
+      <Typography
+        color="white"
+        component={null}
+        emphasis="high"
+        fontWeight="default"
+        style={null}
+        textProps={Object {}}
+        variant="caption"
+      >
+        5 minutes
+      </Typography>
+      <Typography
+        color="white"
+        component={null}
+        emphasis="high"
+        fontWeight="default"
+        style={null}
+        textProps={Object {}}
+        variant="caption"
+      >
+        6 peers
+      </Typography>
+    </View>
+  </Container>
+</BaseButton>
+`;
+
+exports[`(Screens) Settings > Downloads > Download should render queued correctly for episode 1`] = `
+<BaseButton
+  innerRef={null}
+  onLongPress={[Function]}
+  onPress={[Function]}
+  rippleBorderless={false}
+  rippleColor="rgba(0, 0, 0, .3)"
+>
+  <Container
+    elevation={2}
+    style={
+      Array [
+        Object {
+          "display": "flex",
+          "flexDirection": "row",
+          "paddingBottom": 8,
+          "paddingTop": 4,
+        },
+        Object {
+          "marginBottom": 1,
+        },
+      ]
+    }
+  >
+    <View
+      style={
+        Object {
+          "display": "flex",
+          "justifyContent": "center",
+          "margin": 8,
+        }
+      }
+    >
+      <Icon
+        color="white"
+        emphasis="high"
+        name="movie"
+        size={24}
+        style={null}
+      />
+    </View>
+    <View>
+      <Typography
+        color="white"
+        component={null}
+        emphasis="high"
+        fontWeight="default"
+        style={null}
+        textProps={Object {}}
+        variant="subtitle2"
+      >
+        show: S1E1. episode
+      </Typography>
+      <Typography
+        color="white"
+        component={null}
+        emphasis="high"
+        fontWeight="default"
+        style={null}
+        textProps={Object {}}
+        variant="caption"
+      >
+        queued
+      </Typography>
+    </View>
+  </Container>
+</BaseButton>
+`;
+
+exports[`(Screens) Settings > Downloads > Download should render queued correctly for movie 1`] = `
+<BaseButton
+  innerRef={null}
+  onLongPress={[Function]}
+  onPress={[Function]}
+  rippleBorderless={false}
+  rippleColor="rgba(0, 0, 0, .3)"
+>
+  <Container
+    elevation={2}
+    style={
+      Array [
+        Object {
+          "display": "flex",
+          "flexDirection": "row",
+          "paddingBottom": 8,
+          "paddingTop": 4,
+        },
+        Object {
+          "marginBottom": 1,
+        },
+      ]
+    }
+  >
+    <View
+      style={
+        Object {
+          "display": "flex",
+          "justifyContent": "center",
+          "margin": 8,
+        }
+      }
+    >
+      <Icon
+        color="white"
+        emphasis="high"
+        name="movie"
+        size={24}
+        style={null}
+      />
+    </View>
+    <View>
+      <Typography
+        color="white"
+        component={null}
+        emphasis="high"
+        fontWeight="default"
+        style={null}
+        textProps={Object {}}
+        variant="subtitle2"
+      >
+        movie
+      </Typography>
+      <Typography
+        color="white"
+        component={null}
+        emphasis="high"
+        fontWeight="default"
+        style={null}
+        textProps={Object {}}
+        variant="caption"
+      >
+        queued
+      </Typography>
+    </View>
+  </Container>
+</BaseButton>
+`;

@@ -270,6 +270,15 @@ exports[`(Screens) Settings > About should render 1`] = `
   >
     Changelog
   </TextButton>
+  <TextButton
+    color="white"
+    emphasis="high"
+    onPress={[Function]}
+    upperCase={true}
+    variant="button"
+  >
+    Log files
+  </TextButton>
 </Container>
 `;
 
@@ -542,6 +551,15 @@ exports[`(Screens) Settings > About should render with app version 1`] = `
     variant="button"
   >
     Changelog
+  </TextButton>
+  <TextButton
+    color="white"
+    emphasis="high"
+    onPress={[Function]}
+    upperCase={true}
+    variant="button"
+  >
+    Log files
   </TextButton>
 </Container>
 `;
@@ -816,6 +834,15 @@ exports[`(Screens) Settings > About should render with everything unknown 1`] = 
   >
     Changelog
   </TextButton>
+  <TextButton
+    color="white"
+    emphasis="high"
+    onPress={[Function]}
+    upperCase={true}
+    variant="button"
+  >
+    Log files
+  </TextButton>
 </Container>
 `;
 
@@ -1088,6 +1115,15 @@ exports[`(Screens) Settings > About should render with everything unknown when d
     variant="button"
   >
     Changelog
+  </TextButton>
+  <TextButton
+    color="white"
+    emphasis="high"
+    onPress={[Function]}
+    upperCase={true}
+    variant="button"
+  >
+    Log files
   </TextButton>
 </Container>
 `;
