@@ -8,14 +8,15 @@ import { getDefaultHeaderHeight } from 'react-navigation-collapsible/lib/src/uti
 import i18n from 'modules/i18n'
 import colors from 'modules/colors'
 import dimensions from 'modules/dimensions'
+import useBackButton from 'modules/useBackButton'
 import MoviesQuery from 'modules/GraphQL/MoviesQuery'
 import ShowsQuery from 'modules/GraphQL/ShowsQuery'
+import BookmarksQuery from 'modules/GraphQL/BookmarksQuery'
 import fetchMoreUpdateQuery from 'modules/GraphQL/helpers/fetchMoreUpdateQuery'
 
 import Card from 'components/Card'
 import Typography from 'components/Typography'
 import SearchBar from './SearchBar'
-import { BookmarksQuery } from './ModeQuery'
 
 const styles = StyleSheet.create({
 
@@ -53,6 +54,16 @@ export const Mode = ({ mode, navigation }) => {
       },
     },
   )
+
+  useBackButton(() => {
+    if (query?.trim()?.length > 0) {
+      setQuery(null)
+
+      return true
+    }
+
+    return false
+  })
 
   const { onScroll, scrollIndicatorInsetTop } = useCollapsibleStack()
 

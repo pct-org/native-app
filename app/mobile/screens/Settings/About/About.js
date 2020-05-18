@@ -1,11 +1,12 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { View } from 'react-native'
+import { View, Linking } from 'react-native'
 import Updater from 'update-react-native-app'
 
 import dimensions from 'modules/dimensions'
 import i18n from 'modules/i18n'
 import { navigate } from 'modules/RootNavigation'
+import withIpFinder from 'modules/IpFinder/withIpFinder'
 
 import Container from 'components/Container'
 import Icon from 'components/Icon'
@@ -43,7 +44,7 @@ export const styles = {
   },
 }
 
-export const About = ({ data }) => (
+export const About = ({ data, ipFinder }) => (
   <Container style={styles.root}>
 
     <Typography
@@ -120,6 +121,10 @@ export const About = ({ data }) => (
       Changelog
     </TextButton>
 
+    <TextButton onPress={() => Linking.openURL(`http://${ipFinder.ip}:${ipFinder.SCRAPER_PORT}/files`)}>
+      Log files
+    </TextButton>
+
   </Container>
 )
 
@@ -131,4 +136,4 @@ About.defaultProps = {
   data: null,
 }
 
-export default About
+export default withIpFinder(About)

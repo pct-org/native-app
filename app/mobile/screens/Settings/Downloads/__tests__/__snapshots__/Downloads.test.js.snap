@@ -1,0 +1,105 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`(Screens) Settings > Downloads should render empty list correctly 1`] = `
+<Container
+  elevation={0}
+  style={
+    Object {
+      "paddingTop": 16,
+    }
+  }
+>
+  <Typography
+    color="white"
+    component={null}
+    emphasis="high"
+    fontWeight="default"
+    style={
+      Object {
+        "marginBottom": 4,
+        "marginLeft": 8,
+        "marginRight": 8,
+      }
+    }
+    textProps={Object {}}
+    variant="headline6"
+  >
+    Active Downloads
+  </Typography>
+  <Container
+    elevation={2}
+    style={
+      Array [
+        Object {
+          "display": "flex",
+          "flexDirection": "row",
+          "paddingBottom": 8,
+          "paddingTop": 4,
+        },
+        Object {
+          "padding": 8,
+        },
+      ]
+    }
+  >
+    <View>
+      <Typography
+        color="white"
+        component={null}
+        emphasis="high"
+        fontWeight="default"
+        style={null}
+        textProps={Object {}}
+        variant="subtitle2"
+      >
+        No active downloads
+      </Typography>
+    </View>
+  </Container>
+</Container>
+`;
+
+exports[`(Screens) Settings > Downloads should render list correctly 1`] = `
+<Container
+  elevation={0}
+  style={
+    Object {
+      "paddingTop": 16,
+    }
+  }
+>
+  <Typography
+    color="white"
+    component={null}
+    emphasis="high"
+    fontWeight="default"
+    style={
+      Object {
+        "marginBottom": 4,
+        "marginLeft": 8,
+        "marginRight": 8,
+      }
+    }
+    textProps={Object {}}
+    variant="headline6"
+  >
+    Active Downloads
+  </Typography>
+  <Download
+    data={null}
+    download={
+      Object {
+        "_id": 1,
+      }
+    }
+    downloadManager={
+      Object {
+        "onPress": [MockFunction],
+        "removeDownload": [MockFunction],
+      }
+    }
+    key="1"
+    refreshScreen={[MockFunction]}
+  />
+</Container>
+`;
