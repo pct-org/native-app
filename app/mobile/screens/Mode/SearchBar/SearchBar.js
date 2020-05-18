@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
 import { StyleSheet, StatusBar, TextInput, Animated } from 'react-native'
 import * as Animatable from 'react-native-animatable'
@@ -56,6 +56,13 @@ export const SearchBar = ({ searchedQuery, search, flatListRef }) => {
   const navigation = useNavigation()
   const [query, setQuery] = useState(searchedQuery)
   const [timeout, setTheTimeout] = useState(null)
+
+  useEffect(() => {
+    // Search is cleared also clear it here
+    if (searchedQuery === null) {
+      setQuery(null)
+    }
+  }, [searchedQuery])
 
   const { translateY } = useCollapsibleStack()
 

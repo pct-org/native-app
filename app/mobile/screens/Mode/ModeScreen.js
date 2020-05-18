@@ -8,6 +8,7 @@ import { getDefaultHeaderHeight } from 'react-navigation-collapsible/lib/src/uti
 import i18n from 'modules/i18n'
 import colors from 'modules/colors'
 import dimensions from 'modules/dimensions'
+import useBackButton from 'modules/useBackButton'
 import MoviesQuery from 'modules/GraphQL/MoviesQuery'
 import ShowsQuery from 'modules/GraphQL/ShowsQuery'
 import BookmarksQuery from 'modules/GraphQL/BookmarksQuery'
@@ -53,6 +54,16 @@ export const Mode = ({ mode, navigation }) => {
       },
     },
   )
+
+  useBackButton(() => {
+    if (query?.trim()?.length > 0) {
+      setQuery(null)
+
+      return true
+    }
+
+    return false
+  })
 
   const { onScroll, scrollIndicatorInsetTop } = useCollapsibleStack()
 
