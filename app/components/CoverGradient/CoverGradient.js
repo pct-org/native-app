@@ -9,10 +9,10 @@ const styles = StyleSheet.create({
 
   linearGradient: {
     position: 'absolute',
-    top     : 0,
-    right   : 0,
-    bottom  : 0,
-    left    : 0,
+    top: 0,
+    right: 0,
+    bottom: 0,
+    left: 0,
   },
 
 })
@@ -31,7 +31,8 @@ CoverGradient.propTypes = {
     x: PropTypes.number,
     y: PropTypes.number,
   }),
-  end  : PropTypes.shape({
+
+  end: PropTypes.shape({
     x: PropTypes.number,
     y: PropTypes.number,
   }),
@@ -40,7 +41,7 @@ CoverGradient.propTypes = {
 CoverGradient.defaultProps = {
   start: {
     x: 0,
-    y: 0.95,
+    y: 0.1,
   },
 
   end: {
