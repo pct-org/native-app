@@ -91,7 +91,7 @@ export const SearchBar = ({ searchedQuery, search, flatListRef }) => {
 
         // Scroll to top
         if (flatListRef && flatListRef.current) {
-          flatListRef.current.getNode().scrollToOffset({ offset: 0, animated: true })
+          flatListRef.current.scrollToOffset({ offset: 0, animated: true })
         }
       }, 500))
     }

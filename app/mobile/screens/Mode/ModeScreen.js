@@ -56,7 +56,7 @@ export const Mode = ({ mode, navigation }) => {
   )
 
   useBackButton(() => {
-    if (query?.trim()?.length > 0) {
+    if (query?.trim()?.length > 0 && navigation.isFocused()) {
       setQuery(null)
 
       return true
@@ -136,7 +136,10 @@ export const Mode = ({ mode, navigation }) => {
         }
         showsHorizontalScrollIndicator={false}
         showsVerticalScrollIndicator={false}
-        onEndReached={fetchMoreUpdateQuery(mode, data, fetchMore)}
+        onEndReached={mode !== 'bookmarks'
+          ? fetchMoreUpdateQuery(mode, data, fetchMore)
+          : null
+        }
         onEndReachedThreshold={3}
         onScroll={onScroll}
         contentContainerStyle={styles.container}
