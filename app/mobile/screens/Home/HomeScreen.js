@@ -3,9 +3,11 @@ import { StyleSheet } from 'react-native'
 import { useQuery } from '@apollo/react-hooks'
 import Orientation from 'react-native-orientation'
 import SplashScreen from 'react-native-splash-screen'
+import { CastButton } from 'react-native-google-cast'
 
 import i18n from 'modules/i18n'
 import dimensions from 'modules/dimensions'
+import colors from 'modules/colors'
 import fetchMoreUpdateQuery from 'modules/GraphQL/helpers/fetchMoreUpdateQuery'
 import MoviesQuery from 'modules/GraphQL/MoviesQuery'
 
@@ -31,6 +33,16 @@ export const styles = StyleSheet.create({
 
   lastSection: {
     marginBottom: dimensions.UNIT * 4,
+  },
+
+  castButton: {
+    position: 'absolute',
+    top: dimensions.STATUSBAR_HEIGHT - (dimensions.UNIT / 4),
+    right: dimensions.UNIT * 2 + dimensions.ICON_SIZE_DEFAULT,
+
+    width: dimensions.ICON_CAST_SIZE,
+    height: dimensions.ICON_CAST_SIZE,
+    tintColor: colors.ICON.WHITE
   },
 
 })
@@ -85,6 +97,8 @@ export const Home = ({ navigation }) => {
           } />
 
         <SettingsIcon />
+
+        <CastButton style={styles.castButton} />
 
         <BookmarksSlider
           handleGoTo={handleGoTo}

@@ -2,6 +2,7 @@
 
 exports[`(Screens) Settings > Downloads > Download should render downloading correctly for movie 1`] = `
 <BaseButton
+  component={[Function]}
   innerRef={null}
   onLongPress={[Function]}
   onPress={[Function]}
@@ -104,6 +105,7 @@ exports[`(Screens) Settings > Downloads > Download should render downloading cor
 
 exports[`(Screens) Settings > Downloads > Download should render queued correctly for episode 1`] = `
 <BaseButton
+  component={[Function]}
   innerRef={null}
   onLongPress={[Function]}
   onPress={[Function]}
@@ -173,6 +175,7 @@ exports[`(Screens) Settings > Downloads > Download should render queued correctl
 
 exports[`(Screens) Settings > Downloads > Download should render queued correctly for movie 1`] = `
 <BaseButton
+  component={[Function]}
   innerRef={null}
   onLongPress={[Function]}
   onPress={[Function]}

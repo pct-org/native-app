@@ -1,0 +1,25 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`(Component) BaseButton should render with defaults 1`] = `
+<TouchableNativeFeedback
+  background={
+    Object {
+      "borderless": true,
+      "color": "rgba(0, 0, 0, .3)",
+      "type": "Ripple",
+    }
+  }
+  useForeground={true}
+>
+  test
+</TouchableNativeFeedback>
+`;
+
+exports[`(Component) BaseButton should render with no ripple 1`] = `
+<TouchableNativeFeedback
+  background={null}
+  useForeground={true}
+>
+  test
+</TouchableNativeFeedback>
+`;
