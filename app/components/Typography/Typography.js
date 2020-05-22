@@ -12,7 +12,6 @@ export default class Typography extends Component {
     textProps: PropTypes.object,
 
     variant: PropTypes.oneOf([
-      'default',
       'headline1',
       'headline2',
       'headline3',
@@ -65,7 +64,7 @@ export default class Typography extends Component {
   static defaultProps = {
     emphasis: 'high',
     color: 'white',
-    variant: 'default',
+    variant: 'body1',
     fontWeight: 'default',
     textProps: {},
     component: null,

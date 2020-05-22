@@ -6,7 +6,6 @@ export default {
 
   root: {},
 
-
   headline1: {
     fontFamily: `${fontName}-Regular`,
     lineHeight: 122,
