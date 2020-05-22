@@ -1,3 +1,17 @@
+# [1.7.0](https://github.com/pct-org/native-app/compare/v1.6.0...v1.7.0) (2020-05-22)
+
+
+### Bug Fixes
+
+* Fixed that you had to press back twice when opened searched items ([c036f0e](https://github.com/pct-org/native-app/commit/c036f0e01acb6e2d84d78798a80549218426fd37))
+
+
+### Features
+
+* Added cast button also to the home screen ([57b97e6](https://github.com/pct-org/native-app/commit/57b97e6716f0e2f061c476b391b8e42707b94e20))
+
+
+
 # [1.6.0](https://github.com/pct-org/native-app/compare/v1.5.0...v1.6.0) (2020-05-18)
 
 
@@ -87,18 +101,6 @@
 
 * Update travis ([9954303](https://github.com/pct-org/native-app/commit/9954303aaa1e0d7509a168a261a4034e2986f47a))
 * Updated travis ([1226f24](https://github.com/pct-org/native-app/commit/1226f24df411884a63c7bc0edf8df11c7083f47b))
-
-
-
-## [1.2.3](https://github.com/pct-org/native-app/compare/v1.2.0...v1.2.3) (2020-05-06)
-
-
-### Bug Fixes
-
-* Fixed download icon missing when status failed ([318e2d2](https://github.com/pct-org/native-app/commit/318e2d2b466f0c115f798f86fd1886d4905eb718))
-* Fixed that the updater did not work ([e201627](https://github.com/pct-org/native-app/commit/e20162735417edbb8de108a1d9be606fc8ba0113))
-* Testing ci ([538ccfe](https://github.com/pct-org/native-app/commit/538ccfe5f26a25fa0b2b84786c9642c9c438b405))
-* Testing ci ([2c38e8c](https://github.com/pct-org/native-app/commit/2c38e8c9bf1d133b41557a274dab3631d968e301))
 
 
 
