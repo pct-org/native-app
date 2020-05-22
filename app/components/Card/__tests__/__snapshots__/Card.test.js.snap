@@ -1,0 +1,273 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`(Component) Card should not render a overlay if it's forced but overlayAllowed is false 1`] = `
+<Container
+  elevation={1}
+  style={
+    Array [
+      Object {
+        "borderRadius": 5,
+        "height": 135.41666666666669,
+        "margin": 8,
+        "overflow": "hidden",
+        "width": 93.75,
+      },
+      false,
+      null,
+    ]
+  }
+>
+  <BaseButton
+    component={[Function]}
+    hide={false}
+    innerRef={null}
+    rippleBorderless={true}
+    rippleColor="rgba(0, 0, 0, .3)"
+  >
+    <View>
+      <Image
+        empty={false}
+        images={
+          Object {
+            "poster": Object {
+              "thumb": "test-image",
+            },
+          }
+        }
+        resizeMode="stretch"
+        size="thumb"
+        style={null}
+        type="poster"
+        withFallback={true}
+      />
+    </View>
+  </BaseButton>
+</Container>
+`;
+
+exports[`(Component) Card should render a overlay if it's forced 1`] = `
+<Container
+  elevation={1}
+  style={
+    Array [
+      Object {
+        "borderRadius": 5,
+        "height": 135.41666666666669,
+        "margin": 8,
+        "overflow": "hidden",
+        "width": 93.75,
+      },
+      false,
+      null,
+    ]
+  }
+>
+  <BaseButton
+    component={[Function]}
+    hide={false}
+    innerRef={null}
+    rippleBorderless={true}
+    rippleColor="rgba(0, 0, 0, .3)"
+  >
+    <View>
+      <Image
+        empty={false}
+        images={
+          Object {
+            "poster": Object {
+              "thumb": "test-image",
+            },
+          }
+        }
+        resizeMode="stretch"
+        size="thumb"
+        style={null}
+        type="poster"
+        withFallback={true}
+      />
+      <Overlay
+        style={Object {}}
+        variant="dark"
+        withAnimation={false}
+      />
+    </View>
+  </BaseButton>
+</Container>
+`;
+
+exports[`(Component) Card should render a overlay if the item is watched 1`] = `
+<Container
+  elevation={1}
+  style={
+    Array [
+      Object {
+        "borderRadius": 5,
+        "height": 135.41666666666669,
+        "margin": 8,
+        "overflow": "hidden",
+        "width": 93.75,
+      },
+      false,
+      null,
+    ]
+  }
+>
+  <BaseButton
+    component={[Function]}
+    hide={false}
+    innerRef={null}
+    rippleBorderless={true}
+    rippleColor="rgba(0, 0, 0, .3)"
+  >
+    <View>
+      <Image
+        empty={false}
+        images={
+          Object {
+            "poster": Object {
+              "thumb": "test-image",
+            },
+          }
+        }
+        resizeMode="stretch"
+        size="thumb"
+        style={null}
+        type="poster"
+        withFallback={true}
+      />
+      <Overlay
+        style={Object {}}
+        variant="dark"
+        withAnimation={false}
+      />
+    </View>
+  </BaseButton>
+</Container>
+`;
+
+exports[`(Component) Card should render variant small with defaults 1`] = `
+<Container
+  elevation={1}
+  style={
+    Array [
+      Object {
+        "borderRadius": 5,
+        "height": 135.41666666666669,
+        "margin": 8,
+        "overflow": "hidden",
+        "width": 93.75,
+      },
+      Object {
+        "height": 120.83333333333334,
+        "margin": 4,
+        "width": 84.375,
+      },
+      null,
+    ]
+  }
+>
+  <BaseButton
+    component={[Function]}
+    hide={false}
+    innerRef={null}
+    rippleBorderless={true}
+    rippleColor="rgba(0, 0, 0, .3)"
+  >
+    <View>
+      <Image
+        empty={false}
+        images={Object {}}
+        resizeMode="stretch"
+        size="thumb"
+        style={null}
+        type="poster"
+        withFallback={true}
+      />
+    </View>
+  </BaseButton>
+</Container>
+`;
+
+exports[`(Component) Card should render with defaults 1`] = `
+<Container
+  elevation={1}
+  style={
+    Array [
+      Object {
+        "borderRadius": 5,
+        "height": 135.41666666666669,
+        "margin": 8,
+        "overflow": "hidden",
+        "width": 93.75,
+      },
+      false,
+      null,
+    ]
+  }
+>
+  <BaseButton
+    component={[Function]}
+    hide={false}
+    innerRef={null}
+    rippleBorderless={true}
+    rippleColor="rgba(0, 0, 0, .3)"
+  >
+    <View>
+      <Image
+        empty={false}
+        images={Object {}}
+        resizeMode="stretch"
+        size="thumb"
+        style={null}
+        type="poster"
+        withFallback={true}
+      />
+    </View>
+  </BaseButton>
+</Container>
+`;
+
+exports[`(Component) Card should render with images from item 1`] = `
+<Container
+  elevation={1}
+  style={
+    Array [
+      Object {
+        "borderRadius": 5,
+        "height": 135.41666666666669,
+        "margin": 8,
+        "overflow": "hidden",
+        "width": 93.75,
+      },
+      false,
+      null,
+    ]
+  }
+>
+  <BaseButton
+    component={[Function]}
+    hide={false}
+    innerRef={null}
+    rippleBorderless={true}
+    rippleColor="rgba(0, 0, 0, .3)"
+  >
+    <View>
+      <Image
+        empty={false}
+        images={
+          Object {
+            "poster": Object {
+              "thumb": "test-image",
+            },
+          }
+        }
+        resizeMode="stretch"
+        size="thumb"
+        style={null}
+        type="poster"
+        withFallback={true}
+      />
+    </View>
+  </BaseButton>
+</Container>
+`;

@@ -38,111 +38,79 @@ export const styles = {
   },
 }
 
-export const ItemInfo = ({ item, quality, status, variant, style, truncateSynopsis, empty, pointerEvents }) => {
-  const [showQualitySelector, toggleSelecting] = useState(false)
+export const ItemInfo = ({ item, quality, status, style, truncateSynopsis, empty, pointerEvents }) => (
+  <View style={[styles.root, style]} pointerEvents={pointerEvents}>
+    <Card
+      overlayAllowed={false}
+      elevation={0}
+      empty={empty}
+      item={
+        item?.type === constants.TYPE_EPISODE
+          ? item?.show
+          : item
+      }
+    />
 
-  return (
-    <View style={[styles.root, style]} pointerEvents={pointerEvents}>
-      {variant === 'default' && (
-        <Card
-          overlayAllowed={false}
-          elevation={0}
-          empty={empty}
-          item={
-            item?.type === constants.TYPE_EPISODE
-              ? item?.show
-              : item
-          }
-        />
-      )}
+    <View style={styles.container}>
+      <Typography
+        emphasis={'high'}
+        color={'white'}
+        variant={'subtitle2'}
+        textProps={{
+          numberOfLines: 2,
+          ellipsizeMode: 'tail',
+        }}>
+        {
+          item?.type === 'episode'
+            ? item?.show?.title
+            : item?.title
+        }
+      </Typography>
 
-      {variant === 'playable' && (
-        <Card
-          elevation={0}
-          empty={empty}
-          item={
-            item?.type === constants.TYPE_EPISODE
-              ? item?.show
-              : item
-          }
-          onPress={() => toggleSelecting(true)}
-          overlayVariant={'default'}
-          forceOverlay>
-          {!empty && (
-            <View style={styles.playIconContainer}>
-              <QualitySelector
-                variant={'downloads'}
-                 visible={showQualitySelector}
-                item={item}
-                 onRequestClose={() => toggleSelecting(false)}
-              />
-            </View>
-          )}
-        </Card>
-      )}
-
-      <View style={styles.container}>
+      {item?.type === 'episode' && (
         <Typography
           emphasis={'high'}
           color={'white'}
-          variant={'subtitle2'}
-          textProps={{
-            numberOfLines: 2,
-            ellipsizeMode: 'tail',
-          }}>
+          variant={'overline'}>
+          {`S${item?.season}E${item?.number}. ${item?.title}`}
+        </Typography>
+      )}
+
+      <Typography
+        style={styles.synopsis}
+        emphasis={'medium'}
+        color={'white'}
+        variant={'caption'}
+        textProps={
+          truncateSynopsis
+            ? {
+              numberOfLines: 5,
+              ellipsizeMode: 'tail',
+            }
+            : {}}>
+        {item?.synopsis}
+      </Typography>
+
+      {quality && (
+        <Typography
+          fontWeight={'medium'}
+          emphasis={'high'}
+          variant={'captionSmall'}
+          style={styles.quality}>
           {
-            item?.type === 'episode'
-              ? item?.show?.title
-              : item?.title
+            status === constants.STATUS_DOWNLOADING
+              ? i18n.t('Downloading in {{quality}}', { quality })
+              : i18n.t('Downloaded in {{quality}}', { quality })
           }
         </Typography>
-
-        {item?.type === 'episode' && (
-          <Typography
-            emphasis={'high'}
-            color={'white'}
-            variant={'overline'}>
-            {`S${item?.season}E${item?.number}. ${item?.title}`}
-          </Typography>
-        )}
-
-        <Typography
-          style={styles.synopsis}
-          emphasis={'medium'}
-          color={'white'}
-          variant={'caption'}
-          textProps={
-            truncateSynopsis
-              ? {
-                numberOfLines: 5,
-                ellipsizeMode: 'tail',
-              }
-              : {}}>
-          {item?.synopsis}
-        </Typography>
-
-        {quality && (
-          <Typography
-            fontWeight={'medium'}
-            emphasis={'high'}
-            variant={'captionSmall'}
-            style={styles.quality}>
-            {
-              status === constants.STATUS_DOWNLOADING
-                ? i18n.t('Downloading in {{quality}}', { quality })
-                : i18n.t('Downloaded in {{quality}}', { quality })
-            }
-          </Typography>
-        )}
-      </View>
+      )}
     </View>
-  )
-}
+  </View>
+)
 
 ItemInfo.defaultProps = {
   onPress: null,
   empty: false,
-  variant: 'default',
   quality: null,
   pointerEvents: null,
 }

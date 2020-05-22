@@ -77,8 +77,6 @@ export const Card = ({
             withAnimation={overlayWithAnimation}
             variant={overlayVariant} />
         )}
-
-        {children}
       </View>
     </BaseButton>
   </Container>
@@ -92,7 +90,6 @@ Card.propTypes = {
   variant: PropTypes.oneOf(['default', 'small', 'big']),
   hide: PropTypes.bool,
   overlayVariant: PropTypes.string,
-  children: PropTypes.node,
 }
 
 Card.defaultProps = {
@@ -107,7 +104,6 @@ Card.defaultProps = {
   overlayVariant: 'dark',
   overlayWithAnimation: false,
   hide: false,
-  children: null,
 }
 
 export default Card
