@@ -1,0 +1,9 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`(Component) ApolloClient should finish loading 1`] = `
+<ApolloProvider>
+  <View />
+</ApolloProvider>
+`;
+
+exports[`(Component) ApolloClient should start loading 1`] = `""`;
