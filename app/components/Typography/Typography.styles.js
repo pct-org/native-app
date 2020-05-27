@@ -1,4 +1,6 @@
 export const fontName = 'Quicksand'
+export const fontRegular = `${fontName}-Regular`
+export const fontMedium = `${fontName}-Medium`
 
 import colors from 'modules/colors'
 
@@ -7,35 +9,35 @@ export default {
   root: {},
 
   headline1: {
-    fontFamily: `${fontName}-Regular`,
+    fontFamily: fontRegular,
     lineHeight: 122,
     letterSpacing: -1.4,
     fontSize: 96,
   },
 
   headline2: {
-    fontFamily: `${fontName}-Regular`,
+    fontFamily: fontRegular,
     lineHeight: 72,
     letterSpacing: -0.5,
     fontSize: 60,
   },
 
   headline3: {
-    fontFamily: `${fontName}-Regular`,
+    fontFamily: fontRegular,
     lineHeight: 56,
     letterSpacing: 0,
     fontSize: 48,
   },
 
   headline4: {
-    fontFamily: `${fontName}-Regular`,
+    fontFamily: fontRegular,
     lineHeight: 46,
     letterSpacing: 0,
     fontSize: 34,
   },
 
   headline5: {
-    fontFamily: `${fontName}-Regular`,
+    fontFamily: fontRegular,
     lineHeight: 24,
     letterSpacing: 0.18,
     fontSize: 24,
@@ -49,7 +51,7 @@ export default {
   },
 
   subtitle1: {
-    fontFamily: `${fontName}-Regular`,
+    fontFamily: fontRegular,
     lineHeight: 24,
     letterSpacing: 0.15,
     fontSize: 16,
@@ -63,14 +65,14 @@ export default {
   },
 
   body1: {
-    fontFamily: `${fontName}-Regular`,
+    fontFamily: fontRegular,
     lineHeight: 24,
     letterSpacing: 0.50,
     fontSize: 16,
   },
 
   body2: {
-    fontFamily: `${fontName}-Regular`,
+    fontFamily: fontRegular,
     lineHeight: 20,
     letterSpacing: 0.25,
     fontSize: 14,
@@ -85,14 +87,14 @@ export default {
   },
 
   caption: {
-    fontFamily: `${fontName}-Regular`,
+    fontFamily: fontRegular,
     lineHeight: 16,
     letterSpacing: 0.40,
     fontSize: 12,
   },
 
   captionSmall: {
-    fontFamily: `${fontName}-Regular`,
+    fontFamily: fontRegular,
     lineHeight: 16,
     letterSpacing: 0.40,
     fontSize: 10,
@@ -107,7 +109,7 @@ export default {
   },
 
   fontFamilyRegular: {
-    fontFamily: `${fontName}-Regular`,
+    fontFamily: fontRegular,
   },
 
   fontFamilyMedium: {
