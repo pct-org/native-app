@@ -59,7 +59,7 @@ export const BookmarksSlider = ({ handleGoTo, onPress }) => {
       items={!data || !data.bookmarks ? [] : data.bookmarks}
       goToMore={handleGoTo('MyList')}
       loading={loading}
-      onEndReached={fetchMoreUpdateQuery('bookmarks', data, fetchMore)}
+      // onEndReached={fetchMoreUpdateQuery('bookmarks', data, fetchMore)}
     />
 
   )
