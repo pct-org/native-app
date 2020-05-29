@@ -49,7 +49,7 @@ export const Subtitles = () => {
   const [defaultSubtitleCode, updateStorageItem] = useAsyncStorage(constants.KEY_DEFAULT_SUBTITLE)
 
   const defaultSubtitle = POSSIBLE_SUBS.find(possibleSub => possibleSub.code === defaultSubtitleCode)
-  
+
   return (
     <Container style={styles.root}>
 

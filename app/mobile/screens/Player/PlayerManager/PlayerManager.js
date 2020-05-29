@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import { StyleSheet, View, InteractionManager } from 'react-native'
 import GoogleCast, { CastButton } from 'react-native-google-cast'
 import Orientation from 'react-native-orientation'
+import AsyncStorage from '@react-native-community/async-storage'
 
 import withDownloadManager from 'modules/DownloadManager/withDownloadManager'
 import withApollo from 'modules/GraphQL/withApollo'
@@ -11,6 +12,7 @@ import { StartStreamMutation, StopStreamMutation, DownloadQuery } from 'modules/
 import withIpFinder from 'modules/IpFinder/withIpFinder'
 import dimensions from 'modules/dimensions'
 import colors from 'modules/colors'
+import constants from 'modules/constants'
 
 const styles = StyleSheet.create({
 
@@ -141,8 +143,8 @@ export default class PlayerManager extends React.Component {
           edgeType: 'outline',
           edgeColor: '#000000',
           windowType: 'none',
-          fontGenericFamily: 'sansSerif'
-        }
+          fontGenericFamily: 'sansSerif',
+        },
       })
     }
   }
@@ -167,11 +169,18 @@ export default class PlayerManager extends React.Component {
     })
   }
 
-  handleCastMediaPlaybackStarted = ({ mediaStatus }) => {
+  handleCastMediaPlaybackStarted = async({ mediaStatus }) => {
     const { startPosition } = this.state
 
     if (mediaStatus?.streamDuration && startPosition) {
       GoogleCast.seek(mediaStatus?.streamDuration * (startPosition / 100))
+    }
+
+    const defaultSubtitleCode = await AsyncStorage.getItem(constants.KEY_DEFAULT_SUBTITLE)
+
+    // If the default subtitle is not null then select it
+    if (defaultSubtitleCode !== null) {
+      await GoogleCast.toggleSubtitles(true, defaultSubtitleCode)
     }
   }
 
