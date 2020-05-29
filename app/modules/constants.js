@@ -13,4 +13,6 @@ export default {
   STATUS_FAILED: 'failed',
   STATUS_REMOVED: 'removed',
 
+  KEY_DEFAULT_SUBTITLE: '@Pct.defaultSubtitle'
+
 }
