@@ -12,6 +12,10 @@ export const DownloadQuery = gql`
       numPeers
       speed
       timeRemaining
+      subtitles {
+        language
+        code
+      }
       __typename
     }
   }

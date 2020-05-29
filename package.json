@@ -55,7 +55,7 @@
     "react-native-device-info": "5.5.7",
     "react-native-fs": "2.16.6",
     "react-native-gesture-handler": "^1.6.1",
-    "react-native-google-cast": "^3.3.0",
+    "react-native-google-cast": "github:pct-org/react-native-google-cast#447e4cbda790d2314665883cd1c9b30f0d90caad",
     "react-native-languages": "3.0.2",
     "react-native-linear-gradient": "2.5.6",
     "react-native-markdown-renderer": "^3.2.8",

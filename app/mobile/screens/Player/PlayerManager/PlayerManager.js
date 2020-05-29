@@ -110,8 +110,8 @@ export default class PlayerManager extends React.Component {
   }
 
   handleStartCasting = (force = false) => {
-    const { item } = this.props
-    const { casting, mediaUrl } = this.state
+    const { item, ipFinder } = this.props
+    const { casting, mediaUrl, download } = this.state
 
     if (force || casting) {
       Orientation.lockToPortrait()
@@ -124,10 +124,25 @@ export default class PlayerManager extends React.Component {
         ),
         subtitle: item.synopsis,
         mediaUrl: `${mediaUrl}?device=chromecast`,
-        // TODO:: Check this, not always working
         posterUrl: item.type === 'episode'
           ? item.show.images.poster.high
           : item.images.poster.high,
+
+        // Add all available subtitles
+        tracks: download.subtitles.map(subtitle => ({
+          id: `http://${ipFinder.host}/subtitle/${item._id}/${subtitle.code}`,
+          title: subtitle.language,
+          language: subtitle.code,
+        })),
+
+        textTrackStyle: {
+          foregroundColor: '#FFFFFFFF',
+          backgroundColor: '#01000000',
+          edgeType: 'outline',
+          edgeColor: '#000000',
+          windowType: 'none',
+          fontGenericFamily: 'sansSerif'
+        }
       })
     }
   }
