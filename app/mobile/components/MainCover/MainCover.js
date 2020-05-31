@@ -119,7 +119,7 @@ export const MainCover = ({ empty, item, handleItemOpen }) => {
             size={'high'}
           />
 
-          <CoverGradient start={{ x: 0, y: 0.1 }} />
+          <CoverGradient />
 
           {!empty && item.type === constants.TYPE_MOVIE && (
             <Animatable.View

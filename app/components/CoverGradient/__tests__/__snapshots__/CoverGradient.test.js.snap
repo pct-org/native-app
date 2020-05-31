@@ -1,0 +1,39 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`(Component) CoverGradient should render with defaults 1`] = `
+<LinearGradient
+  colors={
+    Array [
+      "transparent",
+      "#202125",
+    ]
+  }
+  end={
+    Object {
+      "x": 0,
+      "y": 1,
+    }
+  }
+  locations={
+    Array [
+      0,
+      1,
+    ]
+  }
+  start={
+    Object {
+      "x": 0,
+      "y": 0.1,
+    }
+  }
+  style={
+    Object {
+      "bottom": 0,
+      "left": 0,
+      "position": "absolute",
+      "right": 0,
+      "top": 0,
+    }
+  }
+/>
+`;

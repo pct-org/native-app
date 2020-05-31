@@ -11,7 +11,7 @@ import withIpFinder from 'modules/IpFinder/withIpFinder'
 import Container from 'components/Container'
 import Icon from 'components/Icon'
 import Typography from 'components/Typography'
-import TextButton from 'components/TextButton/TextButton'
+import TextButton from 'components/TextButton'
 
 export const styles = {
 

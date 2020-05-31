@@ -9,12 +9,12 @@ import Container from 'components/Container'
 import { AboutQuery, ActiveDownloads } from './SettingsQuery'
 import About from './About'
 import Downloads from './Downloads'
+import Subtitles from './Subtitles'
 
 export const styles = {
 
   root: {
     flex: 1,
-
   },
 
 }
@@ -56,6 +56,8 @@ export const Settings = () => {
         <About
           data={aboutData}
         />
+
+        <Subtitles />
 
         <Downloads
           data={downloadsData}

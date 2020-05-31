@@ -1,0 +1,56 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`(Component) Markdown should render with defaults 1`] = `
+<_default
+  style={
+    Object {
+      "heading1": Object {
+        "color": "#ffffff",
+        "fontFamily": "Quicksand-Regular",
+        "fontSize": 24,
+        "letterSpacing": 0.18,
+        "lineHeight": 24,
+        "opacity": 0.87,
+      },
+      "heading2": Object {
+        "color": "#ffffff",
+        "fontFamily": "Quicksand-Medium",
+        "fontSize": 20,
+        "letterSpacing": 0.15,
+        "lineHeight": 24,
+        "opacity": 0.87,
+      },
+      "heading3": Object {
+        "color": "#ffffff",
+        "fontFamily": "Quicksand-Medium",
+        "fontSize": 14,
+        "letterSpacing": 0.1,
+        "lineHeight": 24,
+        "opacity": 0.87,
+      },
+      "listItem": Object {
+        "alignItems": "center",
+        "flex": 1,
+        "flexWrap": "wrap",
+        "justifyContent": "center",
+        "maxHeight": 32,
+      },
+      "listUnorderedItemIcon": Object {
+        "lineHeight": 32,
+        "marginLeft": 8,
+        "marginRight": 8,
+      },
+      "text": Object {
+        "color": "#ffffff",
+        "fontFamily": "Quicksand-Regular",
+        "fontSize": 14,
+        "letterSpacing": 0.25,
+        "lineHeight": 20,
+        "opacity": 0.87,
+      },
+    }
+  }
+>
+  ## Markdown test
+</_default>
+`;

@@ -71,6 +71,26 @@ describe('(Component) Typography', () => {
       )
     })
 
+    it('should return as array with all defaults', () => {
+      const styles = Typography.getTextStyle({ })
+
+      expect(Array.isArray(styles)).toBe(true)
+      expect(styles).toEqual(
+        [
+          { color: '#ffffff' },
+          {
+            fontFamily: 'Quicksand-Regular',
+            fontSize: 16,
+            letterSpacing: 0.5,
+            lineHeight: 24,
+          },
+          {
+            opacity: 0.87,
+          },
+        ],
+      )
+    })
+
     it('should return as array with all options', () => {
       const styles = Typography.getTextStyle({
         variant: 'captionSmall',

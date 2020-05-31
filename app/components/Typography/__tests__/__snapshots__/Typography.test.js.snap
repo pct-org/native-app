@@ -76,7 +76,12 @@ exports[`(Component) Typography should render with defaults 1`] = `
       Object {
         "color": "#ffffff",
       },
-      undefined,
+      Object {
+        "fontFamily": "Quicksand-Regular",
+        "fontSize": 16,
+        "letterSpacing": 0.5,
+        "lineHeight": 24,
+      },
       Object {
         "opacity": 0.87,
       },
