@@ -1,3 +1,19 @@
+# [1.8.0](https://github.com/pct-org/native-app/compare/v1.7.0...v1.8.0) (2020-05-31)
+
+
+### Bug Fixes
+
+* Fixed that Bookmark slider created an infinite loop ([ea146fd](https://github.com/pct-org/native-app/commit/ea146fdfc1f8978fcc5e3620d03688e758d39a14))
+
+
+### Features
+
+* Added option to select the default subtitle in settings ([9e7d81d](https://github.com/pct-org/native-app/commit/9e7d81d5e661d2a13efafee7834af07e9bfef03a))
+* Added support for subtiles while casting ([88e7d63](https://github.com/pct-org/native-app/commit/88e7d63e716f48bc47f4aacdcae5599a859e0a93))
+* If default subtitle is set use it when casting ([04cc617](https://github.com/pct-org/native-app/commit/04cc617d32661b2a53fb0f98f9fab83bd9906abf))
+
+
+
 # [1.7.0](https://github.com/pct-org/native-app/compare/v1.6.0...v1.7.0) (2020-05-22)
 
 
@@ -91,16 +107,6 @@
 ### Bug Fixes
 
 * Fixed travis regex ([570d1f4](https://github.com/pct-org/native-app/commit/570d1f4bd76c63ab511ae2597cd38aa0c7b89c25))
-
-
-
-## [1.3.1](https://github.com/pct-org/native-app/compare/v1.2.3...v1.3.1) (2020-05-06)
-
-
-### Bug Fixes
-
-* Update travis ([9954303](https://github.com/pct-org/native-app/commit/9954303aaa1e0d7509a168a261a4034e2986f47a))
-* Updated travis ([1226f24](https://github.com/pct-org/native-app/commit/1226f24df411884a63c7bc0edf8df11c7083f47b))
 
 
 
