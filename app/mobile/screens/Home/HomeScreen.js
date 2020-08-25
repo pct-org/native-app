@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { StyleSheet } from 'react-native'
-import { useQuery } from '@apollo/react-hooks'
+import { useQuery } from '@apollo/client'
 import Orientation from 'react-native-orientation'
 import SplashScreen from 'react-native-splash-screen'
 import { CastButton } from 'react-native-google-cast'

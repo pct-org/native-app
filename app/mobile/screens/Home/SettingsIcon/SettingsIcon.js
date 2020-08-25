@@ -20,7 +20,7 @@ export const SettingsIcon = () => (
   <View style={styles.root}>
     <IconButton
       onPress={() => navigate('Settings')}
-      name={'settings'} />
+      name={'cog'} />
   </View>
 )
 

@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react'
 import PropTypes from 'prop-types'
 import { StyleSheet, View, StatusBar, Animated, InteractionManager } from 'react-native'
-import { useLazyQuery } from '@apollo/react-hooks'
+import { useLazyQuery } from '@apollo/client'
 import { useCollapsibleStack } from 'react-navigation-collapsible'
 import { getDefaultHeaderHeight } from 'react-navigation-collapsible/lib/src/utils'
 
@@ -16,6 +16,7 @@ import fetchMoreUpdateQuery from 'modules/GraphQL/helpers/fetchMoreUpdateQuery'
 
 import Card from 'components/Card'
 import Typography from 'components/Typography'
+
 import SearchBar from './SearchBar'
 
 const styles = StyleSheet.create({
@@ -38,15 +39,22 @@ const styles = StyleSheet.create({
   },
 })
 
+export const getQuery = (mode) => {
+  switch (mode) {
+    case 'movies':
+      return MoviesQuery
+    case 'shows':
+      return ShowsQuery
+    case 'bookmarks':
+      return BookmarksQuery
+  }
+}
+
 export const Mode = ({ mode, navigation }) => {
   const flatListRef = useRef(null)
   const [query, setQuery] = useState(null)
   const [executeQuery, { loading, data, fetchMore }] = useLazyQuery(
-    mode === 'movies'
-      ? MoviesQuery
-      : mode === 'shows'
-      ? ShowsQuery
-      : BookmarksQuery,
+    getQuery(mode),
     {
       variables: {
         offset: 0,

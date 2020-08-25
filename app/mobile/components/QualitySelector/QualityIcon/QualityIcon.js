@@ -1,13 +1,11 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
 import { StyleSheet } from 'react-native'
 import LottieView from 'lottie-react-native'
-import { useLazyQuery } from '@apollo/react-hooks'
 import * as Animatable from 'react-native-animatable'
 
 import dimensions from 'modules/dimensions'
 import constants from 'modules/constants'
-import { DownloadQuery } from 'modules/GraphQL/DownloadGraphQL'
 import usePollingForDownload from 'modules/GraphQL/usePollingForDownload'
 
 import BaseButton from 'components/BaseButton'

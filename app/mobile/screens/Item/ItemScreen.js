@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { StyleSheet, View, InteractionManager, Linking } from 'react-native'
-import { useLazyQuery } from '@apollo/react-hooks'
+import { useLazyQuery } from '@apollo/client'
 import Orientation from 'react-native-orientation'
 
 import dimensions from 'modules/dimensions'

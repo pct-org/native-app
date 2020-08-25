@@ -162,7 +162,7 @@ export const MainCover = ({ empty, item, handleItemOpen }) => {
                 numberOfLines: 4,
                 ellipsizeMode: 'tail',
               }}>
-              {empty ? '' : item.title}
+              {item?.title ?? ''}
             </Typography>
 
             <View style={styles.likedContainer}>
