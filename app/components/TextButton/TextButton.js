@@ -26,6 +26,13 @@ export const TextButton = ({
   onBlur,
   upperCase,
   component,
+  hasTVPreferredFocus,
+  nextFocusUp,
+  nextFocusDown,
+  nextFocusForward,
+  nextFocusLeft,
+  nextFocusRight,
+  nativeID,
   ...rest
 }) => (
   <BaseButton
@@ -34,6 +41,12 @@ export const TextButton = ({
     onFocus={onFocus}
     onBlur={onBlur}
     component={component}
+    hasTVPreferredFocus={hasTVPreferredFocus}
+    nextFocusUp={nextFocusUp}
+    nextFocusDown={nextFocusDown}
+    nextFocusForward={nextFocusForward}
+    nextFocusLeft={nextFocusLeft}
+    nextFocusRight={nextFocusRight}
     rippleBorderless={false}>
     <Text style={[
       styles.root,
