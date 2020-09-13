@@ -139,6 +139,7 @@ export class DownloadManager extends React.Component {
    * @param download
    */
   handleStopPollDownload = (download) => {
+    console.log('handleStopPollDownload', download)
     // Unsubscribe
     this.pollingDownloads[download._id]?.unsubscribe()
 

@@ -62,6 +62,7 @@ export const Settings = () => {
         <Downloads
           data={downloadsData}
           executeQuery={executeActiveDownloadsQuery}
+          loading={downloadsLoading}
         />
 
       </ScrollView>

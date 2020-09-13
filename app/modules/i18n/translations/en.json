@@ -58,5 +58,9 @@
   "Uptime: {{uptime}}": "Uptime: {{uptime}}",
   "Last updated: {{update}}": "Last updated: {{update}}",
   "Next update: {{update}}": "Next update: {{update}}",
-  "Watched: {{percentage}}%": "Watched: {{percentage}}%"
+  "Watched: {{percentage}}%": "Watched: {{percentage}}%",
+  "Searched qualities": "Searched qualities",
+  "Loading": "Loading...",
+  "Active Downloads": "Active Downloads",
+  "No active downloads": "No active downloads"
 }

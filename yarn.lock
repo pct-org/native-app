@@ -8839,6 +8839,11 @@ use-subscription@^1.0.0, use-subscription@^1.4.0:
   dependencies:
     object-assign "^4.1.1"
 
+use-trace-update@^1.3.0:
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/use-trace-update/-/use-trace-update-1.3.0.tgz#27c04a080d8af5df23be7a9579ab5123ea871830"
+  integrity sha512-VMhNnpoMUKm3Upm7zMe+Tn9uvul9wp9hF6RF+0iGeCdNeH+lt+CkSyr9QA18aNgFsDSwvDu6lxJ3Cqlqn0PYJQ==
+
 use@^3.1.0:
   version "3.1.1"
   resolved "https://registry.yarnpkg.com/use/-/use-3.1.1.tgz#d50c8cac79a19fbc20f2911f56eb973f4e10070f"

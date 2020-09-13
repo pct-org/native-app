@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import { StyleSheet, View } from 'react-native'
 
 import dimensions from 'modules/dimensions'
+import useCorrect from 'modules/useCorrect'
 
 import BaseButton from '../BaseButton'
 import Overlay from '../Overlay'
@@ -14,7 +15,7 @@ export const styles = StyleSheet.create({
   root: {
     borderRadius: dimensions.BORDER_RADIUS,
     overflow: 'hidden',
-    margin: dimensions.UNIT,
+    margin: useCorrect(dimensions.UNIT, null, dimensions.UNIT / 2),
     height: dimensions.CARD_HEIGHT,
     width: dimensions.CARD_WIDTH,
   },

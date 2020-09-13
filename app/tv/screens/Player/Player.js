@@ -1,0 +1,134 @@
+import React from 'react'
+import { StyleSheet, View, ActivityIndicator } from 'react-native'
+
+import colors from 'modules/colors'
+import i18n from 'modules/i18n'
+import dimensions from 'modules/dimensions'
+import constants from 'modules/constants'
+
+import Typography from 'components/Typography'
+import ItemInfo from 'mobile/components/ItemInfo'
+
+import VideoAndControls from './VideoAndControls'
+import DownloadInfo from './DownloadInfo'
+import PlayerManager from './PlayerManager'
+
+export const Player = ({ route: { params: { item, playQuality } } }) => (
+  <PlayerManager
+    item={item}
+    playQuality={playQuality}
+    style={styles.root}>
+    {({ mediaUrl, setProgress, startPosition, isBuffering, download }) => (
+      <React.Fragment>
+        {(isBuffering) && (
+          <View style={[styles.fullScreen, styles.bufferingContainer]}>
+
+            <ItemInfo
+              style={styles.playingInfo}
+              item={item}
+            />
+
+            <ActivityIndicator
+              size={50}
+              style={{ marginTop: dimensions.UNIT * 5 }}
+              color={colors.PRIMARY_COLOR_200} />
+
+            {download && download.status !== constants.STATUS_CONNECTING && (
+              <Typography style={{ marginTop: dimensions.UNIT * 3 }}>
+                {i18n.t('Buffering')}
+              </Typography>
+            )}
+
+            {!download || download.status === constants.STATUS_CONNECTING && (
+              <Typography style={{ marginTop: dimensions.UNIT * 3 }}>
+                {download ? i18n.t('Connecting') : i18n.t('Queued')}
+              </Typography>
+            )}
+
+            {download && (
+              <Typography variant={'body2'} style={{ marginTop: dimensions.UNIT / 2 }}>
+                {(download.progress / 3 * 100).toFixed(2)}% / {download.speed}
+              </Typography>
+            )}
+
+            {(!isBuffering && download.status !== constants.STATUS_COMPLETE) && (
+              <React.Fragment>
+                <Typography style={{ marginTop: dimensions.UNIT * 3 }}>
+                  {download.status}
+                </Typography>
+
+                <Typography variant={'body2'} style={{ marginTop: dimensions.UNIT / 2 }}>
+                  {download.progress}% / {download.speed}
+                </Typography>
+
+                <Typography variant={'body2'} style={{ marginTop: dimensions.UNIT / 2 }}>
+                  {download.timeRemaining}
+                </Typography>
+              </React.Fragment>
+            )}
+          </View>
+        )}
+
+        {!isBuffering && download && (
+          <VideoAndControls
+            item={item}
+            url={mediaUrl}
+            startPosition={startPosition}
+            setProgress={setProgress}>
+
+            <ItemInfo
+              style={styles.playingInfoInPlayer}
+              item={item}
+              pointerEvents={'none'}
+              truncateSynopsis
+            />
+
+            <DownloadInfo
+              {...download}
+            />
+
+          </VideoAndControls>
+        )}
+      </React.Fragment>
+    )}
+  </PlayerManager>
+)
+
+const styles = StyleSheet.create({
+
+  root: {
+    flex: 1,
+    backgroundColor: 'black',
+  },
+
+  bufferingContainer: {
+    backgroundColor: colors.BACKGROUND,
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    alignContent: 'center',
+  },
+
+  fullScreen: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    bottom: 0,
+    right: 0,
+  },
+
+  playingInfo: {
+    marginRight: dimensions.UNIT * 2,
+    marginLeft: dimensions.UNIT * 2,
+  },
+
+  playingInfoInPlayer: {
+    position: 'absolute',
+    top: dimensions.UNIT * 3,
+    left: dimensions.UNIT * 4,
+    zIndex: 500,
+  },
+
+})
+
+export default Player

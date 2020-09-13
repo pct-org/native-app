@@ -28,6 +28,10 @@ export default gql`
         quality
         sizeString
       }
+      searchedTorrents {
+        quality
+        sizeString
+      }
       images {
         backdrop {
           full

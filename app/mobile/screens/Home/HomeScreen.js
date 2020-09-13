@@ -10,10 +10,10 @@ import dimensions from 'modules/dimensions'
 import colors from 'modules/colors'
 import fetchMoreUpdateQuery from 'modules/GraphQL/helpers/fetchMoreUpdateQuery'
 import MoviesQuery from 'modules/GraphQL/MoviesQuery'
+import withWatchOnTvManager from 'modules/WatchOnTvManager/withWatchOnTvManager'
 
 import CardSlider from 'components/CardSlider'
 import ScrollViewWithStatusBar from 'components/ScrollViewWithStatusBar'
-
 import Container from 'components/Container'
 import MainCover from 'mobile/components/MainCover'
 
@@ -47,7 +47,7 @@ export const styles = StyleSheet.create({
 
 })
 
-export const Home = ({ navigation }) => {
+export const Home = ({ navigation, watchOnTvManager }) => {
   const { data: moviesData, fetchMore: moviesFetchMore } = useQuery(
     MoviesQuery,
     {
@@ -60,6 +60,8 @@ export const Home = ({ navigation }) => {
   useEffect(() => {
     Orientation.lockToPortrait()
     SplashScreen.hide()
+
+    watchOnTvManager.isTvOn()
 
     return () => {
       Orientation.unlockAllOrientations()
@@ -125,4 +127,4 @@ export const Home = ({ navigation }) => {
   )
 }
 
-export default Home
+export default withWatchOnTvManager(Home)

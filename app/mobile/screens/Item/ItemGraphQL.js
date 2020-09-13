@@ -28,6 +28,10 @@ export const MovieQuery = gql`
         quality
         sizeString
       }
+      searchedTorrents {
+        quality
+        sizeString
+      }
       images {
         backdrop {
           high
@@ -98,6 +102,10 @@ export const ShowQuery = gql`
             }
           }
           torrents {
+            quality
+            sizeString
+          }
+          searchedTorrents {
             quality
             sizeString
           }

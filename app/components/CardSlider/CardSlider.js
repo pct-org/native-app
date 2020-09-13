@@ -29,7 +29,7 @@ export const styles = StyleSheet.create({
   },
 
 })
-
+// TODO:: Move to mobile/components
 export const CardSlider = ({ title, items, onPress, onEndReached, goToMore, loading }) => {
   const renderCard = ({ item }) => {
     const empty = !item

@@ -23,6 +23,7 @@ export const styles = {
 
   synopsis: {
     marginTop: dimensions.UNIT / 2,
+    maxWidth: dimensions.SCREEN_WIDTH / 3
   },
 
   playIconContainer: {

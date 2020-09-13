@@ -7,6 +7,7 @@ import { navigate } from 'modules/RootNavigation'
 import dimensions from 'modules/dimensions'
 import constants from 'modules/constants'
 import withDownloadManager from 'modules/DownloadManager/withDownloadManager'
+import withWatchOnTvManager from 'modules/WatchOnTvManager/withWatchOnTvManager'
 
 import Card from 'components/Card'
 import Typography from 'components/Typography'
@@ -44,6 +45,7 @@ const styles = StyleSheet.create({
 
 })
 
+@withWatchOnTvManager
 @withDownloadManager
 export default class QualitySelector extends React.Component {
 
@@ -112,7 +114,7 @@ export default class QualitySelector extends React.Component {
    * @param torrent
    */
   handlePlayTorrent = (torrent) => {
-    const { playItem, item } = this.props
+    const { playItem, item, watchOnTvManager } = this.props
 
     if (playItem) {
       playItem(item, torrent.quality)
@@ -121,13 +123,18 @@ export default class QualitySelector extends React.Component {
       // Make sure whe are closed
       this.handleRequestClose()
 
-      navigate(
-        'Player',
-        {
-          playQuality: torrent.quality,
-          item,
-        },
-      )
+      if (watchOnTvManager.connected) {
+       watchOnTvManager.playOnTv(item, torrent.quality)
+
+      } else {
+        navigate(
+          'Player',
+          {
+            playQuality: torrent.quality,
+            item,
+          },
+        )
+      }
     }
   }
 

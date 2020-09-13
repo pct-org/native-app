@@ -11,9 +11,9 @@ export default {
 
   headline5: {
     fontFamily: fontRegular,
-    lineHeight: dimensions.getWidth(120),
+    lineHeight: dimensions.getWidth(110),
     letterSpacing: -1,
-    fontSize: dimensions.getWidth(120),
+    fontSize: dimensions.getWidth(110),
   },
 
   headline6: {
@@ -25,16 +25,16 @@ export default {
 
   subtitle1: {
     fontFamily: fontRegular,
-    lineHeight: 24,
-    letterSpacing: 0.15,
-    fontSize: 16,
+    lineHeight: dimensions.getWidth(48),
+    letterSpacing: dimensions.getWidth(-0.4),
+    fontSize: dimensions.getWidth(48),
   },
 
   subtitle2: {
     fontFamily: `${fontName}-Medium`,
-    lineHeight: 24,
-    letterSpacing: 0.10,
-    fontSize: 14,
+    lineHeight: dimensions.getWidth(40),
+    letterSpacing: dimensions.getWidth(0.10),
+    fontSize: dimensions.getWidth(40),
   },
 
   body1: {
@@ -61,9 +61,9 @@ export default {
 
   caption: {
     fontFamily: fontRegular,
-    lineHeight: dimensions.getWidth(48),
+    lineHeight: dimensions.getWidth(30),
     letterSpacing: dimensions.getWidth(-0.4),
-    fontSize: dimensions.getWidth(48),
+    fontSize: dimensions.getWidth(30),
   },
 
   captionSmall: {

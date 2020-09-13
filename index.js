@@ -1,10 +1,13 @@
 import 'react-native-gesture-handler'
-import { AppRegistry, YellowBox } from 'react-native'
+import { AppRegistry, LogBox, YellowBox } from 'react-native'
 import { enableScreens } from 'react-native-screens'
 
 enableScreens()
 
-YellowBox.ignoreWarnings(['Warning: isMounted(...) is deprecated'])
+LogBox.ignoreLogs([
+  'Debugger and device times',
+  'Cache data may be lost when replacing'
+])
 
 import App from './app/index'
 

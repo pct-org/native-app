@@ -3,11 +3,12 @@ import { NavigationContainer } from '@react-navigation/native'
 
 import DownloadManager from 'modules/DownloadManager'
 import IpFinder from 'modules/IpFinder'
+import WatchOnTvManager from 'modules/WatchOnTvManager'
+import navigationRef from 'modules/RootNavigation'
 
 import ApolloLoader from 'components/ApolloLoader'
 import CheckForUpdates from 'components/CheckForUpdates'
 
-import navigationRef  from 'modules/RootNavigation'
 import Screens from './screens'
 import Disclaimer from './screens/Disclaimer'
 
@@ -18,11 +19,13 @@ export default () => (
         {(host) => (
           <ApolloLoader host={host}>
             <DownloadManager>
+              <WatchOnTvManager>
 
-              <Screens />
+                <Screens />
 
-              <CheckForUpdates />
+                {/*<CheckForUpdates />*/}
 
+              </WatchOnTvManager>
             </DownloadManager>
           </ApolloLoader>
         )}

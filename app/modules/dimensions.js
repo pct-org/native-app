@@ -31,17 +31,18 @@ export default {
   ON_SCREEN_NAVIGATION_HEIGHT: 55,
   STATUSBAR_HEIGHT: StatusBar.currentHeight,
 
+  BORDER_WIDTH: 1.5,
   BORDER_RADIUS: 5,
 
-  CARD_HEIGHT: getHeight(130),
-  CARD_WIDTH: getWidth(90),
+  CARD_HEIGHT: getHeight(useCorrect(130, null, 252)),
+  CARD_WIDTH: getWidth(useCorrect(90, null, 175)),
   CARD_HEIGHT_SMALL: getHeight(useCorrect(116, null, 252)),
   CARD_WIDTH_SMALL: getWidth(useCorrect(81, null, 172)),
   CARD_HEIGHT_BIG: getHeight(useCorrect(null, null, 410)),
   CARD_WIDTH_BIG: getWidth(useCorrect(null, null, 280)),
 
-  MY_EPISODE_CARD_HEIGHT: getHeight(100),
-  MY_EPISODE_CARD_WIDTH: getWidth(178),
+  MY_EPISODE_CARD_HEIGHT: getHeight(useCorrect(100, null, 214)),
+  MY_EPISODE_CARD_WIDTH: getWidth(useCorrect(178, null, 380)),
   MY_EPISODE_CARD_SMALL_HEIGHT: getHeight(75),
   MY_EPISODE_CARD_SMALL_WIDTH: getWidth(135),
 

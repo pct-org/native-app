@@ -50,11 +50,11 @@ export const Button = ({ children, variant, style, onFocus, ...rest }) => {
         if (onFocus) {
           onFocus()
         }
-        console.log('button onFocus')
+
         toggleFocus(true)
       }}
       onBlur={() => {
-        console.log('button onBlur')
+
         toggleFocus(false)
       }}
       fontWeight={'bold'}

@@ -10,9 +10,20 @@ export const DownloadedShows = gql`
       images {
         poster {
           thumb
+          full
+        }
+        backdrop {
+          full
         }
       }
       seasons {
+        _id
+        images {
+          poster {
+            thumb
+            full
+          }
+        }
         episodes {
           _id
           title

@@ -4,10 +4,11 @@ import { NavigationContainer } from '@react-navigation/native'
 import DownloadManager from 'modules/DownloadManager'
 import IpFinder from 'modules/IpFinder'
 import FocusManager from './modules/FocusManager'
+import navigationRef from 'modules/RootNavigation'
+import WatchOnTvManager from 'modules/WatchOnTvManager'
 
 import ApolloLoader from 'components/ApolloLoader'
 
-import navigationRef from 'modules/RootNavigation'
 import Screens from './screens'
 
 export default () => (
@@ -17,9 +18,11 @@ export default () => (
         {(host) => (
           <ApolloLoader host={host}>
             <DownloadManager>
+              <WatchOnTvManager isTv>
 
-              <Screens />
+                <Screens />
 
+              </WatchOnTvManager>
             </DownloadManager>
           </ApolloLoader>
         )}

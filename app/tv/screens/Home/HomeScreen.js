@@ -1,14 +1,12 @@
-import MyEpisodesQuery from 'modules/GraphQL/MyEpisodesQuery'
 import React from 'react'
-import { StyleSheet } from 'react-native'
-import { useQuery } from '@apollo/client'
+import { StyleSheet, Image } from 'react-native'
 import SplashScreen from 'react-native-splash-screen'
 
 import dimensions from 'modules/dimensions'
-import colors from 'modules/colors'
-
+import withWatchOnTvManager from 'modules/WatchOnTvManager/withWatchOnTvManager'
 import Container from 'components/Container'
-import MainSlider from './MainSlider'
+
+import teamImage from 'assets/images/team.png'
 
 export const styles = StyleSheet.create({
 
@@ -19,78 +17,39 @@ export const styles = StyleSheet.create({
     width: '100%',
   },
 
-  lastSection: {
-    marginBottom: dimensions.UNIT * 4,
-  },
+  background: {
+    ...StyleSheet.absoluteFillObject,
 
-  castButton: {
-    position: 'absolute',
-    top: dimensions.STATUSBAR_HEIGHT - (dimensions.UNIT / 4),
-    right: dimensions.UNIT * 2 + dimensions.ICON_SIZE_DEFAULT,
-
-    width: dimensions.ICON_CAST_SIZE,
-    height: dimensions.ICON_CAST_SIZE,
-    tintColor: colors.ICON.WHITE,
+    width: dimensions.SCREEN_WIDTH,
+    height: dimensions.SCREEN_HEIGHT
   },
 
 })
 
-export const Home = ({ navigation }) => {
-  // TODO:: Get MyEpisodes
-  // TODO:: Get Downloads
-  // TODO:: If there are my episodes make slider
-  // else just show swim lane with items
-  const [state, setState] = React.useState({
-    activeItem: null,
-    activeItemIndex: -1,
-  })
-
-  const { data, called, loading } = useQuery(
-    MyEpisodesQuery,
-  )
+export const Home = ({ watchOnTvManager }) => {
+  console.log('render home')
 
   React.useEffect(() => {
     SplashScreen.hide()
+
+    watchOnTvManager.tvBooted()
+
+    return () => {
+      watchOnTvManager.tvOff()
+    }
   }, [])
-
-  React.useEffect(() => {
-    if (data && data.episodes) {
-      handleNextActiveItem()
-    }
-  }, [data])
-
-  const handleNextActiveItem = React.useCallback((item = null) => {
-    const { activeItemIndex } = state
-
-    if (item) {
-      setState({
-        activeItem: item,
-        activeItemIndex: 0,
-      })
-
-    } else if ((activeItemIndex + 1) < data.episodes.length) {
-      setState({
-        activeItem: data.episodes[activeItemIndex + 1],
-        activeItemIndex: activeItemIndex + 1,
-      })
-    } else {
-      setState({
-        activeItem: data.episodes[0],
-        activeItemIndex: 0,
-      })
-    }
-  }, [data, state])
 
   return (
     <Container style={styles.root}>
 
-      <MainSlider
-        activeItem={state.activeItem}
-        nextItem={handleNextActiveItem}
-        items={data?.episodes ?? []} />
+      <Image
+        source={teamImage}
+        resizeMode={'cover'}
+        style={styles.background}
+      />
 
     </Container>
   )
 }
 
-export default Home
+export default withWatchOnTvManager(Home)
