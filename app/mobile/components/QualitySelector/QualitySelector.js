@@ -155,17 +155,21 @@ export default class QualitySelector extends React.Component {
 
     // Check if download status is not null or failed
     const hasDownload = ![null, 'failed'].includes(item.download.downloadStatus)
-    let downloadManagerHasIt = false
+    let downloadInManager = downloadManager.getDownload(item._id)
+    let downloadManagerHasIt = !!downloadInManager
 
-    if (downloadManager.downloadExists(item._id)) {
-      downloadManagerHasIt = downloadManager.getDownload(item._id)?.status === 'failed'
+    if (!downloadManagerHasIt || downloadInManager.status === 'failed') {
+      downloadManagerHasIt = false
+      downloadInManager = {
+        torrentType: null,
+      }
     }
 
     // If we have download or the manager has one, play the download
     if (hasDownload || downloadManagerHasIt) {
       this.handlePlayTorrent({
         quality: 'download',
-        type: downloadManager.getDownload(item._id).torrentType,
+        type: downloadInManager.torrentType,
       })
 
     } else {

@@ -1,7 +1,7 @@
 import gql from 'graphql-tag'
 
 export const SendCommandToTv = gql`
-  mutation command($command: String! $quality: String! $_id: String! $itemType: String!, $torrentType: String!) {
+  mutation command($command: String! $quality: String! $_id: String! $itemType: String!, $torrentType: String) {
     commandToTv(command: $command quality: $quality _id: $_id itemType: $itemType, torrentType: $torrentType) {
       command
       quality
