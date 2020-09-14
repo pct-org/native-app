@@ -9,6 +9,7 @@ export const SearchForBetterEpisode = gql`
       searchedTorrents {
         quality
         sizeString
+        type
       }
     }
   }
@@ -23,6 +24,7 @@ export const SearchForBetterMovie = gql`
       searchedTorrents {
         quality
         sizeString
+        type
       }
     }
   }

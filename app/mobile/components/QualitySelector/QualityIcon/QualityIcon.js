@@ -30,7 +30,6 @@ export const styles = StyleSheet.create({
 export const QualityIcon = ({
   handleOnPress,
   handleRemoveDownload,
-  item,
   download: downloadProp,
   downloadManager,
   variant,

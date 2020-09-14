@@ -66,14 +66,15 @@ export default class WatchOnTvManager extends React.Component {
     })
   }
 
-  handlePlayItem = async(item, quality) => {
+  handlePlayItem = async(item, torrent) => {
     const { isTv } = this.props
 
     if (!isTv) {
       await this.sendCommand('play', {
         _id: item._id,
         itemType: item.type,
-        quality,
+        quality: torrent.quality,
+        torrentType: torrent.type,
       })
     }
   }
@@ -92,7 +93,7 @@ export default class WatchOnTvManager extends React.Component {
 
   handleCommand = async(command, options) => {
     const { apollo, isTv } = this.props
-console.log('command', command)
+    console.log('command', command)
     switch (command) {
       case 'is-tv-on':
         if (isTv) {
@@ -101,6 +102,7 @@ console.log('command', command)
         break
 
       case 'tv-is-on':
+        console.log('connected')
         ToastAndroid.show('Connected to TV', ToastAndroid.SHORT)
 
         this.setState({ connected: true })
@@ -122,10 +124,12 @@ console.log('command', command)
             : EpisodeQuery,
         })
 
-        console.log(data)
         navigate('Player', {
           item: data.item,
-          playQuality: options.quality,
+          torrent: {
+            quality: options.quality,
+            type: options.torrentType,
+          },
         })
     }
   }
@@ -142,6 +146,7 @@ console.log('command', command)
           _id: '',
           quality: '',
           itemType: '',
+          torrentType: '',
           ...variables,
           command,
         },

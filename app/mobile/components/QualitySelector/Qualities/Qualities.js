@@ -78,6 +78,7 @@ export const Qualities = ({ variant, item, handleQualityPress }) => {
               key={torrent.quality}
               handleQualityPress={handleQualityPress}
               torrent={torrent}
+              type={'default'}
             />
           ))}
         </View>
@@ -103,6 +104,7 @@ export const Qualities = ({ variant, item, handleQualityPress }) => {
                   key={torrent.quality}
                   handleQualityPress={handleQualityPress}
                   torrent={torrent}
+                  type={'searched'}
                 />
               ))}
             </View>

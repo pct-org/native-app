@@ -227,14 +227,15 @@ export default class PlayerManager extends React.Component {
    * @returns {Promise<void>}
    */
   startStream = async() => {
-    const { apollo, item, playQuality } = this.props
+    const { apollo, item, torrent } = this.props
 
     return await apollo.mutate({
       mutation: StartStreamMutation,
       variables: {
         _id: item._id,
         itemType: item.type,
-        quality: playQuality,
+        torrentType: torrent.type || undefined,
+        quality: torrent.quality,
       },
     })
   }

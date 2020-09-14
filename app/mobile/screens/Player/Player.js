@@ -13,10 +13,10 @@ import VideoAndControls from './VideoAndControls'
 import DownloadInfo from './DownloadInfo'
 import PlayerManager from './PlayerManager'
 
-export const Player = ({ route: { params: { item, playQuality } } }) => (
+export const Player = ({ route: { params: { item, torrent } } }) => (
   <PlayerManager
     item={item}
-    playQuality={playQuality}
+    torrent={torrent}
     style={styles.root}>
     {({ casting, renderCastButton, mediaUrl, setProgress, startPosition, isBuffering, download }) => (
       <React.Fragment>
