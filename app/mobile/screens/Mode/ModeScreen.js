@@ -9,7 +9,7 @@ import i18n from 'modules/i18n'
 import colors from 'modules/colors'
 import dimensions from 'modules/dimensions'
 import useBackButton from 'modules/useBackButton'
-import MoviesQuery from 'modules/GraphQL/MoviesQuery'
+import { MoviesModeQuery } from 'modules/GraphQL/MoviesQuery'
 import ShowsQuery from 'modules/GraphQL/ShowsQuery'
 import BookmarksQuery from 'modules/GraphQL/BookmarksQuery'
 import fetchMoreUpdateQuery from 'modules/GraphQL/helpers/fetchMoreUpdateQuery'
@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
 export const getQuery = (mode) => {
   switch (mode) {
     case 'movies':
-      return MoviesQuery
+      return MoviesModeQuery
     case 'shows':
       return ShowsQuery
     case 'bookmarks':

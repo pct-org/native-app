@@ -1,5 +1,24 @@
 import gql from 'graphql-tag'
 
+export const MoviesModeQuery = gql`
+  query movies($offset: Float!, $query: String) {
+    movies(limit: 25, offset: $offset, query: $query) {
+      _id
+      __typename
+      title
+      type
+      watched {
+        complete
+      }
+      images {
+        poster {
+          thumb
+        }
+      }
+    }
+  }
+`
+
 export default gql`
   query movies($offset: Float!, $query: String) {
     movies(limit: 25, offset: $offset, query: $query) {

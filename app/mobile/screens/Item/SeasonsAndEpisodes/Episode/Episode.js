@@ -115,7 +115,7 @@ export const Episode = (props) => {
                   </Typography>
                 )}
 
-                {watched.progress > 0 && (
+                {watched?.progress > 0 && (
                   <View style={{
                     ...styles.progress,
                     width: `${watched.progress || 0}%`,

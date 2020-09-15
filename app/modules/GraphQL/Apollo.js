@@ -5,7 +5,7 @@ import { CachePersistor } from 'apollo-cache-persist'
 import { WebSocketLink } from '@apollo/client/link/ws'
 import { getMainDefinition } from '@apollo/client/utilities'
 
-const SCHEMA_VERSION = '4' // Must be a string.
+const SCHEMA_VERSION = '5' // Must be a string.
 const SCHEMA_VERSION_KEY = 'apollo-schema-version'
 
 export default async(host) => {
