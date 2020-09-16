@@ -82,7 +82,7 @@ export default class WatchOnTvManager extends React.Component {
       // If the next app state is inactive then say the tv is off
       if (isTv && !nextIsAppActive) {
         this.handleTvTurnedOff()
-        
+
       } else if (isTv && nextIsAppActive) {
         this.handleTvTurnedOn()
       }
@@ -116,7 +116,7 @@ export default class WatchOnTvManager extends React.Component {
 
   handleCommand = async(command, options) => {
     const { apollo, isTv } = this.props
-    const { isAppActive } = this.state
+    const { isAppActive, connected } = this.state
 
     switch (command) {
       case 'is-tv-on':
@@ -133,9 +133,11 @@ export default class WatchOnTvManager extends React.Component {
         break
 
       case 'tv-off':
-        ToastAndroid.show('TV disconnected', ToastAndroid.SHORT)
+        if (connected) {
+          ToastAndroid.show('TV disconnected', ToastAndroid.SHORT)
 
-        this.setState({ connected: false })
+          this.setState({ connected: false })
+        }
         break
 
       case 'play':
