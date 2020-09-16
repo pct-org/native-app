@@ -1,18 +1,19 @@
 import { StatusBar } from 'react-native'
 
-export default {
-  currentActiveBackgroundColor: 'rgba(0, 0, 0, 0)',
-  previousActiveBackgroundColor: 'rgba(0, 0, 0, 0)',
+export default new (class StatusBarController {
 
-  update: (newColor) => {
+  currentActiveBackgroundColor = 'rgba(0, 0, 0, 0)'
+  previousActiveBackgroundColor = 'rgba(0, 0, 0, 0)'
+
+  update = (newColor) => {
     this.previousActiveBackgroundColor = this.currentActiveBackgroundColor
     this.currentActiveBackgroundColor = newColor
 
     StatusBar.setBackgroundColor(this.currentActiveBackgroundColor, true)
-  },
+  }
 
-  setHidden: (hidden) => {
+  setHidden = (hidden) => {
     StatusBar.setHidden(hidden, true)
-  },
+  }
 
-}
+})()
