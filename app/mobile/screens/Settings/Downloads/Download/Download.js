@@ -67,7 +67,7 @@ export const Download = ({ download, downloadManager, refreshScreen }) => {
           </Typography>
 
           <Typography variant={'caption'}>
-            {status}
+            {quality} - {status}
           </Typography>
 
           {status === constants.STATUS_DOWNLOADING && (
