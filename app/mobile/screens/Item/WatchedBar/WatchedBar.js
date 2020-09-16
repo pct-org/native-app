@@ -1,8 +1,10 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { View } from 'react-native'
+import * as Animatable from 'react-native-animatable'
 
 import dimensions from 'modules/dimensions'
+import constants from 'modules/constants'
 import colors from 'modules/colors'
 import i18n from 'modules/i18n'
 
@@ -12,7 +14,7 @@ const styles = {
 
   root: {
     marginBottom: dimensions.UNIT * 4,
-    height: 2,
+    height: dimensions.getHeight(3),
   },
 
   progressBar: {
@@ -26,6 +28,9 @@ const styles = {
     alignItems: 'center',
   },
 
+  text: {
+    textAlign: 'center',
+  },
 }
 
 export const WatchedBar = ({ item }) => {
@@ -37,27 +42,37 @@ export const WatchedBar = ({ item }) => {
 
   return (
     <View style={styles.root}>
-      <View style={{
-        ...styles.progressBar,
-        width: `${watchedPercentage}%`,
-      }} />
+      <Animatable.View
+        duration={constants.ANIMATION_DURATIONS.enteringScreen}
+        animation={'fadeIn'}
+        style={{
+          ...styles.progressBar,
+          width: `${watchedPercentage}%`,
+        }}
+        useNativeDriver
+      />
 
       {(watchedPercentage < 100) && (
-        <View style={{
-          ...styles.container,
-          width: `${watchedPercentage}%`,
-        }}>
-          <Typography variant={'captionSmall'}>
-            {i18n.t('Watched: {{percentage}}%', { percentage: watchedPercentage })}
-          </Typography>
+        <View
+          style={{
+            ...styles.container,
+            width: `${watchedPercentage}%`,
+          }}>
+          {watchedPercentage >= 15 && (
+            <Typography
+              style={styles.text}
+              variant={'captionSmall'}>
+              {i18n.t('Watched: {{percentage}}%', { percentage: watchedPercentage })}
+            </Typography>
+          )}
         </View>
       )}
     </View>
   )
 }
 
-WatchedBar.propTypes = {}
-
-WatchedBar.defaultProps = {}
+WatchedBar.propTypes = {
+  item: PropTypes.object.isRequired
+}
 
 export default WatchedBar

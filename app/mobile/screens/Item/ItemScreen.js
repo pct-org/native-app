@@ -2,6 +2,7 @@ import React, { useEffect } from 'react'
 import { StyleSheet, View, InteractionManager, Linking } from 'react-native'
 import { useLazyQuery } from '@apollo/client'
 import Orientation from 'react-native-orientation'
+import * as Animatable from 'react-native-animatable'
 
 import dimensions from 'modules/dimensions'
 import constants from 'modules/constants'
@@ -124,6 +125,7 @@ export const Item = ({ route: { params } }) => {
               animatable={{
                 animation: 'fadeIn',
                 useNativeDriver: true,
+                duration: constants.ANIMATION_DURATIONS.enteringScreen,
               }}
               style={styles.icon}
               onPress={handleTrailer}
@@ -154,11 +156,17 @@ export const Item = ({ route: { params } }) => {
         {/*  /!*  </IconButton>*!/*/}
         {/*  /!*)}*!/*/}
 
-        <View style={styles.synopsis}>
-          <Typography variant={'body2'}>
-            {item?.synopsis}
-          </Typography>
-        </View>
+        {item && (
+          <Animatable.View
+            duration={constants.ANIMATION_DURATIONS.enteringScreen}
+            animation={'fadeIn'}
+            style={styles.synopsis}
+            useNativeDriver>
+            <Typography variant={'body2'}>
+              {item.synopsis}
+            </Typography>
+          </Animatable.View>
+        )}
 
         {item && item.type === constants.TYPE_SHOW && item.seasons.length > 0 && (
           <SeasonsAndEpisodes

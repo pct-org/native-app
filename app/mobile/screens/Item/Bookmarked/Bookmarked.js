@@ -2,6 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { useMutation } from '@apollo/client'
 
+import constants from 'modules/constants'
 import dimensions from 'modules/dimensions'
 
 import IconButton from 'components/IconButton'
@@ -44,6 +45,7 @@ export const Bookmarked = ({ _id, type, bookmarked, style }) => {
       animatable={{
         animation: 'fadeIn',
         useNativeDriver: true,
+        duration: constants.ANIMATION_DURATIONS.enteringScreen
       }}
       style={style}
       onPress={handleToggleBookmarked}

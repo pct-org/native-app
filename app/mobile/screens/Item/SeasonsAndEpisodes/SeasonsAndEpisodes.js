@@ -1,8 +1,10 @@
 import React from 'react'
 import { FlatList, StyleSheet, View } from 'react-native'
+import * as Animatable from 'react-native-animatable'
 
 import dimensions from 'modules/dimensions'
 import i18n from 'modules/i18n'
+import constants from 'modules/constants'
 
 import Card from 'components/Card'
 import Typography from 'components/Typography'
@@ -152,7 +154,10 @@ export default class SeasonsAndEpisodes extends React.Component {
     const episodes = this.getEpisodes()
 
     return (
-      <React.Fragment>
+      <Animatable.View
+        duration={constants.ANIMATION_DURATIONS.enteringScreen}
+        animation={'fadeIn'}
+        useNativeDriver>
 
         <Typography
           style={styles.seasonsText}
@@ -204,7 +209,7 @@ export default class SeasonsAndEpisodes extends React.Component {
           showsHorizontalScrollIndicator={false}
         />
 
-      </React.Fragment>
+      </Animatable.View>
     )
   }
 

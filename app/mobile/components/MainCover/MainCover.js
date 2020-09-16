@@ -105,7 +105,6 @@ export const MainCover = ({ empty, item, handleItemOpen }) => {
           }
         }}>
         <View style={styles.backgroundContainer}>
-
           <Image
             resizeMode={'cover'}
             withFallback={false}
@@ -122,16 +121,12 @@ export const MainCover = ({ empty, item, handleItemOpen }) => {
           <CoverGradient />
 
           {!empty && item.type === constants.TYPE_MOVIE && (
-            <Animatable.View
-              animation={'fadeIn'}
-              style={styles.playContainer}
-              useNativeDriver>
-
+            <View style={styles.playContainer}>
               <QualitySelector
                 item={item}
                 visible={showQualitySelector}
                 onRequestClose={() => toggleSelecting(false)} />
-            </Animatable.View>
+            </View>
           )}
         </View>
       </BaseButton>
@@ -151,6 +146,7 @@ export const MainCover = ({ empty, item, handleItemOpen }) => {
 
         {!empty && (
           <Animatable.View
+            duration={constants.ANIMATION_DURATIONS.enteringScreen}
             animation={'fadeIn'}
             style={styles.info}
             useNativeDriver>

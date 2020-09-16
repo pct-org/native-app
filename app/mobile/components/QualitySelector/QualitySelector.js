@@ -241,7 +241,7 @@ export default class QualitySelector extends React.Component {
               <Animatable.View
                 style={styles.itemContainer}
                 animation={'fadeIn'}
-                duration={200}
+                duration={constants.ANIMATION_DURATIONS.enteringScreen}
                 useNativeDriver>
                 <Card
                   item={

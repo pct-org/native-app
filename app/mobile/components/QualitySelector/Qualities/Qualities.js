@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
 
 export const Qualities = ({ variant, item, handleQualityPress }) => {
   const [searchForBetter, { loading }] = useMutation(
-    item.type === 'episode'
+    item.type === constants.TYPE_EPISODE
       ? SearchForBetterEpisode
       : SearchForBetterMovie,
     {
@@ -62,7 +62,7 @@ export const Qualities = ({ variant, item, handleQualityPress }) => {
     <React.Fragment>
       <Animatable.View
         animation={'fadeIn'}
-        duration={200}
+        duration={constants.ANIMATION_DURATIONS.short}
         style={styles.container}
         useNativeDriver>
         <Typography variant={'subtitle1'}>
@@ -113,6 +113,7 @@ export const Qualities = ({ variant, item, handleQualityPress }) => {
       </Animatable.View>
 
       <Animatable.View
+        duration={constants.ANIMATION_DURATIONS.short}
         animation={
           loading
             ? 'fadeOut'
@@ -120,7 +121,6 @@ export const Qualities = ({ variant, item, handleQualityPress }) => {
         }
         style={styles.searchButtonContainer}
         pointerEvents={'box-none'}
-        duration={200}
         useNativeDriver>
         <TextButton
           onPress={searchForBetter}

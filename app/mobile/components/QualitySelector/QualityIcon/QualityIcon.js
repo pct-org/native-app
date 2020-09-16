@@ -78,6 +78,7 @@ export const QualityIcon = ({
           }}
         >
           <Animatable.View
+            duration={constants.ANIMATION_DURATIONS.enteringScreen}
             style={[
               style,
               styles.lottieContainer,
@@ -131,6 +132,11 @@ export const QualityIcon = ({
     if (variant !== 'downloads') {
       return (
         <IconButton
+          animatable={{
+            animation: 'fadeIn',
+            useNativeDriver: true,
+            duration: constants.ANIMATION_DURATIONS.enteringScreen
+          }}
           size={dimensions.ICON_SIZE_DEFAULT}
           onPress={handleOnPress}
           style={style}
@@ -143,6 +149,11 @@ export const QualityIcon = ({
 
   return (
     <IconButton
+      animatable={{
+        animation: 'fadeIn',
+        useNativeDriver: true,
+        duration: constants.ANIMATION_DURATIONS.enteringScreen
+      }}
       onPress={handleOnPress}
       style={style}
       name={'play-circle-outline'}

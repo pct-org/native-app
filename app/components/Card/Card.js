@@ -52,6 +52,7 @@ export const Card = ({
   overlayWithAnimation,
   overlayAllowed,
   children,
+  posterSize,
   ...rest
 }) => (
   <Container
@@ -66,7 +67,7 @@ export const Card = ({
       <View>
         <Image
           type={'poster'}
-          size={'thumb'}
+          size={posterSize}
           images={
             empty
               ? {}
@@ -91,6 +92,7 @@ Card.propTypes = {
   variant: PropTypes.oneOf(['default', 'small', 'big']),
   hide: PropTypes.bool,
   overlayVariant: PropTypes.string,
+  posterSize: PropTypes.oneOf(['thumb', 'medium']),
 }
 
 Card.defaultProps = {
@@ -105,6 +107,7 @@ Card.defaultProps = {
   overlayVariant: 'dark',
   overlayWithAnimation: false,
   hide: false,
+  posterSize: 'thumb',
 }
 
 export default Card

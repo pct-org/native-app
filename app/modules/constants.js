@@ -15,4 +15,15 @@ export default {
 
   KEY_DEFAULT_SUBTITLE: '@Pct.defaultSubtitle',
 
+
+  ANIMATION_DURATIONS: {
+    complex: 375,
+    enteringScreen: 225,
+    leavingScreen: 195,
+    short: 250,
+    shorter: 200,
+    shortest: 150,
+    standard: 300,
+  }
+
 }
