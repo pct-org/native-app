@@ -1,6 +1,6 @@
 import constants from 'modules/constants'
 import React from 'react'
-import { ToastAndroid } from 'react-native'
+import { ToastAndroid, AppState } from 'react-native'
 import PropTypes from 'prop-types'
 
 import withApollo from 'modules/GraphQL/withApollo'
@@ -30,6 +30,7 @@ export default class WatchOnTvManager extends React.Component {
 
   state = {
     connected: false,
+    isAppActive: false,
 
     lastCommand: {
       _id: null,
@@ -40,10 +41,13 @@ export default class WatchOnTvManager extends React.Component {
   }
 
   async componentDidMount() {
+    AppState.addEventListener('change', this.handleAppStateChange)
     this.subscribeForCommands()
   }
 
   componentWillUnmount() {
+    AppState.removeEventListener('change', this.handleAppStateChange)
+
     if (this.subscription) {
       this.subscription.unsubscribe()
     }
@@ -59,11 +63,30 @@ export default class WatchOnTvManager extends React.Component {
 
     }).subscribe({
       next: ({ data }) => {
-        console.log(data)
-
         this.handleCommand(data.watch.command, data.watch)
       },
     })
+  }
+
+  handleAppStateChange = (nextAppState) => {
+    const { isTv } = this.props
+    const { isAppActive } = this.state
+
+    let nextIsAppActive = nextAppState === 'active'
+
+    if (isAppActive !== nextIsAppActive) {
+      this.setState({
+        isAppActive: nextIsAppActive,
+      })
+
+      // If the next app state is inactive then say the tv is off
+      if (isTv && !nextIsAppActive) {
+        this.handleTvTurnedOff()
+        
+      } else if (isTv && nextIsAppActive) {
+        this.handleTvTurnedOn()
+      }
+    }
   }
 
   handlePlayItem = async(item, torrent) => {
@@ -83,7 +106,7 @@ export default class WatchOnTvManager extends React.Component {
     await this.sendCommand('is-tv-on')
   }
 
-  handleTvBooted = async() => {
+  handleTvTurnedOn = async() => {
     await this.sendCommand('tv-is-on')
   }
 
@@ -93,10 +116,11 @@ export default class WatchOnTvManager extends React.Component {
 
   handleCommand = async(command, options) => {
     const { apollo, isTv } = this.props
-    console.log('command', command)
+    const { isAppActive } = this.state
+
     switch (command) {
       case 'is-tv-on':
-        if (isTv) {
+        if (isTv && isAppActive) {
           await this.sendCommand('tv-is-on')
         }
         break
@@ -163,7 +187,7 @@ export default class WatchOnTvManager extends React.Component {
       connected,
       isTvOn: this.handleTvCheck,
       playOnTv: this.handlePlayItem,
-      tvBooted: this.handleTvBooted,
+      tvBooted: this.handleTvTurnedOn,
       tvOff: this.handleTvTurnedOff,
     }
   }
