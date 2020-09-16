@@ -128,10 +128,9 @@ export class DownloadManager extends React.Component {
       variables: {
         _id: download._id,
       },
+    }).subscribe(({ data }) => {
+      callback(data?.download ?? null)
     })
-      .subscribe(({ data }) => {
-        callback(data?.download ?? null)
-      })
   }
 
   /**

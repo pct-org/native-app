@@ -34,11 +34,16 @@ export const styles = {
 
 export const Download = ({ download, downloadManager, refreshScreen }) => {
   const data = usePollingForDownload(download, downloadManager)
-  const { status, progress, speed, timeRemaining, numPeers } = data || download
+  const { status, progress, speed, timeRemaining, numPeers, quality } = data || download
   const { movie, episode } = download
 
   const removeDownload = async() => {
-    await downloadManager.removeDownload(download)
+    await downloadManager.removeDownload({
+      ...download,
+      // TODO:: Make a util and get the show title from there so format will be:
+      // Show: S01E01. Episode Title
+      title: movie?.title ?? `${episode?.show?.title}: S${episode?.season}E${episode?.number}. ${episode?.title}`
+    })
 
     refreshScreen()
   }
