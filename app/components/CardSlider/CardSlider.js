@@ -30,7 +30,7 @@ export const styles = StyleSheet.create({
 
 })
 // TODO:: Move to mobile/components
-export const CardSlider = ({ title, items, onPress, onEndReached, goToMore, loading }) => {
+export const CardSlider = ({ title, items, onPress, onEndReached, goToMore, loading, cardStyle, cardPosterSize }) => {
   const renderCard = ({ item }) => {
     const empty = !item
 
@@ -38,6 +38,8 @@ export const CardSlider = ({ title, items, onPress, onEndReached, goToMore, load
       <Card
         empty={empty}
         item={item}
+        style={cardStyle}
+        posterSize={cardPosterSize}
         onPress={() => {
           if (!empty && !loading) {
             onPress(item)
@@ -109,6 +111,7 @@ CardSlider.defaultProps = {
   goToMore: null,
 
   loading: false,
+  cardPosterSize: undefined,
 }
 
 export default CardSlider

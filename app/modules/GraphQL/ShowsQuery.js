@@ -62,6 +62,24 @@ export const DownloadedShows = gql`
   }
 `
 
+export const MostWatchedShowsQuery= gql`
+  query shows {
+    shows: mostWatchedShows {
+      _id
+      title
+      type
+      bookmarked
+      images {
+        poster {
+          thumb
+          medium
+        }
+      }
+    }
+  }
+`
+
+
 export default gql`
   query shows($offset: Float!, $query: String) {
     shows(limit: 25, offset: $offset, query: $query) {

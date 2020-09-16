@@ -18,6 +18,7 @@ import Container from 'components/Container'
 import MainCover from 'mobile/components/MainCover'
 
 import ShowsSlider from './ShowsSlider'
+import MostWatchedShowsSlider from './MostWatchedShowsSlider'
 import BookmarksSlider from './BookmarksSlider'
 import MyEpisodesSlider from './MyEpisodesSlider'
 import SettingsIcon from './SettingsIcon'
@@ -119,6 +120,10 @@ export const Home = ({ navigation, watchOnTvManager }) => {
 
         <ShowsSlider
           handleGoTo={handleGoTo}
+          onPress={handleItemOpen}
+        />
+
+        <MostWatchedShowsSlider
           onPress={handleItemOpen}
         />
 
