@@ -79,12 +79,18 @@ export default class WatchOnTvManager extends React.Component {
         isAppActive: nextIsAppActive,
       })
 
-      // If the next app state is inactive then say the tv is off
-      if (isTv && !nextIsAppActive) {
-        this.handleTvTurnedOff()
+      if (isTv) {
+        // If the next app state is inactive then say the tv is off
+        if (!nextIsAppActive) {
+          this.handleTvTurnedOff()
 
-      } else if (isTv && nextIsAppActive) {
-        this.handleTvTurnedOn()
+        } else {
+          this.handleTvTurnedOn()
+        }
+
+      } else if (isAppActive) {
+        // If we come from the background then check if we can connect to the tv
+        this.handleTvCheck()
       }
     }
   }
@@ -126,10 +132,11 @@ export default class WatchOnTvManager extends React.Component {
         break
 
       case 'tv-is-on':
-        console.log('connected')
-        ToastAndroid.show('Connected to TV', ToastAndroid.SHORT)
+        if (isAppActive && !connected) {
+          ToastAndroid.show('Connected to TV', ToastAndroid.SHORT)
 
-        this.setState({ connected: true })
+          this.setState({ connected: true })
+        }
         break
 
       case 'tv-off':
