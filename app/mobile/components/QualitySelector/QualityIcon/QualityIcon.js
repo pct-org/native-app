@@ -40,7 +40,7 @@ export const QualityIcon = ({
     variant !== constants.TYPE_STREAM
       ? downloadProp
       : null,
-    downloadManager
+    downloadManager,
   )
 
   const download = downloadProp && !data
@@ -75,8 +75,7 @@ export const QualityIcon = ({
             } else {
               handleRemoveDownload()
             }
-          }}
-        >
+          }}>
           <Animatable.View
             duration={constants.ANIMATION_DURATIONS.enteringScreen}
             style={[
@@ -101,7 +100,7 @@ export const QualityIcon = ({
                constants.STATUS_CONNECTING,
                constants.STATUS_COMPLETE,
                constants.STATUS_FAILED,
-             ].indexOf(download.status) > -1 && (
+             ].includes(download.status) && (
                <Icon
                  size={dimensions.ICON_SIZE_DEFAULT}
                  name={download.status === constants.STATUS_COMPLETE
@@ -119,9 +118,7 @@ export const QualityIcon = ({
                 style={styles.downloadStatus}
                 emphasis={'medium'}
                 variant={'captionSmall'}>
-                {
-                  getStatusText()
-                }
+                {getStatusText()}
               </Typography>
             )}
           </Animatable.View>
@@ -135,7 +132,7 @@ export const QualityIcon = ({
           animatable={{
             animation: 'fadeIn',
             useNativeDriver: true,
-            duration: constants.ANIMATION_DURATIONS.enteringScreen
+            duration: constants.ANIMATION_DURATIONS.enteringScreen,
           }}
           size={dimensions.ICON_SIZE_DEFAULT}
           onPress={handleOnPress}
@@ -152,7 +149,7 @@ export const QualityIcon = ({
       animatable={{
         animation: 'fadeIn',
         useNativeDriver: true,
-        duration: constants.ANIMATION_DURATIONS.enteringScreen
+        duration: constants.ANIMATION_DURATIONS.enteringScreen,
       }}
       onPress={handleOnPress}
       style={style}

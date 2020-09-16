@@ -12,8 +12,8 @@ import CardSlider from 'components/CardSlider'
 export const styles = StyleSheet.create({
 
   card: {
-    width: dimensions.getWidth(145),
-    height: dimensions.getHeight(210),
+    width: dimensions.getWidth(150),
+    height: dimensions.getHeight(220),
   },
 
 })
