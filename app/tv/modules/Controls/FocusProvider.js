@@ -5,7 +5,7 @@ import { transitionDuration } from 'tv/modules/BackgroundManager/BackgroundManag
 import Context from './FocusManagerContext'
 import * as constants from './FocusManagerConstants'
 
-export default class FocusManager extends React.Component {
+export default class FocusProvider extends React.Component {
 
   focusRefs = {}
 
