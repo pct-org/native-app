@@ -30,7 +30,7 @@ export default class WatchOnTvManager extends React.Component {
 
   state = {
     connected: false,
-    isAppActive: false,
+    isAppActive: true,
 
     lastCommand: {
       _id: null,
@@ -40,9 +40,21 @@ export default class WatchOnTvManager extends React.Component {
     },
   }
 
-  async componentDidMount() {
+  componentDidMount() {
+    const { isTv } = this.props
+
     AppState.addEventListener('change', this.handleAppStateChange)
     this.subscribeForCommands()
+
+    // Wait 0,5 seconds to be sure we are subscribed
+    setTimeout(() => {
+      if (isTv) {
+        this.handleTvTurnedOn()
+
+      } else {
+        this.handleIsTvOn()
+      }
+    }, 500)
   }
 
   componentWillUnmount() {
@@ -53,10 +65,10 @@ export default class WatchOnTvManager extends React.Component {
     }
   }
 
-  subscribeForCommands = async() => {
+  subscribeForCommands = () => {
     const { isTv, apollo } = this.props
 
-    apollo.subscribe({
+    this.subscription = apollo.subscribe({
       query: isTv
         ? TvCommandsSubscription
         : MobileCommandsSubscription,
@@ -88,9 +100,9 @@ export default class WatchOnTvManager extends React.Component {
           this.handleTvTurnedOn()
         }
 
-      } else if (isAppActive) {
+      } else if (nextIsAppActive) {
         // If we come from the background then check if we can connect to the tv
-        this.handleTvCheck()
+        this.handleIsTvOn()
       }
     }
   }
@@ -108,7 +120,7 @@ export default class WatchOnTvManager extends React.Component {
     }
   }
 
-  handleTvCheck = async() => {
+  handleIsTvOn = async() => {
     await this.sendCommand('is-tv-on')
   }
 
@@ -194,7 +206,7 @@ export default class WatchOnTvManager extends React.Component {
 
     return {
       connected,
-      isTvOn: this.handleTvCheck,
+      isTvOn: this.handleIsTvOn,
       playOnTv: this.handlePlayItem,
       tvBooted: this.handleTvTurnedOn,
       tvOff: this.handleTvTurnedOff,

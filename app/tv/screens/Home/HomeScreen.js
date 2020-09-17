@@ -3,7 +3,6 @@ import { StyleSheet, Image } from 'react-native'
 import SplashScreen from 'react-native-splash-screen'
 
 import dimensions from 'modules/dimensions'
-import withWatchOnTvManager from 'modules/WatchOnTvManager/withWatchOnTvManager'
 import Container from 'components/Container'
 
 import teamImage from 'assets/images/team.png'
@@ -26,17 +25,9 @@ export const styles = StyleSheet.create({
 
 })
 
-export const Home = ({ watchOnTvManager }) => {
-  console.log('render home')
-
+export const Home = () => {
   React.useEffect(() => {
     SplashScreen.hide()
-
-    watchOnTvManager.tvBooted()
-
-    return () => {
-      watchOnTvManager.tvOff()
-    }
   }, [])
 
   return (
@@ -52,4 +43,4 @@ export const Home = ({ watchOnTvManager }) => {
   )
 }
 
-export default withWatchOnTvManager(Home)
+export default Home
