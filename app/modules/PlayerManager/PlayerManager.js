@@ -1,16 +1,10 @@
 import React from 'react'
-import {  View, InteractionManager } from 'react-native'
+import { View, InteractionManager } from 'react-native'
 
-import withDownloadManager from 'modules/DownloadManager/withDownloadManager'
-import withApollo from 'modules/GraphQL/withApollo'
 import { progressMutation } from 'modules/GraphQL/ProgressGraphQL'
-import { StartStreamMutation, StopStreamMutation, DownloadQuery } from 'modules/GraphQL/DownloadGraphQL'
-import withIpFinder from 'modules/IpFinder/withIpFinder'
+import { StartStreamMutation, StopStreamMutation } from 'modules/GraphQL/DownloadGraphQL'
 
-@withDownloadManager
-@withIpFinder
-@withApollo
-export default class PlayerManager extends React.Component {
+export class PlayerManager extends React.Component {
 
   constructor(props) {
     super(props)
@@ -33,35 +27,12 @@ export default class PlayerManager extends React.Component {
   componentDidMount() {
     // Execute the query after the component is done navigation
     InteractionManager.runAfterInteractions(() => {
-     this.start()
+      this.start()
     })
   }
 
   componentWillUnmount() {
     this.stop()
-  }
-
-  async componentDidUpdate(prevProps, prevState, snapshot) {
-    const { item: { _id: oldId } } = prevProps
-    const { item: { _id: newId }, item, ipFinder } = this.props
-
-    if (oldId !== newId) {
-      await this.stop()
-
-      this.setState({
-        mediaUrl: `http://${ipFinder.host}/watch/${item._id}`,
-        progress: 0,
-        casting: false,
-        isBuffering: true,
-        download: null,
-        lastProgressSend: 0,
-        startPosition: item.watched.progress === 100
-          ? 0
-          : item.watched.progress,
-      })
-
-      this.start()
-    }
   }
 
   start = async() => {
@@ -71,7 +42,7 @@ export default class PlayerManager extends React.Component {
     })
   }
 
-  stop = async () => {
+  stop = async() => {
     const { downloadManager, item } = this.props
 
     // Stop polling for the download info
@@ -147,13 +118,11 @@ export default class PlayerManager extends React.Component {
     const { downloadManager, item } = this.props
 
     downloadManager.pollDownload(item, (data) => {
-      console.log(data.progress)
       // If the progress is 100 then stop polling
       if (data.progress === 100) {
         downloadManager.stopPollDownload(item)
       }
 
-      console.log('poll', data)
       this.setState({
         isBuffering: data.progress < 3,
         download: data,
@@ -174,23 +143,30 @@ export default class PlayerManager extends React.Component {
     })
   }
 
-  render() {
-    const { style, children } = this.props
+  getChildProps = () => {
     const { mediaUrl, startPosition } = this.state
     const { download, isBuffering } = this.state
+
+    return {
+      mediaUrl,
+      startPosition,
+      download,
+      isBuffering,
+      setProgress: this.handleSetProgress,
+    }
+  }
+
+  render() {
+    const { style, children } = this.props
 
     return (
       <View style={style}>
 
-        {children({
-          mediaUrl,
-          startPosition,
-          download,
-          isBuffering,
-          setProgress: this.handleSetProgress,
-        })}
+        {children(this.getChildProps())}
 
       </View>
     )
   }
 }
+
+export default PlayerManager

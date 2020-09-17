@@ -72,7 +72,7 @@ export const WatchedBar = ({ item }) => {
 }
 
 WatchedBar.propTypes = {
-  item: PropTypes.object.isRequired
+  item: PropTypes.object
 }
 
 export default WatchedBar

@@ -36,6 +36,7 @@ export const MovieQuery = gql`
       }
       images {
         backdrop {
+          full
           high
         }
         poster {
@@ -158,6 +159,9 @@ export const EpisodeQuery = gql`
       show {
         title 
         images {
+          backdrop {
+            full
+          }
           poster {
             thumb
             high

@@ -32,9 +32,9 @@ export default {
 
   subtitle2: {
     fontFamily: `${fontName}-Medium`,
-    lineHeight: dimensions.getWidth(40),
-    letterSpacing: dimensions.getWidth(0.10),
-    fontSize: dimensions.getWidth(40),
+    lineHeight: 16,
+    letterSpacing: 0.10,
+    fontSize: 16,
   },
 
   body1: {
@@ -61,9 +61,9 @@ export default {
 
   caption: {
     fontFamily: fontRegular,
-    lineHeight: dimensions.getWidth(30),
-    letterSpacing: dimensions.getWidth(-0.4),
-    fontSize: dimensions.getWidth(30),
+    lineHeight: 14,
+    letterSpacing: 0.40,
+    fontSize: 12,
   },
 
   captionSmall: {

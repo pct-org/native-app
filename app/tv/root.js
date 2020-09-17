@@ -3,7 +3,7 @@ import { NavigationContainer } from '@react-navigation/native'
 
 import DownloadManager from 'modules/DownloadManager'
 import IpFinder from 'modules/IpFinder'
-import FocusManager from './modules/FocusManager'
+// import FocusManager from './modules/FocusManager'
 import navigationRef from 'modules/RootNavigation'
 import WatchOnTvManager from 'modules/WatchOnTvManager'
 
@@ -12,7 +12,7 @@ import ApolloLoader from 'components/ApolloLoader'
 import Screens from './screens'
 
 export default () => (
-  <FocusManager>
+  // <FocusManager>
     <NavigationContainer ref={navigationRef}>
       <IpFinder>
         {(host) => (
@@ -28,5 +28,5 @@ export default () => (
         )}
       </IpFinder>
     </NavigationContainer>
-  </FocusManager>
+  // </FocusManager>
 )
