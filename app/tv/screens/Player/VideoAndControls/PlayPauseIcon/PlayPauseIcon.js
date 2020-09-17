@@ -1,35 +1,40 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { View } from 'react-native'
+import { View, StyleSheet } from 'react-native'
 
-import dimensions from 'modules/dimensions'
+import Remote from 'tv/modules/Controls/Remote'
 import IconButton from 'components/IconButton'
 
-const ICON_SIZE = 76
+export const ICON_SIZE = 76
+
+export const styles = StyleSheet.create({
+
+  root: {
+    zIndex: 2000,
+  },
+
+})
 
 export const PlayPauseIcon = ({ paused, handlePauseVideo, handlePlayVideo }) => (
   <View
-    style={{
-      position: 'absolute',
-      width: ICON_SIZE,
-      height: ICON_SIZE,
-      zIndex: 2000,
-      left: (dimensions.SCREEN_HEIGHT - ICON_SIZE + 55) / 2,
-      top: (dimensions.SCREEN_WIDTH - ICON_SIZE) / 2,
-    }}
+    style={styles.root}
     pointerEvents={'box-none'}>
 
     <IconButton
-      onPress={
+      onPress={Remote.onPress(
         paused
           ? handlePlayVideo
-          : handlePauseVideo
-      }
+          : handlePauseVideo,
+      )}
       name={
         paused
           ? 'play'
           : 'pause'
       }
+      buttonProps={{
+        hasTVPreferredFocus: true,
+        // component: TouchableWithoutFeedback,
+      }}
       color={'primary'}
       size={60} />
 

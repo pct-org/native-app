@@ -53,36 +53,46 @@ export const Card = ({
   overlayAllowed,
   children,
   posterSize,
+  pressable,
   ...rest
-}) => (
-  <Container
-    elevation={elevation}
-    style={[
-      styles.root,
-      variant === 'small' && styles.small,
-      style,
-    ]}>
-    <BaseButton
-      {...rest}>
-      <View>
-        <Image
-          type={'poster'}
-          size={posterSize}
-          images={
-            empty
-              ? {}
-              : item.images
-          } />
+}) => {
+  const ButtonComponent = pressable
+    ? BaseButton
+    : React.Fragment
 
-        {(item?.watched?.complete || forceOverlay) && overlayAllowed && (
-          <Overlay
-            withAnimation={overlayWithAnimation}
-            variant={overlayVariant} />
-        )}
-      </View>
-    </BaseButton>
-  </Container>
-)
+  const buttonProps = pressable
+    ? rest
+    : {}
+
+  return (
+    <Container
+      elevation={elevation}
+      style={[
+        styles.root,
+        variant === 'small' && styles.small,
+        style,
+      ]}>
+      <ButtonComponent {...buttonProps}>
+        <View>
+          <Image
+            type={'poster'}
+            size={posterSize}
+            images={
+              empty
+                ? {}
+                : item.images
+            } />
+
+          {(item?.watched?.complete || forceOverlay) && overlayAllowed && (
+            <Overlay
+              withAnimation={overlayWithAnimation}
+              variant={overlayVariant} />
+          )}
+        </View>
+      </ButtonComponent>
+    </Container>
+  )
+}
 
 Card.propTypes = {
   item: PropTypes.object,
@@ -93,6 +103,7 @@ Card.propTypes = {
   hide: PropTypes.bool,
   overlayVariant: PropTypes.string,
   posterSize: PropTypes.oneOf(['thumb', 'medium']),
+  pressable: PropTypes.bool,
 }
 
 Card.defaultProps = {
@@ -108,6 +119,7 @@ Card.defaultProps = {
   overlayWithAnimation: false,
   hide: false,
   posterSize: 'thumb',
+  pressable: true
 }
 
 export default Card

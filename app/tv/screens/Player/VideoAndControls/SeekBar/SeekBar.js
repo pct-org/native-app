@@ -7,18 +7,21 @@ import dimensions from 'modules/dimensions'
 
 import Typography from 'components/Typography'
 
+import { ICON_SIZE } from '../PlayPauseIcon/PlayPauseIcon'
+
 const styles = {
+
   container: {
-    position: 'absolute',
-    bottom: dimensions.ICON_SIZE_DEFAULT + dimensions.UNIT * 4,
-    left: (dimensions.UNIT * 5),
+    // position: 'absolute',
+    // bottom: dimensions.ICON_SIZE_DEFAULT + dimensions.UNIT * 4,
+    // left: (dimensions.UNIT * 4) + ICON_SIZE,
     zIndex: 2000,
     flexDirection: 'row',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
 
   slider: {
-   // width: dimensions.SCREEN_HEIGHT - dimensions.UNIT * 20,
+    width: dimensions.SCREEN_WIDTH - dimensions.UNIT * 26,
   },
 
   track: {

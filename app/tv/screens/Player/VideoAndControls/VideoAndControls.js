@@ -1,8 +1,10 @@
 import React from 'react'
-import { StyleSheet, View, ScrollView, TouchableWithoutFeedback, TVEventHandler } from 'react-native'
+import { StyleSheet, TVEventHandler, View } from 'react-native'
 import * as Animatable from 'react-native-animatable'
 
+import constants from 'modules/constants'
 import dimensions from 'modules/dimensions'
+
 import VlcPlayer from 'components/VlcPlayer'
 import Overlay from 'components/Overlay'
 
@@ -20,16 +22,6 @@ const styles = StyleSheet.create({
     zIndex: 1000,
   },
 
-  contentContainerStyle: {
-    flexGrow: 1,
-    flex: 1,
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-  },
-
   video: {
     position: 'absolute',
     top: 0,
@@ -39,27 +31,21 @@ const styles = StyleSheet.create({
     zIndex: 800,
   },
 
-  slider: {
+  actionsContainer: {
     position: 'absolute',
-    left: 16,
-    bottom: 64,
-    right: 16,
-    zIndex: 1001,
-  },
-
-  placeholderStyle: {
-    width: (dimensions.SCREEN_HEIGHT + dimensions.ON_SCREEN_NAVIGATION_HEIGHT),
-    height: (dimensions.SCREEN_WIDTH),
-    opacity: 0,
-    zIndex: 1500,
-  },
+    bottom: dimensions.UNIT * 3,
+    left: dimensions.UNIT * 5,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    alignContent: 'center',
+    height: 76
+  }
 
 })
 
-
+// TODO:: Do same as with PlayerManager, this one in components folder
 export class VideoAndControls extends React.Component {
-
-  scrollViewRef
 
   videoRef
 
@@ -72,14 +58,9 @@ export class VideoAndControls extends React.Component {
 
     this.state = {
       showControls: true,
-
-      scrollViewHeight: 0,
-      scrollViewHeightWithPlaceholder: 0,
-
       loading: true,
       paused: false,
-      resizeMode: 'contain', // 'contain', 'cover', null, 'stretch'
-
+      resizeMode: 'contain',
       currentTime: 0,
     }
   }
@@ -91,107 +72,19 @@ export class VideoAndControls extends React.Component {
     this._tvEventHandler.enable(this, (manager, evt) => {
       const { paused } = manager.state
 
-      if(evt.eventType === 'playPause' && evt.eventKeyAction === 0) {
+      if (evt.eventType === 'playPause' && evt.eventKeyAction === 0) {
         if (paused) {
           this.handlePlayVideo()
+
         } else {
           this.handlePauseVideo()
         }
       }
-      // eventKeyAction is an integer value representing button press(key down) and release(key up). "key up" is 1, "key down" is 0.
-
-      // if (eventType === 'playPause' && eventKeyAction === 0)
-      // {
-      //   console.log('play pressed')
-      // }
-
-      // if (!dirty && ['up', 'right', 'down', 'left'].includes(evt.eventType)) {
-      //   console.log('set dirty state')
-      //   manager.setState({ dirty: true })
-      // }
-      //
-      // console.log(dirty, evt)
     })
   }
 
   componentWillUnmount() {
     this._tvEventHandler?.disable()
-  }
-
-  handleOrientationChange = (orientation) => {
-    if (orientation === 'LANDSCAPE') {
-      this.setState({
-        isPortrait: false,
-      })
-
-      this.videoRef.presentFullscreenPlayer()
-
-    } else if (orientation === 'PORTRAIT') {
-      this.setState({
-        isPortrait: true,
-      })
-
-      this.videoRef.dismissFullscreenPlayer()
-    }
-  }
-
-  positionScroller = (event = null) => {
-    const { scrollViewHeight, scrollViewHeightWithPlaceholder } = this.state
-
-    if (event && (scrollViewHeight / 2) < event.nativeEvent.contentOffset.y) {
-      this.scrollViewRef.scrollTo({ y: scrollViewHeightWithPlaceholder, animated: true })
-
-      this.toggleControls(false)
-
-    } else {
-      this.toggleControlsOff()
-
-      this.scrollViewRef.scrollTo({ y: 0, animated: true })
-    }
-  }
-
-  onContentSizeChange = (contentWidth, contentHeight) => {
-    // Save the content height in state
-    this.setState({
-      scrollViewHeight: contentHeight - styles.placeholderStyle.height,
-
-      scrollViewHeightWithPlaceholder: contentHeight,
-    })
-  }
-
-  onSliderPositionChange = (position) => {
-    this.setState({
-      progress: position,
-
-    }, () => {
-      this.videoRef.seek(position)
-    })
-  }
-
-  getEpisodes = () => {
-    const { item } = this.props
-
-    let episodes = []
-
-    if (item.type === 'episode') {
-      const season = item.show.seasons.find(season => season.number === item.season)
-
-      if (season) {
-        episodes = season.episodes
-      }
-    }
-
-    return episodes
-  }
-
-  playEpisode = (episode, quality) => {
-    const { playOtherEpisode, item } = this.props
-
-    console.log('playEpisode', episode, quality)
-    // playOtherEpisode('other', 'https://download.blender.org/peach/bigbuckbunny_movies/big_buck_bunny_1080p_h264.mov', {
-    //   ...item,
-    //   ...episode,
-    // })
   }
 
   handlePauseVideo = () => {
@@ -307,62 +200,57 @@ export class VideoAndControls extends React.Component {
     return (
       <React.Fragment>
         {url && (
-          <VlcPlayer
-            ref={(ref) => {
-              this.videoRef = ref
-            }}
-            source={{
-              uri: url,
-              autoplay: true,
-            }}
-            style={styles.video}
-            paused={paused || forcePaused}
-            resizeMode={resizeMode}
-            onPlaying={this.handleOnPlaying}
-            onProgress={this.handleOnProgress}
-          />
+          <Animatable.View
+            duration={constants.ANIMATION_DURATIONS.enteringScreen}
+            style={styles.listContainer}
+            animation={'fadeIn'}
+            pointerEvents={'box-none'}
+            useNativeDriver>
+            <VlcPlayer
+              ref={(ref) => this.videoRef = ref}
+              source={{
+                uri: url,
+                autoplay: true,
+              }}
+              style={styles.video}
+              paused={paused || forcePaused}
+              resizeMode={resizeMode}
+              onPlaying={this.handleOnPlaying}
+              onProgress={this.handleOnProgress}
+            />
+          </Animatable.View>
         )}
 
         {duration && (
           <Animatable.View
-            style={[styles.listContainer]}
+            duration={
+              showControls
+                ? constants.ANIMATION_DURATIONS.enteringScreen
+                : constants.ANIMATION_DURATIONS.leavingScreen
+            }
+            style={styles.listContainer}
             animation={showControls ? 'fadeIn' : 'fadeOut'}
             pointerEvents={'box-none'}
             useNativeDriver>
 
-            <PlayPauseIcon
-              handlePlayVideo={this.handlePlayVideo}
-              handlePauseVideo={this.handlePauseVideo}
-              paused={paused}
-            />
+            <View style={styles.actionsContainer}>
+              <PlayPauseIcon
+                handlePlayVideo={this.handlePlayVideo}
+                handlePauseVideo={this.handlePauseVideo}
+                paused={paused}
+              />
 
-            <SeekBar
-              currentTime={currentTime}
-              duration={duration}
-              progress={progress}
-              onSeek={this.onSliderPositionChange}
-            />
+              <SeekBar
+                currentTime={currentTime}
+                duration={duration}
+                progress={progress}
+                onSeek={this.onSliderPositionChange}
+              />
+            </View>
 
             {children}
 
-            <ScrollView
-              ref={ref => this.scrollViewRef = ref}
-              showsHorizontalScrollIndicator={false}
-              showsVerticalScrollIndicator={false}
-              contentContainerStyle={styles.contentContainerStyle}
-              onScroll={this.toggleControls}
-              scrollEnabled={showControls}
-              onScrollEndDrag={this.positionScroller}
-              onContentSizeChange={this.onContentSizeChange}>
-
-              <Overlay variant={'dark'} />
-
-              <TouchableWithoutFeedback onPress={this.toggleControls}>
-                <View style={styles.placeholderStyle} />
-              </TouchableWithoutFeedback>
-
-
-            </ScrollView>
+            <Overlay variant={'dark'} />
 
           </Animatable.View>
         )}
