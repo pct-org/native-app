@@ -63,5 +63,8 @@
   "Loading": "Laden...",
   "Active Downloads": "Actieve Downloads",
   "No active downloads": "Er zijn geen actieve downloads",
-  "Most Watched Shows": "Meest Bekeken Series"
+  "Most Watched Shows": "Meest Bekeken Series",
+  "Added to your list": "toegevoegd aan je lijst",
+  "Removed from your list":"Verwijderd van je lijst",
+  "undo": "ongedaan maken"
 }

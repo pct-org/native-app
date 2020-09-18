@@ -63,5 +63,8 @@
   "Loading": "Loading...",
   "Active Downloads": "Active Downloads",
   "No active downloads": "No active downloads",
-  "Most Watched Shows": "Most Watched Shows"
+  "Most Watched Shows": "Most Watched Shows",
+  "Added to your list": "Added to your list",
+  "Removed from your list":"Removed from your list",
+  "undo": "undo"
 }

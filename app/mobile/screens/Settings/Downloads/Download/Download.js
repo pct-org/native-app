@@ -40,9 +40,7 @@ export const Download = ({ download, downloadManager, refreshScreen }) => {
   const removeDownload = async() => {
     await downloadManager.removeDownload({
       ...download,
-      // TODO:: Make a util and get the show title from there so format will be:
-      // Show: S01E01. Episode Title
-      title: movie?.title ?? `${episode?.show?.title}: S${episode?.season}E${episode?.number}. ${episode?.title}`
+      title: movie?.title ?? episode?.title,
     })
 
     refreshScreen()

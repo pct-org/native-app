@@ -22,6 +22,7 @@ export const TextButton = ({
   children,
   innerRef,
   onPress,
+  onLongPress,
   onFocus,
   onBlur,
   upperCase,
@@ -37,6 +38,7 @@ export const TextButton = ({
 }) => (
   <BaseButton
     onPress={onPress}
+    onLongPress={onLongPress}
     innerRef={innerRef}
     onFocus={onFocus}
     onBlur={onBlur}
@@ -60,7 +62,11 @@ export const TextButton = ({
 
 TextButton.propTypes = {
   onPress: PropTypes.func.isRequired,
-  children: PropTypes.string.isRequired,
+  onLongPress: PropTypes.func,
+  children: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.array
+  ]).isRequired,
 }
 
 TextButton.defaultProps = {

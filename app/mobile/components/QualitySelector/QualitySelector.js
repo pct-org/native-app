@@ -167,6 +167,8 @@ export default class QualitySelector extends React.Component {
 
     // If we have download or the manager has one, play the download
     if (hasDownload || downloadManagerHasIt) {
+      console.log(hasDownload, downloadManagerHasIt, item?.download)
+
       // Just to be sure, the quality selector needs to be a type stream to go
       // to the player
       if (variant === constants.TYPE_STREAM) {

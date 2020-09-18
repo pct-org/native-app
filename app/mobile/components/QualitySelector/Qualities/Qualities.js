@@ -126,7 +126,7 @@ export const Qualities = ({ variant, item, handleQualityPress }) => {
           onPress={searchForBetter}
           component={TouchableNativeFeedback}
           color={'primary'}>
-          Search for better
+          {i18n.t('search for qualities')}
         </TextButton>
       </Animatable.View>
     </React.Fragment>
