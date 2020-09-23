@@ -1,3 +1,12 @@
+## [1.9.1](https://github.com/pct-org/native-app/compare/v1.9.0...v1.9.1) (2020-09-23)
+
+
+### Bug Fixes
+
+* Fixed travis ([fe8e31e](https://github.com/pct-org/native-app/commit/fe8e31e572b2900a905a72190ed412220d088325))
+
+
+
 # [1.9.0](https://github.com/pct-org/native-app/compare/v1.8.0...v1.9.0) (2020-09-23)
 
 
@@ -112,15 +121,6 @@
 ### Bug Fixes
 
 * Fixed travis encrypted file ([1e57c89](https://github.com/pct-org/native-app/commit/1e57c89bfc1c815dd8a80f156968dbac0234fb01))
-
-
-
-## [1.3.3](https://github.com/pct-org/native-app/compare/v1.3.2...v1.3.3) (2020-05-06)
-
-
-### Bug Fixes
-
-* Retrigger travis to test ([ef16ef9](https://github.com/pct-org/native-app/commit/ef16ef9bb798d441bbb77cb2ef319890da98b6ad))
 
 
 
