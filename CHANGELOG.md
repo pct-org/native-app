@@ -1,3 +1,26 @@
+# [1.9.0](https://github.com/pct-org/native-app/compare/v1.8.0...v1.9.0) (2020-09-23)
+
+
+### Bug Fixes
+
+* Again fixes for watch on tv ([dbec821](https://github.com/pct-org/native-app/commit/dbec8216954a632faf91741ab92f515e15e96eed))
+* Fixed statusbar color not changing anymore ([5eeb359](https://github.com/pct-org/native-app/commit/5eeb3593979e558cabb76271f52cbeb1b65a2f66))
+* Fixes for watch on tv manager ([8b6ffdb](https://github.com/pct-org/native-app/commit/8b6ffdb08402a0977884f345da5798d655fcd3d9))
+* Only log that the tv disconnected is when we where connected ([6d990aa](https://github.com/pct-org/native-app/commit/6d990aa100fc3edf32d59bc5f6dccae1597c1387))
+* Small fixes ([2e0100c](https://github.com/pct-org/native-app/commit/2e0100cee033bee306b00df358045121bd596cae))
+* Small fixes for checking if download exists and watch on tv mutation ([9a354c7](https://github.com/pct-org/native-app/commit/9a354c7d8b7b1c045ac7ee18e4e35961cdde2bc0))
+* When removing from settings screen that title was not set ([fa10337](https://github.com/pct-org/native-app/commit/fa10337bbf1f2fd96161cb7701d5c38c7a7e37c2))
+
+
+### Features
+
+* Added snackbar when adding / removing to bookmarks ([8998944](https://github.com/pct-org/native-app/commit/8998944c90309fa1260a285d0e15278e3c407f42))
+* Added weekly most watched shows from Trakt slider ([099a3f6](https://github.com/pct-org/native-app/commit/099a3f6d902f74c6979424e5bf6258f4d9a0135d))
+* Also show download quality in settings ([a9d8a6a](https://github.com/pct-org/native-app/commit/a9d8a6a41ecac177618f6323ae86477b83100112))
+* Started on TV implementation (again) ([af33c74](https://github.com/pct-org/native-app/commit/af33c743b9742b210139ea51ec1a6b679796d1bb))
+
+
+
 # [1.8.0](https://github.com/pct-org/native-app/compare/v1.7.0...v1.8.0) (2020-05-31)
 
 
@@ -98,15 +121,6 @@
 ### Bug Fixes
 
 * Retrigger travis to test ([ef16ef9](https://github.com/pct-org/native-app/commit/ef16ef9bb798d441bbb77cb2ef319890da98b6ad))
-
-
-
-## [1.3.2](https://github.com/pct-org/native-app/compare/v1.3.1...v1.3.2) (2020-05-06)
-
-
-### Bug Fixes
-
-* Fixed travis regex ([570d1f4](https://github.com/pct-org/native-app/commit/570d1f4bd76c63ab511ae2597cd38aa0c7b89c25))
 
 
 
