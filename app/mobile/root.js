@@ -26,7 +26,7 @@ export default () => (
                   <Screens />
                 </Portal.host>
 
-                {/*<CheckForUpdates />*/}
+                <CheckForUpdates />
 
               </WatchOnTvManager>
             </DownloadManager>
