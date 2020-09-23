@@ -81,10 +81,6 @@ export const Item = ({ route: { params } }) => {
   const loading = itemLoading || !data
   const item = loading ? null : data.item
 
-  const handleToggleWatched = () => {
-
-  }
-
   const handleTrailer = () => {
     if (item && item.trailer) {
       Linking.openURL(item.trailer)
@@ -138,24 +134,6 @@ export const Item = ({ route: { params } }) => {
 
         <WatchedBar item={item} />
 
-        {/*  /!*{!loading && item.type === constants.TYPE_MOVIE && (*!/*/}
-        {/*  /!*  <IconButton*!/*/}
-        {/*  /!*    animatable={{*!/*/}
-        {/*  /!*      animation: 'fadeIn',*!/*/}
-        {/*  /!*      useNativeDriver: true,*!/*/}
-        {/*  /!*    }}*!/*/}
-        {/*  /!*    style={[styles.icon, { minWidth: 95 }]}*!/*/}
-        {/*  /!*    onPress={handleToggleWatched}*!/*/}
-        {/*  /!*    name={item.watched.complete*!/*/}
-        {/*  /!*      ? 'eye-off-outline'*!/*/}
-        {/*  /!*      : 'eye-outline'*!/*/}
-        {/*  /!*    }*!/*/}
-        {/*  /!*    color={colors.ICON_COLOR}*!/*/}
-        {/*  /!*    size={dimensions.ITEM_ICONS}>*!/*/}
-        {/*  /!*    {i18n.t(item.watched.complete ? 'Mark Unwatched' : 'Mark Watched')}*!/*/}
-        {/*  /!*  </IconButton>*!/*/}
-        {/*  /!*)}*!/*/}
-
         {item && (
           <Animatable.View
             duration={constants.ANIMATION_DURATIONS.enteringScreen}
@@ -175,7 +153,6 @@ export const Item = ({ route: { params } }) => {
         )}
 
       </ScrollViewWithStatusBar>
-
     </Container>
   )
 }

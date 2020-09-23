@@ -18,17 +18,26 @@ export const styles = StyleSheet.create({
   },
 
   text: {
-    marginTop: -(dimensions.UNIT / 2)
-  }
+    marginTop: -(dimensions.UNIT / 2),
+  },
 })
 
-export const IconButton = ({ onPress, onLongPress, onFocus, onBlur, animatable, animatableStyle, buttonProps, children, ...rest }) => (
+export const IconButton = ({
+  onPress,
+  onLongPress,
+  onFocus,
+  onBlur,
+  animatable,
+  animatableStyle,
+  buttonProps,
+  children,
+  ...rest
+}) => (
   <BaseButton
     onPress={onPress}
     onLongPress={onLongPress}
     onFocus={onFocus}
     onBlur={onBlur}
-
     {...buttonProps}>
     <Animatable.View
       {...animatable}
@@ -51,11 +60,14 @@ export const IconButton = ({ onPress, onLongPress, onFocus, onBlur, animatable, 
 
 IconButton.propTypes = {
   onPress: PropTypes.func,
+  onPressIn: PropTypes.func,
+  onPressOut: PropTypes.func,
   onLongPress: PropTypes.func,
   onFocus: PropTypes.func,
   onBlur: PropTypes.func,
   children: PropTypes.string,
   buttonProps: PropTypes.object,
+  animatableStyle: PropTypes.object,
   animatable: PropTypes.object,
   size: PropTypes.number,
 }
@@ -64,11 +76,14 @@ IconButton.defaultProps = {
   buttonProps: {},
   animatable: {},
   onPress: null,
+  onPressIn: null,
+  onPressOut: null,
+  onLongPress: null,
   children: null,
   animatableStyle: {},
   onFocus: null,
   onBlur: null,
-  size: dimensions.ICON_SIZE_DEFAULT
+  size: dimensions.ICON_SIZE_DEFAULT,
 }
 
 export default IconButton

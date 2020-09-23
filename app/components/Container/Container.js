@@ -72,8 +72,8 @@ export const Container = ({ children, elevation, style }) => (
 )
 
 Container.propTypes = {
-  children: PropTypes.node.isRequired,
-  elevation: PropTypes.number.isRequired,
+  children: PropTypes.node,
+  elevation: PropTypes.number,
   style: PropTypes.oneOfType([
     PropTypes.object,
     PropTypes.array
@@ -81,7 +81,9 @@ Container.propTypes = {
 }
 
 Container.defaultProps = {
+  children: null,
   elevation: 0,
+  component: View,
   style: null,
 }
 

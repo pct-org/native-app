@@ -5,6 +5,7 @@ import { StyleSheet, View } from 'react-native'
 import dimensions from 'modules/dimensions'
 import constants from 'modules/constants'
 import colors from 'modules/colors'
+import i18n from 'modules/i18n'
 
 import Typography from 'components/Typography'
 import Overlay from 'components/Overlay'
@@ -13,6 +14,7 @@ import Image from 'components/Image'
 import Container from 'components/Container'
 
 import QualitySelector from 'mobile/components/QualitySelector'
+import ItemSettings from 'mobile/components/ItemSettings'
 
 export const styles = StyleSheet.create({
 
@@ -76,7 +78,7 @@ export const styles = StyleSheet.create({
 
 export const Episode = (props) => {
   const [showQualitySelector, toggleSelecting] = useState(false)
-  const { title, synopsis, number, hasAired, images, firstAired, watched } = props
+  const { title, synopsis, number, hasAired, images, firstAired, watched, download } = props
 
   const getAirsDate = () => {
     const airs = new Date()
@@ -142,12 +144,21 @@ export const Episode = (props) => {
             emphasis={'low'}>
             {getAirsDate()}
           </Typography>
+
+          {download.downloadQuality && (
+            <Typography
+              variant={'captionSmall'}
+              color={'primary'}
+              emphasis={'low'}>
+              {i18n.t('Downloaded in {{quality}}', { quality: download.downloadQuality })}
+            </Typography>
+          )}
         </View>
 
         {hasAired && (
-          <QualitySelector
+          <ItemSettings
             item={props}
-            variant={constants.TYPE_DOWNLOAD}
+            // variant={constants.TYPE_DOWNLOAD}
             style={styles.downloadIcon}
           />
         )}
@@ -169,13 +180,19 @@ Episode.propTypes = {
   number: PropTypes.number,
   synopsis: PropTypes.string,
   hasAired: PropTypes.bool,
+  firstAired: PropTypes.number,
+  watched: PropTypes.object,
+  download: PropTypes.object,
 }
 
 Episode.defaultProps = {
+  title: null,
+  number: null,
+  firstAired: null,
+  watched: null,
+  download: null,
   synopsis: null,
-  hasTorrents: false,
   hasAired: false,
-
   images: {
     poster: {
       thumb: null,

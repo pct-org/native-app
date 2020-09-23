@@ -6,7 +6,8 @@ enableScreens()
 
 LogBox.ignoreLogs([
   'Debugger and device times',
-  'Cache data may be lost when replacing'
+  'Cache data may be lost when replacing',
+  'VirtualizedLists should never be nested inside plain ScrollView'
 ])
 
 import App from './app/index'

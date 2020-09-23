@@ -51,6 +51,7 @@ Overlay.propTypes = {
     'dark',
   ]),
   withAnimation: PropTypes.bool,
+  style: PropTypes.object,
 }
 
 Overlay.defaultProps = {

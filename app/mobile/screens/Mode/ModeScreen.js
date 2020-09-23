@@ -8,7 +8,7 @@ import { getDefaultHeaderHeight } from 'react-navigation-collapsible/lib/src/uti
 import i18n from 'modules/i18n'
 import colors from 'modules/colors'
 import dimensions from 'modules/dimensions'
-import useBackButton from 'modules/useBackButton'
+import useBackButton from 'modules/hooks/useBackButton'
 import { MoviesModeQuery } from 'modules/GraphQL/MoviesQuery'
 import ShowsQuery from 'modules/GraphQL/ShowsQuery'
 import BookmarksQuery from 'modules/GraphQL/BookmarksQuery'

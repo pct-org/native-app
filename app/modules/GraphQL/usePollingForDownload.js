@@ -1,6 +1,16 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 
 import constants from 'modules/constants'
+
+/**
+ * States that are valid to pull
+ * @type {(string)[]}
+ */
+const validPollStates = [
+  constants.STATUS_QUEUED,
+  constants.STATUS_CONNECTING,
+  constants.STATUS_DOWNLOADING,
+]
 
 /**
  * Starts polling for a certain download
@@ -10,20 +20,19 @@ import constants from 'modules/constants'
  * @returns {unknown}
  */
 export const usePollingForDownload = (download, downloadManager) => {
-  const [data, setPollingData] = useState(null)
+  const [data, setPollingData] = React.useState(null)
 
-  useEffect(() => {
-      if (download && [constants.STATUS_QUEUED, constants.STATUS_DOWNLOADING].includes(download.status)) {
-        downloadManager.pollDownload(download, setPollingData)
-      }
+  React.useEffect(() => {
+    if (download && validPollStates.includes(download.status)) {
+      downloadManager.pollDownload(download, setPollingData)
+    }
 
-      return () => {
-        if (download) {
-          downloadManager.stopPollDownload(download)
-        }
+    return () => {
+      if (download) {
+        downloadManager.stopPollDownload(download)
       }
-    }, [download],
-  )
+    }
+  }, [download])
 
   return data
 }
