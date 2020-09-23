@@ -22,6 +22,7 @@ export const styles = StyleSheet.create({
 
 })
 
+// TODO:: Rename to options
 export const ItemSettings = ({ item, style }) => {
   const bottomSheet = React.useRef()
 
