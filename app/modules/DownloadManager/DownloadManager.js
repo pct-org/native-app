@@ -16,7 +16,7 @@ export class DownloadManager extends React.Component {
     downloads: [],
   }
 
-  handleStartDownload = async(item, quality) => {
+  handleStartDownload = async(item, torrent) => {
     let download = this.handleGetDownload(item._id)
 
     if (!download) {
@@ -26,7 +26,8 @@ export class DownloadManager extends React.Component {
         variables: {
           _id: item._id,
           itemType: item.type,
-          quality,
+          torrentType: torrent.type || undefined,
+          quality: torrent.quality,
         },
         mutation: StartDownloadMutation,
       })
@@ -127,10 +128,9 @@ export class DownloadManager extends React.Component {
       variables: {
         _id: download._id,
       },
+    }).subscribe(({ data }) => {
+      callback(data?.download ?? null)
     })
-      .subscribe(({ data }) => {
-        callback(data?.download ?? null)
-      })
   }
 
   /**

@@ -2,9 +2,13 @@ import React, { Component } from 'react'
 import { Text } from 'react-native'
 import PropTypes from 'prop-types'
 
+import useCorrect from 'modules/useCorrect'
 import capitalizeFirstLetter from 'modules/utils/capitalizeFirstLetter'
 
-import styles from './Typography.styles'
+import stylesMobile from './Typography.styles'
+import stylesTV from './Typography.styles.tv'
+
+const styles = useCorrect(stylesMobile, null, stylesTV)
 
 export default class Typography extends Component {
 

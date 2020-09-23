@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import { StyleSheet, View } from 'react-native'
 
 import dimensions from 'modules/dimensions'
+import useCorrect from 'modules/useCorrect'
 
 import BaseButton from '../BaseButton'
 import Overlay from '../Overlay'
@@ -14,7 +15,7 @@ export const styles = StyleSheet.create({
   root: {
     borderRadius: dimensions.BORDER_RADIUS,
     overflow: 'hidden',
-    margin: dimensions.UNIT,
+    margin: useCorrect(dimensions.UNIT, null, dimensions.UNIT / 2),
     height: dimensions.CARD_HEIGHT,
     width: dimensions.CARD_WIDTH,
   },
@@ -51,36 +52,47 @@ export const Card = ({
   overlayWithAnimation,
   overlayAllowed,
   children,
+  posterSize,
+  pressable,
   ...rest
-}) => (
-  <Container
-    elevation={elevation}
-    style={[
-      styles.root,
-      variant === 'small' && styles.small,
-      style,
-    ]}>
-    <BaseButton
-      {...rest}>
-      <View>
-        <Image
-          type={'poster'}
-          size={'thumb'}
-          images={
-            empty
-              ? {}
-              : item.images
-          } />
+}) => {
+  const ButtonComponent = pressable
+    ? BaseButton
+    : React.Fragment
 
-        {(item?.watched?.complete || forceOverlay) && overlayAllowed && (
-          <Overlay
-            withAnimation={overlayWithAnimation}
-            variant={overlayVariant} />
-        )}
-      </View>
-    </BaseButton>
-  </Container>
-)
+  const buttonProps = pressable
+    ? rest
+    : {}
+
+  return (
+    <Container
+      elevation={elevation}
+      style={[
+        styles.root,
+        variant === 'small' && styles.small,
+        style,
+      ]}>
+      <ButtonComponent {...buttonProps}>
+        <View>
+          <Image
+            type={'poster'}
+            size={posterSize}
+            images={
+              empty
+                ? {}
+                : item.images
+            } />
+
+          {(item?.watched?.complete || forceOverlay) && overlayAllowed && (
+            <Overlay
+              withAnimation={overlayWithAnimation}
+              variant={overlayVariant} />
+          )}
+        </View>
+      </ButtonComponent>
+    </Container>
+  )
+}
 
 Card.propTypes = {
   item: PropTypes.object,
@@ -90,6 +102,8 @@ Card.propTypes = {
   variant: PropTypes.oneOf(['default', 'small', 'big']),
   hide: PropTypes.bool,
   overlayVariant: PropTypes.string,
+  posterSize: PropTypes.oneOf(['thumb', 'medium']),
+  pressable: PropTypes.bool,
 }
 
 Card.defaultProps = {
@@ -104,6 +118,8 @@ Card.defaultProps = {
   overlayVariant: 'dark',
   overlayWithAnimation: false,
   hide: false,
+  posterSize: 'thumb',
+  pressable: true
 }
 
 export default Card

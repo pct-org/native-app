@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { StyleSheet } from 'react-native'
-import { useQuery } from '@apollo/react-hooks'
+import { useQuery } from '@apollo/client'
 import Orientation from 'react-native-orientation'
 import SplashScreen from 'react-native-splash-screen'
 import { CastButton } from 'react-native-google-cast'
@@ -13,11 +13,11 @@ import MoviesQuery from 'modules/GraphQL/MoviesQuery'
 
 import CardSlider from 'components/CardSlider'
 import ScrollViewWithStatusBar from 'components/ScrollViewWithStatusBar'
-
 import Container from 'components/Container'
 import MainCover from 'mobile/components/MainCover'
 
 import ShowsSlider from './ShowsSlider'
+import MostWatchedShowsSlider from './MostWatchedShowsSlider'
 import BookmarksSlider from './BookmarksSlider'
 import MyEpisodesSlider from './MyEpisodesSlider'
 import SettingsIcon from './SettingsIcon'
@@ -117,6 +117,10 @@ export const Home = ({ navigation }) => {
 
         <ShowsSlider
           handleGoTo={handleGoTo}
+          onPress={handleItemOpen}
+        />
+
+        <MostWatchedShowsSlider
           onPress={handleItemOpen}
         />
 

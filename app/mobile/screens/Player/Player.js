@@ -5,18 +5,18 @@ import colors from 'modules/colors'
 import i18n from 'modules/i18n'
 import dimensions from 'modules/dimensions'
 import constants from 'modules/constants'
+import MobilePlayerManager from 'mobile/modules/MobilePlayerManager'
 
 import Typography from 'components/Typography'
-import ItemInfo from 'mobile/components/ItemInfo'
+import ItemInfo from 'components/ItemInfo'
 
 import VideoAndControls from './VideoAndControls'
 import DownloadInfo from './DownloadInfo'
-import PlayerManager from './PlayerManager'
 
-export const Player = ({ route: { params: { item, playQuality } } }) => (
-  <PlayerManager
+export const Player = ({ route: { params: { item, torrent } } }) => (
+  <MobilePlayerManager
     item={item}
-    playQuality={playQuality}
+    torrent={torrent}
     style={styles.root}>
     {({ casting, renderCastButton, mediaUrl, setProgress, startPosition, isBuffering, download }) => (
       <React.Fragment>
@@ -107,7 +107,7 @@ export const Player = ({ route: { params: { item, playQuality } } }) => (
         )}
       </React.Fragment>
     )}
-  </PlayerManager>
+  </MobilePlayerManager>
 )
 
 const styles = StyleSheet.create({

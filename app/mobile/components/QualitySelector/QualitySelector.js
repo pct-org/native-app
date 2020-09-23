@@ -7,6 +7,7 @@ import { navigate } from 'modules/RootNavigation'
 import dimensions from 'modules/dimensions'
 import constants from 'modules/constants'
 import withDownloadManager from 'modules/DownloadManager/withDownloadManager'
+import withWatchOnTvManager from 'modules/WatchOnTvManager/withWatchOnTvManager'
 
 import Card from 'components/Card'
 import Typography from 'components/Typography'
@@ -44,6 +45,7 @@ const styles = StyleSheet.create({
 
 })
 
+@withWatchOnTvManager
 @withDownloadManager
 export default class QualitySelector extends React.Component {
 
@@ -112,22 +114,27 @@ export default class QualitySelector extends React.Component {
    * @param torrent
    */
   handlePlayTorrent = (torrent) => {
-    const { playItem, item } = this.props
+    const { playItem, item, watchOnTvManager } = this.props
 
     if (playItem) {
-      playItem(item, torrent.quality)
+      playItem(item, torrent)
 
     } else {
       // Make sure whe are closed
       this.handleRequestClose()
 
-      navigate(
-        'Player',
-        {
-          playQuality: torrent.quality,
-          item,
-        },
-      )
+      if (watchOnTvManager.connected) {
+        watchOnTvManager.playOnTv(item, torrent)
+
+      } else {
+        navigate(
+          'Player',
+          {
+            torrent,
+            item,
+          },
+        )
+      }
     }
   }
 
@@ -144,16 +151,32 @@ export default class QualitySelector extends React.Component {
   }
 
   handleOnIconPress = () => {
-    const { downloadManager, item } = this.props
+    const { downloadManager, item, variant } = this.props
 
     // Check if download status is not null or failed
     const hasDownload = ![null, 'failed'].includes(item.download.downloadStatus)
+    let downloadInManager = downloadManager.getDownload(item._id)
+    let downloadManagerHasIt = !!downloadInManager
+
+    if (!downloadManagerHasIt || downloadInManager.status === 'failed') {
+      downloadManagerHasIt = false
+      downloadInManager = {
+        torrentType: null,
+      }
+    }
 
     // If we have download or the manager has one, play the download
-    if (hasDownload || downloadManager.downloadExists(item._id)) {
-      this.handlePlayTorrent({
-        quality: 'download',
-      })
+    if (hasDownload || downloadManagerHasIt) {
+      console.log(hasDownload, downloadManagerHasIt, item?.download)
+
+      // Just to be sure, the quality selector needs to be a type stream to go
+      // to the player
+      if (variant === constants.TYPE_STREAM) {
+        this.handlePlayTorrent({
+          quality: 'download',
+          type: downloadInManager.torrentType,
+        })
+      }
 
     } else {
       this.setState({
@@ -166,12 +189,13 @@ export default class QualitySelector extends React.Component {
    * Starts the download
    *
    * @param quality
+   * @param type - Type of torrent, default or searched
    * @return {Promise<void>}
    */
-  handleStartDownload = async(quality) => {
+  handleStartDownload = async(quality, type) => {
     const { item, downloadManager } = this.props
 
-    const download = await downloadManager.startDownload(item, quality)
+    const download = await downloadManager.startDownload(item, quality, type)
 
     this.setState({
       download,
@@ -209,7 +233,7 @@ export default class QualitySelector extends React.Component {
           style={style}
           download={download}
           handleOnPress={this.handleOnIconPress}
-          handleStartDownload={this.handleStartDownload}
+          // handleStartDownload={this.handleStartDownload}
           handleRemoveDownload={this.handleRemoveDownload}
           downloadManager={downloadManager}
         />
@@ -223,7 +247,7 @@ export default class QualitySelector extends React.Component {
               <Animatable.View
                 style={styles.itemContainer}
                 animation={'fadeIn'}
-                duration={200}
+                duration={constants.ANIMATION_DURATIONS.enteringScreen}
                 useNativeDriver>
                 <Card
                   item={
@@ -255,7 +279,7 @@ export default class QualitySelector extends React.Component {
                   this.handlePlayTorrent(torrent)
 
                 } else {
-                  this.handleStartDownload(torrent.quality)
+                  this.handleStartDownload(torrent)
                 }
               }}
             />

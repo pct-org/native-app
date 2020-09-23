@@ -50,10 +50,9 @@ export default class ScrollViewWithStatusBar extends React.PureComponent {
     const { children, style } = this.props
 
     return (
-      <SafeAreaView
-        style={style}>
+      <SafeAreaView style={style}>
+
         <StatusBar
-          backgroundColor={colors.STATUS_BAR_GONE}
           translucent
           animated
         />

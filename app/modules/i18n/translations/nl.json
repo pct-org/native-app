@@ -58,5 +58,13 @@
   "Uptime: {{uptime}}": "Uptime: {{uptime}}",
   "Last updated: {{update}}": "Laatste update: {{update}}",
   "Next update: {{update}}": "Volgende update: {{update}}",
-  "Watched: {{percentage}}%": "Gezien: {{percentage}}%"
+  "Watched: {{percentage}}%": "Gezien: {{percentage}}%",
+  "Searched qualities": "Gevonden",
+  "Loading": "Laden...",
+  "Active Downloads": "Actieve Downloads",
+  "No active downloads": "Er zijn geen actieve downloads",
+  "Most Watched Shows": "Meest Bekeken Series",
+  "Added to your list": "toegevoegd aan je lijst",
+  "Removed from your list":"Verwijderd van je lijst",
+  "undo": "ongedaan maken"
 }

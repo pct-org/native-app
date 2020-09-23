@@ -1,5 +1,5 @@
 import React from 'react'
-import { useQuery } from '@apollo/react-hooks'
+import { useQuery } from '@apollo/client'
 
 import i18n from 'modules/i18n'
 import MyEpisodesQuery from 'modules/GraphQL/MyEpisodesQuery'

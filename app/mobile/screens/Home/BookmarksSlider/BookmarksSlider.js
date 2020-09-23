@@ -1,17 +1,15 @@
-import dimensions from 'modules/dimensions'
 import React, { useEffect } from 'react'
 import PropTypes from 'prop-types'
-import { useQuery } from '@apollo/react-hooks'
+import { useQuery } from '@apollo/client'
 
 import i18n from 'modules/i18n'
-import fetchMoreUpdateQuery from 'modules/GraphQL/helpers/fetchMoreUpdateQuery'
 
 import CardSlider from 'components/CardSlider'
 
 import BookmarksSliderQuery, { BookmarkedSubscription } from './BookmarksSliderQuery'
 
 export const BookmarksSlider = ({ handleGoTo, onPress }) => {
-  const { loading, data, fetchMore, subscribeToMore } = useQuery(
+  const { loading, data, subscribeToMore } = useQuery(
     BookmarksSliderQuery,
     {
       variables: {

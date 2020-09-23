@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { InteractionManager, RefreshControl, ScrollView } from 'react-native'
-import { useLazyQuery } from '@apollo/react-hooks'
+import { useLazyQuery } from '@apollo/client'
 
 import colors from 'modules/colors'
 
@@ -62,6 +62,7 @@ export const Settings = () => {
         <Downloads
           data={downloadsData}
           executeQuery={executeActiveDownloadsQuery}
+          loading={downloadsLoading}
         />
 
       </ScrollView>

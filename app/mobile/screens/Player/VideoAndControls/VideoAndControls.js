@@ -299,7 +299,6 @@ export class VideoAndControls extends React.Component {
             source={{
               uri: url,
               autoplay: true,
-              initOptions: ['--codec=avcodec'],
             }}
             style={styles.video}
             paused={paused || forcePaused}

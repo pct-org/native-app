@@ -10,9 +10,20 @@ export const DownloadedShows = gql`
       images {
         poster {
           thumb
+          full
+        }
+        backdrop {
+          full
         }
       }
       seasons {
+        _id
+        images {
+          poster {
+            thumb
+            full
+          }
+        }
         episodes {
           _id
           title
@@ -50,6 +61,24 @@ export const DownloadedShows = gql`
     }
   }
 `
+
+export const MostWatchedShowsQuery= gql`
+  query shows {
+    shows: mostWatchedShows {
+      _id
+      title
+      type
+      bookmarked
+      images {
+        poster {
+          thumb
+          medium
+        }
+      }
+    }
+  }
+`
+
 
 export default gql`
   query shows($offset: Float!, $query: String) {

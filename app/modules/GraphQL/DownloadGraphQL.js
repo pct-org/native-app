@@ -6,6 +6,7 @@ export const DownloadQuery = gql`
       _id
       type
       itemType
+      torrentType
       status
       quality
       progress
@@ -22,11 +23,12 @@ export const DownloadQuery = gql`
 `
 
 export const StartStreamMutation = gql`
-  mutation StartStream($_id: String!, $itemType: String!, $quality: String!) {
-    download: startStream(_id: $_id, itemType: $itemType, quality: $quality) {
+  mutation StartStream($_id: String!, $itemType: String!, $quality: String!, $torrentType: String) {
+    download: startStream(_id: $_id, itemType: $itemType, quality: $quality, torrentType: $torrentType) {
       _id
       type
       itemType
+      torrentType
       status
       quality
       progress
@@ -44,6 +46,7 @@ export const StopStreamMutation = gql`
       _id
       type
       itemType
+      torrentType
       status
       quality
       progress
@@ -56,11 +59,12 @@ export const StopStreamMutation = gql`
 `
 
 export const StartDownloadMutation = gql`
-  mutation startDownload($_id: String!, $itemType: String!, $quality: String!) {
-    download: startDownload(_id: $_id, itemType: $itemType, quality: $quality) {
+  mutation startDownload($_id: String!, $itemType: String!, $quality: String!, $torrentType: String) {
+    download: startDownload(_id: $_id, itemType: $itemType, quality: $quality, torrentType: $torrentType) {
       _id
       type
       itemType
+      torrentType
       status
       quality
       progress
@@ -78,6 +82,7 @@ export const RemoveDownloadMutation = gql`
       _id
       type
       itemType
+      torrentType
       status
       quality
       progress

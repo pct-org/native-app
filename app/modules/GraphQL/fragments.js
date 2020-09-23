@@ -15,7 +15,13 @@ export const movieFragment = gql`
     }
     torrents {
       quality
-      url
+      sizeString
+      type
+    }
+    searchedTorrents {
+      quality
+      sizeString
+      type
     }
     images {
       backdrop {
@@ -65,6 +71,13 @@ export const showFragment = gql`
         }
         torrents {
           quality
+          sizeString
+          type
+        }
+        searchedTorrents {
+          quality
+          sizeString
+          type
         }
       }
     }

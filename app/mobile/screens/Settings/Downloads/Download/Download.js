@@ -34,11 +34,14 @@ export const styles = {
 
 export const Download = ({ download, downloadManager, refreshScreen }) => {
   const data = usePollingForDownload(download, downloadManager)
-  const { status, progress, speed, timeRemaining, numPeers } = data || download
+  const { status, progress, speed, timeRemaining, numPeers, quality } = data || download
   const { movie, episode } = download
 
   const removeDownload = async() => {
-    await downloadManager.removeDownload(download)
+    await downloadManager.removeDownload({
+      ...download,
+      title: movie?.title ?? episode?.title,
+    })
 
     refreshScreen()
   }
@@ -62,7 +65,7 @@ export const Download = ({ download, downloadManager, refreshScreen }) => {
           </Typography>
 
           <Typography variant={'caption'}>
-            {status}
+            {quality} - {status}
           </Typography>
 
           {status === constants.STATUS_DOWNLOADING && (

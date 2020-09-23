@@ -22,18 +22,33 @@ export const TextButton = ({
   children,
   innerRef,
   onPress,
+  onLongPress,
   onFocus,
   onBlur,
   upperCase,
   component,
+  hasTVPreferredFocus,
+  nextFocusUp,
+  nextFocusDown,
+  nextFocusForward,
+  nextFocusLeft,
+  nextFocusRight,
+  nativeID,
   ...rest
 }) => (
   <BaseButton
     onPress={onPress}
+    onLongPress={onLongPress}
     innerRef={innerRef}
     onFocus={onFocus}
     onBlur={onBlur}
     component={component}
+    hasTVPreferredFocus={hasTVPreferredFocus}
+    nextFocusUp={nextFocusUp}
+    nextFocusDown={nextFocusDown}
+    nextFocusForward={nextFocusForward}
+    nextFocusLeft={nextFocusLeft}
+    nextFocusRight={nextFocusRight}
     rippleBorderless={false}>
     <Text style={[
       styles.root,
@@ -47,7 +62,11 @@ export const TextButton = ({
 
 TextButton.propTypes = {
   onPress: PropTypes.func.isRequired,
-  children: PropTypes.string.isRequired,
+  onLongPress: PropTypes.func,
+  children: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.array
+  ]).isRequired,
 }
 
 TextButton.defaultProps = {

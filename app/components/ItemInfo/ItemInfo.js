@@ -1,13 +1,19 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { View } from 'react-native'
 
 import i18n from 'modules/i18n'
 import dimensions from 'modules/dimensions'
 import constants from 'modules/constants'
+import useCorrect from 'modules/useCorrect'
 
 import Typography from 'components/Typography'
 import Card from 'components/Card'
-import QualitySelector from 'mobile/components/QualitySelector'
+
+const infoContainerWidth = useCorrect(
+  dimensions.SCREEN_WIDTH - dimensions.CARD_WIDTH - (dimensions.UNIT * 5),
+  null,
+  dimensions.CARD_WIDTH * 3
+)
 
 export const styles = {
   root: {
@@ -18,11 +24,12 @@ export const styles = {
   container: {
     marginTop: dimensions.UNIT,
     marginLeft: dimensions.UNIT,
-    width: dimensions.SCREEN_WIDTH - dimensions.CARD_WIDTH - (dimensions.UNIT * 5),
+    width: infoContainerWidth,
   },
 
   synopsis: {
     marginTop: dimensions.UNIT / 2,
+    maxWidth: infoContainerWidth,
   },
 
   playIconContainer: {
@@ -41,6 +48,7 @@ export const styles = {
 export const ItemInfo = ({ item, quality, status, style, truncateSynopsis, empty, pointerEvents }) => (
   <View style={[styles.root, style]} pointerEvents={pointerEvents}>
     <Card
+      pressable={false}
       overlayAllowed={false}
       elevation={0}
       empty={empty}
@@ -61,13 +69,13 @@ export const ItemInfo = ({ item, quality, status, style, truncateSynopsis, empty
           ellipsizeMode: 'tail',
         }}>
         {
-          item?.type === 'episode'
+          item?.type === constants.TYPE_EPISODE
             ? item?.show?.title
             : item?.title
         }
       </Typography>
 
-      {item?.type === 'episode' && (
+      {item?.type === constants.TYPE_EPISODE && (
         <Typography
           emphasis={'high'}
           color={'white'}

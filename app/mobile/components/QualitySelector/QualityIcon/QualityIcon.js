@@ -1,13 +1,11 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
 import { StyleSheet } from 'react-native'
 import LottieView from 'lottie-react-native'
-import { useLazyQuery } from '@apollo/react-hooks'
 import * as Animatable from 'react-native-animatable'
 
 import dimensions from 'modules/dimensions'
 import constants from 'modules/constants'
-import { DownloadQuery } from 'modules/GraphQL/DownloadGraphQL'
 import usePollingForDownload from 'modules/GraphQL/usePollingForDownload'
 
 import BaseButton from 'components/BaseButton'
@@ -32,7 +30,6 @@ export const styles = StyleSheet.create({
 export const QualityIcon = ({
   handleOnPress,
   handleRemoveDownload,
-  item,
   download: downloadProp,
   downloadManager,
   variant,
@@ -43,7 +40,7 @@ export const QualityIcon = ({
     variant !== constants.TYPE_STREAM
       ? downloadProp
       : null,
-    downloadManager
+    downloadManager,
   )
 
   const download = downloadProp && !data
@@ -78,9 +75,9 @@ export const QualityIcon = ({
             } else {
               handleRemoveDownload()
             }
-          }}
-        >
+          }}>
           <Animatable.View
+            duration={constants.ANIMATION_DURATIONS.enteringScreen}
             style={[
               style,
               styles.lottieContainer,
@@ -103,7 +100,7 @@ export const QualityIcon = ({
                constants.STATUS_CONNECTING,
                constants.STATUS_COMPLETE,
                constants.STATUS_FAILED,
-             ].indexOf(download.status) > -1 && (
+             ].includes(download.status) && (
                <Icon
                  size={dimensions.ICON_SIZE_DEFAULT}
                  name={download.status === constants.STATUS_COMPLETE
@@ -121,9 +118,7 @@ export const QualityIcon = ({
                 style={styles.downloadStatus}
                 emphasis={'medium'}
                 variant={'captionSmall'}>
-                {
-                  getStatusText()
-                }
+                {getStatusText()}
               </Typography>
             )}
           </Animatable.View>
@@ -134,6 +129,11 @@ export const QualityIcon = ({
     if (variant !== 'downloads') {
       return (
         <IconButton
+          animatable={{
+            animation: 'fadeIn',
+            useNativeDriver: true,
+            duration: constants.ANIMATION_DURATIONS.enteringScreen,
+          }}
           size={dimensions.ICON_SIZE_DEFAULT}
           onPress={handleOnPress}
           style={style}
@@ -146,6 +146,11 @@ export const QualityIcon = ({
 
   return (
     <IconButton
+      animatable={{
+        animation: 'fadeIn',
+        useNativeDriver: true,
+        duration: constants.ANIMATION_DURATIONS.enteringScreen,
+      }}
       onPress={handleOnPress}
       style={style}
       name={'play-circle-outline'}

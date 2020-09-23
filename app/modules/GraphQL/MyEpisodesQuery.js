@@ -13,6 +13,9 @@ export default gql`
       show {
         title
         images {
+          backdrop {
+            full
+          }
           poster {
             thumb
             high
@@ -32,11 +35,18 @@ export default gql`
       images {
         poster {
           thumb
+          full
         }
       }
       torrents {
         quality
         sizeString
+        type
+      }
+      searchedTorrents {
+        quality
+        sizeString
+        type
       }
     }
   }

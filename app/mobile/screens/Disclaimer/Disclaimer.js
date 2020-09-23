@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { StyleSheet, BackHandler, View, ScrollView, StatusBar } from 'react-native'
+import { StyleSheet, BackHandler, View, ScrollView, StatusBar, TouchableNativeFeedback } from 'react-native'
 import * as Animatable from 'react-native-animatable'
 import Markdown from 'react-native-markdown-renderer'
 import SplashScreen from 'react-native-splash-screen'
@@ -191,6 +191,7 @@ By using Popcorn Time or accessing this site you affirm that you are either more
             <View style={styles.actions}>
               <Button
                 style={styles.action}
+                component={TouchableNativeFeedback}
                 onPress={this.handleLeave}>
                 {i18n.t('Leave')}
               </Button>
@@ -198,6 +199,7 @@ By using Popcorn Time or accessing this site you affirm that you are either more
               <Button
                 style={styles.action}
                 variant={'primary'}
+                component={TouchableNativeFeedback}
                 onPress={this.handleAccept}>
                 {i18n.t('I Accept')}
               </Button>

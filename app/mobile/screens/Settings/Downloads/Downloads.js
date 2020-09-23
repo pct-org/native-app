@@ -4,6 +4,7 @@ import { View } from 'react-native'
 
 import withDownloadManager from 'modules/DownloadManager/withDownloadManager'
 import dimensions from 'modules/dimensions'
+import i18n from 'modules/i18n'
 
 import Container from 'components/Container'
 import Typography from 'components/Typography'
@@ -36,12 +37,14 @@ export const styles = {
 
 }
 
-export const Downloads = ({ executeQuery, data, downloadManager }) => (
+export const Downloads = ({ executeQuery, data, downloadManager, loading }) => (
   <Container style={styles.root}>
 
     <Typography
       style={styles.title}
-      variant={'headline6'}>Active Downloads</Typography>
+      variant={'headline6'}>
+      {i18n.t('Active Downloads')}
+    </Typography>
 
     {(!data?.activeDownloads || data?.activeDownloads?.length === 0) && (
       <Container
@@ -49,7 +52,17 @@ export const Downloads = ({ executeQuery, data, downloadManager }) => (
         elevation={2}>
 
         <View>
-          <Typography variant={'subtitle2'}>No active downloads</Typography>
+          {loading && (
+            <Typography variant={'subtitle2'}>
+              {i18n.t('Loading')}
+            </Typography>
+          )}
+
+          {!loading && (
+            <Typography variant={'subtitle2'}>
+              {i18n.t('No active downloads')}
+            </Typography>
+          )}
         </View>
       </Container>
     )}

@@ -1,27 +1,16 @@
 import AsyncStorage from '@react-native-community/async-storage'
 import FSStorage from 'redux-persist-fs-storage'
-import { InMemoryCache, IntrospectionFragmentMatcher } from 'apollo-cache-inmemory'
+import { ApolloClient, split, HttpLink, InMemoryCache, defaultDataIdFromObject } from '@apollo/client'
 import { CachePersistor } from 'apollo-cache-persist'
-import { ApolloClient } from 'apollo-client'
-import { split } from 'apollo-link'
-import { HttpLink } from 'apollo-link-http'
-import { WebSocketLink } from 'apollo-link-ws'
-import { getMainDefinition } from 'apollo-utilities'
+import { WebSocketLink } from '@apollo/client/link/ws'
+import { getMainDefinition } from '@apollo/client/utilities'
 
-import introspectionQueryResultData from './fragmentTypes.json'
-
-const SCHEMA_VERSION = '3' // Must be a string.
+const SCHEMA_VERSION = '5' // Must be a string.
 const SCHEMA_VERSION_KEY = 'apollo-schema-version'
 
 export default async(host) => {
-  const fragmentMatcher = new IntrospectionFragmentMatcher({
-    introspectionQueryResultData,
-  })
-
   const cache = new InMemoryCache({
-    fragmentMatcher,
-
-    dataIdFromObject: object => {
+    dataIdFromObject: (object) => {
       if (object._id) {
         // We need something else for download otherwise it overwrites the movie
         if (object.__typename === 'Download') {
@@ -31,7 +20,7 @@ export default async(host) => {
         return object._id
       }
 
-      return null
+      return defaultDataIdFromObject(object)
     },
 
     cacheRedirects: {
