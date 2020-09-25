@@ -1,8 +1,8 @@
 import React from 'react'
 import { ToastAndroid } from 'react-native'
 
+import i18n from 'modules/i18n'
 import constants from 'modules/constants'
-import i18n from 'modules/i18n/i18n'
 import withApollo from 'modules/GraphQL/withApollo'
 import {
   DownloadsQuery,
@@ -33,7 +33,6 @@ export class DownloadManager extends React.Component {
         limit: 100,
       },
     }).then(({ data }) => {
-      console.log('downloads', data)
       this.setState({
         downloads: data.downloads,
       })
@@ -116,6 +115,19 @@ export class DownloadManager extends React.Component {
     return downloads.find(down => down._id === _id)
   }
 
+  handleGetActiveDownload = () => {
+    const { downloads } = this.state
+
+    return downloads.filter(down => (
+      [
+        constants.STATUS_QUEUED,
+        constants.STATUS_CONNECTING,
+        constants.STATUS_DOWNLOADING,
+        constants.STATUS_FAILED,
+      ].includes(down.status)
+    ))
+  }
+
   handleDownloadExists = (_id) => {
     return !!this.handleGetDownload(_id)
   }
@@ -125,10 +137,8 @@ export class DownloadManager extends React.Component {
    *
    * @returns {Promise<void>}
    */
-  handlePollDownload = (download, callback) => {
+  handlePollDownload = (download) => {
     const { apollo } = this.props
-
-    console.log('handlePollDownload', download._id, !this.pollingDownloads[download._id])
 
     if (this.pollingDownloads[download._id]) {
       return
@@ -141,12 +151,9 @@ export class DownloadManager extends React.Component {
         _id: download._id,
       },
     }).subscribe(({ data }) => {
-      console.log('poll', download._id, data)
-
       if (data?.download) {
         this.handleUpdateDownload(data?.download)
       }
-      // callback(data?.download ?? null)
     })
   }
 
@@ -156,7 +163,6 @@ export class DownloadManager extends React.Component {
    * @param download
    */
   handleStopPollDownload = (download) => {
-    console.log('handleStopPollDownload', download)
     // Unsubscribe
     this.pollingDownloads[download._id]?.unsubscribe()
 
@@ -164,15 +170,35 @@ export class DownloadManager extends React.Component {
     delete this.pollingDownloads[download._id]
   }
 
+  /**
+   * Shows the correct message for a download on press
+   *
+   * @param download
+   */
+  handleDownloadPress = (download) => {
+    let message = i18n.t('Hold long to remove')
+
+    if (download.status === constants.STATUS_FAILED) {
+      message = i18n.t('Hold long to retry')
+
+    } else if (download.status === constants.STATUS_DOWNLOADING) {
+      message = i18n.t('Hold long to cancel')
+    }
+
+    ToastAndroid.show(message, ToastAndroid.SHORT)
+  }
+
   getValue = () => {
     return {
       startDownload: this.handleStartDownload,
       updateDownload: this.handleUpdateDownload,
       removeDownload: this.handleRemoveDownload,
+      getActiveDownloads: this.handleGetActiveDownload,
       getDownload: this.handleGetDownload,
       downloadExists: this.handleDownloadExists,
       pollDownload: this.handlePollDownload,
       stopPollDownload: this.handleStopPollDownload,
+      onPress: this.handleDownloadPress,
     }
   }
 

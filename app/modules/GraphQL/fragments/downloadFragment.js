@@ -16,6 +16,17 @@ export default gql`
       language
       code
     }
+    movie {
+      title
+    }
+    episode {
+      title
+      season
+      number
+      show {
+        title
+      }
+    }
     __typename
   }
 `

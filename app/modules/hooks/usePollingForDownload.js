@@ -16,10 +16,10 @@ export const validPollStates = [
 /**
  * Starts polling for a certain download
  */
-export const usePollingForDownload = ({ _id }) => {
+export const usePollingForDownload = (downloadToPoll) => {
   const downloadManager = useDownloadManager()
 
-  const download = downloadManager.getDownload(_id)
+  const download = downloadManager.getDownload(downloadToPoll?._id)
 
   React.useEffect(() => {
     if (download && validPollStates.includes(download.status)) {
@@ -33,7 +33,7 @@ export const usePollingForDownload = ({ _id }) => {
     }
   }, [download?._id, download?.status])
 
-  return download
+  return [download, downloadManager]
 }
 
 export default usePollingForDownload

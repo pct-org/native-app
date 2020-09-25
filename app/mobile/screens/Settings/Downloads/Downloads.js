@@ -1,8 +1,7 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 import { View } from 'react-native'
 
-import withDownloadManager from 'modules/DownloadManager/withDownloadManager'
+import { useDownloadManager } from 'modules/DownloadManager'
 import dimensions from 'modules/dimensions'
 import i18n from 'modules/i18n'
 
@@ -37,55 +36,42 @@ export const styles = {
 
 }
 
-export const Downloads = ({ executeQuery, data, downloadManager, loading }) => (
-  <Container style={styles.root}>
+export const Downloads = () => {
+  const downloadManager = useDownloadManager()
 
-    <Typography
-      style={styles.title}
-      variant={'headline6'}>
-      {i18n.t('Active Downloads')}
-    </Typography>
+  const downloads = downloadManager.getActiveDownloads()
 
-    {(!data?.activeDownloads || data?.activeDownloads?.length === 0) && (
-      <Container
-        style={[styles.container, styles.noDownloads]}
-        elevation={2}>
+  return (
+    <Container style={styles.root}>
 
-        <View>
-          {loading && (
-            <Typography variant={'subtitle2'}>
-              {i18n.t('Loading')}
-            </Typography>
-          )}
+      <Typography
+        style={styles.title}
+        variant={'headline6'}>
+        {i18n.t('Active Downloads')}
+      </Typography>
 
-          {!loading && (
+      {downloads.length === 0 && (
+        <Container
+          style={[styles.container, styles.noDownloads]}
+          elevation={2}>
+
+          <View>
             <Typography variant={'subtitle2'}>
               {i18n.t('No active downloads')}
             </Typography>
-          )}
-        </View>
-      </Container>
-    )}
+          </View>
+        </Container>
+      )}
 
-    {data?.activeDownloads?.map((download) => (
-      <Download
-        key={download._id}
-        download={download}
-        downloadManager={downloadManager}
-        refreshScreen={executeQuery}
-      />
-    ))}
+      {downloads?.map((download) => (
+        <Download
+          key={download._id}
+          download={download}
+        />
+      ))}
 
-  </Container>
-)
-
-Downloads.propTypes = {
-  executeQuery: PropTypes.func.isRequired,
-  data: PropTypes.object,
+    </Container>
+  )
 }
 
-Downloads.defaultProps = {
-  data: null,
-}
-
-export default withDownloadManager(Downloads)
+export default Downloads

@@ -20,33 +20,3 @@ export const AboutQuery =  gql`
     
   }
 `
-
-export const ActiveDownloads =  gql`
-  query {
-
-    activeDownloads {
-      _id
-      type
-      itemType
-      status
-      quality
-      progress
-      numPeers
-      speed
-      timeRemaining
-      movie {
-        title
-      }
-      episode {
-        title
-        season
-        number
-        show {
-          title
-        }
-      }
-      __typename
-    }
-
-  }
-`

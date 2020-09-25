@@ -1,7 +1,7 @@
 import React from 'react'
 import { shallow } from 'enzyme'
 
-import usePollingForDownload from 'modules/GraphQL/usePollingForDownload'
+import usePollingForDownload from 'modules/hooks/usePollingForDownload'
 
 import Download from '../Download'
 

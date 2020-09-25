@@ -6,7 +6,7 @@ import * as Animatable from 'react-native-animatable'
 
 import dimensions from 'modules/dimensions'
 import constants from 'modules/constants'
-import usePollingForDownload from 'modules/GraphQL/usePollingForDownload'
+import usePollingForDownload from 'modules/hooks/usePollingForDownload'
 
 import BaseButton from 'components/BaseButton'
 import IconButton from 'components/IconButton'
@@ -31,16 +31,14 @@ export const QualityIcon = ({
   handleOnPress,
   handleRemoveDownload,
   download: downloadProp,
-  downloadManager,
   variant,
   itemType,
   style,
 }) => {
-  const data = usePollingForDownload(
+  const [data, downloadManager] = usePollingForDownload(
     variant !== constants.TYPE_STREAM
       ? downloadProp
       : null,
-    downloadManager,
   )
 
   const download = downloadProp && !data

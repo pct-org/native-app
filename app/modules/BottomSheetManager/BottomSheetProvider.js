@@ -42,8 +42,6 @@ export const BottomSheetProvider = ({ children }) => {
   })
 
   const handleBottomSheetOpen = React.useCallback(() => {
-    console.log('handleBottomSheetOpen')
-
     toggleVisible(true)
   }, [])
 
@@ -52,7 +50,6 @@ export const BottomSheetProvider = ({ children }) => {
   }, [])
 
   useBackButton(() => {
-    console.log('back button', visible, sheetRef)
     if (visible && sheetRef.current) {
       sheetRef.current.snapTo(bottomSheetConfig.snapPoints.length - 1)
 
@@ -78,7 +75,6 @@ export const BottomSheetProvider = ({ children }) => {
   }
 
   const openBottomSheet = (config) => {
-    console.log(config)
     updateBottomSheet(config, true)
 
     // if we are already visible it can be content changes
@@ -86,8 +82,6 @@ export const BottomSheetProvider = ({ children }) => {
       sheetRef.current.snapTo(0)
     }
   }
-
-  console.log('render')
 
   return (
     <BottomSheetContext.Provider value={[openBottomSheet, updateBottomSheet]}>
@@ -119,19 +113,15 @@ export const BottomSheetProvider = ({ children }) => {
         onOpenStart={handleBottomSheetOpen}
         onCloseEnd={handleBottomSheetClose}
         initialSnap={bottomSheetConfig.snapPoints.length - 1}
-        renderContent={() => {
-          console.log('bottom sheet render content', bottomSheetConfig.biggestSnapPoint)
-
-          return (
-            <Container
-              elevation={1}
-              style={{
-                height: bottomSheetConfig.biggestSnapPoint,
-              }}>
-              {bottomSheetConfig.renderContent()}
-            </Container>
-          )
-        }}
+        renderContent={() => (
+          <Container
+            elevation={1}
+            style={{
+              height: bottomSheetConfig.biggestSnapPoint,
+            }}>
+            {bottomSheetConfig.renderContent()}
+          </Container>
+        )}
       />
     </BottomSheetContext.Provider>
   )

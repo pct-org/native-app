@@ -61,8 +61,6 @@ export const ItemTorrents = ({ item, torrents }) => {
     downloadManager.removeDownload(download)
   }
 
-  console.log('download in torrents', item._id, download, torrents)
-
   return (
     <OptionsGroup style={styles.root}>
       {torrents.length > 0 && (

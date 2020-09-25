@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { View } from 'react-native'
 
-import usePollingForDownload from 'modules/GraphQL/usePollingForDownload'
+import usePollingForDownload from 'modules/hooks/usePollingForDownload'
 import dimensions from 'modules/dimensions'
 import constants from 'modules/constants'
 
@@ -30,20 +30,23 @@ export const styles = {
     justifyContent: 'center',
     margin: dimensions.UNIT,
   },
+
+  infoContainer: {
+    flex: 1,
+    marginRight: dimensions.UNIT,
+  },
+
 }
 
-export const Download = ({ download, downloadManager, refreshScreen }) => {
-  const data = usePollingForDownload(download, downloadManager)
+export const Download = ({ download }) => {
+  const [data, downloadManager] = usePollingForDownload(download)
   const { status, progress, speed, timeRemaining, numPeers, quality } = data || download
   const { movie, episode } = download
 
   const removeDownload = async() => {
-    await downloadManager.removeDownload({
-      ...download,
-      title: movie?.title ?? episode?.title,
-    })
+    await downloadManager.removeDownload(download)
 
-    refreshScreen()
+    // TODO:: Show snackbar
   }
 
   return (
@@ -59,8 +62,13 @@ export const Download = ({ download, downloadManager, refreshScreen }) => {
           <Icon name={'movie'} />
         </View>
 
-        <View>
-          <Typography variant={'subtitle2'}>
+        <View style={styles.infoContainer}>
+          <Typography
+            textProps={{
+              numberOfLines: 1,
+              ellipsizeMode: 'tail',
+            }}
+            variant={'subtitle2'}>
             {movie?.title ?? `${episode?.show?.title}: S${episode?.season}E${episode?.number}. ${episode?.title}`}
           </Typography>
 
@@ -91,11 +99,11 @@ export const Download = ({ download, downloadManager, refreshScreen }) => {
 }
 
 Download.propTypes = {
-  data: PropTypes.object,
+  download: PropTypes.object,
 }
 
 Download.defaultProps = {
-  data: null,
+  download: null,
 }
 
 export default Download
