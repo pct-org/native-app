@@ -4,9 +4,16 @@ import { ToastAndroid } from 'react-native'
 import constants from 'modules/constants'
 import i18n from 'modules/i18n/i18n'
 import withApollo from 'modules/GraphQL/withApollo'
-import { DownloadQuery, RemoveDownloadMutation, StartDownloadMutation } from 'modules/GraphQL/DownloadGraphQL'
+import {
+  DownloadsQuery,
+  DownloadQuery,
+  RemoveDownloadMutation,
+  StartDownloadMutation,
+} from 'modules/GraphQL/DownloadGraphQL'
 
 import DownloadManagerContext from './DownloadManagerContext'
+
+export const useDownloadManager = () => React.useContext(DownloadManagerContext)
 
 export class DownloadManager extends React.Component {
 
@@ -14,6 +21,23 @@ export class DownloadManager extends React.Component {
 
   state = {
     downloads: [],
+  }
+
+  componentDidMount() {
+    const { apollo } = this.props
+
+    apollo.query({
+      query: DownloadsQuery,
+      variables: {
+        // TODO:: What if we have more?
+        limit: 100,
+      },
+    }).then(({ data }) => {
+      console.log('downloads', data)
+      this.setState({
+        downloads: data.downloads,
+      })
+    })
   }
 
   handleStartDownload = async(item, torrent) => {
@@ -68,6 +92,9 @@ export class DownloadManager extends React.Component {
     const { apollo } = this.props
     const { downloads } = this.state
 
+    // Make sure nobody is polling
+    await this.handleStopPollDownload(item)
+
     await apollo.mutate({
       variables: {
         _id: item._id,
@@ -81,9 +108,6 @@ export class DownloadManager extends React.Component {
     this.setState({
       downloads: downloads.filter(down => down._id !== item._id),
     })
-
-    // TODO:: Show snackbar instead of toast
-    ToastAndroid.show(i18n.t('"{{title}}" removed', { title: item.title }), ToastAndroid.SHORT)
   }
 
   handleGetDownload = (_id) => {
@@ -97,30 +121,18 @@ export class DownloadManager extends React.Component {
   }
 
   /**
-   * Shows the correct message for a download on press
-   *
-   * @param download
-   */
-  handleDownloadPress = (download) => {
-    let message = i18n.t('Hold long to remove')
-
-    if (download.status === constants.STATUS_FAILED) {
-      message = i18n.t('Hold long to retry')
-
-    } else if (download.status === constants.STATUS_DOWNLOADING) {
-      message = i18n.t('Hold long to cancel')
-    }
-
-    ToastAndroid.show(message, ToastAndroid.SHORT)
-  }
-
-  /**
    * Does the stop stream mutation
    *
    * @returns {Promise<void>}
    */
   handlePollDownload = (download, callback) => {
     const { apollo } = this.props
+
+    console.log('handlePollDownload', download._id, !this.pollingDownloads[download._id])
+
+    if (this.pollingDownloads[download._id]) {
+      return
+    }
 
     this.pollingDownloads[download._id] = apollo.watchQuery({
       query: DownloadQuery,
@@ -129,7 +141,12 @@ export class DownloadManager extends React.Component {
         _id: download._id,
       },
     }).subscribe(({ data }) => {
-      callback(data?.download ?? null)
+      console.log('poll', download._id, data)
+
+      if (data?.download) {
+        this.handleUpdateDownload(data?.download)
+      }
+      // callback(data?.download ?? null)
     })
   }
 
@@ -139,6 +156,7 @@ export class DownloadManager extends React.Component {
    * @param download
    */
   handleStopPollDownload = (download) => {
+    console.log('handleStopPollDownload', download)
     // Unsubscribe
     this.pollingDownloads[download._id]?.unsubscribe()
 
@@ -153,7 +171,6 @@ export class DownloadManager extends React.Component {
       removeDownload: this.handleRemoveDownload,
       getDownload: this.handleGetDownload,
       downloadExists: this.handleDownloadExists,
-      onPress: this.handleDownloadPress,
       pollDownload: this.handlePollDownload,
       stopPollDownload: this.handleStopPollDownload,
     }

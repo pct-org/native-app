@@ -40,15 +40,9 @@ export const BottomSheet = React.forwardRef(({ children, contentHeight, renderHe
     toggleVisible(false)
   }, [])
 
-  const forceCloseBottomSheet = () => {
-    if (ref.current) {
-      ref.current.snapTo(snapPoints.length - 1)
-    }
-  }
-
   useBackButton(() => {
     if (visible && ref.current) {
-      forceCloseBottomSheet()
+      ref.current.snapTo(snapPoints.length - 1)
 
       return true
     }
@@ -100,6 +94,7 @@ export const BottomSheet = React.forwardRef(({ children, contentHeight, renderHe
 
 BottomSheet.propTypes = {
   snapPoints: PropTypes.array,
+  contentHeight: PropTypes.number,
 }
 
 BottomSheet.defaultProps = {

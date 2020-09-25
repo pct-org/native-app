@@ -6,6 +6,8 @@ import dimensions from 'modules/dimensions'
 import constants from 'modules/constants'
 import colors from 'modules/colors'
 import i18n from 'modules/i18n'
+import useDownload from 'modules/hooks/useDownload'
+import usePollingForDownload from 'modules/hooks/usePollingForDownload'
 
 import Typography from 'components/Typography'
 import Overlay from 'components/Overlay'
@@ -13,8 +15,7 @@ import BaseButton from 'components/BaseButton'
 import Image from 'components/Image'
 import Container from 'components/Container'
 
-import QualitySelector from 'mobile/components/QualitySelector'
-import ItemSettings from 'mobile/components/ItemSettings'
+import ItemOptions from 'mobile/components/ItemOptions'
 
 export const styles = StyleSheet.create({
 
@@ -61,7 +62,7 @@ export const styles = StyleSheet.create({
     height: dimensions.EPISODE_CARD_HEIGHT,
   },
 
-  downloadIcon: {
+  optionsIcon: {
     width: dimensions.UNIT * 8,
     textAlign: 'center',
   },
@@ -78,7 +79,8 @@ export const styles = StyleSheet.create({
 
 export const Episode = (props) => {
   const [showQualitySelector, toggleSelecting] = useState(false)
-  const { title, synopsis, number, hasAired, images, firstAired, watched, download } = props
+  const download = usePollingForDownload(props)
+  const { title, synopsis, number, hasAired, images, firstAired, watched } = props
 
   const getAirsDate = () => {
     const airs = new Date()
@@ -103,13 +105,13 @@ export const Episode = (props) => {
               <View style={styles.playIconContainer}>
                 <Overlay />
 
-                {hasAired && (
-                  <QualitySelector
-                    visible={showQualitySelector}
-                    item={props}
-                    onRequestClose={() => toggleSelecting(false)}
-                  />
-                )}
+                {/*{hasAired && (*/}
+                {/*  <QualitySelector*/}
+                {/*    visible={showQualitySelector}*/}
+                {/*    item={props}*/}
+                {/*    onRequestClose={() => toggleSelecting(false)}*/}
+                {/*  />*/}
+                {/*)}*/}
 
                 {!hasAired && (
                   <Typography variant={'caption'}>
@@ -139,27 +141,43 @@ export const Episode = (props) => {
             {`${number}. ${title}`}
           </Typography>
 
+          {download && (
+            <Typography
+              variant={'captionSmall'}
+              color={'primary'}
+              emphasis={'high'}>
+              {download.status === constants.STATUS_QUEUED && (
+                i18n.t('Download in queue')
+              )}
+
+              {download.status === constants.STATUS_CONNECTING && (
+                i18n.t('Download connecting')
+              )}
+
+              {download.status === constants.STATUS_DOWNLOADING && (
+                i18n.t('Downloading {{quality}}, {{progress}}%', {
+                  quality: download.quality,
+                  progress: download.progress,
+                })
+              )}
+
+              {download.status === constants.STATUS_COMPLETE && (
+                i18n.t('Downloaded in {{quality}}', { quality: download.quality })
+              )}
+            </Typography>
+          )}
+
           <Typography
             variant={'captionSmall'}
             emphasis={'low'}>
             {getAirsDate()}
           </Typography>
-
-          {download.downloadQuality && (
-            <Typography
-              variant={'captionSmall'}
-              color={'primary'}
-              emphasis={'low'}>
-              {i18n.t('Downloaded in {{quality}}', { quality: download.downloadQuality })}
-            </Typography>
-          )}
         </View>
 
         {hasAired && (
-          <ItemSettings
+          <ItemOptions
             item={props}
-            // variant={constants.TYPE_DOWNLOAD}
-            style={styles.downloadIcon}
+            style={styles.optionsIcon}
           />
         )}
       </View>

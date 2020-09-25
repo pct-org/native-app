@@ -13,7 +13,7 @@ export const styles = StyleSheet.create({
 
 })
 
-export const SettingsGroup = ({ children, withDivider, style }) => {
+export const OptionsGroup = ({ children, withDivider, style }) => {
   return (
     <>
       <View style={[styles.root, style]}>
@@ -27,4 +27,4 @@ export const SettingsGroup = ({ children, withDivider, style }) => {
   )
 }
 
-export default SettingsGroup
+export default OptionsGroup

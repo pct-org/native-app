@@ -4,7 +4,7 @@ import { StyleSheet } from 'react-native'
 import dimensions from 'modules/dimensions'
 import Divider from 'components/Divider'
 
-import SettingsItem from './SettingsItem'
+import OptionsItem from '../OptionsItem'
 
 export const styles = StyleSheet.create({
 
@@ -17,7 +17,7 @@ export const styles = StyleSheet.create({
 export const SettingsHeader = ({ label }) => {
   return (
     <>
-      <SettingsItem
+      <OptionsItem
         style={styles.root}
         label={label}
       />

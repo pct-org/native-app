@@ -16,7 +16,7 @@ import {
 } from './WatchOnTvQueries'
 
 @withApollo
-export default class WatchOnTvManager extends React.Component {
+export class WatchOnTvManager extends React.Component {
 
   static propTypes = {
     isTv: PropTypes.bool,
@@ -224,3 +224,5 @@ export default class WatchOnTvManager extends React.Component {
   }
 
 }
+
+export default WatchOnTvManager

@@ -18,14 +18,14 @@ export default () => (
       headerShown: false,
     }}>
 
-    <Stack.Screen name="Home" component={HomeScreen} />
-    <Stack.Screen name="Item" component={ItemScreen} />
-    <Stack.Screen name="Player" component={PlayerScreen} />
-    <Stack.Screen name="Settings" component={SettingsScreen} />
-    <Stack.Screen name="AppChangelog" component={AppChangelogScreen} />
+    <Stack.Screen name={'Home'} component={HomeScreen} />
+    <Stack.Screen name={'Item'} component={ItemScreen} />
+    <Stack.Screen name={'Player'} component={PlayerScreen} />
+    <Stack.Screen name={'Settings'} component={SettingsScreen} />
+    <Stack.Screen name={'AppChangelog'} component={AppChangelogScreen} />
 
     {createCollapsibleStack(
-      <Stack.Screen name="Movies">
+      <Stack.Screen name={'Movies'}>
         {(props) => <ModeScreen mode={'movies'} {...props} />}
       </Stack.Screen>,
       {},
@@ -33,7 +33,7 @@ export default () => (
     )}
 
     {createCollapsibleStack(
-      <Stack.Screen name="Shows">
+      <Stack.Screen name={'Shows'}>
         {(props) => <ModeScreen mode={'shows'} {...props} />}
       </Stack.Screen>,
       {},
@@ -41,7 +41,7 @@ export default () => (
     )}
 
     {createCollapsibleStack(
-      <Stack.Screen name="MyList">
+      <Stack.Screen name={'MyList'}>
         {(props) => <ModeScreen mode={'bookmarks'} {...props} />}
       </Stack.Screen>,
       {},

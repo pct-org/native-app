@@ -37,180 +37,85 @@ export const styles = StyleSheet.create({
 
 })
 
-// TODO:: Refactor
+const today = Date.now()
 
-export default class SeasonsAndEpisodes extends React.Component {
+export const SeasonsAndEpisodes = ({ item }) => {
+  const [activeSeason, setActiveSeason] = React.useState(item.seasons[item.seasons.length - 1].number)
 
-  static getDerivedStateFromProps(nextProps, state) {
-    const { item } = nextProps
-    const { activeSeason } = state
-
-    // If we retrieve more season then update to the latest one
-    if (!activeSeason) {
-      return {
-        activeSeason: item.seasons[item.seasons.length - 1].number,
-      }
-    }
-
-    return null
-  }
-
-  static propTypes = {}
-
-  static defaultProps = {}
-
-  state = {
-    activeSeason: null,
-  }
-
-  constructor(props) {
-    super(props)
-
-    this.today = Date.now()
-  }
-
-  getEpisodes = () => {
-    const { activeSeason } = this.state
-
-    if (!activeSeason) {
-      return []
-    }
-
-    const season = this.getSeasons(activeSeason)
+  const seasonsReverse = React.useMemo(() => [...item.seasons].reverse(), [item.seasons])
+  const episodes = React.useMemo(() => {
+    const season = item.seasons.find(season => season.number === activeSeason)
 
     if (!season) {
       return []
     }
 
     return season.episodes
-  }
+  }, [activeSeason, seasonsReverse])
 
-  getSeasons = (seasonNr = null) => {
-    const { item } = this.props
+  const renderSeason = React.useCallback(({ item: season }) => (
+    <View style={styles.seasonContainer}>
+      <Card
+        onPress={() => setActiveSeason(season.number)}
+        item={season}
+      />
 
-    if (!item || !item.seasons || item.seasons.length === 0) {
-      if (seasonNr) {
-        return null
-      }
+      <Typography
+        style={styles.seasonNumber}
+        color={activeSeason === season.number
+          ? 'primary'
+          : 'white'
+        }
+        variant={'overline'}
+        emphasis={activeSeason === season.number
+          ? 'high'
+          : 'medium'
+        }>
+        {i18n.t('Season {{number}}', { number: season.number })}
+      </Typography>
+    </View>
+  ), [activeSeason])
 
-      return []
-    }
+  return (
+    <Animatable.View
+      duration={constants.ANIMATION_DURATIONS.enteringScreen}
+      animation={'fadeIn'}
+      useNativeDriver>
 
-    if (seasonNr) {
-      return item.seasons.find(season => season.number === seasonNr)
-    }
+      <Typography
+        style={styles.seasonsText}
+        color={'white'}
+        variant={'headline6'}
+        emphasis={'high'}>
+        {i18n.t('Seasons')}
+      </Typography>
 
-    return [...item.seasons].reverse()
-  }
+      <FlatList
+        removeClippedSubviews
+        contentContainerStyle={[styles.container, styles.seasonSelector]}
+        data={seasonsReverse}
+        initialNumToRender={4}
+        windowSize={4}
+        renderItem={renderSeason}
+        ListFooterComponent={() => <View style={{ width: dimensions.UNIT * 4 }} />}
+        keyExtractor={(item) => item._id}
+        showsVerticalScrollIndicator={false}
+        showsHorizontalScrollIndicator={false}
+        horizontal
+      />
 
-  handleSeasonChange = (season) => {
-    this.setState({
-      activeSeason: season.number,
-    })
-  }
-
-  renderEpisode = ({ item }) => {
-    const { item: show } = this.props
-
-    return (
-      <Episode
-        empty={!item}
-        hasAired={item ? item.firstAired < this.today : false}
-        hasTorrents={item ? item.torrents.length > 0 : false}
-        show={show}
-        {...item} />
-    )
-  }
-
-  renderSeason = ({ item }) => {
-    const { activeSeason } = this.state
-
-    return (
-      <View style={styles.seasonContainer}>
-        <Card
-          onPress={() => this.handleSeasonChange(item)}
-          item={item}
-        />
-
-        <Typography
-          style={styles.seasonNumber}
-          color={activeSeason === item.number
-            ? 'primary'
-            : 'white'
-          }
-          variant={'overline'}
-          emphasis={activeSeason === item.number
-            ? 'high'
-            : 'medium'
-          }>
-          {i18n.t('Season {{number}}', { number: item.number })}
-        </Typography>
+      <View style={styles.container}>
+        {episodes.map((episode) => (
+          <Episode
+            key={episode._id}
+            hasAired={episode.firstAired < today}
+            show={item}
+            {...episode} />
+        ))}
       </View>
-    )
-  }
 
-  render() {
-    const seasons = this.getSeasons()
-    const episodes = this.getEpisodes()
-
-    return (
-      <Animatable.View
-        duration={constants.ANIMATION_DURATIONS.enteringScreen}
-        animation={'fadeIn'}
-        useNativeDriver>
-
-        <Typography
-          style={styles.seasonsText}
-          color={'white'}
-          variant={'headline6'}
-          emphasis={'high'}>
-          {i18n.t('Seasons')}
-        </Typography>
-
-        <FlatList
-          removeClippedSubviews
-          contentContainerStyle={[styles.container, styles.seasonSelector]}
-          data={seasons.length === 0
-            ? Array(4).fill(null)
-            : seasons}
-          initialNumToRender={4}
-          windowSize={4}
-          renderItem={this.renderSeason}
-          ListFooterComponent={() => <View style={{ width: dimensions.UNIT * 4 }} />}
-          keyExtractor={(item, index) => item
-            ? item._id
-            : `${index}`
-          }
-          showsVerticalScrollIndicator={false}
-          showsHorizontalScrollIndicator={false}
-          horizontal
-        />
-
-        <FlatList
-          removeClippedSubviews
-          scrollEnabled={false}
-          contentContainerStyle={styles.container}
-          data={
-            episodes.length === 0
-              ? Array(6).fill(null)
-              : episodes
-          }
-          initialNumToRender={4}
-          windowSize={4}
-          renderItem={this.renderEpisode}
-          ListHeaderComponent={() => <View style={{ marginBottom: dimensions.UNIT }} />}
-          ItemSeparatorComponent={() => <View style={{ marginBottom: dimensions.UNIT }} />}
-          ListFooterComponent={() => <View style={{ marginBottom: dimensions.UNIT * 4 }} />}
-          keyExtractor={(item, index) => item
-            ? item._id
-            : `${index}`
-          }
-          showsVerticalScrollIndicator={false}
-          showsHorizontalScrollIndicator={false}
-        />
-
-      </Animatable.View>
-    )
-  }
-
+    </Animatable.View>
+  )
 }
+
+export default SeasonsAndEpisodes

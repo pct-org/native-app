@@ -5,6 +5,7 @@ import DownloadManager from 'modules/DownloadManager'
 import IpFinder from 'modules/IpFinder'
 import WatchOnTvManager from 'modules/WatchOnTvManager'
 import navigationRef from 'modules/RootNavigation'
+import BottomSheetManager from 'modules/BottomSheetManager'
 
 import Portal from 'components/Portal'
 import ApolloLoader from 'components/ApolloLoader'
@@ -22,9 +23,13 @@ export default () => (
             <DownloadManager>
               <WatchOnTvManager>
 
-                <Portal.host>
-                  <Screens />
-                </Portal.host>
+                <BottomSheetManager>
+
+                  <Portal.host>
+                    <Screens />
+                  </Portal.host>
+
+                </BottomSheetManager>
 
                 {/*<CheckForUpdates />*/}
 
