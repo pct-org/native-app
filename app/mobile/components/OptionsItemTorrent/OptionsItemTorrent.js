@@ -19,7 +19,14 @@ export const styles = StyleSheet.create({
 
 })
 
-export const Torrents = ({ torrent, disabled, download, startDownload }) => {
+export const OptionsItemTorrent = ({
+  torrent,
+  disabled,
+  download,
+  startDownload,
+  variant,
+  onPress,
+}) => {
   const isItemDisabled = React.useMemo(() => {
     if (!download) {
       return disabled
@@ -29,7 +36,7 @@ export const Torrents = ({ torrent, disabled, download, startDownload }) => {
   }, [download, disabled])
 
   const itemSubLabel = React.useMemo(() => {
-    if(!isItemDisabled && download?.status === constants.STATUS_DOWNLOADING) {
+    if (!isItemDisabled && download?.status === constants.STATUS_DOWNLOADING) {
       return download.timeRemaining
     }
 
@@ -50,22 +57,24 @@ export const Torrents = ({ torrent, disabled, download, startDownload }) => {
   }, [download, isItemDisabled])
 
   const itemIcon = React.useMemo(() => {
-    if (isItemDisabled || !download) {
-      return 'cloud-download'
-    }
-
-    if (download.status === constants.STATUS_COMPLETE) {
+    if (!isItemDisabled && download?.status === constants.STATUS_COMPLETE) {
       return 'cloud-check'
     }
 
-    if (download.status === constants.STATUS_FAILED) {
+    if (!isItemDisabled && download?.status === constants.STATUS_FAILED) {
       return 'cloud-alert'
     }
 
-    return 'cloud-download'
+    return variant === constants.TYPE_DOWNLOAD
+      ? 'cloud-download'
+      : 'play-circle-outline'
   }, [download, isItemDisabled])
 
   const handleOnTorrentClick = () => {
+    if (onPress) {
+      return () => onPress(torrent, download)
+    }
+
     if (download) {
       return null
     }
@@ -94,4 +103,8 @@ export const Torrents = ({ torrent, disabled, download, startDownload }) => {
   )
 }
 
-export default Torrents
+OptionsItemTorrent.defaultProps = {
+  variant: constants.TYPE_DOWNLOAD,
+}
+
+export default OptionsItemTorrent

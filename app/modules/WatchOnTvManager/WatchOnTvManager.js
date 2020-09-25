@@ -15,6 +15,8 @@ import {
   SendCommandToTv,
 } from './WatchOnTvQueries'
 
+export const useWatchOnTvManager = () => React.useContext(Context)
+
 @withApollo
 export class WatchOnTvManager extends React.Component {
 

@@ -98,16 +98,16 @@ export const Item = ({ route: { params } }) => {
           item={item} />
 
         <View style={styles.iconsContainer}>
-          {!loading && item.type === constants.TYPE_MOVIE && (
-            <QualitySelector
-              item={item}
-              variant={constants.TYPE_DOWNLOAD}
-              style={{
-                ...styles.icon,
-                ...styles.iconDownload,
-              }}
-            />
-          )}
+          {/*{!loading && item.type === constants.TYPE_MOVIE && (*/}
+          {/*  <QualitySelector*/}
+          {/*    item={item}*/}
+          {/*    variant={constants.TYPE_DOWNLOAD}*/}
+          {/*    style={{*/}
+          {/*      ...styles.icon,*/}
+          {/*      ...styles.iconDownload,*/}
+          {/*    }}*/}
+          {/*  />*/}
+          {/*)}*/}
 
           {!loading && (
             <Bookmarked

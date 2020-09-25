@@ -1,290 +1,53 @@
 import React from 'react'
-import PropTypes from 'prop-types'
-import { StyleSheet } from 'react-native'
-import * as Animatable from 'react-native-animatable'
 
-import { navigate } from 'modules/RootNavigation'
-import dimensions from 'modules/dimensions'
 import constants from 'modules/constants'
-import withDownloadManager from 'modules/DownloadManager/withDownloadManager'
-import withWatchOnTvManager from 'modules/WatchOnTvManager/withWatchOnTvManager'
+import { useWatchOnTvManager } from 'modules/WatchOnTvManager'
+import useDownload from 'modules/hooks/useDownload'
+import { navigate } from 'modules/RootNavigation'
 
-import Card from 'components/Card'
-import Typography from 'components/Typography'
-import Modal from 'components/Modal'
+import ItemOptions from '../ItemOptions'
 
-import Qualities from './Qualities'
-import QualityIcon from './QualityIcon'
+export const QualitySelector = ({ item, ...props }) => {
+  const { connected, playOnTv } = useWatchOnTvManager()
+  const [download] = useDownload(item)
 
-const styles = StyleSheet.create({
-
-  root: {
-    flex: 1,
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    width: '100%',
-    height: '100%',
-  },
-
-  itemContainer: {
-    position: 'absolute',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    width: '100%',
-    top: dimensions.UNIT * 9,
-    paddingLeft: dimensions.UNIT * 2,
-    paddingRight: dimensions.UNIT * 2,
-  },
-
-  title: {
-    marginTop: dimensions.UNIT * 3,
-    textAlign: 'center',
-  },
-
-})
-
-@withWatchOnTvManager
-@withDownloadManager
-export default class QualitySelector extends React.Component {
-
-  static propTypes = {
-    style: PropTypes.object,
-    variant: PropTypes.oneOf([
-      constants.TYPE_STREAM,
-      constants.TYPE_DOWNLOAD,
-      'downloads',
-    ]),
-    item: PropTypes.object.isRequired,
-    itemType: PropTypes.string,
-    downloadManager: PropTypes.shape({
-      startDownload: PropTypes.func.isRequired,
-      updateDownload: PropTypes.func.isRequired,
-      getDownload: PropTypes.func.isRequired,
-      downloadExists: PropTypes.func.isRequired,
-    }),
-  }
-
-  static defaultProps = {
-    style: {},
-    variant: constants.TYPE_STREAM,
-    itemType: null,
-  }
-
-  static getDerivedStateFromProps(props, state) {
-    const { item } = props
-
-    let download = state.download || null
-
-    if (item.download && item.download.downloadStatus && !state.download && !state.removed) {
-      download = {
-        _id: item._id,
-        status: item.download.downloadStatus,
-        quality: item.download.downloadQuality,
-        progress: 0,
-      }
-    }
-
-    return {
-      visible: state.visible,
-      removed: state.removed,
-      download,
-    }
-  }
-
-  state = {
-    visible: false,
-    download: null,
-    removed: false,
-  }
-
-  componentDidUpdate(prevProps, prevState, snapshot) {
-    const { visible: wasVisible } = prevProps
-    const { visible } = this.props
-
-    if (wasVisible !== visible && visible) {
-      this.handleOnIconPress()
-    }
-  }
-
-  /**
-   * Starts playing this torrent
-   *
-   * @param torrent
-   */
-  handlePlayTorrent = (torrent) => {
-    const { playItem, item, watchOnTvManager } = this.props
-
-    if (playItem) {
-      playItem(item, torrent)
+  const handleOnTorrentPress = (torrent) => {
+    if (connected) {
+      playOnTv(item, torrent)
 
     } else {
-      // Make sure whe are closed
-      this.handleRequestClose()
-
-      if (watchOnTvManager.connected) {
-        watchOnTvManager.playOnTv(item, torrent)
-
-      } else {
-        navigate(
-          'Player',
-          {
-            torrent,
-            item,
-          },
-        )
-      }
+      navigate(
+        'Player',
+        {
+          item,
+          torrent,
+        },
+      )
     }
   }
 
-  handleRequestClose = () => {
-    const { onRequestClose } = this.props
-
-    if (onRequestClose) {
-      onRequestClose()
-    }
-
-    this.setState({
-      visible: false,
-    })
-  }
-
-  handleOnIconPress = () => {
-    const { downloadManager, item, variant } = this.props
-
-    // Check if download status is not null or failed
-    const hasDownload = ![null, 'failed'].includes(item.download.downloadStatus)
-    let downloadInManager = downloadManager.getDownload(item._id)
-    let downloadManagerHasIt = !!downloadInManager
-
-    if (!downloadManagerHasIt || downloadInManager.status === 'failed') {
-      downloadManagerHasIt = false
-      downloadInManager = {
-        torrentType: null,
-      }
-    }
-
-    // If we have download or the manager has one, play the download
-    if (hasDownload || downloadManagerHasIt) {
-      // Just to be sure, the quality selector needs to be a type stream to go
-      // to the player
-      if (variant === constants.TYPE_STREAM) {
-        this.handlePlayTorrent({
-          quality: 'download',
-          type: downloadInManager.torrentType,
-        })
-      }
-
-    } else {
-      this.setState({
-        visible: true,
+  const handleCanOpenBottomSheet = () => {
+    if (download) {
+      handleOnTorrentPress({
+        quality: download.quality,
+        type: download.torrentType,
       })
+
+      return false
     }
+
+    return true
   }
 
-  /**
-   * Starts the download
-   *
-   * @param quality
-   * @param type - Type of torrent, default or searched
-   * @return {Promise<void>}
-   */
-  handleStartDownload = async(quality, type) => {
-    const { item, downloadManager } = this.props
-
-    const download = await downloadManager.startDownload(item, quality, type)
-
-    this.setState({
-      download,
-      visible: false,
-      removed: false,
-    })
-  }
-
-  /**
-   * Removes the download
-   *
-   * @return {Promise<void>}
-   */
-  handleRemoveDownload = async() => {
-    const { item, downloadManager } = this.props
-
-    await downloadManager.removeDownload(item)
-
-    this.setState({
-      download: null,
-      removed: true,
-    })
-  }
-
-  render() {
-    const { itemType, variant, style, item, downloadManager } = this.props
-    const { visible, download } = this.state
-
-    return (
-      <React.Fragment>
-        <QualityIcon
-          item={item}
-          itemType={itemType}
-          variant={variant}
-          style={style}
-          download={download}
-          handleOnPress={this.handleOnIconPress}
-          // handleStartDownload={this.handleStartDownload}
-          handleRemoveDownload={this.handleRemoveDownload}
-          downloadManager={downloadManager}
-        />
-
-        {variant !== 'downloads' && (
-          <Modal
-            onRequestClose={this.handleRequestClose}
-            visible={visible}>
-
-            {item && item.title && (
-              <Animatable.View
-                style={styles.itemContainer}
-                animation={'fadeIn'}
-                duration={constants.ANIMATION_DURATIONS.enteringScreen}
-                useNativeDriver>
-                <Card
-                  item={
-                    item.type === 'movie'
-                      ? item
-                      : item.show
-                  }
-                  onPress={null}
-                />
-
-                <Typography
-                  style={styles.title}
-                  variant={'headline5'}>
-                  {
-                    item.type === 'movie'
-                      ? item.title
-                      : `${item.show.title}: ${item.title}`
-                  }
-                </Typography>
-
-              </Animatable.View>
-            )}
-
-            <Qualities
-              item={item}
-              variant={variant}
-              handleQualityPress={(torrent) => {
-                if (variant === constants.TYPE_STREAM) {
-                  this.handlePlayTorrent(torrent)
-
-                } else {
-                  this.handleStartDownload(torrent)
-                }
-              }}
-            />
-          </Modal>
-        )}
-      </React.Fragment>
-    )
-  }
-
+  return (
+    <ItemOptions
+      {...props}
+      item={item}
+      variant={constants.TYPE_STREAM}
+      canOpenBottomSheet={handleCanOpenBottomSheet}
+      onTorrentPress={handleOnTorrentPress}
+    />
+  )
 }
+
+export default QualitySelector

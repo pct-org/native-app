@@ -3,6 +3,7 @@ export default {
   TYPE_MOVIE: 'movie',
   TYPE_SHOW: 'show',
   TYPE_EPISODE: 'episode',
+  TYPE_MY_EPISODE: 'my-episode',
   TYPE_DOWNLOAD: 'download',
   TYPE_STREAM: 'stream',
 

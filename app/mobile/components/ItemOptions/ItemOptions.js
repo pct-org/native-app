@@ -8,9 +8,9 @@ import { useBottomSheet } from 'modules/BottomSheetManager'
 
 import IconButton from 'components/IconButton'
 
-import OptionsGroup from './OptionsGroup'
-import OptionsHeader from './OptionsHeader'
-import OptionsItem from './OptionsItem'
+import OptionsGroup from '../OptionsGroup'
+import OptionsHeader from '../OptionsHeader'
+import OptionsItem from '../OptionsItem'
 import ItemTorrents from './ItemTorrents'
 
 export const styles = StyleSheet.create({
@@ -22,12 +22,14 @@ export const styles = StyleSheet.create({
 
 })
 
-export const ItemOptions = ({ item, style }) => {
+export const ItemOptions = ({ item, style, variant, visible, onClose, onTorrentPress, canOpenBottomSheet }) => {
   const [openBottomSheet, updateBottomSheet] = useBottomSheet()
 
   const getBottomSheetConfig = () => {
     // When allTorrents changes update the content heights
-    const startHeight = 300
+    const startHeight = variant === constants.TYPE_DOWNLOAD
+      ? 300
+      : 150
     const initialBottomSheetHeight = startHeight + (item.torrents.length * 47)
     const contentHeight = startHeight + (allTorrents.length * 47)
 
@@ -41,11 +43,18 @@ export const ItemOptions = ({ item, style }) => {
         0,
       ],
       contentHeight,
+      onClose,
     }
   }
 
   const handleSettingsPress = () => {
-    openBottomSheet(getBottomSheetConfig())
+    // If we don't have the check or the check returns true then we can open it
+    if (!canOpenBottomSheet || canOpenBottomSheet()) {
+      openBottomSheet(getBottomSheetConfig())
+
+    } else if (onClose) {
+      onClose()
+    }
   }
 
   const allTorrents = React.useMemo(() => {
@@ -63,6 +72,13 @@ export const ItemOptions = ({ item, style }) => {
 
   }, [allTorrents])
 
+  React.useEffect(() => {
+    if (visible) {
+      handleSettingsPress()
+    }
+
+  }, [visible])
+
   const renderBottomSheetContent = React.useCallback(() => {
     return (
       <View>
@@ -75,31 +91,57 @@ export const ItemOptions = ({ item, style }) => {
 
         <ItemTorrents
           item={item}
-          torrents={allTorrents} />
+          variant={variant}
+          torrents={allTorrents}
+          onPress={onTorrentPress} />
 
-        <OptionsGroup
-          withDivider
-          style={styles.marginBottomOnly}>
-          <OptionsItem
-            disabled
-            icon={'eye-outline'}
-            label={
-              item.watched.complete
-                ? i18n.t('Mark Unwatched')
-                : i18n.t('Mark Watched')
-            } />
-        </OptionsGroup>
+        {variant === constants.TYPE_DOWNLOAD && (
+          <>
+            <OptionsGroup
+              withDivider={variant === constants.TYPE_DOWNLOAD}
+              style={styles.marginBottomOnly}>
+              <OptionsItem
+                disabled
+                icon={'eye-outline'}
+                label={
+                  item.watched.complete
+                    ? i18n.t('Mark Unwatched')
+                    : i18n.t('Mark Watched')
+                } />
+            </OptionsGroup>
 
-        <OptionsGroup>
-          <OptionsItem
-            disabled
-            icon={'content-copy'}
-            label={i18n.t('Copy to phone')}
-            subLabel={'Item needs to be downloaded for this to become available'} />
-        </OptionsGroup>
+            <OptionsGroup>
+              <OptionsItem
+                disabled
+                icon={'content-copy'}
+                label={i18n.t('Copy to phone')}
+                subLabel={'Item needs to be downloaded for this to become available'} />
+            </OptionsGroup>
+          </>
+        )}
       </View>
     )
   }, [item])
+
+  if (variant === constants.TYPE_STREAM) {
+    return (
+      <IconButton
+        onPress={handleSettingsPress}
+        style={style}
+        name={'play-circle-outline'}
+        animatable={{
+          animation: 'fadeIn',
+          useNativeDriver: true,
+          duration: constants.ANIMATION_DURATIONS.enteringScreen,
+        }}
+        size={
+          item.itemType === constants.TYPE_MY_EPISODE
+            ? dimensions.ICON_PLAY_DEFAULT
+            : dimensions.ICON_PLAY_BIG
+        }
+      />
+    )
+  }
 
   return (
     <IconButton
@@ -110,6 +152,14 @@ export const ItemOptions = ({ item, style }) => {
       emphasis={'medium'}
     />
   )
+}
+
+ItemOptions.defaultProps = {
+  variant: constants.TYPE_DOWNLOAD,
+  visible: false,
+  onClose: null,
+  onTorrentPress: null,
+  canOpenBottomSheet: null,
 }
 
 export default ItemOptions

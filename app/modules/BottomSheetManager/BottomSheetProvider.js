@@ -39,6 +39,7 @@ export const BottomSheetProvider = ({ children }) => {
     snapPoints: [400, 400, 0],
     biggestSnapPoint: 400,
     contentHeight: 400,
+    onClose: null,
   })
 
   const handleBottomSheetOpen = React.useCallback(() => {
@@ -47,7 +48,11 @@ export const BottomSheetProvider = ({ children }) => {
 
   const handleBottomSheetClose = React.useCallback(() => {
     toggleVisible(false)
-  }, [])
+
+    if (bottomSheetConfig.onClose) {
+      bottomSheetConfig.onClose()
+    }
+  }, [bottomSheetConfig.onClose])
 
   useBackButton(() => {
     if (visible && sheetRef.current) {

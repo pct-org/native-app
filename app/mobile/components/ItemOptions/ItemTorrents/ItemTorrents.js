@@ -10,9 +10,9 @@ import useDownload from 'modules/hooks/useDownload'
 
 import Divider from 'components/Divider'
 
-import OptionsGroup from '../OptionsGroup'
-import OptionsItem from '../OptionsItem'
-import ItemTorrent from './ItemTorrent'
+import OptionsGroup from '../../OptionsGroup'
+import OptionsItem from '../../OptionsItem'
+import OptionsItemTorrent from '../../OptionsItemTorrent'
 
 export const styles = StyleSheet.create({
 
@@ -27,7 +27,7 @@ export const styles = StyleSheet.create({
 
 })
 
-export const ItemTorrents = ({ item, torrents }) => {
+export const ItemTorrents = ({ item, torrents, variant, onPress }) => {
   const [download, downloadManager] = useDownload(item)
   const [searchForBetter, { loading }] = useMutation(
     item.type === constants.TYPE_EPISODE
@@ -66,13 +66,15 @@ export const ItemTorrents = ({ item, torrents }) => {
       {torrents.length > 0 && (
         <>
           {torrents.map((torrent) => (
-            <ItemTorrent
+            <OptionsItemTorrent
               item={item}
               torrent={torrent}
               disabled={loading}
               key={`${torrent.type}-${torrent.quality}`}
               download={download}
               startDownload={handleDownloadTorrent}
+              variant={variant}
+              onPress={onPress}
             />
           ))}
 
@@ -87,12 +89,14 @@ export const ItemTorrents = ({ item, torrents }) => {
         icon={'magnify'}
         label={i18n.t('search for qualities')} />
 
-      <OptionsItem
-        disabled={!download}
-        icon={'delete-outline'}
-        label={downloadRemoveLabel}
-        onPress={handleDeleteDownload}
-      />
+      {variant === constants.TYPE_DOWNLOAD && (
+        <OptionsItem
+          disabled={!download}
+          icon={'delete-outline'}
+          label={downloadRemoveLabel}
+          onPress={handleDeleteDownload}
+        />
+      )}
 
     </OptionsGroup>
   )

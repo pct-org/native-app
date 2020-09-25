@@ -6,8 +6,8 @@ import dimensions from 'modules/dimensions'
 import constants from 'modules/constants'
 import colors from 'modules/colors'
 import i18n from 'modules/i18n'
-import useDownload from 'modules/hooks/useDownload'
 import usePollingForDownload from 'modules/hooks/usePollingForDownload'
+import addZeros from 'modules/utils/addZeros'
 
 import Typography from 'components/Typography'
 import Overlay from 'components/Overlay'
@@ -15,6 +15,7 @@ import BaseButton from 'components/BaseButton'
 import Image from 'components/Image'
 import Container from 'components/Container'
 
+import QualitySelector from 'mobile/components/QualitySelector'
 import ItemOptions from 'mobile/components/ItemOptions'
 
 export const styles = StyleSheet.create({
@@ -79,14 +80,14 @@ export const styles = StyleSheet.create({
 
 export const Episode = (props) => {
   const [showQualitySelector, toggleSelecting] = useState(false)
-  const download = usePollingForDownload(props)
+  const [download] = usePollingForDownload(props)
   const { title, synopsis, number, hasAired, images, firstAired, watched } = props
 
   const getAirsDate = () => {
     const airs = new Date()
     airs.setTime(firstAired)
 
-    return `${`0${airs.getDate()}`.slice(-2)}-${`0${(airs.getMonth() + 1)}`.slice(-2)}-${airs.getFullYear()}`
+    return addZeros.date(airs)
   }
 
   return (
@@ -105,13 +106,14 @@ export const Episode = (props) => {
               <View style={styles.playIconContainer}>
                 <Overlay />
 
-                {/*{hasAired && (*/}
-                {/*  <QualitySelector*/}
-                {/*    visible={showQualitySelector}*/}
-                {/*    item={props}*/}
-                {/*    onRequestClose={() => toggleSelecting(false)}*/}
-                {/*  />*/}
-                {/*)}*/}
+                {hasAired && (
+                  <QualitySelector
+                    item={props}
+                    style={styles.optionsIcon}
+                    visible={showQualitySelector}
+                    onClose={() => toggleSelecting(false)}
+                  />
+                )}
 
                 {!hasAired && (
                   <Typography variant={'caption'}>
