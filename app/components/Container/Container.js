@@ -76,14 +76,13 @@ Container.propTypes = {
   elevation: PropTypes.number,
   style: PropTypes.oneOfType([
     PropTypes.object,
-    PropTypes.array
+    PropTypes.array,
   ]),
 }
 
 Container.defaultProps = {
   children: null,
   elevation: 0,
-  component: View,
   style: null,
 }
 
