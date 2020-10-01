@@ -1,3 +1,12 @@
+# [1.10.0](https://github.com/pct-org/native-app/compare/v1.9.1...v1.10.0) (2020-10-01)
+
+
+### Features
+
+* Added disk stats to settings screen ([1515c3b](https://github.com/pct-org/native-app/commit/1515c3b0e56c371dc63c005be67883e18a28bfeb))
+
+
+
 ## [1.9.1](https://github.com/pct-org/native-app/compare/v1.9.0...v1.9.1) (2020-09-23)
 
 
@@ -112,15 +121,6 @@
 
 * Added app version and changelog to the settings screen ([e70a5f4](https://github.com/pct-org/native-app/commit/e70a5f4560bf7d5d2aafba9492ff4f67590aed6d))
 * Updated auto updater ([ac40535](https://github.com/pct-org/native-app/commit/ac405358507857d1f460962f409ed35e69ebfd7c))
-
-
-
-## [1.3.4](https://github.com/pct-org/native-app/compare/v1.3.3...v1.3.4) (2020-05-06)
-
-
-### Bug Fixes
-
-* Fixed travis encrypted file ([1e57c89](https://github.com/pct-org/native-app/commit/1e57c89bfc1c815dd8a80f156968dbac0234fb01))
 
 
 
