@@ -31,7 +31,7 @@ export default () => (
 
                 </BottomSheetManager>
 
-                {/*<CheckForUpdates />*/}
+                <CheckForUpdates />
 
               </WatchOnTvManager>
             </DownloadManager>
