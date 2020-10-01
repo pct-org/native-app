@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default class PortalConsumer extends React.Component {
+export class PortalConsumer extends React.Component {
 
   key
 
@@ -22,4 +22,7 @@ export default class PortalConsumer extends React.Component {
   render() {
     return null
   }
+
 }
+
+export default PortalConsumer

@@ -146,7 +146,7 @@ export default class IpFinder extends React.Component {
         ip,
 
         GRAPH_PORT: IpFinder.GRAPH_PORT,
-        SCRAPER_PORT: IpFinder.SCRAPER_PORT
+        SCRAPER_PORT: IpFinder.SCRAPER_PORT,
       }}>
         {children(host)}
       </IpFinderContext.Provider>

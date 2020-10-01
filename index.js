@@ -1,5 +1,5 @@
 import 'react-native-gesture-handler'
-import { AppRegistry, LogBox, YellowBox } from 'react-native'
+import { AppRegistry, LogBox } from 'react-native'
 import { enableScreens } from 'react-native-screens'
 
 enableScreens()

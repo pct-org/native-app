@@ -125,7 +125,7 @@ export const MainCover = ({ empty, item, handleItemOpen }) => {
               <QualitySelector
                 item={item}
                 visible={showQualitySelector}
-                onRequestClose={() => toggleSelecting(false)} />
+                onClose={() => toggleSelecting(false)} />
             </View>
           )}
         </View>

@@ -1,12 +1,19 @@
 import React from 'react'
 import { ToastAndroid } from 'react-native'
 
+import i18n from 'modules/i18n'
 import constants from 'modules/constants'
-import i18n from 'modules/i18n/i18n'
 import withApollo from 'modules/GraphQL/withApollo'
-import { DownloadQuery, RemoveDownloadMutation, StartDownloadMutation } from 'modules/GraphQL/DownloadGraphQL'
+import {
+  DownloadsQuery,
+  DownloadQuery,
+  RemoveDownloadMutation,
+  StartDownloadMutation,
+} from 'modules/GraphQL/DownloadGraphQL'
 
 import DownloadManagerContext from './DownloadManagerContext'
+
+export const useDownloadManager = () => React.useContext(DownloadManagerContext)
 
 export class DownloadManager extends React.Component {
 
@@ -14,6 +21,22 @@ export class DownloadManager extends React.Component {
 
   state = {
     downloads: [],
+  }
+
+  componentDidMount() {
+    const { apollo } = this.props
+
+    apollo.query({
+      query: DownloadsQuery,
+      variables: {
+        // TODO:: What if we have more?
+        limit: 100,
+      },
+    }).then(({ data }) => {
+      this.setState({
+        downloads: data.downloads,
+      })
+    })
   }
 
   handleStartDownload = async(item, torrent) => {
@@ -68,6 +91,9 @@ export class DownloadManager extends React.Component {
     const { apollo } = this.props
     const { downloads } = this.state
 
+    // Make sure nobody is polling
+    await this.handleStopPollDownload(item)
+
     await apollo.mutate({
       variables: {
         _id: item._id,
@@ -81,9 +107,6 @@ export class DownloadManager extends React.Component {
     this.setState({
       downloads: downloads.filter(down => down._id !== item._id),
     })
-
-    // TODO:: Show snackbar instead of toast
-    ToastAndroid.show(i18n.t('"{{title}}" removed', { title: item.title }), ToastAndroid.SHORT)
   }
 
   handleGetDownload = (_id) => {
@@ -92,8 +115,59 @@ export class DownloadManager extends React.Component {
     return downloads.find(down => down._id === _id)
   }
 
+  handleGetActiveDownload = () => {
+    const { downloads } = this.state
+
+    return downloads.filter(down => (
+      [
+        constants.STATUS_QUEUED,
+        constants.STATUS_CONNECTING,
+        constants.STATUS_DOWNLOADING,
+        constants.STATUS_FAILED,
+      ].includes(down.status)
+    ))
+  }
+
   handleDownloadExists = (_id) => {
     return !!this.handleGetDownload(_id)
+  }
+
+  /**
+   * Does the stop stream mutation
+   *
+   * @returns {Promise<void>}
+   */
+  handlePollDownload = (download) => {
+    const { apollo } = this.props
+
+    if (this.pollingDownloads[download._id]) {
+      return
+    }
+
+    this.pollingDownloads[download._id] = apollo.watchQuery({
+      query: DownloadQuery,
+      pollInterval: 1000,
+      variables: {
+        _id: download._id,
+      },
+    }).subscribe(({ data }) => {
+      if (data?.download) {
+        this.handleUpdateDownload(data?.download)
+      }
+    })
+  }
+
+  /**
+   * Stops polling the download
+   *
+   * @param download
+   */
+  handleStopPollDownload = (download) => {
+    // Unsubscribe
+    this.pollingDownloads[download._id]?.unsubscribe()
+
+    // Remove it from the polling downloads
+    delete this.pollingDownloads[download._id]
   }
 
   /**
@@ -114,48 +188,17 @@ export class DownloadManager extends React.Component {
     ToastAndroid.show(message, ToastAndroid.SHORT)
   }
 
-  /**
-   * Does the stop stream mutation
-   *
-   * @returns {Promise<void>}
-   */
-  handlePollDownload = (download, callback) => {
-    const { apollo } = this.props
-
-    this.pollingDownloads[download._id] = apollo.watchQuery({
-      query: DownloadQuery,
-      pollInterval: 1000,
-      variables: {
-        _id: download._id,
-      },
-    }).subscribe(({ data }) => {
-      callback(data?.download ?? null)
-    })
-  }
-
-  /**
-   * Stops polling the download
-   *
-   * @param download
-   */
-  handleStopPollDownload = (download) => {
-    // Unsubscribe
-    this.pollingDownloads[download._id]?.unsubscribe()
-
-    // Remove it from the polling downloads
-    delete this.pollingDownloads[download._id]
-  }
-
   getValue = () => {
     return {
       startDownload: this.handleStartDownload,
       updateDownload: this.handleUpdateDownload,
       removeDownload: this.handleRemoveDownload,
+      getActiveDownloads: this.handleGetActiveDownload,
       getDownload: this.handleGetDownload,
       downloadExists: this.handleDownloadExists,
-      onPress: this.handleDownloadPress,
       pollDownload: this.handlePollDownload,
       stopPollDownload: this.handleStopPollDownload,
+      onPress: this.handleDownloadPress,
     }
   }
 

@@ -18,13 +18,13 @@ jobs:
       - name: Install dependencies
         run: yarn
 
-      - name: Check linting
-        run: yarn lint
-
-      - name: Run unit tests
-        run: yarn test:coverage
-
-      - name: Upload codecov
-        uses: codecov/codecov-action@v1
-        with:
-          token: ${{ secrets.CODECOV_TOKEN }}
+#      - name: Check linting
+#        run: yarn lint
+#
+#      - name: Run unit tests
+#        run: yarn test:coverage
+#
+#      - name: Upload codecov
+#        uses: codecov/codecov-action@v1
+#        with:
+#          token: ${{ secrets.CODECOV_TOKEN }}

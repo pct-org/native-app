@@ -84,9 +84,9 @@ export const MyEpisode = ({ item, style, empty, ...rest }) => {
               useNativeDriver>
 
               <QualitySelector
-                visible={showQualitySelector}
                 item={item}
-                onRequestClose={() => toggleSelecting(false)}
+                visible={showQualitySelector}
+                onClose={() => toggleSelecting(false)}
               />
 
             </Animatable.View>

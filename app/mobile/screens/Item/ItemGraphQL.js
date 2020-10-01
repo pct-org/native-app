@@ -1,5 +1,7 @@
 import gql from 'graphql-tag'
 
+import torrentFragment from 'modules/GraphQL/fragments/torrentFragment'
+
 export const MovieQuery = gql`
   query movie($_id: String!) {
     item: movie(_id: $_id) {
@@ -25,14 +27,10 @@ export const MovieQuery = gql`
         downloadQuality
       }
       torrents {
-        quality
-        sizeString
-        type
+        ...torrent
       }
       searchedTorrents {
-        quality
-        sizeString
-        type
+        ...torrent
       }
       images {
         backdrop {
@@ -45,6 +43,8 @@ export const MovieQuery = gql`
       }
     }
   }
+  
+  ${torrentFragment}
 `
 
 export const ShowQuery = gql`
@@ -104,17 +104,15 @@ export const ShowQuery = gql`
             }
           }
           torrents {
-            quality
-            sizeString
-            type
+            ...torrent
           }
           searchedTorrents {
-            quality
-            sizeString
-            type
+            ...torrent
           }
         }
       }
     }
   }
+  
+  ${torrentFragment}
 `

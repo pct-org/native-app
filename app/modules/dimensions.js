@@ -6,6 +6,7 @@ const { width: screenWidth, height: screenHeight } = Dimensions.get('window')
 
 const UNIT = 8
 const SKETCH_DEFAULT_WIDTH = useCorrect(360, null, 1920)
+const STATUSBAR_HEIGHT = StatusBar.currentHeight
 
 const sketchAdjuster = screenWidth / SKETCH_DEFAULT_WIDTH
 
@@ -27,9 +28,10 @@ export default {
 
   SCREEN_WIDTH: screenWidth,
   SCREEN_HEIGHT: screenHeight,
+  SCREEN_HEIGHT_NO_STATUS_BAR: screenHeight - STATUSBAR_HEIGHT,
 
   ON_SCREEN_NAVIGATION_HEIGHT: 55,
-  STATUSBAR_HEIGHT: StatusBar.currentHeight,
+  STATUSBAR_HEIGHT,
 
   BORDER_WIDTH: 1.5,
   BORDER_RADIUS: 5,

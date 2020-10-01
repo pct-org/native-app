@@ -1,3 +1,4 @@
+import BottomSheetManager from 'modules/BottomSheetManager/BottomSheetProvider'
 import React, { useEffect } from 'react'
 import { StyleSheet, View, InteractionManager, Linking } from 'react-native'
 import { useLazyQuery } from '@apollo/client'
@@ -11,7 +12,7 @@ import Container from 'components/Container'
 import ScrollViewWithStatusBar from 'components/ScrollViewWithStatusBar'
 import IconButton from 'components/IconButton'
 import Typography from 'components/Typography'
-import QualitySelector from 'mobile/components/QualitySelector'
+import ItemOptions from 'mobile/components/ItemOptions'
 import MainCover from 'mobile/components/MainCover'
 
 import { MovieQuery, ShowQuery } from './ItemGraphQL'
@@ -81,10 +82,6 @@ export const Item = ({ route: { params } }) => {
   const loading = itemLoading || !data
   const item = loading ? null : data.item
 
-  const handleToggleWatched = () => {
-
-  }
-
   const handleTrailer = () => {
     if (item && item.trailer) {
       Linking.openURL(item.trailer)
@@ -101,17 +98,6 @@ export const Item = ({ route: { params } }) => {
           item={item} />
 
         <View style={styles.iconsContainer}>
-          {!loading && item.type === constants.TYPE_MOVIE && (
-            <QualitySelector
-              item={item}
-              variant={constants.TYPE_DOWNLOAD}
-              style={{
-                ...styles.icon,
-                ...styles.iconDownload,
-              }}
-            />
-          )}
-
           {!loading && (
             <Bookmarked
               style={styles.icon}
@@ -134,27 +120,24 @@ export const Item = ({ route: { params } }) => {
               emphasis={'medium'}
               size={dimensions.ICON_SIZE_MEDIUM} />
           )}
+
+          {!loading && item.type === constants.TYPE_MOVIE && (
+            <ItemOptions
+              item={item}
+              animatable={{
+                animation: 'fadeIn',
+                useNativeDriver: true,
+                duration: constants.ANIMATION_DURATIONS.enteringScreen,
+              }}
+              style={{
+                ...styles.icon,
+                ...styles.iconDownload,
+              }}
+            />
+          )}
         </View>
 
         <WatchedBar item={item} />
-
-        {/*  /!*{!loading && item.type === constants.TYPE_MOVIE && (*!/*/}
-        {/*  /!*  <IconButton*!/*/}
-        {/*  /!*    animatable={{*!/*/}
-        {/*  /!*      animation: 'fadeIn',*!/*/}
-        {/*  /!*      useNativeDriver: true,*!/*/}
-        {/*  /!*    }}*!/*/}
-        {/*  /!*    style={[styles.icon, { minWidth: 95 }]}*!/*/}
-        {/*  /!*    onPress={handleToggleWatched}*!/*/}
-        {/*  /!*    name={item.watched.complete*!/*/}
-        {/*  /!*      ? 'eye-off-outline'*!/*/}
-        {/*  /!*      : 'eye-outline'*!/*/}
-        {/*  /!*    }*!/*/}
-        {/*  /!*    color={colors.ICON_COLOR}*!/*/}
-        {/*  /!*    size={dimensions.ITEM_ICONS}>*!/*/}
-        {/*  /!*    {i18n.t(item.watched.complete ? 'Mark Unwatched' : 'Mark Watched')}*!/*/}
-        {/*  /!*  </IconButton>*!/*/}
-        {/*  /!*)}*!/*/}
 
         {item && (
           <Animatable.View
@@ -175,7 +158,6 @@ export const Item = ({ route: { params } }) => {
         )}
 
       </ScrollViewWithStatusBar>
-
     </Container>
   )
 }

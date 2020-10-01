@@ -58,7 +58,7 @@ export const Modal = ({ children, visible, onRequestClose }) => {
             <IconButton
               buttonProps={{
                 component: TouchableNativeFeedback,
-                rippleColor: null
+                rippleColor: null,
               }}
               onPress={onRequestClose}
               name={'close'}
@@ -84,6 +84,5 @@ Modal.defaultProps = {
   onRequestClose: null,
   visible: false,
 }
-
 
 export default Modal

@@ -8,7 +8,7 @@ module.exports = {
     [
       '@babel/plugin-proposal-decorators',
       {
-        'legacy': true,
+        legacy: true,
       },
     ],
 
@@ -21,14 +21,14 @@ module.exports = {
     [
       'inline-import',
       {
-        'extensions': ['.md', '.text', '.txt'],
+        extensions: ['.md', '.text', '.txt'],
       },
     ],
 
     [
       'module-resolver',
       {
-        'root': [
+        root: [
           './app',
         ],
       },

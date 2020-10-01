@@ -98,7 +98,7 @@ export default class PortalHost extends React.Component {
         <View
           style={styles.container}
           collapsable={false}
-          pointerEvents="box-none">
+          pointerEvents={'box-none'}>
           {children}
         </View>
 

@@ -145,6 +145,7 @@ const Snackbar = ({
           {...rest}>
           <View style={styles.content}>
             <Typography
+              // TODO:: Check this, text maybe a bit bigger and is now not 100% in center
               style={styles.label}
               variant={'body2'}
               color={'black'}>

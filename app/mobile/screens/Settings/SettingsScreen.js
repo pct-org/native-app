@@ -6,7 +6,7 @@ import colors from 'modules/colors'
 
 import Container from 'components/Container'
 
-import { AboutQuery, ActiveDownloads } from './SettingsQuery'
+import { AboutQuery } from './SettingsQuery'
 import About from './About'
 import Downloads from './Downloads'
 import Subtitles from './Subtitles'
@@ -24,16 +24,11 @@ export const Settings = () => {
     AboutQuery,
   )
 
-  const [executeActiveDownloadsQuery, { data: downloadsData, loading: downloadsLoading }] = useLazyQuery(
-    ActiveDownloads,
-  )
-
   useEffect(() => {
     // Execute the query after the component is done navigation
     InteractionManager.runAfterInteractions(() => {
       // Execute the query
       executeAboutQuery()
-      executeActiveDownloadsQuery()
     })
   }, [])
 
@@ -43,10 +38,9 @@ export const Settings = () => {
       <ScrollView
         refreshControl={
           <RefreshControl
-            refreshing={(downloadsLoading || aboutLoading) && !!aboutData}
+            refreshing={aboutLoading && !!aboutData}
             onRefresh={() => {
               executeAboutQuery()
-              executeActiveDownloadsQuery()
             }}
             colors={[colors.PRIMARY_COLOR_200]}
             progressBackgroundColor={colors.BACKGROUND_TABS}
@@ -59,11 +53,7 @@ export const Settings = () => {
 
         <Subtitles />
 
-        <Downloads
-          data={downloadsData}
-          executeQuery={executeActiveDownloadsQuery}
-          loading={downloadsLoading}
-        />
+        <Downloads />
 
       </ScrollView>
 

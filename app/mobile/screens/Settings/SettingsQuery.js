@@ -7,7 +7,14 @@ export const AboutQuery =  gql`
       version
       totalMovies
       totalShows
-      totalEpisodes
+      disk {
+        free
+        used
+        size
+        freePercentage
+        usedPercentage
+        sizePercentage
+      }
     }
     
     scraper {
@@ -18,35 +25,5 @@ export const AboutQuery =  gql`
       nextUpdate
     }
     
-  }
-`
-
-export const ActiveDownloads =  gql`
-  query {
-
-    activeDownloads {
-      _id
-      type
-      itemType
-      status
-      quality
-      progress
-      numPeers
-      speed
-      timeRemaining
-      movie {
-        title
-      }
-      episode {
-        title
-        season
-        number
-        show {
-          title
-        }
-      }
-      __typename
-    }
-
   }
 `

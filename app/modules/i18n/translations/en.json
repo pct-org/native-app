@@ -51,6 +51,8 @@
   "movies": "Movies",
   "Downloading in {{quality}}": "Downloading in {{quality}}",
   "Downloaded in {{quality}}": "Downloaded in {{quality}}",
+  "Download connecting": "Download connecting...",
+  "Download in queue": "Download in queue",
   "Version: {{version}}": "Version: {{version}}",
   "Movies: {{movies}}": "Movies: {{movies}}",
   "Shows: {{shows}}": "Shows: {{shows}}",
@@ -66,5 +68,10 @@
   "Most Watched Shows": "Most Watched Shows",
   "Added to your list": "Added to your list",
   "Removed from your list":"Removed from your list",
-  "undo": "undo"
+  "undo": "undo",
+  "Downloading {{quality}}, {{progress}}%": "Downloading in {{quality}}, {{progress}}%",
+  "Remove download": "Remove download",
+  "Remove from queue": "Remove from queue",
+  "Stop downloading": "Stop downloading",
+  "Copy to phone": "Copy to phone"
 }
