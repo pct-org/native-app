@@ -22,7 +22,16 @@ export const styles = StyleSheet.create({
 
 })
 
-export const ItemOptions = ({ item, style, variant, visible, onClose, onTorrentPress, canOpenBottomSheet }) => {
+export const ItemOptions = ({
+  item,
+  style,
+  variant,
+  visible,
+  animatable,
+  onClose,
+  onTorrentPress,
+  canOpenBottomSheet
+}) => {
   const [openBottomSheet, updateBottomSheet] = useBottomSheet()
 
   const getBottomSheetConfig = () => {
@@ -61,7 +70,13 @@ export const ItemOptions = ({ item, style, variant, visible, onClose, onTorrentP
     // The order that we want it in
     const order = ['2160p', '3D', '1080p', '1080p-bl', '720p', '720p-ish', '480p']
 
-    return [...item.torrents, ...item.searchedTorrents].sort((torrentA, torrentB) => (
+    let torrents = [...item.torrents]
+
+    if (item.searchedTorrents && item.searchedTorrents.length > 0) {
+      torrents = [...item.torrents, ...item.searchedTorrents]
+    }
+
+    return torrents.sort((torrentA, torrentB) => (
       order.indexOf(torrentA.quality) - order.indexOf(torrentB.quality)
     ))
 
@@ -121,7 +136,7 @@ export const ItemOptions = ({ item, style, variant, visible, onClose, onTorrentP
         )}
       </View>
     )
-  }, [item])
+  }, [item, variant])
 
   if (variant === constants.TYPE_STREAM) {
     return (
@@ -147,6 +162,7 @@ export const ItemOptions = ({ item, style, variant, visible, onClose, onTorrentP
     <IconButton
       onPress={handleSettingsPress}
       style={style}
+      animatable={animatable}
       name={'dots-vertical'}
       color={'primary'}
       emphasis={'medium'}
@@ -160,6 +176,7 @@ ItemOptions.defaultProps = {
   onClose: null,
   onTorrentPress: null,
   canOpenBottomSheet: null,
+  animatable: null,
 }
 
 export default ItemOptions

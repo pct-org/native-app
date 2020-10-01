@@ -7,7 +7,14 @@ export const AboutQuery =  gql`
       version
       totalMovies
       totalShows
-      totalEpisodes
+      disk {
+        free
+        used
+        size
+        freePercentage
+        usedPercentage
+        sizePercentage
+      }
     }
     
     scraper {

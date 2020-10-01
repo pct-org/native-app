@@ -12,7 +12,7 @@ import Container from 'components/Container'
 import ScrollViewWithStatusBar from 'components/ScrollViewWithStatusBar'
 import IconButton from 'components/IconButton'
 import Typography from 'components/Typography'
-import QualitySelector from 'mobile/components/QualitySelector'
+import ItemOptions from 'mobile/components/ItemOptions'
 import MainCover from 'mobile/components/MainCover'
 
 import { MovieQuery, ShowQuery } from './ItemGraphQL'
@@ -98,17 +98,6 @@ export const Item = ({ route: { params } }) => {
           item={item} />
 
         <View style={styles.iconsContainer}>
-          {/*{!loading && item.type === constants.TYPE_MOVIE && (*/}
-          {/*  <QualitySelector*/}
-          {/*    item={item}*/}
-          {/*    variant={constants.TYPE_DOWNLOAD}*/}
-          {/*    style={{*/}
-          {/*      ...styles.icon,*/}
-          {/*      ...styles.iconDownload,*/}
-          {/*    }}*/}
-          {/*  />*/}
-          {/*)}*/}
-
           {!loading && (
             <Bookmarked
               style={styles.icon}
@@ -130,6 +119,21 @@ export const Item = ({ route: { params } }) => {
               color={'primary'}
               emphasis={'medium'}
               size={dimensions.ICON_SIZE_MEDIUM} />
+          )}
+
+          {!loading && item.type === constants.TYPE_MOVIE && (
+            <ItemOptions
+              item={item}
+              animatable={{
+                animation: 'fadeIn',
+                useNativeDriver: true,
+                duration: constants.ANIMATION_DURATIONS.enteringScreen,
+              }}
+              style={{
+                ...styles.icon,
+                ...styles.iconDownload,
+              }}
+            />
           )}
         </View>
 
