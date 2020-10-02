@@ -137,7 +137,7 @@ export class DownloadManager extends React.Component {
    *
    * @returns {Promise<void>}
    */
-  handlePollDownload = (download) => {
+  handlePollDownload = (download, callback = null) => {
     const { apollo } = this.props
 
     if (this.pollingDownloads[download._id]) {
@@ -152,7 +152,12 @@ export class DownloadManager extends React.Component {
       },
     }).subscribe(({ data }) => {
       if (data?.download) {
-        this.handleUpdateDownload(data?.download)
+        if (callback) {
+          callback(data?.download)
+
+        } else {
+          this.handleUpdateDownload(data?.download)
+        }
       }
     })
   }
