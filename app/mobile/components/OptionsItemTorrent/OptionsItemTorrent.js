@@ -68,7 +68,7 @@ export const OptionsItemTorrent = ({
     return variant === constants.TYPE_DOWNLOAD
       ? 'cloud-download'
       : 'play-circle-outline'
-  }, [download, isItemDisabled])
+  }, [download, isItemDisabled, variant])
 
   const handleOnTorrentClick = () => {
     if (onPress) {
