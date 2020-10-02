@@ -1,3 +1,12 @@
+## [1.10.1](https://github.com/pct-org/native-app/compare/v1.10.0...v1.10.1) (2020-10-02)
+
+
+### Bug Fixes
+
+* Fixed icons for quality / download selector being cached ([89a945e](https://github.com/pct-org/native-app/commit/89a945ef4c340dcb4c87a85cf8ae69bb03584113))
+
+
+
 # [1.10.0](https://github.com/pct-org/native-app/compare/v1.9.1...v1.10.0) (2020-10-01)
 
 
@@ -111,16 +120,6 @@
 ### Bug Fixes
 
 * Fixed auto updater always giving a update ([9758db0](https://github.com/pct-org/native-app/commit/9758db066e16436f22e3c25430755d012ba667fc))
-
-
-
-# [1.4.0](https://github.com/pct-org/native-app/compare/v1.3.4...v1.4.0) (2020-05-07)
-
-
-### Features
-
-* Added app version and changelog to the settings screen ([e70a5f4](https://github.com/pct-org/native-app/commit/e70a5f4560bf7d5d2aafba9492ff4f67590aed6d))
-* Updated auto updater ([ac40535](https://github.com/pct-org/native-app/commit/ac405358507857d1f460962f409ed35e69ebfd7c))
 
 
 
