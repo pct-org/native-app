@@ -5,10 +5,10 @@ import { useMutation } from '@apollo/client'
 import constants from 'modules/constants'
 import dimensions from 'modules/dimensions'
 import i18n from 'modules/i18n'
+import { AddBookmarkMutation, RemoveBookmarkMutation } from 'modules/GraphQL/BookmarksGraphQL'
 
 import IconButton from 'components/IconButton'
 import Snackbar from 'components/Snackbar'
-import { AddBookmarkMutation, RemoveBookmarkMutation } from 'modules/GraphQL/BookmarkedGraphQL'
 
 export const Bookmarked = ({ _id, type, bookmarked, style }) => {
   const [snackbarInfo, setSnackbarInfo] = React.useState({

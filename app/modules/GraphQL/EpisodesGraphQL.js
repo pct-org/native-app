@@ -1,4 +1,4 @@
-import gql from 'graphql-tag'
+import { gql } from '@apollo/client'
 
 export default gql`
   query episodes {
@@ -7,18 +7,12 @@ export default gql`
       title
       number
       season
-      synopsis
-      firstAired
       type
       show {
         title
         images {
           backdrop {
-            full
-          }
-          poster {
             thumb
-            high
           }
         }
       }

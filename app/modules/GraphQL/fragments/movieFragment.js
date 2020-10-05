@@ -1,9 +1,24 @@
-import gql from 'graphql-tag'
+import { gql } from '@apollo/client'
+
+export const movieBookmarkFragment = gql`
+  fragment movieBookmark on Movie {
+    ... on Movie {
+      _id
+      title
+      type
+      bookmarked
+      images {
+        poster {
+          thumb
+        }
+      }
+    }
+  }
+`
 
 export const movieMinimalFragment = gql`
   fragment movieMinimal on Movie {
     _id
-    __typename
     title
     type
     watched {
@@ -21,7 +36,6 @@ export const movieMinimalFragment = gql`
 export default gql`
   fragment movie on Movie {
     _id
-    __typename
     title
     genres
     synopsis

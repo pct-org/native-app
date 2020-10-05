@@ -9,43 +9,7 @@ const SCHEMA_VERSION = '6' // Must be a string.
 const SCHEMA_VERSION_KEY = 'apollo-schema-version'
 
 export default async(host) => {
-  const cache = new InMemoryCache({
-    dataIdFromObject: (object) => {
-      if (object._id) {
-        // We need something else for download otherwise it overwrites the movie
-        if (object.__typename === 'Download') {
-          return `${object.__typename}-${object._id}`
-        }
-
-        return object._id
-      }
-
-      return defaultDataIdFromObject(object)
-    },
-
-    cacheRedirects: {
-      Query: {
-        movie: (_, args, { getCacheKey }) => {
-          return getCacheKey({
-            __typename: 'Movie',
-            _id: args._id,
-          })
-        },
-        show: (_, args, { getCacheKey }) => {
-          return getCacheKey({
-            __typename: 'Show',
-            _id: args._id,
-          })
-        },
-        download: (_, args, { getCacheKey }) => {
-          return getCacheKey({
-            __typename: 'Download',
-            _id: `Download-${args._id}`,
-          })
-        },
-      },
-    },
-  })
+  const cache = new InMemoryCache({})
 
   const persistor = new CachePersistor({
     cache,

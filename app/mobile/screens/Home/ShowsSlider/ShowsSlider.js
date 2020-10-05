@@ -4,7 +4,7 @@ import { useQuery } from '@apollo/client'
 
 import i18n from 'modules/i18n'
 import fetchMoreUpdateQuery from 'modules/GraphQL/helpers/fetchMoreUpdateQuery'
-import ShowsQuery from 'modules/GraphQL/ShowsQuery'
+import ShowsQuery from 'modules/GraphQL/ShowsGraphQL'
 
 import CardSlider from 'components/CardSlider'
 
