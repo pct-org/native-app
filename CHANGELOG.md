@@ -1,3 +1,12 @@
+## [1.10.3](https://github.com/pct-org/native-app/compare/v1.10.2...v1.10.3) (2020-10-05)
+
+
+### Bug Fixes
+
+* Fixes for API issues ([e5f4cf5](https://github.com/pct-org/native-app/commit/e5f4cf5f6e9878141fde4534cd18d0ef458fc4a2))
+
+
+
 ## [1.10.2](https://github.com/pct-org/native-app/compare/v1.10.1...v1.10.2) (2020-10-02)
 
 
@@ -109,17 +118,6 @@
 ### Features
 
 * Added active downloads to settings screen ([8d2917f](https://github.com/pct-org/native-app/commit/8d2917f8cc59578e60f0d339b96d02aaa6e7410c))
-
-
-
-## [1.4.2](https://github.com/pct-org/native-app/compare/v1.4.1...v1.4.2) (2020-05-12)
-
-
-### Bug Fixes
-
-* Fixed chromecast not casting while connected and opening item ([c4d8617](https://github.com/pct-org/native-app/commit/c4d8617ab3c2b345661e031c917453d24a634f76))
-* Fixed issue where fetch more kept being called ([e0e7139](https://github.com/pct-org/native-app/commit/e0e71399836a5c54400dc04a53994ada1bfb301b))
-* Fixed search bar not completely hiding ([dda417b](https://github.com/pct-org/native-app/commit/dda417bf221333e662642419d48f47d2e08eb03b))
 
 
 
