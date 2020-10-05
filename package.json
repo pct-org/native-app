@@ -26,7 +26,7 @@
     "test:watch": "yarn test --watch"
   },
   "dependencies": {
-    "@apollo/client": "^3.2.1",
+    "@apollo/client": "^3.2.2",
     "@react-native-community/async-storage": "1.12.0",
     "@react-native-community/masked-view": "^0.1.10",
     "@react-native-community/netinfo": "5.9.7",
@@ -91,11 +91,11 @@
     "eslint-plugin-jsx-a11y": "6.3.1",
     "eslint-plugin-node": "11.1.0",
     "eslint-plugin-promise": "4.2.1",
-    "eslint-plugin-react": "7.21.2",
+    "eslint-plugin-react": "7.21.3",
     "eslint-plugin-standard": "4.0.1",
     "get-dev-paths": "^0.1.1",
     "husky": "4.3.0",
-    "jest": "26.4.2",
+    "jest": "26.5.0",
     "jest-enzyme": "^7.1.2",
     "jest-react-native": "^18.0.0",
     "metro-react-native-babel-preset": "0.63.0",

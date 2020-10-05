@@ -1,5 +1,4 @@
 import React from 'react'
-import { Text } from 'react-native'
 import NetInfo from '@react-native-community/netinfo'
 import AsyncStorage from '@react-native-community/async-storage'
 import SplashScreen from 'react-native-splash-screen'
@@ -34,6 +33,7 @@ export default class IpFinder extends React.Component {
     // Check if we have host or that current is still available and if we are connected to wifi
     // other check for host
     if ((!host || !(await this.isHost(host))) && newState.connectedToWifi) {
+      ip = null
       host = null
 
       SplashScreen.hide()
@@ -47,7 +47,7 @@ export default class IpFinder extends React.Component {
       }
 
       // Check if host is still null
-      if (!host) {
+      if (!host && newState.connectedToWifi) {
         const deviceIp = await deviceInfo.getIpAddress()
 
         ip = await this.getIP(deviceIp)
@@ -123,21 +123,17 @@ export default class IpFinder extends React.Component {
 
   render() {
     const { children } = this.props
-    const { loading, failed, host, ip, connectedToWifi } = this.state
+    const { loading, failed, host, ip } = this.state
 
     if (loading || failed) {
       return (
         <FullScreenLoading withLoader={!failed}>
           {i18n.t(failed
-            ? 'Could not find GraphQL API'
-            : 'Searching for GraphQL API',
+            ? 'Could not find API'
+            : 'Searching for API',
           )}
         </FullScreenLoading>
       )
-    }
-
-    if (!connectedToWifi) {
-      return <Text>Connect to your wifi</Text>
     }
 
     return (

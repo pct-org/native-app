@@ -1,4 +1,4 @@
-import gql from 'graphql-tag'
+import { gql } from '@apollo/client'
 
 export const progressMutation = gql`
   mutation($_id: String!, $type: String!, $progress: Float!) {

@@ -1,10 +1,9 @@
-import gql from 'graphql-tag'
+import { gql } from '@apollo/client'
 
 export const MovieQuery = gql`
   query movie($_id: String!) {
     item: movie(_id: $_id) {
       _id
-      __typename
       title
       genres
       synopsis

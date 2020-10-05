@@ -1,4 +1,4 @@
-import gql from 'graphql-tag'
+import { gql } from '@apollo/client'
 
 export default gql`
   fragment download on Download {
@@ -27,6 +27,5 @@ export default gql`
         title
       }
     }
-    __typename
   }
 `

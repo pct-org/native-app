@@ -1,9 +1,8 @@
-import gql from 'graphql-tag'
+import { gql } from '@apollo/client'
 
 export const movieFragment = gql`
   fragment movie on Movie {
     _id
-    __typename
     title
     genres
     synopsis

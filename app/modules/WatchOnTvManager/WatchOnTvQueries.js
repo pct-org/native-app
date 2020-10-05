@@ -1,4 +1,4 @@
-import gql from 'graphql-tag'
+import { gql } from '@apollo/client'
 
 export const SendCommandToTv = gql`
   mutation command($command: String! $quality: String! $_id: String! $itemType: String!, $torrentType: String) {

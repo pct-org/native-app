@@ -2,7 +2,7 @@ import React from 'react'
 import { useQuery } from '@apollo/client'
 
 import i18n from 'modules/i18n'
-import MyEpisodesQuery from 'modules/GraphQL/MyEpisodesQuery'
+import MyEpisodesQuery from 'modules/GraphQL/EpisodesGraphQL'
 
 import EpisodesSlider from 'components/MyEpisodesSlider'
 

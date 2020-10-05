@@ -9,7 +9,7 @@ import i18n from 'modules/i18n'
 import dimensions from 'modules/dimensions'
 import colors from 'modules/colors'
 import fetchMoreUpdateQuery from 'modules/GraphQL/helpers/fetchMoreUpdateQuery'
-import MoviesQuery from 'modules/GraphQL/MoviesQuery'
+import MoviesQuery from 'modules/GraphQL/MoviesGraphQL'
 
 import CardSlider from 'components/CardSlider'
 import ScrollViewWithStatusBar from 'components/ScrollViewWithStatusBar'
