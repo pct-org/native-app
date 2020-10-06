@@ -1,3 +1,4 @@
+import BaseButton from 'components/BaseButton'
 import React from 'react'
 import PropTypes from 'prop-types'
 import { View, Linking } from 'react-native'
@@ -126,21 +127,24 @@ export const About = ({ data, ipFinder }) => (
       </View>
     </Container>
 
-    <Container
-      style={[styles.container, styles.divider]}
-      elevation={2}>
+    <BaseButton
+      onPress={() => navigate('AppChangelog')}
+    >
+      <Container
+        style={[styles.container, styles.divider]}
+        elevation={2}>
+        <View style={styles.iconContainer}>
+          <Icon name={'popcorn'} />
+        </View>
 
-      <View style={styles.iconContainer}>
-        <Icon name={'popcorn'} />
-      </View>
-
-      <View style={styles.textContainer}>
-        <Typography variant={'subtitle2'}>App</Typography>
-        <Typography variant={'caption'}>
-          {i18n.t('Version: {{version}}', { version: Updater?.UpdateRNApp?.versionName ?? 'unknown' })}
-        </Typography>
-      </View>
-    </Container>
+        <View style={styles.textContainer}>
+          <Typography variant={'subtitle2'}>App</Typography>
+          <Typography variant={'caption'}>
+            {i18n.t('Version: {{version}}', { version: Updater?.UpdateRNApp?.versionName ?? 'unknown' })}
+          </Typography>
+        </View>
+      </Container>
+    </BaseButton>
 
     <Container
       style={[styles.container, styles.divider]}
@@ -216,14 +220,6 @@ export const About = ({ data, ipFinder }) => (
       </View>
 
     </Container>
-
-    <TextButton onPress={() => navigate('AppChangelog')}>
-      Changelog
-    </TextButton>
-
-    <TextButton onPress={() => Linking.openURL(`http://${ipFinder.ip}:${ipFinder.SCRAPER_PORT}/files`)}>
-      Log files
-    </TextButton>
 
   </Container>
 )

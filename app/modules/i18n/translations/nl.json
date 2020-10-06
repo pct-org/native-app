@@ -66,5 +66,11 @@
   "Most Watched Shows": "Meest Bekeken Series",
   "Added to your list": "toegevoegd aan je lijst",
   "Removed from your list":"Verwijderd van je lijst",
-  "undo": "ongedaan maken"
+  "undo": "ongedaan maken",
+  "Downloading {{quality}}, {{progress}}%": "Downloading in {{quality}}, {{progress}}%",
+  "Remove download": "Remove download",
+  "Remove from queue": "Remove from queue",
+  "Stop downloading": "Stop downloading",
+  "Copy to phone": "Copy to phone",
+  "Similar to {{name}}": "Similar to {{name}}"
 }

@@ -14,7 +14,7 @@ export const MoviesModeQuery = gql`
 
 export const RelatedMoviesQuery = gql`
   query relatedMovies($_id: String!) {
-    relatedMovies(_id: $_id) {
+    movies: relatedMovies(_id: $_id) {
       ...movieMinimal
     }
   }

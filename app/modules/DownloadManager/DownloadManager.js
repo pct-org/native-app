@@ -115,10 +115,14 @@ export class DownloadManager extends React.Component {
     return downloads.find(down => down._id === _id)
   }
 
-  handleGetActiveDownload = () => {
+  handleGetDownloads = () => {
     const { downloads } = this.state
 
-    return downloads.filter(down => (
+    return downloads
+  }
+
+  handleGetActiveDownload = () => {
+    return this.handleGetDownloads().filter((down) => (
       [
         constants.STATUS_QUEUED,
         constants.STATUS_CONNECTING,
@@ -198,6 +202,7 @@ export class DownloadManager extends React.Component {
       startDownload: this.handleStartDownload,
       updateDownload: this.handleUpdateDownload,
       removeDownload: this.handleRemoveDownload,
+      getDownloads: this.handleGetDownloads,
       getActiveDownloads: this.handleGetActiveDownload,
       getDownload: this.handleGetDownload,
       downloadExists: this.handleDownloadExists,

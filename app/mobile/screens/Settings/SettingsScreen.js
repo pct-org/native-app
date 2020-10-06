@@ -47,9 +47,7 @@ export const Settings = () => {
           />
         }>
 
-        <About
-          data={aboutData}
-        />
+        <About data={aboutData} />
 
         <Subtitles />
 
