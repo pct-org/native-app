@@ -18,7 +18,7 @@ export const BookmarksSlider = ({ handleGoTo, onPress }) => {
   )
 
   useEffect(() => {
-    subscribeToMore({
+    const unsubscribe = subscribeToMore({
       document: BookmarkedSubscription,
       updateQuery: (prev, { subscriptionData }) => {
         if (!subscriptionData.data || !subscriptionData.data.bookmarked) {
@@ -37,12 +37,17 @@ export const BookmarksSlider = ({ handleGoTo, onPress }) => {
         } else {
           // Remove the bookmark
           return Object.assign({}, {
-            bookmarks: prev.bookmarks.filter(prevBookmark => prevBookmark._id !== bookmarked._id),
+            bookmarks: prev.bookmarks.filter((prevBookmark) => prevBookmark._id !== bookmarked._id),
           })
         }
       },
     })
 
+    return () => {
+      if (unsubscribe) {
+        unsubscribe()
+      }
+    }
   }, [])
 
   if (!loading && (!data || !data.bookmarks || data.bookmarks.length === 0)) {
