@@ -1,3 +1,13 @@
+## [1.10.4](https://github.com/pct-org/native-app/compare/v1.10.3...v1.10.4) (2020-10-07)
+
+
+### Bug Fixes
+
+* Fixed bottom sheet not closing when going to play item ([d400282](https://github.com/pct-org/native-app/commit/d400282e34be5d2995b92036542be1aaebd8cd44))
+* Unsubscribe from bookmarks on unmount ([c162be1](https://github.com/pct-org/native-app/commit/c162be139b08921041bc1c1cf562254a62d04c39))
+
+
+
 ## [1.10.3](https://github.com/pct-org/native-app/compare/v1.10.2...v1.10.3) (2020-10-05)
 
 
@@ -109,15 +119,6 @@
 
 * Added button in settings to go to the log files ([ae50796](https://github.com/pct-org/native-app/commit/ae50796f86a43f9e5a317da1c2f01ac39dfc379b))
 * Clear the search before going back to previous screen ([4fdabe3](https://github.com/pct-org/native-app/commit/4fdabe34d6cfdb1b3ab020cbe9311eb2cb37ccc1))
-
-
-
-# [1.5.0](https://github.com/pct-org/native-app/compare/v1.4.2...v1.5.0) (2020-05-13)
-
-
-### Features
-
-* Added active downloads to settings screen ([8d2917f](https://github.com/pct-org/native-app/commit/8d2917f8cc59578e60f0d339b96d02aaa6e7410c))
 
 
 
