@@ -5,7 +5,7 @@ import { CachePersistor } from 'apollo-cache-persist'
 import { WebSocketLink } from '@apollo/client/link/ws'
 import { getMainDefinition } from '@apollo/client/utilities'
 
-const SCHEMA_VERSION = '7' // Must be a string.
+const SCHEMA_VERSION = '9' // Must be a string.
 const SCHEMA_VERSION_KEY = 'apollo-schema-version'
 
 export default async(host) => {
@@ -44,8 +44,8 @@ export default async(host) => {
         const definition = getMainDefinition(query)
 
         return (
-          definition.kind === 'OperationDefinition' &&
-          definition.operation === 'subscription'
+          definition.kind === 'OperationDefinition'
+          && definition.operation === 'subscription'
         )
       },
       new WebSocketLink({
