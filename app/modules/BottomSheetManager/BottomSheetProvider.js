@@ -1,5 +1,4 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 import { StyleSheet, View } from 'react-native'
 import BottomSheet from 'reanimated-bottom-sheet'
 import ReAnimated from 'react-native-reanimated'
@@ -56,7 +55,7 @@ export const BottomSheetProvider = ({ children }) => {
 
   useBackButton(() => {
     if (visible && sheetRef.current) {
-      sheetRef.current.snapTo(bottomSheetConfig.snapPoints.length - 1)
+      closeBottomSheet()
 
       return true
     }
@@ -88,8 +87,12 @@ export const BottomSheetProvider = ({ children }) => {
     }
   }
 
+  const closeBottomSheet = () => {
+    sheetRef.current.snapTo(bottomSheetConfig.snapPoints.length - 1)
+  }
+
   return (
-    <BottomSheetContext.Provider value={[openBottomSheet, updateBottomSheet]}>
+    <BottomSheetContext.Provider value={[openBottomSheet, updateBottomSheet, closeBottomSheet]}>
 
       {children}
 
@@ -124,7 +127,7 @@ export const BottomSheetProvider = ({ children }) => {
             style={{
               height: bottomSheetConfig.biggestSnapPoint,
             }}>
-            {bottomSheetConfig.renderContent()}
+            {visible && bottomSheetConfig.renderContent()}
           </Container>
         )}
       />

@@ -11,7 +11,7 @@ let fetchingMore = false
 export default (type, data, fetchMore) => () => {
   // Make sure we are only fetching more once
   if (fetchingMore || !data) {
-    return
+    return null
   }
 
   fetchingMore = true
@@ -33,4 +33,3 @@ export default (type, data, fetchMore) => () => {
     },
   })
 }
-

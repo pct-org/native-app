@@ -21,6 +21,7 @@ export const movieMinimalFragment = gql`
     _id
     title
     type
+    bookmarked
     watched {
       complete
       progress

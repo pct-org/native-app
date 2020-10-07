@@ -16,7 +16,9 @@ import { POSSIBLE_SUBS } from './SubtitlesConstants'
 
 export const styles = {
 
-  root: {},
+  root: {
+    paddingTop: dimensions.UNIT * 2,
+  },
 
   title: {
     marginLeft: dimensions.UNIT,

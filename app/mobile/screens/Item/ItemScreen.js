@@ -1,4 +1,3 @@
-import BottomSheetManager from 'modules/BottomSheetManager/BottomSheetProvider'
 import React, { useEffect } from 'react'
 import { StyleSheet, View, InteractionManager, Linking } from 'react-native'
 import { useLazyQuery } from '@apollo/client'

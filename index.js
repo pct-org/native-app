@@ -6,7 +6,8 @@ enableScreens()
 
 LogBox.ignoreLogs([
   'Debugger and device times',
-  'Cache data may be lost when replacing'
+  'Cache data may be lost when replacing',
+  'The updateQuery callback for fetchMore is deprecated'
 ])
 
 import App from './app/index'

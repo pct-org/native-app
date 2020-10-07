@@ -30,9 +30,9 @@ export const ItemOptions = ({
   animatable,
   onClose,
   onTorrentPress,
-  canOpenBottomSheet
+  canOpenBottomSheet,
 }) => {
-  const [openBottomSheet, updateBottomSheet] = useBottomSheet()
+  const [openBottomSheet, updateBottomSheet, closeBottomSheet] = useBottomSheet()
 
   const getBottomSheetConfig = () => {
     // When allTorrents changes update the content heights
@@ -94,6 +94,14 @@ export const ItemOptions = ({
 
   }, [visible])
 
+  const handleTorrentPress = !onTorrentPress
+    ? undefined
+    : React.useCallback((torrent, download) => {
+      closeBottomSheet()
+
+      onTorrentPress(torrent, download)
+    }, [])
+
   const renderBottomSheetContent = React.useCallback(() => {
     return (
       <View>
@@ -108,7 +116,7 @@ export const ItemOptions = ({
           item={item}
           variant={variant}
           torrents={allTorrents}
-          onPress={onTorrentPress} />
+          onPress={handleTorrentPress} />
 
         {variant === constants.TYPE_DOWNLOAD && (
           <>

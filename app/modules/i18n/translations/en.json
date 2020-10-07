@@ -73,5 +73,6 @@
   "Remove download": "Remove download",
   "Remove from queue": "Remove from queue",
   "Stop downloading": "Stop downloading",
-  "Copy to phone": "Copy to phone"
+  "Copy to phone": "Copy to phone",
+  "Similar to {{name}}": "Similar to {{name}}"
 }

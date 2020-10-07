@@ -22,7 +22,6 @@ export const MostWatchedShowsQuery = gql`
   ${showMinimalFragment}
 `
 
-
 export default gql`
   query shows($offset: Float!, $query: String) {
     shows(limit: 25, offset: $offset, query: $query) {

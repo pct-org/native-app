@@ -30,7 +30,7 @@ export const styles = StyleSheet.create({
 
 })
 // TODO:: Move to mobile/components
-export const CardSlider = ({ title, items, onPress, onEndReached, goToMore, loading, cardStyle, cardPosterSize }) => {
+export const CardSlider = ({ title, items, onPress, onEndReached, goToMore, loading, style, cardStyle, cardPosterSize }) => {
   const renderCard = ({ item }) => {
     const empty = !item
 
@@ -50,7 +50,7 @@ export const CardSlider = ({ title, items, onPress, onEndReached, goToMore, load
   }
 
   return (
-    <View style={styles.root}>
+    <View style={[styles.root, style]}>
 
       {(title || goToMore) && (
         <BaseButton
@@ -104,12 +104,13 @@ CardSlider.propTypes = {
   goToMore: PropTypes.func,
 
   loading: PropTypes.bool,
+  style: PropTypes.object,
 }
 
 CardSlider.defaultProps = {
   onEndReached: null,
   goToMore: null,
-
+  style: {},
   loading: false,
   cardPosterSize: undefined,
 }

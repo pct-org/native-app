@@ -80,8 +80,8 @@ export const Home = ({ navigation }) => {
   const movies = noMoviesYet
     ? null
     : moviesData.movies
-      .filter(movie => !movie.bookmarked)
-      .filter(movie => !movie.watched.complete)
+      .filter((movie) => !movie.bookmarked)
+      .filter((movie) => !movie.watched.complete)
 
   return (
     <ScrollViewWithStatusBar>
