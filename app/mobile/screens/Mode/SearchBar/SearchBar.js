@@ -7,6 +7,7 @@ import { useCollapsibleStack } from 'react-navigation-collapsible'
 
 import colors from 'modules/colors'
 import dimensions from 'modules/dimensions'
+import constants from 'modules/constants'
 
 import Container from 'components/Container'
 import Icon from 'components/Icon'
@@ -17,7 +18,7 @@ export const styles = StyleSheet.create({
   root: {
     position: 'absolute',
     width: '100%',
-    height: 50,
+    height: dimensions.SEARCH_BAR_HEIGHT,
     top: StatusBar.currentHeight + dimensions.UNIT,
     display: 'flex',
     justifyContent: 'center',
@@ -26,28 +27,21 @@ export const styles = StyleSheet.create({
 
   container: {
     width: dimensions.SCREEN_WIDTH - (dimensions.UNIT * 2),
-    height: '100%',
-    borderRadius: dimensions.BORDER_RADIUS,
+    borderRadius: dimensions.SEARCH_BAR_BORDER_RADIOS,
     overflow: 'hidden',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 
   input: {
     height: '100%',
-    width: '80%',
+    flex: 1,
     color: colors.ICON.WHITE,
-    marginLeft: 40,
-  },
-
-  cancel: {
-    position: 'absolute',
-    right: dimensions.UNIT,
-    top: dimensions.UNIT,
   },
 
   icon: {
-    position: 'absolute',
-    left: dimensions.UNIT,
-    top: dimensions.UNIT,
+    margin: dimensions.UNIT,
   },
 
 })
@@ -120,35 +114,51 @@ export const SearchBar = ({ searchedQuery, search, flatListRef }) => {
         elevation={1}
         style={styles.container}>
 
+        <Icon
+          style={styles.icon}
+          name={'magnify'}
+          color={'white'}
+          emphasis={'medium'}
+          size={dimensions.SEARCH_BAR_ICON_SIZE}
+        />
+
+        <TextInput
+          style={styles.input}
+          selectionColor={colors.WHITE}
+          underlineColorAndroid={'transparent'}
+          onChangeText={handleSearch}
+          value={query} />
+
         {searchedQuery && (
           <Animatable.View
-            style={styles.cancel}
+            style={styles.icon}
             animation={searchedQuery.trim().length > 0 ? 'zoomIn' : 'zoomOut'}
-            duration={300}
+            duration={constants.ANIMATION_DURATIONS.enteringScreen}
             useNativeDriver>
             <IconButton
               name={'close-circle'}
               color={'primary'}
               onPress={cancelSearch}
-              size={dimensions.ICON_SIZE_MEDIUM}
+              size={dimensions.SEARCH_BAR_ICON_SIZE}
             />
           </Animatable.View>
         )}
 
-        <Icon
-          style={styles.icon}
-          name={'magnify'}
-          color={'white'}
-          size={dimensions.ICON_SIZE_MEDIUM}
-        />
-
-        <TextInput
-          style={styles.input}
-          selectionColor={'#FFF'}
-          underlineColorAndroid={'transparent'}
-          onChangeText={handleSearch}
-          value={query} />
-
+        {!searchedQuery && (
+          <Animatable.View
+            style={styles.icon}
+            animation={query?.trim()?.length > 0 ? 'zoomOut' : 'zoomIn'}
+            duration={constants.ANIMATION_DURATIONS.enteringScreen}
+            useNativeDriver>
+            <IconButton
+              name={'dots-vertical'}
+              color={'primary'}
+              emphasis={'medium'}
+              onPress={console.log}
+              size={dimensions.SEARCH_BAR_ICON_SIZE}
+            />
+          </Animatable.View>
+        )}
       </Container>
 
     </Animated.View>

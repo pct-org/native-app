@@ -10,8 +10,8 @@ import colors from 'modules/colors'
 import dimensions from 'modules/dimensions'
 import useBackButton from 'modules/hooks/useBackButton'
 import { MoviesModeQuery } from 'modules/GraphQL/MoviesGraphQL'
-import ShowsQuery from 'modules/GraphQL/ShowsGraphQL'
-import BookmarksQuery from 'modules/GraphQL/BookmarksGraphQL'
+import { ShowsModeQuery } from 'modules/GraphQL/ShowsGraphQL'
+import { BookmarksModeQuery } from 'modules/GraphQL/BookmarksGraphQL'
 import fetchMoreUpdateQuery from 'modules/GraphQL/helpers/fetchMoreUpdateQuery'
 
 import Card from 'components/Card'
@@ -39,26 +39,51 @@ const styles = StyleSheet.create({
   },
 })
 
-export const getQuery = (mode) => {
+export const useMode = (mode) => React.useMemo(() => {
+  const defaultSortingContent = 'trending'
+  const sortingOptionsContent = ['trending', 'name', 'rating', 'released', 'added', 'year']
+
   switch (mode) {
     case 'movies':
-      return MoviesModeQuery
+      return {
+        query: MoviesModeQuery,
+        sort: defaultSortingContent,
+        sortOptions: sortingOptionsContent,
+      }
     case 'shows':
-      return ShowsQuery
+      return {
+        query: ShowsModeQuery,
+        sort: defaultSortingContent,
+        sortOptions: sortingOptionsContent,
+      }
+
     case 'bookmarks':
-      return BookmarksQuery
+      return {
+        query: BookmarksModeQuery,
+        sort: null,
+      }
+
+    default:
+      return {
+        query: null,
+        sort: null,
+      }
   }
-}
+}, [mode])
 
 export const Mode = ({ mode, navigation }) => {
   const flatListRef = useRef(null)
+  const modeInfo = useMode(mode)
+  const [sort, setSorting] = useState(modeInfo.sort)
   const [query, setQuery] = useState(null)
+
   const [executeQuery, { loading, data, fetchMore }] = useLazyQuery(
-    getQuery(mode),
+    modeInfo.query,
     {
       variables: {
         offset: 0,
         query,
+        sort,
       },
     },
   )
@@ -134,7 +159,7 @@ export const Mode = ({ mode, navigation }) => {
         ListEmptyComponent={renderNothingFound}
         ListHeaderComponent={() => (
           <View style={{
-            marginTop: 50 + dimensions.STATUSBAR_HEIGHT + dimensions.UNIT,
+            marginTop: dimensions.STATUSBAR_HEIGHT + +dimensions.SEARCH_BAR_HEIGHT + dimensions.UNIT,
           }} />
         )}
         ListFooterComponent={() => <View style={{ width: dimensions.UNIT * 2 }} />}
@@ -157,7 +182,8 @@ export const Mode = ({ mode, navigation }) => {
       <SearchBar
         flatListRef={flatListRef}
         searchedQuery={query}
-        search={setQuery} />
+        search={setQuery}
+      />
 
     </View>
   )
