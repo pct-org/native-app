@@ -1,5 +1,7 @@
 import { gql } from '@apollo/client'
 
+import torrentFragment from 'modules/GraphQL/fragments/torrentFragment'
+
 export default gql`
   query episodes {
     episodes: myEpisodes {
@@ -33,15 +35,13 @@ export default gql`
         }
       }
       torrents {
-        quality
-        sizeString
-        type
+        ...torrent
       }
       searchedTorrents {
-        quality
-        sizeString
-        type
+        ...torrent
       }
     }
   }
+  
+  ${torrentFragment}
 `

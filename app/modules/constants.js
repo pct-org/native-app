@@ -14,8 +14,11 @@ export default {
   STATUS_FAILED: 'failed',
   STATUS_REMOVED: 'removed',
 
-  KEY_DEFAULT_SUBTITLE: '@Pct.defaultSubtitle',
+  MODE_MOVIES: 'movies',
+  MODE_SHOWS: 'shows',
+  MODE_BOOKMARKS: 'bookmarks',
 
+  KEY_DEFAULT_SUBTITLE: '@Pct.defaultSubtitle',
 
   ANIMATION_DURATIONS: {
     complex: 375,
@@ -25,6 +28,6 @@ export default {
     shorter: 200,
     shortest: 150,
     standard: 300,
-  }
+  },
 
 }

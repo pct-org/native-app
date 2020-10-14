@@ -72,5 +72,14 @@
   "Remove from queue": "Remove from queue",
   "Stop downloading": "Stop downloading",
   "Copy to phone": "Copy to phone",
-  "Similar to {{name}}": "Similar to {{name}}"
+  "Similar to {{name}}": "Similar to {{name}}",
+  "Filter": "Filter",
+  "Sorting": "Sorteren",
+  "Default": "Standaard",
+  "Popularity": "Populariteit",
+  "Name":  "Naam",
+  "Rating": "Beoordeling",
+  "Released":  "Uitgebracht",
+  "Year": "Jaar",
+  "Added":  "Toegevoegd"
 }

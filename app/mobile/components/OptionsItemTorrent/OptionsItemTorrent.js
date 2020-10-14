@@ -35,12 +35,21 @@ export const OptionsItemTorrent = ({
     return !(download.torrentType === torrent.type && download.quality === torrent.quality)
   }, [download, disabled])
 
-  const itemSubLabel = React.useMemo(() => {
+  const labelLine2 = React.useMemo(() => {
     if (!isItemDisabled && download?.status === constants.STATUS_DOWNLOADING) {
       return download.timeRemaining
     }
 
     return `${torrent.provider} - ${torrent.sizeString}`
+  }, [download, isItemDisabled])
+
+  const subLabel = React.useMemo(() => {
+    if (!isItemDisabled && download?.status === constants.STATUS_DOWNLOADING) {
+      return `${download.numPeers} peer${download.numPeers > 1 ? 's' : ''}`
+    }
+
+    return null
+
   }, [download, isItemDisabled])
 
   const subLabelLine2 = React.useMemo(() => {
@@ -96,7 +105,8 @@ export const OptionsItemTorrent = ({
         ].includes(download.status)
       }
       label={torrent.quality}
-      subLabel={itemSubLabel}
+      labelLine2={labelLine2}
+      subLabel={subLabel}
       subLabelLine2={subLabelLine2}
       onPress={handleOnTorrentClick()}
     />

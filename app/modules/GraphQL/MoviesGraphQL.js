@@ -3,7 +3,7 @@ import { gql } from '@apollo/client'
 import movieFragment, { movieMinimalFragment } from './fragments/movieFragment'
 
 export const MoviesModeQuery = gql`
-  query movies($offset: Float!, $query: String, $sort: String!) {
+  query movies($offset: Float!, $query: String, $sort: String) {
     movies(limit: 25, offset: $offset, query: $query, sort: $sort) {
       ...movieMinimal
     }

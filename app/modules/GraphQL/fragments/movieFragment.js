@@ -1,5 +1,7 @@
 import { gql } from '@apollo/client'
 
+import torrentFragment from 'modules/GraphQL/fragments/torrentFragment'
+
 export const movieBookmarkFragment = gql`
   fragment movieBookmark on Movie {
     ... on Movie {
@@ -57,14 +59,10 @@ export default gql`
       progress
     }
     torrents {
-      quality
-      sizeString
-      type
+      ...torrent
     }
     searchedTorrents {
-      quality
-      sizeString
-      type
+      ...torrent
     }
     images {
       backdrop {
@@ -76,4 +74,6 @@ export default gql`
       }
     }
   }
+  
+  ${torrentFragment}
 `

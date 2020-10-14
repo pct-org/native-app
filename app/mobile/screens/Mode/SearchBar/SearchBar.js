@@ -1,17 +1,21 @@
 import React, { useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
-import { StyleSheet, StatusBar, TextInput, Animated } from 'react-native'
-import * as Animatable from 'react-native-animatable'
+import { StyleSheet, StatusBar, TextInput, Animated, View } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import { useCollapsibleStack } from 'react-navigation-collapsible'
 
 import colors from 'modules/colors'
 import dimensions from 'modules/dimensions'
 import constants from 'modules/constants'
+import i18n from 'modules/i18n'
+import { useBottomSheet } from 'modules/BottomSheetManager'
 
 import Container from 'components/Container'
 import Icon from 'components/Icon'
 import IconButton from 'components/IconButton'
+import OptionsGroup from 'mobile/components/OptionsGroup'
+import OptionsHeader from 'mobile/components/OptionsHeader'
+import OptionsItem from 'mobile/components/OptionsItem'
 
 export const styles = StyleSheet.create({
 
@@ -46,10 +50,31 @@ export const styles = StyleSheet.create({
 
 })
 
-export const SearchBar = ({ searchedQuery, search, flatListRef }) => {
+export const SearchBar = ({ searchedQuery, search, flatListRef, mode, setSorting, setFilter }) => {
+  const [openBottomSheet, updateBottomSheet, closeBottomSheet] = useBottomSheet()
   const navigation = useNavigation()
   const [query, setQuery] = useState(searchedQuery)
   const [timeout, setTheTimeout] = useState(null)
+
+  const bottomSheetOptions = React.useMemo(() => {
+    if (mode === constants.MODE_BOOKMARKS) {
+      return [
+        { label: i18n.t('None'), value: undefined },
+        { label: i18n.t('Movies'), value: 'movies' },
+        { label: i18n.t('Shows'), value: 'shows' },
+      ]
+    }
+
+    return [
+      { label: i18n.t('Default'), value: 'trending' },
+      { label: i18n.t('Popularity'), value: 'popularity' },
+      { label: i18n.t('Name'), value: 'name' },
+      { label: i18n.t('Rating'), value: 'rating' },
+      { label: i18n.t('Released'), value: 'released' },
+      { label: i18n.t('Year'), value: 'year' },
+      { label: i18n.t('Added'), value: 'added' },
+    ]
+  }, [mode])
 
   useEffect(() => {
     // Search is cleared also clear it here
@@ -91,14 +116,58 @@ export const SearchBar = ({ searchedQuery, search, flatListRef }) => {
     }
   }
 
-  const handleLayout = ({
-    nativeEvent: {
-      layout: { height = 0 },
-    },
-  }) => {
+  const handleLayout = ({ nativeEvent: { layout: { height = 0 } } }) => {
     navigation.setParams({
       collapsibleSubHeaderHeight: height + StatusBar.currentHeight + dimensions.UNIT,
       isCollapsibleDirty: true,
+    })
+  }
+
+  const handleFilterOrSortPress = React.useCallback((option) => () => {
+    if (mode === constants.MODE_BOOKMARKS) {
+      setFilter(option.value)
+
+    } else {
+      setSorting(option.value)
+    }
+
+    closeBottomSheet()
+  }, [mode, closeBottomSheet])
+
+  const renderBottomSheetContent = React.useCallback(() => {
+    return (
+      <View>
+        <OptionsHeader label={
+          mode === constants.MODE_BOOKMARKS
+            ? i18n.t('Filter')
+            : i18n.t('Sorting')
+        } />
+
+        <OptionsGroup style={styles.marginBottomOnly}>
+          {bottomSheetOptions.map((option) => (
+            <OptionsItem
+              key={option.label}
+              icon={'eye-outline'}
+              label={option.label}
+              onPress={handleFilterOrSortPress(option)} />
+          ))}
+        </OptionsGroup>
+      </View>
+    )
+  }, [mode])
+
+  const showBottomSheet = () => {
+    const contentHeight = 100 + (bottomSheetOptions.length * 30)
+
+    openBottomSheet({
+      renderContent: renderBottomSheetContent,
+      snapPoints: [
+        contentHeight,
+        contentHeight,
+        0,
+      ],
+      contentHeight: contentHeight,
+      onClose: null,
     })
   }
 
@@ -130,34 +199,34 @@ export const SearchBar = ({ searchedQuery, search, flatListRef }) => {
           value={query} />
 
         {searchedQuery && (
-          <Animatable.View
+          <IconButton
             style={styles.icon}
-            animation={searchedQuery.trim().length > 0 ? 'zoomIn' : 'zoomOut'}
-            duration={constants.ANIMATION_DURATIONS.enteringScreen}
-            useNativeDriver>
-            <IconButton
-              name={'close-circle'}
-              color={'primary'}
-              onPress={cancelSearch}
-              size={dimensions.SEARCH_BAR_ICON_SIZE}
-            />
-          </Animatable.View>
+            name={'close-circle'}
+            color={'primary'}
+            onPress={cancelSearch}
+            size={dimensions.SEARCH_BAR_ICON_SIZE}
+            animatable={{
+              animation: searchedQuery.trim().length > 0 ? 'zoomIn' : 'zoomOut',
+              duration: constants.ANIMATION_DURATIONS.enteringScreen,
+              useNativeDriver: true,
+            }}
+          />
         )}
 
         {!searchedQuery && (
-          <Animatable.View
+          <IconButton
             style={styles.icon}
-            animation={query?.trim()?.length > 0 ? 'zoomOut' : 'zoomIn'}
-            duration={constants.ANIMATION_DURATIONS.enteringScreen}
-            useNativeDriver>
-            <IconButton
-              name={'dots-vertical'}
-              color={'primary'}
-              emphasis={'medium'}
-              onPress={console.log}
-              size={dimensions.SEARCH_BAR_ICON_SIZE}
-            />
-          </Animatable.View>
+            name={'dots-vertical'}
+            color={'primary'}
+            emphasis={'medium'}
+            onPress={showBottomSheet}
+            size={dimensions.SEARCH_BAR_ICON_SIZE}
+            animatable={{
+              animation: query?.trim()?.length > 0 ? 'zoomOut' : 'zoomIn',
+              duration: constants.ANIMATION_DURATIONS.enteringScreen,
+              useNativeDriver: true,
+            }}
+          />
         )}
       </Container>
 

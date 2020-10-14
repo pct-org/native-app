@@ -16,19 +16,17 @@ export const styles = StyleSheet.create({
     marginRight: dimensions.UNIT,
   },
 
-  labels: {
+  labelsContainer: {
     flex: 1,
   },
 
-  label: {},
-
-  subLabels: {
+  labels: {
     flexDirection: 'row',
   },
 
 })
 
-export const SettingsItem = ({ label, subLabel, subLabelLine2, icon, disabled, loading, downloading }) => {
+export const SettingsItem = ({ label, labelLine2, subLabel, subLabelLine2, icon, disabled, loading, downloading }) => {
   return (
     <>
       {loading && (
@@ -73,21 +71,39 @@ export const SettingsItem = ({ label, subLabel, subLabelLine2, icon, disabled, l
           } />
       )}
 
-      <View style={styles.labels}>
-        <Typography
-          emphasis={
-            disabled
-              ? 'low'
-              : 'high'
-          }
-          style={styles.label}
-          variant={'overline'}>
-          {label}
-        </Typography>
+      <View style={styles.labelsContainer}>
+        {(label || subLabel) && (
+          <View style={styles.labels}>
+            <Typography
+              style={{
+                flex: 1,
+              }}
+              emphasis={
+                disabled
+                  ? 'low'
+                  : 'high'
+              }
+              variant={'overline'}>
+              {label}
+            </Typography>
 
-        {(subLabel || subLabelLine2) && (
-          <View style={styles.subLabels}>
             {subLabel && (
+              <Typography
+                emphasis={
+                  disabled
+                    ? 'low'
+                    : 'medium'
+                }
+                variant={'captionSmall'}>
+                {subLabel}
+              </Typography>
+            )}
+          </View>
+        )}
+
+        {(labelLine2 || subLabelLine2) && (
+          <View style={styles.labels}>
+            {labelLine2 && (
               <Typography
                 style={{
                   flex: 1,
@@ -98,7 +114,7 @@ export const SettingsItem = ({ label, subLabel, subLabelLine2, icon, disabled, l
                     : 'medium'
                 }
                 variant={'captionSmall'}>
-                {subLabel}
+                {labelLine2}
               </Typography>
             )}
 

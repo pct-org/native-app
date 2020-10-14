@@ -8,6 +8,7 @@ import { getDefaultHeaderHeight } from 'react-navigation-collapsible/lib/src/uti
 import i18n from 'modules/i18n'
 import colors from 'modules/colors'
 import dimensions from 'modules/dimensions'
+import constants from 'modules/constants'
 import useBackButton from 'modules/hooks/useBackButton'
 import { MoviesModeQuery } from 'modules/GraphQL/MoviesGraphQL'
 import { ShowsModeQuery } from 'modules/GraphQL/ShowsGraphQL'
@@ -40,57 +41,44 @@ const styles = StyleSheet.create({
 })
 
 export const useMode = (mode) => React.useMemo(() => {
-  const defaultSortingContent = 'trending'
-  const sortingOptionsContent = ['trending', 'name', 'rating', 'released', 'added', 'year']
-
   switch (mode) {
-    case 'movies':
-      return {
-        query: MoviesModeQuery,
-        sort: defaultSortingContent,
-        sortOptions: sortingOptionsContent,
-      }
-    case 'shows':
-      return {
-        query: ShowsModeQuery,
-        sort: defaultSortingContent,
-        sortOptions: sortingOptionsContent,
-      }
+    case constants.MODE_MOVIES:
+      return MoviesModeQuery
 
-    case 'bookmarks':
-      return {
-        query: BookmarksModeQuery,
-        sort: null,
-      }
+    case constants.MODE_SHOWS:
+      return ShowsModeQuery
+
+    case constants.MODE_BOOKMARKS:
+      return BookmarksModeQuery
 
     default:
-      return {
-        query: null,
-        sort: null,
-      }
+      return null
   }
 }, [mode])
 
 export const Mode = ({ mode, navigation }) => {
   const flatListRef = useRef(null)
-  const modeInfo = useMode(mode)
-  const [sort, setSorting] = useState(modeInfo.sort)
-  const [query, setQuery] = useState(null)
+  const modeQuery = useMode(mode)
+  const [sort, setSorting] = useState(undefined)
+  const [filter, setFilter] = useState(undefined)
+  const [query, setQuery] = useState(undefined)
 
   const [executeQuery, { loading, data, fetchMore }] = useLazyQuery(
-    modeInfo.query,
+    modeQuery,
     {
       variables: {
         offset: 0,
         query,
         sort,
+        filter,
       },
     },
   )
 
   useBackButton(() => {
-    if (query?.trim()?.length > 0 && navigation.isFocused()) {
+    if ((query?.trim()?.length > 0 || filter) && navigation.isFocused()) {
       setQuery(null)
+      setFilter(undefined)
 
       return true
     }
@@ -183,6 +171,9 @@ export const Mode = ({ mode, navigation }) => {
         flatListRef={flatListRef}
         searchedQuery={query}
         search={setQuery}
+        mode={mode}
+        setSorting={setSorting}
+        setFilter={setFilter}
       />
 
     </View>

@@ -43,8 +43,8 @@ export const BookmarkedSubscription = gql`
 `
 
 export const BookmarksModeQuery = gql`
-  query bookmarks($offset: Float!,  $query: String) {
-    bookmarks(limit: 25, offset: $offset, query: $query) {
+  query bookmarks($offset: Float!, $query: String, $filter: String) {
+    bookmarks(limit: 25, offset: $offset, query: $query, filter: $filter) {
       ...movieBookmark
 
       ...showBookmark
