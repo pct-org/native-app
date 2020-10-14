@@ -1,3 +1,12 @@
+# [1.11.0](https://github.com/pct-org/native-app/compare/v1.10.4...v1.11.0) (2020-10-14)
+
+
+### Features
+
+* Added filtering / sorting in mode screens ([d4b9298](https://github.com/pct-org/native-app/commit/d4b9298764b5a81eb3d42a0363afb14a868f1753))
+
+
+
 ## [1.10.4](https://github.com/pct-org/native-app/compare/v1.10.3...v1.10.4) (2020-10-07)
 
 
@@ -103,22 +112,6 @@
 ### Features
 
 * Added cast button also to the home screen ([57b97e6](https://github.com/pct-org/native-app/commit/57b97e6716f0e2f061c476b391b8e42707b94e20))
-
-
-
-# [1.6.0](https://github.com/pct-org/native-app/compare/v1.5.0...v1.6.0) (2020-05-18)
-
-
-### Bug Fixes
-
-* Fixed logs button not working ([c7c4861](https://github.com/pct-org/native-app/commit/c7c486125bb9fec917db202e5b7447e2356b67ee))
-* Fixed that you could not search in bookmarks ([c7fc2d7](https://github.com/pct-org/native-app/commit/c7fc2d7575cc5ae4b61e8ca3a276dc03a4bda315))
-
-
-### Features
-
-* Added button in settings to go to the log files ([ae50796](https://github.com/pct-org/native-app/commit/ae50796f86a43f9e5a317da1c2f01ac39dfc379b))
-* Clear the search before going back to previous screen ([4fdabe3](https://github.com/pct-org/native-app/commit/4fdabe34d6cfdb1b3ab020cbe9311eb2cb37ccc1))
 
 
 
