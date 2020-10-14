@@ -42,6 +42,19 @@ export const BookmarkedSubscription = gql`
   ${showBookmarkFragment}
 `
 
+export const BookmarksModeQuery = gql`
+  query bookmarks($offset: Float!, $query: String, $filter: String) {
+    bookmarks(limit: 25, offset: $offset, query: $query, filter: $filter) {
+      ...movieBookmark
+
+      ...showBookmark
+    }
+  }
+
+  ${movieBookmarkFragment}
+  ${showBookmarkFragment}
+`
+
 export default gql`
   query bookmarks($offset: Float!) {
     bookmarks(limit: 25, offset: $offset) {

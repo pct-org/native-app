@@ -8,10 +8,11 @@ import { getDefaultHeaderHeight } from 'react-navigation-collapsible/lib/src/uti
 import i18n from 'modules/i18n'
 import colors from 'modules/colors'
 import dimensions from 'modules/dimensions'
+import constants from 'modules/constants'
 import useBackButton from 'modules/hooks/useBackButton'
 import { MoviesModeQuery } from 'modules/GraphQL/MoviesGraphQL'
-import ShowsQuery from 'modules/GraphQL/ShowsGraphQL'
-import BookmarksQuery from 'modules/GraphQL/BookmarksGraphQL'
+import { ShowsModeQuery } from 'modules/GraphQL/ShowsGraphQL'
+import { BookmarksModeQuery } from 'modules/GraphQL/BookmarksGraphQL'
 import fetchMoreUpdateQuery from 'modules/GraphQL/helpers/fetchMoreUpdateQuery'
 
 import Card from 'components/Card'
@@ -39,33 +40,45 @@ const styles = StyleSheet.create({
   },
 })
 
-export const getQuery = (mode) => {
+export const useMode = (mode) => React.useMemo(() => {
   switch (mode) {
-    case 'movies':
+    case constants.MODE_MOVIES:
       return MoviesModeQuery
-    case 'shows':
-      return ShowsQuery
-    case 'bookmarks':
-      return BookmarksQuery
+
+    case constants.MODE_SHOWS:
+      return ShowsModeQuery
+
+    case constants.MODE_BOOKMARKS:
+      return BookmarksModeQuery
+
+    default:
+      return null
   }
-}
+}, [mode])
 
 export const Mode = ({ mode, navigation }) => {
   const flatListRef = useRef(null)
-  const [query, setQuery] = useState(null)
+  const modeQuery = useMode(mode)
+  const [sort, setSorting] = useState(undefined)
+  const [filter, setFilter] = useState(undefined)
+  const [query, setQuery] = useState(undefined)
+
   const [executeQuery, { loading, data, fetchMore }] = useLazyQuery(
-    getQuery(mode),
+    modeQuery,
     {
       variables: {
         offset: 0,
         query,
+        sort,
+        filter,
       },
     },
   )
 
   useBackButton(() => {
-    if (query?.trim()?.length > 0 && navigation.isFocused()) {
+    if ((query?.trim()?.length > 0 || filter) && navigation.isFocused()) {
       setQuery(null)
+      setFilter(undefined)
 
       return true
     }
@@ -134,7 +147,7 @@ export const Mode = ({ mode, navigation }) => {
         ListEmptyComponent={renderNothingFound}
         ListHeaderComponent={() => (
           <View style={{
-            marginTop: 50 + dimensions.STATUSBAR_HEIGHT + dimensions.UNIT,
+            marginTop: dimensions.STATUSBAR_HEIGHT + +dimensions.SEARCH_BAR_HEIGHT + dimensions.UNIT,
           }} />
         )}
         ListFooterComponent={() => <View style={{ width: dimensions.UNIT * 2 }} />}
@@ -157,7 +170,11 @@ export const Mode = ({ mode, navigation }) => {
       <SearchBar
         flatListRef={flatListRef}
         searchedQuery={query}
-        search={setQuery} />
+        search={setQuery}
+        mode={mode}
+        setSorting={setSorting}
+        setFilter={setFilter}
+      />
 
     </View>
   )

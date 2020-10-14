@@ -127,7 +127,7 @@ export const BottomSheetProvider = ({ children }) => {
             style={{
               height: bottomSheetConfig.biggestSnapPoint,
             }}>
-            {visible && bottomSheetConfig.renderContent()}
+            {bottomSheetConfig.renderContent()}
           </Container>
         )}
       />

@@ -1,16 +1,18 @@
 import { gql } from '@apollo/client'
 
+import torrentFragment from 'modules/GraphQL/fragments/torrentFragment'
+
 export const SearchForBetterEpisode = gql`
   mutation SearchForBetterEpisode($_id: String!) {
     getBetterQualitiesForEpisode(_id: $_id) {
       _id
       searchedTorrents {
-        quality
-        sizeString
-        type
+        ...torrent
       }
     }
   }
+  
+  ${torrentFragment}
 `
 
 export const SearchForBetterMovie = gql`
@@ -18,10 +20,10 @@ export const SearchForBetterMovie = gql`
     getBetterQualitiesForMovie(_id: $_id) {
       _id
       searchedTorrents {
-        quality
-        sizeString
-        type
+        ...torrent
       }
     }
   }
+  
+  ${torrentFragment}
 `

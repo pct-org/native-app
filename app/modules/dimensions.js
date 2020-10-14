@@ -36,6 +36,10 @@ export default {
   BORDER_WIDTH: 1.5,
   BORDER_RADIUS: 5,
 
+  SEARCH_BAR_HEIGHT: getHeight(40),
+  SEARCH_BAR_BORDER_RADIOS: getHeight(6),
+  SEARCH_BAR_ICON_SIZE: getHeight(24),
+
   CARD_HEIGHT: getHeight(useCorrect(130, null, 252)),
   CARD_WIDTH: getWidth(useCorrect(90, null, 175)),
   CARD_HEIGHT_SMALL: getHeight(useCorrect(116, null, 252)),

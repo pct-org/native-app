@@ -48,7 +48,7 @@ export const styles = StyleSheet.create({
 })
 
 export const Home = ({ navigation }) => {
-  const { data: moviesData, fetchMore: moviesFetchMore } = useQuery(
+  const { data: moviesData, fetchMore: moviesFetchMore} = useQuery(
     MoviesQuery,
     {
       variables: {

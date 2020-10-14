@@ -138,7 +138,7 @@ export const ItemOptions = ({
                 disabled
                 icon={'content-copy'}
                 label={i18n.t('Copy to phone')}
-                subLabel={'Item needs to be downloaded for this to become available'} />
+                labelLine2={'Item needs to be downloaded for this to become available'} />
             </OptionsGroup>
           </>
         )}

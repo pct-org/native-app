@@ -10,7 +10,7 @@ export const useDownload = (item) => {
 
   return [
     downloadManager.getDownload(item._id),
-    downloadManager
+    downloadManager,
   ]
 }
 

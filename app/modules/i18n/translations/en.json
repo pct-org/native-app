@@ -74,5 +74,14 @@
   "Remove from queue": "Remove from queue",
   "Stop downloading": "Stop downloading",
   "Copy to phone": "Copy to phone",
-  "Similar to {{name}}": "Similar to {{name}}"
+  "Similar to {{name}}": "Similar to {{name}}",
+  "Filter": "Filter",
+  "Sorting": "Sorting",
+  "Default": "Default",
+  "Popularity": "Popularity",
+  "Name":  "Name",
+  "Rating": "Rating",
+  "Released":  "Released",
+  "Year": "Year",
+  "Added":  "Added"
 }
