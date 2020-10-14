@@ -1,3 +1,12 @@
+## [1.11.1](https://github.com/pct-org/native-app/compare/v1.11.0...v1.11.1) (2020-10-14)
+
+
+### Bug Fixes
+
+* Disable hermes again ([c67ae54](https://github.com/pct-org/native-app/commit/c67ae54936903579969a26310da2c9482ff96725))
+
+
+
 # [1.11.0](https://github.com/pct-org/native-app/compare/v1.10.4...v1.11.0) (2020-10-14)
 
 
@@ -98,20 +107,6 @@
 * Added option to select the default subtitle in settings ([9e7d81d](https://github.com/pct-org/native-app/commit/9e7d81d5e661d2a13efafee7834af07e9bfef03a))
 * Added support for subtiles while casting ([88e7d63](https://github.com/pct-org/native-app/commit/88e7d63e716f48bc47f4aacdcae5599a859e0a93))
 * If default subtitle is set use it when casting ([04cc617](https://github.com/pct-org/native-app/commit/04cc617d32661b2a53fb0f98f9fab83bd9906abf))
-
-
-
-# [1.7.0](https://github.com/pct-org/native-app/compare/v1.6.0...v1.7.0) (2020-05-22)
-
-
-### Bug Fixes
-
-* Fixed that you had to press back twice when opened searched items ([c036f0e](https://github.com/pct-org/native-app/commit/c036f0e01acb6e2d84d78798a80549218426fd37))
-
-
-### Features
-
-* Added cast button also to the home screen ([57b97e6](https://github.com/pct-org/native-app/commit/57b97e6716f0e2f061c476b391b8e42707b94e20))
 
 
 
