@@ -1,3 +1,12 @@
+## [1.11.2](https://github.com/pct-org/native-app/compare/v1.11.1...v1.11.2) (2020-10-23)
+
+
+### Bug Fixes
+
+* Small fixes and improvements ([d2a3c81](https://github.com/pct-org/native-app/commit/d2a3c816b62cf5c05b2e4a77a6fa6e249970f36a))
+
+
+
 ## [1.11.1](https://github.com/pct-org/native-app/compare/v1.11.0...v1.11.1) (2020-10-14)
 
 
@@ -91,22 +100,6 @@
 * Added weekly most watched shows from Trakt slider ([099a3f6](https://github.com/pct-org/native-app/commit/099a3f6d902f74c6979424e5bf6258f4d9a0135d))
 * Also show download quality in settings ([a9d8a6a](https://github.com/pct-org/native-app/commit/a9d8a6a41ecac177618f6323ae86477b83100112))
 * Started on TV implementation (again) ([af33c74](https://github.com/pct-org/native-app/commit/af33c743b9742b210139ea51ec1a6b679796d1bb))
-
-
-
-# [1.8.0](https://github.com/pct-org/native-app/compare/v1.7.0...v1.8.0) (2020-05-31)
-
-
-### Bug Fixes
-
-* Fixed that Bookmark slider created an infinite loop ([ea146fd](https://github.com/pct-org/native-app/commit/ea146fdfc1f8978fcc5e3620d03688e758d39a14))
-
-
-### Features
-
-* Added option to select the default subtitle in settings ([9e7d81d](https://github.com/pct-org/native-app/commit/9e7d81d5e661d2a13efafee7834af07e9bfef03a))
-* Added support for subtiles while casting ([88e7d63](https://github.com/pct-org/native-app/commit/88e7d63e716f48bc47f4aacdcae5599a859e0a93))
-* If default subtitle is set use it when casting ([04cc617](https://github.com/pct-org/native-app/commit/04cc617d32661b2a53fb0f98f9fab83bd9906abf))
 
 
 
