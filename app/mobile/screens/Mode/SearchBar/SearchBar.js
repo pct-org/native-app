@@ -59,20 +59,20 @@ export const SearchBar = ({ searchedQuery, search, flatListRef, mode, setSorting
   const bottomSheetOptions = React.useMemo(() => {
     if (mode === constants.MODE_BOOKMARKS) {
       return [
-        { label: i18n.t('None'), value: undefined },
-        { label: i18n.t('Movies'), value: 'movies' },
-        { label: i18n.t('Shows'), value: 'shows' },
+        { icon: 'all-inclusive', label: i18n.t('All'), value: undefined },
+        { icon: 'movie', label: i18n.t('Movies'), value: 'movies' },
+        { icon: 'filmstrip-box-multiple', label: i18n.t('Shows'), value: 'shows' },
       ]
     }
 
     return [
-      { label: i18n.t('Default'), value: 'trending' },
-      { label: i18n.t('Popularity'), value: 'popularity' },
-      { label: i18n.t('Name'), value: 'name' },
-      { label: i18n.t('Rating'), value: 'rating' },
-      { label: i18n.t('Released'), value: 'released' },
-      { label: i18n.t('Year'), value: 'year' },
-      { label: i18n.t('Added'), value: 'added' },
+      { icon: 'trending-up', label: i18n.t('Trending'), value: 'trending' },
+      { icon: 'cards-heart', label: i18n.t('Popularity'), value: 'popularity' },
+      { icon: 'alphabetical', label: i18n.t('Name'), value: 'name' },
+      { icon: 'star', label: i18n.t('Rating'), value: 'rating' },
+      { icon: 'calendar', label: i18n.t('Released'), value: 'released' },
+      { icon: 'calendar-range', label: i18n.t('Year'), value: 'year' },
+      { icon: 'calendar-plus', label: i18n.t('Added'), value: 'added' },
     ]
   }, [mode])
 
@@ -147,7 +147,7 @@ export const SearchBar = ({ searchedQuery, search, flatListRef, mode, setSorting
           {bottomSheetOptions.map((option) => (
             <OptionsItem
               key={option.label}
-              icon={'eye-outline'}
+              icon={option.icon}
               label={option.label}
               onPress={handleFilterOrSortPress(option)} />
           ))}

@@ -76,9 +76,10 @@ export const Mode = ({ mode, navigation }) => {
   )
 
   useBackButton(() => {
-    if ((query?.trim()?.length > 0 || filter) && navigation.isFocused()) {
+    if ((query?.trim()?.length > 0 || filter || sort) && navigation.isFocused()) {
       setQuery(null)
       setFilter(undefined)
+      setSorting(undefined)
 
       return true
     }
