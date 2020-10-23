@@ -41,7 +41,7 @@ export const OptionsItemTorrent = ({
     }
 
     return `${torrent.provider} - ${torrent.sizeString}`
-  }, [download, isItemDisabled])
+  }, [download, isItemDisabled, torrent])
 
   const subLabel = React.useMemo(() => {
     if (!isItemDisabled && download?.status === constants.STATUS_DOWNLOADING) {

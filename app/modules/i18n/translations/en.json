@@ -83,5 +83,7 @@
   "Rating": "Rating",
   "Released":  "Released",
   "Year": "Year",
-  "Added":  "Added"
+  "Added":  "Added",
+  "All": "All",
+  "Trending": "Trending"
 }
