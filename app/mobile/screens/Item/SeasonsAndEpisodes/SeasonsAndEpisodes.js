@@ -108,7 +108,7 @@ export const SeasonsAndEpisodes = ({ item }) => {
         {episodes.map((episode) => (
           <Episode
             key={episode._id}
-            hasAired={episode.firstAired < today}
+            hasAired={episode.firstAired < today || episode.torrents.length > 0}
             show={item}
             {...episode} />
         ))}
