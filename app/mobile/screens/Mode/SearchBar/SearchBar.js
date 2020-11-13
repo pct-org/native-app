@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
 import { StyleSheet, StatusBar, TextInput, Animated, View } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
-import { useCollapsibleStack } from 'react-navigation-collapsible'
 
 import colors from 'modules/colors'
 import dimensions from 'modules/dimensions'
@@ -20,10 +19,10 @@ import OptionsItem from 'mobile/components/OptionsItem'
 export const styles = StyleSheet.create({
 
   root: {
-    position: 'absolute',
     width: '100%',
     height: dimensions.SEARCH_BAR_HEIGHT,
-    top: StatusBar.currentHeight + dimensions.UNIT,
+    marginTop: StatusBar.currentHeight + dimensions.UNIT,
+    marginBottom: dimensions.UNIT,
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
@@ -82,8 +81,6 @@ export const SearchBar = ({ searchedQuery, search, flatListRef, mode, setSorting
       setQuery(null)
     }
   }, [searchedQuery])
-
-  const { translateY } = useCollapsibleStack()
 
   const cancelSearch = () => {
     setQuery(null)
@@ -174,10 +171,7 @@ export const SearchBar = ({ searchedQuery, search, flatListRef, mode, setSorting
   return (
     <Animated.View
       onLayout={handleLayout}
-      style={{
-        transform: [{ translateY }],
-        ...styles.root,
-      }}>
+      style={styles.root}>
 
       <Container
         elevation={1}

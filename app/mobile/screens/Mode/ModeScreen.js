@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from 'react'
 import PropTypes from 'prop-types'
 import { StyleSheet, View, StatusBar, Animated, InteractionManager } from 'react-native'
 import { useLazyQuery } from '@apollo/client'
-import { useCollapsibleStack } from 'react-navigation-collapsible'
+import { useCollapsibleSubHeader, CollapsibleSubHeaderAnimator } from 'react-navigation-collapsible'
 import { getDefaultHeaderHeight } from 'react-navigation-collapsible/lib/src/utils'
 
 import i18n from 'modules/i18n'
@@ -87,7 +87,7 @@ export const Mode = ({ mode, navigation }) => {
     return false
   })
 
-  const { onScroll, scrollIndicatorInsetTop } = useCollapsibleStack()
+  const { onScroll, scrollIndicatorInsetTop, translateY } = useCollapsibleSubHeader()
 
   useEffect(() => {
     // Execute the query after the component is done navigation
@@ -168,14 +168,16 @@ export const Mode = ({ mode, navigation }) => {
         scrollIndicatorInsets={{ top: scrollIndicatorInsetTop - getDefaultHeaderHeight(true) }}
       />
 
-      <SearchBar
-        flatListRef={flatListRef}
-        searchedQuery={query}
-        search={setQuery}
-        mode={mode}
-        setSorting={setSorting}
-        setFilter={setFilter}
-      />
+      <CollapsibleSubHeaderAnimator translateY={translateY}>
+        <SearchBar
+          flatListRef={flatListRef}
+          searchedQuery={query}
+          search={setQuery}
+          mode={mode}
+          setSorting={setSorting}
+          setFilter={setFilter}
+        />
+      </CollapsibleSubHeaderAnimator>
 
     </View>
   )
