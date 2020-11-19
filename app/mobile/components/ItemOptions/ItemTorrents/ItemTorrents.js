@@ -6,7 +6,7 @@ import { SearchForBetterEpisode, SearchForBetterMovie } from 'modules/GraphQL/Se
 import dimensions from 'modules/dimensions'
 import constants from 'modules/constants'
 import i18n from 'modules/i18n'
-import useDownload from 'modules/hooks/useDownload'
+import usePollingForDownload from 'modules/hooks/usePollingForDownload'
 
 import Divider from 'components/Divider'
 
@@ -28,7 +28,7 @@ export const styles = StyleSheet.create({
 })
 
 export const ItemTorrents = ({ item, torrents, variant, onPress }) => {
-  const [download, downloadManager] = useDownload(item)
+  const [download, downloadManager] = usePollingForDownload(item)
   const [searchForBetter, { loading }] = useMutation(
     item.type === constants.TYPE_EPISODE
       ? SearchForBetterEpisode

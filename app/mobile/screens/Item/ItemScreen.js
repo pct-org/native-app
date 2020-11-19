@@ -55,12 +55,10 @@ const styles = StyleSheet.create({
 })
 
 export const Item = ({ route: { params } }) => {
-  const Query = params.type === 'movie'
-    ? MovieQuery
-    : ShowQuery
-
   const [executeQuery, { loading: itemLoading, data }] = useLazyQuery(
-    Query,
+    params.type === 'movie'
+      ? MovieQuery
+      : ShowQuery,
     {
       variables: {
         _id: params._id,
@@ -79,7 +77,7 @@ export const Item = ({ route: { params } }) => {
   }, [])
 
   const loading = itemLoading || !data
-  const item = loading ? null : data.item
+  const item = loading ? null : data[params.type]
 
   const handleTrailer = () => {
     if (item && item.trailer) {
@@ -100,7 +98,6 @@ export const Item = ({ route: { params } }) => {
           {!loading && (
             <Bookmarked
               style={styles.icon}
-              Query={Query}
               {...item}
             />
           )}

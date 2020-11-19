@@ -18,6 +18,7 @@ export default {
 
   UNIT: useCorrect(UNIT, null, UNIT * 2),
 
+  ICON_SIZE_SMALL: 18,
   ICON_SIZE_DEFAULT: 24,
   ICON_SIZE_MEDIUM: 32,
 

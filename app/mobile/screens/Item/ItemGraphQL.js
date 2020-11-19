@@ -4,7 +4,7 @@ import torrentFragment from 'modules/GraphQL/fragments/torrentFragment'
 
 export const MovieQuery = gql`
   query movie($_id: String!) {
-    item: movie(_id: $_id) {
+    movie(_id: $_id) {
       _id
       title
       genres
@@ -48,7 +48,7 @@ export const MovieQuery = gql`
 
 export const ShowQuery = gql`
   query show($_id: String!) {
-    item: show(_id: $_id) {
+    show(_id: $_id)  {
       _id
       title
       genres
