@@ -1,5 +1,5 @@
 import React from 'react'
-import { StyleSheet, View } from 'react-native'
+import { StyleSheet, View, TouchableWithoutFeedback } from 'react-native'
 import BottomSheet from 'reanimated-bottom-sheet'
 import ReAnimated from 'react-native-reanimated'
 
@@ -109,7 +109,10 @@ export const BottomSheetProvider = ({ children }) => {
             outputRange: [0.8, 0],
           }),
         }}>
-        <View style={[styles.overlayContainer, styles.overlay]} />
+
+        <TouchableWithoutFeedback onPress={closeBottomSheet}>
+          <View style={[styles.overlayContainer, styles.overlay]} />
+        </TouchableWithoutFeedback>
       </ReAnimated.View>
 
       <BottomSheet
