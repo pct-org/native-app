@@ -1,3 +1,12 @@
+# [1.12.0](https://github.com/pct-org/native-app/compare/v1.11.3...v1.12.0) (2020-12-03)
+
+
+### Features
+
+* You can click bottom sheets away by pressing the backdrop ([41d5af5](https://github.com/pct-org/native-app/commit/41d5af5741b1896fde7fda4eff14d81b1a790bc2))
+
+
+
 ## [1.11.3](https://github.com/pct-org/native-app/compare/v1.11.2...v1.11.3) (2020-10-25)
 
 
@@ -77,15 +86,6 @@
 ### Features
 
 * Added disk stats to settings screen ([1515c3b](https://github.com/pct-org/native-app/commit/1515c3b0e56c371dc63c005be67883e18a28bfeb))
-
-
-
-## [1.9.1](https://github.com/pct-org/native-app/compare/v1.9.0...v1.9.1) (2020-09-23)
-
-
-### Bug Fixes
-
-* Fixed travis ([fe8e31e](https://github.com/pct-org/native-app/commit/fe8e31e572b2900a905a72190ed412220d088325))
 
 
 
