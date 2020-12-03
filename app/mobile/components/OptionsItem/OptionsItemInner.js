@@ -36,7 +36,7 @@ export const SettingsItem = ({ label, labelLine2, subLabel, subLabelLine2, icon,
           duration={constants.ANIMATION_DURATIONS.enteringScreen}
           useNativeDriver>
           <ActivityIndicator
-            size={18}
+            size={dimensions.ICON_SIZE_SMALL}
             color={colors.PRIMARY_COLOR_200} />
         </Animatable.View>
       )}
@@ -49,8 +49,8 @@ export const SettingsItem = ({ label, labelLine2, subLabel, subLabelLine2, icon,
           useNativeDriver>
           <LottieView
             style={{
-              width: 18,
-              height: 18,
+              width: dimensions.ICON_SIZE_SMALL,
+              height: dimensions.ICON_SIZE_SMALL
             }}
             source={require('assets/lottie/cloud-download.json')}
             autoPlay
@@ -62,7 +62,7 @@ export const SettingsItem = ({ label, labelLine2, subLabel, subLabelLine2, icon,
         <Icon
           color={'primary'}
           style={styles.icon}
-          size={18}
+          size={dimensions.ICON_SIZE_SMALL}
           name={icon}
           emphasis={
             disabled

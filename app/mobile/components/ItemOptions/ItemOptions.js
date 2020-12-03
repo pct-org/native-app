@@ -102,49 +102,47 @@ export const ItemOptions = ({
       onTorrentPress(torrent, download)
     }, [])
 
-  const renderBottomSheetContent = React.useCallback(() => {
-    return (
-      <View>
-        <OptionsHeader
-          label={
-            item.type === constants.TYPE_EPISODE
-              ? `${item.number}. ${item.title}`
-              : item.title
-          } />
+  const renderBottomSheetContent = React.useCallback(() => (
+    <View>
+      <OptionsHeader
+        label={
+          item.type === constants.TYPE_EPISODE
+            ? `${item.number}. ${item.title}`
+            : item.title
+        } />
 
-        <ItemTorrents
-          item={item}
-          variant={variant}
-          torrents={allTorrents}
-          onPress={handleTorrentPress} />
+      <ItemTorrents
+        item={item}
+        variant={variant}
+        torrents={allTorrents}
+        onPress={handleTorrentPress} />
 
-        {variant === constants.TYPE_DOWNLOAD && (
-          <>
-            <OptionsGroup
-              withDivider={variant === constants.TYPE_DOWNLOAD}
-              style={styles.marginBottomOnly}>
-              <OptionsItem
-                disabled
-                icon={'eye-outline'}
-                label={
-                  item.watched.complete
-                    ? i18n.t('Mark Unwatched')
-                    : i18n.t('Mark Watched')
-                } />
-            </OptionsGroup>
+      {variant === constants.TYPE_DOWNLOAD && (
+        <>
+          <OptionsGroup
+            withDivider={variant === constants.TYPE_DOWNLOAD}
+            style={styles.marginBottomOnly}>
+            <OptionsItem
+              disabled
+              icon={'eye-outline'}
+              label={
+                item.watched.complete
+                  ? i18n.t('Mark Unwatched')
+                  : i18n.t('Mark Watched')
+              } />
+          </OptionsGroup>
 
-            <OptionsGroup>
-              <OptionsItem
-                disabled
-                icon={'content-copy'}
-                label={i18n.t('Copy to phone')}
-                labelLine2={'Item needs to be downloaded for this to become available'} />
-            </OptionsGroup>
-          </>
-        )}
-      </View>
-    )
-  }, [item, variant])
+          <OptionsGroup>
+            <OptionsItem
+              disabled
+              icon={'content-copy'}
+              label={i18n.t('Copy to phone')}
+              labelLine2={'Item needs to be downloaded for this to become available'} />
+          </OptionsGroup>
+        </>
+      )}
+    </View>
+  ), [item, variant])
 
   if (variant === constants.TYPE_STREAM) {
     return (

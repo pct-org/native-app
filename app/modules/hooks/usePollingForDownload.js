@@ -1,7 +1,7 @@
 import React from 'react'
 
 import constants from 'modules/constants'
-import { useDownloadManager } from 'modules/DownloadManager'
+import useDownload from './useDownload'
 
 /**
  * States that are valid to pull
@@ -17,9 +17,7 @@ export const validPollStates = [
  * Starts polling for a certain download
  */
 export const usePollingForDownload = (downloadToPoll) => {
-  const downloadManager = useDownloadManager()
-
-  const download = downloadManager.getDownload(downloadToPoll?._id)
+  const [download, downloadManager] = useDownload(downloadToPoll)
 
   React.useEffect(() => {
     if (download && validPollStates.includes(download.status)) {

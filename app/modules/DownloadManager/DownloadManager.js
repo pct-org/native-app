@@ -105,14 +105,14 @@ export class DownloadManager extends React.Component {
     this.handleStopPollDownload(item)
 
     this.setState({
-      downloads: downloads.filter(down => down._id !== item._id),
+      downloads: downloads.filter((down) => down._id !== item._id),
     })
   }
 
   handleGetDownload = (_id) => {
     const { downloads } = this.state
 
-    return downloads.find(down => down._id === _id)
+    return downloads.find((down) => down._id === _id)
   }
 
   handleGetDownloads = () => {

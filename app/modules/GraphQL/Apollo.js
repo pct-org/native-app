@@ -1,11 +1,11 @@
 import AsyncStorage from '@react-native-community/async-storage'
 import FSStorage from 'redux-persist-fs-storage'
-import { ApolloClient, split, HttpLink, InMemoryCache, defaultDataIdFromObject } from '@apollo/client'
+import { ApolloClient, split, HttpLink, InMemoryCache } from '@apollo/client'
 import { CachePersistor } from 'apollo-cache-persist'
 import { WebSocketLink } from '@apollo/client/link/ws'
 import { getMainDefinition } from '@apollo/client/utilities'
 
-const SCHEMA_VERSION = '9' // Must be a string.
+const SCHEMA_VERSION = '10' // Must be a string.
 const SCHEMA_VERSION_KEY = 'apollo-schema-version'
 
 export default async(host) => {

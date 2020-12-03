@@ -30,3 +30,27 @@ export const showMinimalFragment = gql`
     }
   }
 `
+
+export const showFragment = gql`
+  fragment show on Show {
+    _id
+    title
+    genres
+    synopsis
+    type
+    bookmarked
+    trailer
+    rating {
+      percentage
+    }
+    images {
+      backdrop {
+        high
+      }
+      poster {
+        thumb
+        high
+      }
+    }
+  }
+`

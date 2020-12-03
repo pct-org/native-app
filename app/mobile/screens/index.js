@@ -1,6 +1,5 @@
 import React from 'react'
 import { createStackNavigator } from '@react-navigation/stack'
-import { createCollapsibleStack } from 'react-navigation-collapsible'
 
 import constants from 'modules/constants'
 
@@ -26,34 +25,22 @@ export default () => (
     <Stack.Screen name={'Settings'} component={SettingsScreen} />
     <Stack.Screen name={'AppChangelog'} component={AppChangelogScreen} />
 
-    {createCollapsibleStack(
-      <Stack.Screen name={'Movies'}>
-        {(props) => (
-          <ModeScreen mode={constants.MODE_MOVIES} {...props} />
-        )}
-      </Stack.Screen>,
-      {},
-      1,
-    )}
+    <Stack.Screen name={'Movies'}>
+      {(props) => (
+        <ModeScreen mode={constants.MODE_MOVIES} {...props} />
+      )}
+    </Stack.Screen>
 
-    {createCollapsibleStack(
-      <Stack.Screen name={'Shows'}>
-        {(props) => (
-          <ModeScreen mode={constants.MODE_SHOWS} {...props} />
-        )}
-      </Stack.Screen>,
-      {},
-      1,
-    )}
+    <Stack.Screen name={'Shows'}>
+      {(props) => (
+        <ModeScreen mode={constants.MODE_SHOWS} {...props} />
+      )}
+    </Stack.Screen>
 
-    {createCollapsibleStack(
-      <Stack.Screen name={'MyList'}>
-        {(props) => (
-          <ModeScreen mode={constants.MODE_BOOKMARKS} {...props} />
-        )}
-      </Stack.Screen>,
-      {},
-      1,
-    )}
+    <Stack.Screen name={'MyList'}>
+      {(props) => (
+        <ModeScreen mode={constants.MODE_BOOKMARKS} {...props} />
+      )}
+    </Stack.Screen>
   </Stack.Navigator>
 )
