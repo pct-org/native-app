@@ -39,6 +39,12 @@ export default class Typography extends Component {
       'primaryDark',
     ]),
 
+    transform: PropTypes.oneOf([
+      'default',
+      'lowercase',
+      'uppercase',
+    ]),
+
     emphasis: PropTypes.oneOf([
       'high',
       'medium',
@@ -70,6 +76,7 @@ export default class Typography extends Component {
     color: 'white',
     variant: 'body1',
     fontWeight: 'default',
+    transform: 'default',
     textProps: {},
     component: null,
     children: null,
@@ -81,17 +88,20 @@ export default class Typography extends Component {
     fontWeight = Typography.defaultProps.fontWeight,
     color = Typography.defaultProps.color,
     emphasis = Typography.defaultProps.emphasis,
+    transform = Typography.defaultProps.transform,
     style: styleProp = null,
     asObject = false,
   }) => {
     const styledColor = styles[`color${capitalizeFirstLetter(color)}`]
     const styledFont = fontWeight !== 'default' ? styles[`fontFamily${capitalizeFirstLetter(fontWeight)}`] : null
     const styledEmphasis = styles[`emphasis${capitalizeFirstLetter(emphasis)}`]
+    const styledTransform = transform !== 'default' ? styles[`transform${capitalizeFirstLetter(transform)}`] : null
 
     const textStyles = [
       styledColor,
       styles[variant],
       styledEmphasis,
+      styledTransform,
     ]
 
     if (styledFont) {

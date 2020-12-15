@@ -30,6 +30,7 @@ export const IconButton = ({
   animatable,
   animatableStyle,
   buttonProps,
+  textProps,
   children,
   ...rest
 }) => (
@@ -50,7 +51,8 @@ export const IconButton = ({
         <Typography
           style={styles.text}
           variant={'captionSmall'}
-          emphasis={'medium'}>
+          emphasis={'medium'}
+          {...textProps}>
           {children}
         </Typography>
       )}
@@ -67,6 +69,7 @@ IconButton.propTypes = {
   onBlur: PropTypes.func,
   children: PropTypes.string,
   buttonProps: PropTypes.object,
+  textProps: PropTypes.object,
   animatableStyle: PropTypes.object,
   animatable: PropTypes.object,
   size: PropTypes.number,
@@ -74,6 +77,7 @@ IconButton.propTypes = {
 
 IconButton.defaultProps = {
   buttonProps: {},
+  textProps: {},
   animatable: {},
   onPress: null,
   onPressIn: null,

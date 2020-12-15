@@ -10,6 +10,7 @@ import Overlay from 'components/Overlay'
 import PlayPauseIcon from './PlayPauseIcon'
 import ResizeMode from './ResizeMode'
 import SeekBar from './SeekBar'
+import SelectSubtitle from './SelectSubtitle'
 
 const styles = StyleSheet.create({
 
@@ -57,7 +58,6 @@ const styles = StyleSheet.create({
   },
 
 })
-
 
 export class VideoAndControls extends React.Component {
 
@@ -252,16 +252,15 @@ export class VideoAndControls extends React.Component {
         return this.toggleControlsOff()
       }
 
-      return
+    } else {
+      this.setState({
+        showControls: true,
+      }, () => {
+        if (withTimeout) {
+          this.toggleControlsOff()
+        }
+      })
     }
-
-    this.setState({
-      showControls: true,
-    }, () => {
-      if (withTimeout) {
-        return this.toggleControlsOff()
-      }
-    })
   }
 
   toggleControlsOff = () => {
@@ -279,7 +278,7 @@ export class VideoAndControls extends React.Component {
   }
 
   render() {
-    const { url, children, forcePaused } = this.props
+    const { url, children, forcePaused, subtitleUri, selectSubtitle } = this.props
     const { isPortrait, resizeMode } = this.state
     const { showControls, paused } = this.state
     const { currentTime, duration, progress } = this.state
@@ -300,6 +299,7 @@ export class VideoAndControls extends React.Component {
               uri: url,
               autoplay: true,
             }}
+            subtitleUri={subtitleUri}
             style={styles.video}
             paused={paused || forcePaused}
             resizeMode={resizeMode}
@@ -335,10 +335,16 @@ export class VideoAndControls extends React.Component {
               onSeek={this.onSliderPositionChange}
             />
 
+            <SelectSubtitle
+              handlePlayVideo={this.handlePlayVideo}
+              handlePauseVideo={this.handlePauseVideo}
+              selectSubtitle={selectSubtitle}
+            />
+
             {children}
 
             <ScrollView
-              ref={ref => this.scrollViewRef = ref}
+              ref={(ref) => this.scrollViewRef = ref}
               showsHorizontalScrollIndicator={false}
               showsVerticalScrollIndicator={false}
               contentContainerStyle={styles.contentContainerStyle}

@@ -2,7 +2,15 @@ import { Dimensions, StatusBar } from 'react-native'
 
 import useCorrect from 'modules/useCorrect'
 
-const { width: screenWidth, height: screenHeight } = Dimensions.get('window')
+const { width, height } = Dimensions.get('window')
+
+let screenWidth = width
+let screenHeight = height
+
+if (width > height) {
+  screenWidth = (height)
+  screenHeight = (width)
+}
 
 const UNIT = 8
 const SKETCH_DEFAULT_WIDTH = useCorrect(360, null, 1920)

@@ -18,7 +18,17 @@ export const Player = ({ route: { params: { item, torrent } } }) => (
     item={item}
     torrent={torrent}
     style={styles.root}>
-    {({ casting, renderCastButton, mediaUrl, setProgress, startPosition, isBuffering, download }) => (
+    {({
+      casting,
+      renderCastButton,
+      mediaUrl,
+      setProgress,
+      startPosition,
+      isBuffering,
+      download,
+      subtitleUri,
+      selectSubtitle,
+    }) => (
       <React.Fragment>
         {(isBuffering || casting) && (
           <View style={[styles.fullScreen, styles.bufferingContainer]}>
@@ -83,6 +93,8 @@ export const Player = ({ route: { params: { item, torrent } } }) => (
         {!isBuffering && !casting && download && (
           <VideoAndControls
             item={item}
+            subtitleUri={subtitleUri}
+            selectSubtitle={selectSubtitle}
             url={mediaUrl}
             startPosition={startPosition}
             setProgress={setProgress}>
@@ -94,12 +106,10 @@ export const Player = ({ route: { params: { item, torrent } } }) => (
               truncateSynopsis
             />
 
-            <DownloadInfo
-              {...download}
-            />
+            <DownloadInfo {...download} />
 
             {renderCastButton({
-              right: dimensions.UNIT * 10,
+              right: dimensions.UNIT * 16,
               bottom: dimensions.UNIT * 2.4,
             })}
 
@@ -142,7 +152,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: dimensions.UNIT * 3,
     left: dimensions.UNIT * 4,
-    zIndex: 500
+    zIndex: 500,
   },
 
 })

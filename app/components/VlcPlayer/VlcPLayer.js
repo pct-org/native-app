@@ -10,7 +10,6 @@ export const styles = {
 
 }
 
-
 export default class VlcPLayer extends React.Component {
 
   componentWillUnmount() {
@@ -33,17 +32,17 @@ export default class VlcPLayer extends React.Component {
     this.setNativeProps({ fullscreen: false })
   }
 
-  _assignRoot = (component) => {
+  assignRoot = (component) => {
     this._root = component
   }
 
-  _onProgress = (event) => {
+  handleOnProgress = (event) => {
     if (this.props.onProgress) {
       this.props.onProgress(event.nativeEvent)
     }
   }
 
-  _onPaused = (event) => {
+  handleOnPaused = (event) => {
     StatusBar.setHidden(false)
 
     if (this.props.onPaused) {
@@ -51,7 +50,7 @@ export default class VlcPLayer extends React.Component {
     }
   }
 
-  _onPlaying = (event) => {
+  handleOnPlaying = (event) => {
     StatusBar.setHidden(true)
 
     if (this.props.onPlaying) {
@@ -67,10 +66,7 @@ export default class VlcPLayer extends React.Component {
   }
 
   render() {
-    const {
-      source,
-      resizeMode,
-    } = this.props
+    const { source, resizeMode, subtitleUri } = this.props
     source.initOptions = source.initOptions || []
 
     const RCTVideoInstance = this.getViewManagerConfig('VlcPlayer')
@@ -92,16 +88,17 @@ export default class VlcPLayer extends React.Component {
     const nativeProps = Object.assign({}, this.props)
     Object.assign(nativeProps, {
       style: [styles.base, StyleSheet.absoluteFill],
-      source: source,
+      source,
       resizeMode: nativeResizeMode,
-      onPlaying: this._onPlaying,
-      onProgress: this._onProgress,
-      onPaused: this._onPaused,
+      subtitleUri,
+      onPlaying: this.handleOnPlaying,
+      onProgress: this.handleOnProgress,
+      onPaused: this.handleOnPaused,
     })
 
     return (
       <RCTVlcPlayer
-        ref={this._assignRoot}
+        ref={this.assignRoot}
         {...nativeProps} />
     )
   }
@@ -119,6 +116,7 @@ VlcPLayer.propTypes = {
     'cover',
     'stretch',
   ]),
+  subtitleUri: PropTypes.string,
   rate: PropTypes.number,
   volume: PropTypes.number,
 

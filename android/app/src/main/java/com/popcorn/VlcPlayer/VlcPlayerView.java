@@ -124,11 +124,9 @@ public class VlcPlayerView extends FrameLayout implements
         if (mMediaPlayer == null) {
 
             ArrayList<String> options = new ArrayList<>(50);
-
             options.add("--vout=android_display,none");
 
-
-            libvlc = new LibVLC(getContext(),options);
+            libvlc = new LibVLC(getContext(), options);
 
             // Create media player
             mMediaPlayer = new MediaPlayer(libvlc);
@@ -299,6 +297,12 @@ public class VlcPlayerView extends FrameLayout implements
             layout(getLeft(), getTop(), getRight(), getBottom());
         }
     };
+
+    public void setSubtitle(Uri uri) {
+        if (mMediaPlayer != null) {
+            mMediaPlayer.addSlave(Media.Slave.Type.Subtitle, uri, true);
+        }
+    }
 
     public void setFullscreen(boolean fullscreen) {
         if (fullscreen == isFullscreen) {

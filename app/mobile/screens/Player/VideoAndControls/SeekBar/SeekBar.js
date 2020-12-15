@@ -10,7 +10,7 @@ import Typography from 'components/Typography'
 const styles = {
   container: {
     position: 'absolute',
-    bottom: dimensions.ICON_SIZE_DEFAULT + dimensions.UNIT * 4,
+    bottom: dimensions.ICON_SIZE_DEFAULT + dimensions.UNIT * 5,
     left: (dimensions.UNIT * 5),
     zIndex: 2000,
     flexDirection: 'row',

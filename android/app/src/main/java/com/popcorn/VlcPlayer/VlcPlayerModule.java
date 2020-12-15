@@ -1,5 +1,6 @@
 package com.popcorn.VlcPlayer;
 
+import android.net.Uri;
 import android.text.TextUtils;
 
 import com.facebook.react.bridge.ReadableMap;
@@ -20,6 +21,7 @@ public class VlcPlayerModule extends ViewGroupManager<VlcPlayerView> {
   public static final String PROP_VOLUME = "volume";
   public static final String PROP_RESIZE_MODE = "resizeMode";
   public static final String PROP_FULLSCREEN = "fullscreen";
+  public static final String PROP_SUBTITLE = "subtitleUri";
 
   @Override
   public String getName() {
@@ -87,6 +89,11 @@ public class VlcPlayerModule extends ViewGroupManager<VlcPlayerView> {
   @ReactProp(name = PROP_FULLSCREEN, defaultBoolean = false)
   public void setFullscreen(final VlcPlayerView videoView, final boolean fullscreen) {
     videoView.setFullscreen(fullscreen);
+  }
+
+  @ReactProp(name = PROP_SUBTITLE)
+  public void setSubtitle(final VlcPlayerView videoView, final String uri) {
+    videoView.setSubtitle(Uri.parse(uri));
   }
 
   private @ResizeMode.Mode

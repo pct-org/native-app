@@ -21,6 +21,7 @@ export class PlayerManager extends React.Component {
       startPosition: item.watched.progress === 100
         ? 0
         : item.watched.progress,
+      subtitles: null,
     }
   }
 
@@ -77,6 +78,12 @@ export class PlayerManager extends React.Component {
       progress,
       lastProgressSend: newLastProgressSend,
     })
+  }
+
+  handleSelectSubtitle = (languageCode) => {
+    const { download } = this.state
+
+    console.log('handleSelectSubtitle', languageCode, download.subtitles)
   }
 
   /**
@@ -145,13 +152,15 @@ export class PlayerManager extends React.Component {
 
   getChildProps = () => {
     const { mediaUrl, startPosition } = this.state
-    const { download, isBuffering } = this.state
+    const { download, isBuffering, subtitleUri } = this.state
 
     return {
       mediaUrl,
       startPosition,
       download,
       isBuffering,
+      subtitleUri,
+      selectSubtitle: this.handleSelectSubtitle,
       setProgress: this.handleSetProgress,
     }
   }

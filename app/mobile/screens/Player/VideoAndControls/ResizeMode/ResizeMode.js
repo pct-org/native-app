@@ -9,8 +9,9 @@ export const ResizeMode = ({ activeMode, changeResizeMode, toggleControls }) => 
   const getNextMode = () => {
     if (activeMode === 'contain') {
       return 'cover'
+    }
 
-    } else if (activeMode === 'cover') {
+    if (activeMode === 'cover') {
       return 'stretch'
     }
 
@@ -29,18 +30,15 @@ export const ResizeMode = ({ activeMode, changeResizeMode, toggleControls }) => 
       pointerEvents={'box-none'}>
 
       <IconButton
-        style={{
-          transform: [{ rotate: '90deg' }],
-        }}
         onPress={() => {
           // Also toggle the controls so they stay visible
           toggleControls()
 
           changeResizeMode(getNextMode())
         }}
-        name={'cellphone-screenshot'}
+        name={'overscan'}
         color={'primary'}
-        size={dimensions.ICON_SIZE_MEDIUM}>
+        size={dimensions.ICON_SIZE_DEFAULT}>
         {activeMode}
       </IconButton>
 
