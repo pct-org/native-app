@@ -21,7 +21,7 @@ export class PlayerManager extends React.Component {
       startPosition: item.watched.progress === 100
         ? 0
         : item.watched.progress,
-      subtitles: null,
+      subtitleUri: null,
     }
   }
 
@@ -80,10 +80,12 @@ export class PlayerManager extends React.Component {
     })
   }
 
-  handleSelectSubtitle = (languageCode) => {
-    const { download } = this.state
+  handleSelectSubtitle = (subtitle) => {
+    const { ipFinder, item } = this.props
 
-    console.log('handleSelectSubtitle', languageCode, download.subtitles)
+    this.setState({
+      subtitleUri: `http://${ipFinder.host}/subtitle/${item._id}/${subtitle.code}`,
+    })
   }
 
   /**

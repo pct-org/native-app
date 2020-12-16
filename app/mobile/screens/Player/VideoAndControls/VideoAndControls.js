@@ -8,7 +8,6 @@ import VlcPlayer from 'components/VlcPlayer'
 import Overlay from 'components/Overlay'
 
 import PlayPauseIcon from './PlayPauseIcon'
-import ResizeMode from './ResizeMode'
 import SeekBar from './SeekBar'
 import SelectSubtitle from './SelectSubtitle'
 
@@ -278,7 +277,7 @@ export class VideoAndControls extends React.Component {
   }
 
   render() {
-    const { url, children, forcePaused, subtitleUri, selectSubtitle } = this.props
+    const { url, children, forcePaused, subtitleUri, selectSubtitle, subtitles } = this.props
     const { isPortrait, resizeMode } = this.state
     const { showControls, paused } = this.state
     const { currentTime, duration, progress } = this.state
@@ -287,7 +286,7 @@ export class VideoAndControls extends React.Component {
     if (isPortrait) {
       return null
     }
-
+console.log('active subtitleUri', subtitleUri)
     return (
       <React.Fragment>
         {url && (
@@ -322,11 +321,11 @@ export class VideoAndControls extends React.Component {
               paused={paused}
             />
 
-            <ResizeMode
-              activeMode={resizeMode}
-              changeResizeMode={this.handleResizeModeChange}
-              toggleControls={this.toggleControls}
-            />
+            {/*<ResizeMode*/}
+            {/*  activeMode={resizeMode}*/}
+            {/*  changeResizeMode={this.handleResizeModeChange}*/}
+            {/*  toggleControls={this.toggleControls}*/}
+            {/*/>*/}
 
             <SeekBar
               currentTime={currentTime}
@@ -336,9 +335,10 @@ export class VideoAndControls extends React.Component {
             />
 
             <SelectSubtitle
-              handlePlayVideo={this.handlePlayVideo}
-              handlePauseVideo={this.handlePauseVideo}
+              playVideo={this.handlePlayVideo}
+              pauseVideo={this.handlePauseVideo}
               selectSubtitle={selectSubtitle}
+              subtitles={subtitles}
             />
 
             {children}

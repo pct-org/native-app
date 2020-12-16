@@ -90,7 +90,7 @@ export default class VlcPLayer extends React.Component {
       style: [styles.base, StyleSheet.absoluteFill],
       source,
       resizeMode: nativeResizeMode,
-      subtitleUri,
+      subtitleUri: subtitleUri || undefined,
       onPlaying: this.handleOnPlaying,
       onProgress: this.handleOnProgress,
       onPaused: this.handleOnPaused,

@@ -95,6 +95,7 @@ export const Player = ({ route: { params: { item, torrent } } }) => (
             item={item}
             subtitleUri={subtitleUri}
             selectSubtitle={selectSubtitle}
+            subtitles={download.subtitles}
             url={mediaUrl}
             startPosition={startPosition}
             setProgress={setProgress}>

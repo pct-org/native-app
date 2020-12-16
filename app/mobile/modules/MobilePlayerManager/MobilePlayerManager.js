@@ -180,7 +180,7 @@ export default class MobilePlayerManager extends PlayerManager {
 
   getChildProps = () => {
     const { casting, mediaUrl, startPosition } = this.state
-    const { download, isBuffering, subtitles } = this.state
+    const { download, isBuffering, subtitleUri } = this.state
 
     return {
       casting,
@@ -188,7 +188,7 @@ export default class MobilePlayerManager extends PlayerManager {
       startPosition,
       download,
       isBuffering,
-      subtitles,
+      subtitleUri,
       selectSubtitle: this.handleSelectSubtitle,
       renderCastButton: this.renderCastButton,
       setProgress: this.handleSetProgress,

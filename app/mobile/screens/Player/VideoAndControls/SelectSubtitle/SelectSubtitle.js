@@ -1,3 +1,4 @@
+import Typography from 'components/Typography'
 import React from 'react'
 import PropTypes from 'prop-types'
 import { View } from 'react-native'
@@ -5,33 +6,40 @@ import { View } from 'react-native'
 import i18n from 'modules/i18n'
 import dimensions from 'modules/dimensions'
 import IconButton from 'components/IconButton'
-import { useBottomSheet } from 'modules/BottomSheetManager'
+import TextButton from 'components/TextButton'
+import { useSideSheet } from 'modules/SideSheetManager'
 
-export const SelectSubtitle = ({ handlePauseVideo, handlePlayVideo, selectSubtitle, subtitles }) => {
+export const SelectSubtitle = ({ pauseVideo, playVideo, selectSubtitle, subtitles }) => {
   // TODO:: Create an "useSideSheet" that does the same but comes from the side
   // this can then also be used on tv
-  const [openBottomSheet, updateBottomSheet, closeBottomSheet] = useBottomSheet()
+  const [openBottomSheet, updateBottomSheet, closeBottomSheet] = useSideSheet()
 
   const getBottomSheetConfig = () => {
     return {
       renderContent: renderBottomSheetContent,
-      snapPoints: [
-        300,
-        300,
-        0,
-      ],
-      contentHeight: 300,
-      onClose: console.log,
+      onClose: () => {
+        playVideo()
+      },
     }
   }
 
   const renderBottomSheetContent = React.useCallback(() => (
-    <View>
+    <View style={{ marginTop: 40 }}>
 
+      {subtitles.map((subtitle) => (
+        <TextButton
+          key={subtitle.code}
+          onPress={() => selectSubtitle(subtitle)}
+        >
+          {subtitle.language}
+        </TextButton>
+      ))}
     </View>
   ), [subtitles])
 
   const handleOnOpenSubtitlesPress = () => {
+    pauseVideo()
+
     openBottomSheet(getBottomSheetConfig())
   }
 
@@ -41,7 +49,7 @@ export const SelectSubtitle = ({ handlePauseVideo, handlePlayVideo, selectSubtit
         position: 'absolute',
         zIndex: 2000,
         width: dimensions.ICON_SIZE_MEDIUM + (dimensions.UNIT * 2),
-        right: dimensions.UNIT * 7 + dimensions.ICON_SIZE_MEDIUM,
+        right: dimensions.UNIT * 5,
         bottom: dimensions.UNIT * 2,
       }}
       pointerEvents={'box-none'}>
@@ -63,12 +71,12 @@ export const SelectSubtitle = ({ handlePauseVideo, handlePlayVideo, selectSubtit
 
 SelectSubtitle.propTypes = {
   paused: PropTypes.bool,
-  handlePauseVideo: PropTypes.func.isRequired,
-  handlePlayVideo: PropTypes.func.isRequired,
+  pauseVideo: PropTypes.func.isRequired,
+  playVideo: PropTypes.func.isRequired,
 }
 
 SelectSubtitle.defaultProps = {
   paused: false,
 }
 
-export default SelectSubtitle
+export default React.memo(SelectSubtitle)
