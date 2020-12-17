@@ -129,7 +129,6 @@ export const BottomSheetProvider = ({ children }) => {
             elevation={1}
             style={{
               height: bottomSheetConfig.biggestSnapPoint,
-              width: 300,
             }}>
             {bottomSheetConfig.renderContent()}
           </Container>

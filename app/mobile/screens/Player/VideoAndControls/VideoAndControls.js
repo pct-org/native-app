@@ -1,5 +1,5 @@
 import React from 'react'
-import { StyleSheet, View, ScrollView, TouchableWithoutFeedback } from 'react-native'
+import { StyleSheet, View, TouchableWithoutFeedback } from 'react-native'
 import * as Animatable from 'react-native-animatable'
 import Orientation from 'react-native-orientation'
 
@@ -60,8 +60,6 @@ const styles = StyleSheet.create({
 
 export class VideoAndControls extends React.Component {
 
-  scrollViewRef
-
   videoRef
 
   controlsTimer = null
@@ -74,23 +72,17 @@ export class VideoAndControls extends React.Component {
     this.state = {
       showControls: true,
       isPortrait: Orientation.getInitialOrientation() === 'PORTRAIT',
-
-      scrollViewHeight: 0,
-      scrollViewHeightWithPlaceholder: 0,
-
       loading: true,
       paused: false,
       resizeMode: 'contain', // 'contain', 'cover', null, 'stretch'
-
       currentTime: 0,
+      duration: 0,
     }
   }
 
   componentDidMount() {
     Orientation.addOrientationListener(this.handleOrientationChange)
     Orientation.lockToLandscape()
-
-    this.toggleControls()
   }
 
   componentWillUnmount() {
@@ -114,30 +106,6 @@ export class VideoAndControls extends React.Component {
     }
   }
 
-  positionScroller = (event = null) => {
-    const { scrollViewHeight, scrollViewHeightWithPlaceholder } = this.state
-
-    if (event && (scrollViewHeight / 2) < event.nativeEvent.contentOffset.y) {
-      this.scrollViewRef.scrollTo({ y: scrollViewHeightWithPlaceholder, animated: true })
-
-      this.toggleControls(false)
-
-    } else {
-      this.toggleControlsOff()
-
-      this.scrollViewRef.scrollTo({ y: 0, animated: true })
-    }
-  }
-
-  onContentSizeChange = (contentWidth, contentHeight) => {
-    // Save the content height in state
-    this.setState({
-      scrollViewHeight: contentHeight - styles.placeholderStyle.height,
-
-      scrollViewHeightWithPlaceholder: contentHeight,
-    })
-  }
-
   onSliderPositionChange = (position) => {
     this.setState({
       progress: position,
@@ -145,32 +113,6 @@ export class VideoAndControls extends React.Component {
     }, () => {
       this.videoRef.seek(position)
     })
-  }
-
-  getEpisodes = () => {
-    const { item } = this.props
-
-    let episodes = []
-
-    if (item.type === 'episode') {
-      const season = item.show.seasons.find(season => season.number === item.season)
-
-      if (season) {
-        episodes = season.episodes
-      }
-    }
-
-    return episodes
-  }
-
-  playEpisode = (episode, quality) => {
-    const { playOtherEpisode, item } = this.props
-
-    console.log('playEpisode', episode, quality)
-    // playOtherEpisode('other', 'https://download.blender.org/peach/bigbuckbunny_movies/big_buck_bunny_1080p_h264.mov', {
-    //   ...item,
-    //   ...episode,
-    // })
   }
 
   handlePauseVideo = () => {
@@ -191,7 +133,6 @@ export class VideoAndControls extends React.Component {
   handlePlayVideo = () => {
     this.setState({
       paused: false,
-
     }, () => {
       this.toggleControlsOff()
     })
@@ -209,6 +150,8 @@ export class VideoAndControls extends React.Component {
       if (startPosition > 0 && wasLoading) {
         this.videoRef.seek((duration / 100) * startPosition)
       }
+
+      this.toggleControls()
     })
   }
 
@@ -279,14 +222,14 @@ export class VideoAndControls extends React.Component {
   render() {
     const { url, children, forcePaused, subtitleUri, selectSubtitle, subtitles } = this.props
     const { isPortrait, resizeMode } = this.state
-    const { showControls, paused } = this.state
+    const { showControls, paused, loading } = this.state
     const { currentTime, duration, progress } = this.state
 
     // Wait until we are in landscape
     if (isPortrait) {
       return null
     }
-console.log('active subtitleUri', subtitleUri)
+
     return (
       <React.Fragment>
         {url && (
@@ -307,7 +250,7 @@ console.log('active subtitleUri', subtitleUri)
           />
         )}
 
-        {!isPortrait && duration && (
+        {!isPortrait && (
           <Animatable.View
             style={[styles.listContainer]}
             animation={showControls ? 'fadeIn' : 'fadeOut'}
@@ -319,19 +262,15 @@ console.log('active subtitleUri', subtitleUri)
               handlePlayVideo={this.handlePlayVideo}
               handlePauseVideo={this.handlePauseVideo}
               paused={paused}
+              loading={loading}
             />
-
-            {/*<ResizeMode*/}
-            {/*  activeMode={resizeMode}*/}
-            {/*  changeResizeMode={this.handleResizeModeChange}*/}
-            {/*  toggleControls={this.toggleControls}*/}
-            {/*/>*/}
 
             <SeekBar
               currentTime={currentTime}
               duration={duration}
               progress={progress}
               onSeek={this.onSliderPositionChange}
+              disabled={loading}
             />
 
             <SelectSubtitle
@@ -339,49 +278,21 @@ console.log('active subtitleUri', subtitleUri)
               pauseVideo={this.handlePauseVideo}
               selectSubtitle={selectSubtitle}
               subtitles={subtitles}
+              disabled={loading}
             />
 
             {children}
 
-            <ScrollView
-              ref={(ref) => this.scrollViewRef = ref}
-              showsHorizontalScrollIndicator={false}
-              showsVerticalScrollIndicator={false}
-              contentContainerStyle={styles.contentContainerStyle}
-              onScroll={this.toggleControls}
-              scrollEnabled={showControls}
-              onScrollEndDrag={this.positionScroller}
-              onContentSizeChange={this.onContentSizeChange}>
+            <View contentContainerStyle={styles.contentContainerStyle}>
 
               <Overlay variant={'dark'} />
 
-              <TouchableWithoutFeedback onPress={this.toggleControls}>
+              <TouchableWithoutFeedback
+                onPress={this.toggleControls}>
                 <View style={styles.placeholderStyle} />
               </TouchableWithoutFeedback>
 
-              {/*<ScrollView*/}
-              {/*  showsHorizontalScrollIndicator={false}*/}
-              {/*  showsVerticalScrollIndicator={false}*/}
-              {/*  onScroll={() => this.toggleControls(false)}*/}
-              {/*  scrollEventThrottle={10}*/}
-              {/*  contentContainerStyle={{*/}
-              {/*    flexGrow: 1,*/}
-              {/*    backgroundColor: 'green',*/}
-              {/*  }}*/}
-              {/*  horizontal>*/}
-
-              {/*  {this.getEpisodes().map(episode => (*/}
-              {/*    <Episode*/}
-              {/*      variant={'player'}*/}
-              {/*      key={episode._id}*/}
-              {/*      playItem={this.playEpisode}*/}
-              {/*      hasAired={episode.firstAired < this.today}*/}
-              {/*      {...episode} />*/}
-              {/*  ))}*/}
-
-              {/*</ScrollView>*/}
-
-            </ScrollView>
+            </View>
 
           </Animatable.View>
         )}

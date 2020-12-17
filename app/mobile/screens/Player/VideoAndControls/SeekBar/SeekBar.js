@@ -45,6 +45,7 @@ const SeekBar = ({
   duration,
   currentTime,
   onSeek,
+  disabled
 }) => {
   const [isSeekingPreviousValue, setSeeking] = useState(null)
 
@@ -109,6 +110,7 @@ const SeekBar = ({
         maximumTrackTintColor={colors.BACKGROUND_SNACKBAR}
         thumbStyle={styles.thumb}
         trackStyle={styles.track}
+        disabled={disabled}
       />
 
       <View style={styles.timeContainer}>

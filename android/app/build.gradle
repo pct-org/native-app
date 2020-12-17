@@ -9,6 +9,8 @@ project.ext.react = [
         enableHermes: true
 ]
 
+def enableHermes = project.ext.react.get("enableHermes", false)
+
 apply from: "../../node_modules/react-native/react.gradle"
 apply from: "$rootDir/buildsystem/helpers.gradle"
 
@@ -131,15 +133,16 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.2.0-alpha01'
     implementation 'com.facebook.react:react-native:+'
-    implementation 'org.videolan.android:libvlc-all:3.1.12'
+    implementation 'org.videolan.android:libvlc-all:3.2.6'
 
     implementation 'androidx.tvprovider:tvprovider:1.0.0'
 
-    if (useIntlJsc) {
-        implementation 'org.webkit:android-jsc-intl:+'
-
+    if (enableHermes) {
+        def hermesPath = "../../node_modules/hermes-engine/android/"
+        debugImplementation files(hermesPath + "hermes-debug.aar")
+        releaseImplementation files(hermesPath + "hermes-release.aar")
     } else {
-        implementation 'org.webkit:android-jsc:+'
+        implementation jscFlavor
     }
 }
 

@@ -32,6 +32,7 @@ export const IconButton = ({
   buttonProps,
   textProps,
   children,
+  disabled,
   ...rest
 }) => (
   <BaseButton
@@ -39,11 +40,17 @@ export const IconButton = ({
     onLongPress={onLongPress}
     onFocus={onFocus}
     onBlur={onBlur}
+    disabled={disabled}
     {...buttonProps}>
     <Animatable.View
       {...animatable}
       style={[styles.container, animatableStyle]}>
       <Icon
+        emphasis={
+          disabled
+            ? 'low'
+            : 'high'
+        }
         {...rest}
       />
 
@@ -51,7 +58,11 @@ export const IconButton = ({
         <Typography
           style={styles.text}
           variant={'captionSmall'}
-          emphasis={'medium'}
+          emphasis={
+            disabled
+              ? 'low'
+              : 'medium'
+          }
           {...textProps}>
           {children}
         </Typography>

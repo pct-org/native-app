@@ -9,7 +9,7 @@ import IconButton from 'components/IconButton'
 import TextButton from 'components/TextButton'
 import { useSideSheet } from 'modules/SideSheetManager'
 
-export const SelectSubtitle = ({ pauseVideo, playVideo, selectSubtitle, subtitles }) => {
+export const SelectSubtitle = ({ pauseVideo, playVideo, selectSubtitle, subtitles, disabled }) => {
   // TODO:: Create an "useSideSheet" that does the same but comes from the side
   // this can then also be used on tv
   const [openBottomSheet, updateBottomSheet, closeBottomSheet] = useSideSheet()
@@ -25,6 +25,12 @@ export const SelectSubtitle = ({ pauseVideo, playVideo, selectSubtitle, subtitle
 
   const renderBottomSheetContent = React.useCallback(() => (
     <View style={{ marginTop: 40 }}>
+
+      <TextButton
+        onPress={() => selectSubtitle(null)}
+      >
+        NONE
+      </TextButton>
 
       {subtitles.map((subtitle) => (
         <TextButton
@@ -61,7 +67,8 @@ export const SelectSubtitle = ({ pauseVideo, playVideo, selectSubtitle, subtitle
         textProps={{
           transform: 'lowercase',
         }}
-        size={dimensions.ICON_SIZE_DEFAULT}>
+        size={dimensions.ICON_SIZE_DEFAULT}
+        disabled={disabled}>
         {i18n.t('Subtitles')}
       </IconButton>
 
@@ -73,10 +80,12 @@ SelectSubtitle.propTypes = {
   paused: PropTypes.bool,
   pauseVideo: PropTypes.func.isRequired,
   playVideo: PropTypes.func.isRequired,
+  disabled: PropTypes.bool,
 }
 
 SelectSubtitle.defaultProps = {
   paused: false,
+  disabled: false,
 }
 
 export default React.memo(SelectSubtitle)

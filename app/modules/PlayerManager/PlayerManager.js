@@ -83,6 +83,12 @@ export class PlayerManager extends React.Component {
   handleSelectSubtitle = (subtitle) => {
     const { ipFinder, item } = this.props
 
+    if (subtitle === null) {
+      return this.setState({
+        subtitleUri: null,
+      })
+    }
+
     this.setState({
       subtitleUri: `http://${ipFinder.host}/subtitle/${item._id}/${subtitle.code}`,
     })

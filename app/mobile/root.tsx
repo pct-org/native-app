@@ -19,7 +19,7 @@ export default () => (
   <NavigationContainer ref={navigationRef}>
     <Disclaimer>
       <IpFinder>
-        {(host) => (
+        {(host: string) => (
           <ApolloLoader host={host}>
             <DownloadManager>
               <WatchOnTvManager>

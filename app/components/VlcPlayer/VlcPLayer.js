@@ -51,14 +51,16 @@ export default class VlcPLayer extends React.Component {
   }
 
   handleOnPlaying = (event) => {
+    const { onPlaying } = this.props
+
     StatusBar.setHidden(true)
 
-    if (this.props.onPlaying) {
-      this.props.onPlaying(event.nativeEvent)
+    if (onPlaying) {
+      onPlaying(event.nativeEvent)
     }
   }
 
-  getViewManagerConfig = viewManagerName => {
+  getViewManagerConfig = (viewManagerName) => {
     if (!NativeModules.UIManager.getViewManagerConfig) {
       return NativeModules.UIManager[viewManagerName]
     }
