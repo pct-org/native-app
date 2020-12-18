@@ -84,7 +84,6 @@
     "react/no-unused-prop-types": [0],
     "react/prefer-es6-class": [2, "always"],
     "react/prefer-stateless-function": [2],
-    "react/prop-types": [2],
     "react/react-in-jsx-scope": [2],
     "react/require-optimization": [1],
     "react/require-render-return": [2],

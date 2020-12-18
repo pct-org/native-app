@@ -14,7 +14,11 @@ export const styles = StyleSheet.create({
 
 })
 
-export const SettingsHeader = ({ label }) => {
+export interface Props {
+  label: string
+}
+
+export const SettingsHeader: React.FC<Props> = ({ label }) => {
   return (
     <>
       <OptionsItem
