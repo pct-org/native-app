@@ -21,7 +21,7 @@ const styles = {
   },
 
   slider: {
-    width: dimensions.SCREEN_WIDTH - dimensions.UNIT * 26,
+    width: dimensions.SCREEN_WIDTH - dimensions.UNIT * 28,
   },
 
   track: {

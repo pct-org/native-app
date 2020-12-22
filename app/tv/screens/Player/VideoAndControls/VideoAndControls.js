@@ -8,6 +8,7 @@ import dimensions from 'modules/dimensions'
 import VlcPlayer from 'components/VlcPlayer'
 import Overlay from 'components/Overlay'
 import ContinueOrRestart from 'components/ContinueOrRestart'
+import SelectSubtitle from 'components/SelectSubtitle'
 
 import PlayPauseIcon from './PlayPauseIcon'
 import SeekBar from './SeekBar'
@@ -197,7 +198,7 @@ export class VideoAndControls extends React.Component {
   }
 
   render() {
-    const { url, children, forcePaused, startPosition } = this.props
+    const { url, children, forcePaused, startPosition, selectSubtitle, subtitles } = this.props
     const { showControls, paused, resizeMode } = this.state
     const { currentTime, duration, progress, loading } = this.state
 
@@ -258,6 +259,16 @@ export class VideoAndControls extends React.Component {
                 progress={progress}
                 onSeek={this.onSliderPositionChange}
               />
+
+              {subtitles && subtitles.length > 0 && (
+                <SelectSubtitle
+                  playVideo={this.handlePlayVideo}
+                  pauseVideo={this.handlePauseVideo}
+                  selectSubtitle={selectSubtitle}
+                  subtitles={subtitles}
+                  disabled={loading}
+                />
+              )}
             </View>
 
             {children}

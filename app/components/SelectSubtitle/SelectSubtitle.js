@@ -1,6 +1,7 @@
+import useCorrect from 'modules/useCorrect'
 import React from 'react'
 import PropTypes from 'prop-types'
-import { StyleSheet, View } from 'react-native'
+import { StyleSheet, View, Platform } from 'react-native'
 
 import i18n from 'modules/i18n'
 import dimensions from 'modules/dimensions'
@@ -18,6 +19,16 @@ export const styles = StyleSheet.create({
     width: 200,
   },
 
+  root: {
+    zIndex: 2000,
+    width: dimensions.ICON_SIZE_MEDIUM + (dimensions.UNIT * 2),
+    right: useCorrect(
+      dimensions.UNIT * 5,
+      null,
+      dimensions.UNIT,
+    ),
+  },
+
 })
 
 export const SelectSubtitle = ({
@@ -27,8 +38,6 @@ export const SelectSubtitle = ({
   subtitles,
   disabled,
 }) => {
-  // TODO:: Create an "useSideSheet" that does the same but comes from the side
-  // this can then also be used on tv
   const [openBottomSheet, updateBottomSheet, closeBottomSheet] = useSideSheet()
 
   const handleSubtitleClick = React.useCallback((subtitle) => () => {
@@ -38,14 +47,14 @@ export const SelectSubtitle = ({
 
   const getBottomSheetConfig = () => {
     return {
-      renderContent: renderBottomSheetContent,
+      renderContent: renderSideSheetContent,
       onClose: () => {
         playVideo()
       },
     }
   }
 
-  const renderBottomSheetContent = React.useCallback(() => (
+  const renderSideSheetContent = React.useCallback(() => (
     <View>
       <View style={styles.statusBar} />
       <OptionsHeader label={i18n.t('Subtitles')} />
@@ -73,13 +82,7 @@ export const SelectSubtitle = ({
 
   return (
     <View
-      style={{
-        position: 'absolute',
-        zIndex: 2000,
-        width: dimensions.ICON_SIZE_MEDIUM + (dimensions.UNIT * 2),
-        right: dimensions.UNIT * 5,
-        bottom: dimensions.UNIT * 2,
-      }}
+      style={styles.root}
       pointerEvents={'box-none'}>
 
       <IconButton
@@ -89,7 +92,11 @@ export const SelectSubtitle = ({
         textProps={{
           transform: 'lowercase',
         }}
-        size={dimensions.ICON_SIZE_DEFAULT}
+        size={
+          Platform.isTV
+            ? dimensions.ICON_SIZE_MEDIUM
+            : dimensions.ICON_SIZE_DEFAULT
+        }
         disabled={disabled}>
         {i18n.t('Subtitles')}
       </IconButton>

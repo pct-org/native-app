@@ -2,6 +2,7 @@ import React from 'react'
 import { StyleSheet, View } from 'react-native'
 
 import dimensions from 'modules/dimensions'
+import useCorrect from 'modules/useCorrect'
 import BaseButton from 'components/BaseButton'
 
 import OptionsItemInner, { Props as OptionsItemInnerProps } from './OptionsItemInner'
@@ -9,9 +10,16 @@ import OptionsItemInner, { Props as OptionsItemInnerProps } from './OptionsItemI
 export const styles = StyleSheet.create({
 
   root: {
-    marginVertical: 7,
-    paddingHorizontal: dimensions.UNIT * 2,
-
+    marginVertical: useCorrect(
+      7,
+      null,
+      dimensions.UNIT / 2
+    ),
+    paddingHorizontal: useCorrect(
+      dimensions.UNIT * 2,
+      null,
+      dimensions.UNIT
+    ),
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center'

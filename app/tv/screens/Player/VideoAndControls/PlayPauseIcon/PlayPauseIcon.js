@@ -2,6 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { View, StyleSheet } from 'react-native'
 
+import dimensions from 'modules/dimensions'
 import Remote from 'tv/modules/Controls/Remote'
 import IconButton from 'components/IconButton'
 
@@ -33,10 +34,9 @@ export const PlayPauseIcon = ({ paused, handlePauseVideo, handlePlayVideo }) => 
       }
       buttonProps={{
         hasTVPreferredFocus: true,
-        // component: TouchableWithoutFeedback,
       }}
       color={'primary'}
-      size={60} />
+      size={dimensions.ICON_SIZE_TV_MEDIUM} />
 
   </View>
 )

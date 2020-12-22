@@ -1,3 +1,4 @@
+import useCorrect from 'modules/useCorrect'
 import React from 'react'
 import PropTypes from 'prop-types'
 import { StyleSheet } from 'react-native'
@@ -11,16 +12,21 @@ import Icon from '../Icon'
 
 export const styles = StyleSheet.create({
 
-  container: {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
+    container: {
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
 
-  text: {
-    marginTop: -(dimensions.UNIT / 2),
+    text: {
+      marginTop: useCorrect(
+        -(dimensions.UNIT / 2),
+        null,
+        0,
+      ),
+    },
   },
-})
+)
 
 export const IconButton = ({
   onPress,

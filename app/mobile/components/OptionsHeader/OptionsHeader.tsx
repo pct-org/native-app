@@ -2,6 +2,7 @@ import React from 'react'
 import { StyleSheet } from 'react-native'
 
 import dimensions from 'modules/dimensions'
+import useCorrect from 'modules/useCorrect'
 import Divider from 'components/Divider'
 
 import OptionsItem from '../OptionsItem'
@@ -9,8 +10,12 @@ import OptionsItem from '../OptionsItem'
 export const styles = StyleSheet.create({
 
   root: {
-    marginVertical: dimensions.UNIT * 2,
-  },
+    marginVertical: useCorrect(
+      dimensions.UNIT * 2,
+      null,
+      dimensions.UNIT
+    )
+  }
 
 })
 

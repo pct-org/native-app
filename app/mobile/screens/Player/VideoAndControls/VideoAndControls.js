@@ -6,10 +6,10 @@ import Orientation from 'react-native-orientation'
 import dimensions from 'modules/dimensions'
 import VlcPlayer from 'components/VlcPlayer'
 import Overlay from 'components/Overlay'
+import SelectSubtitle from 'components/SelectSubtitle'
 
 import PlayPauseIcon from './PlayPauseIcon'
 import SeekBar from './SeekBar'
-import SelectSubtitle from './SelectSubtitle'
 
 const styles = StyleSheet.create({
 
@@ -273,13 +273,15 @@ export class VideoAndControls extends React.Component {
               disabled={loading}
             />
 
-            <SelectSubtitle
-              playVideo={this.handlePlayVideo}
-              pauseVideo={this.handlePauseVideo}
-              selectSubtitle={selectSubtitle}
-              subtitles={subtitles}
-              disabled={loading}
-            />
+            {subtitles && subtitles.length > 0 && (
+              <SelectSubtitle
+                playVideo={this.handlePlayVideo}
+                pauseVideo={this.handlePauseVideo}
+                selectSubtitle={selectSubtitle}
+                subtitles={subtitles}
+                disabled={loading}
+              />
+            )}
 
             {children}
 
