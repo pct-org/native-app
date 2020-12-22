@@ -98,6 +98,10 @@ public class VlcPlayerView extends FrameLayout implements
 
         if (layout.getChildAt(0) != null) {
             layout.removeViewAt(0);
+
+            if (layout.getChildAt(1) != null) {
+                layout.removeViewAt(1);
+            }
         }
 
         layout.addView(surfaceView, 0, layoutParams);
