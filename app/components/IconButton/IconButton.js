@@ -39,6 +39,7 @@ export const IconButton = ({
   textProps,
   children,
   disabled,
+  emphasis,
   ...rest
 }) => (
   <BaseButton
@@ -55,7 +56,7 @@ export const IconButton = ({
         emphasis={
           disabled
             ? 'low'
-            : 'high'
+            : emphasis
         }
         {...rest}
       />
@@ -90,6 +91,7 @@ IconButton.propTypes = {
   animatableStyle: PropTypes.object,
   animatable: PropTypes.object,
   size: PropTypes.number,
+  emphasis: PropTypes.string,
 }
 
 IconButton.defaultProps = {
@@ -105,6 +107,7 @@ IconButton.defaultProps = {
   onFocus: null,
   onBlur: null,
   size: dimensions.ICON_SIZE_DEFAULT,
+  emphasis: 'high'
 }
 
 export default IconButton

@@ -60,6 +60,7 @@ export class VideoAndControls extends React.Component {
 
     this.state = {
       showControls: true,
+      disableControls: false,
       loading: true,
       paused: false,
       resizeMode: 'contain',
@@ -159,6 +160,18 @@ export class VideoAndControls extends React.Component {
     })
   }
 
+  handleDisableControls = () => {
+    this.setState({
+      disableControls: true
+    })
+  }
+
+  handleEnableControls = () => {
+    this.setState({
+      disableControls: false
+    })
+  }
+
   toggleControls = (withTimeout = true) => {
     const { showControls } = this.state
 
@@ -198,8 +211,9 @@ export class VideoAndControls extends React.Component {
   }
 
   render() {
-    const { url, children, forcePaused, startPosition, selectSubtitle, subtitles } = this.props
-    const { showControls, paused, resizeMode } = this.state
+    const { url, children, forcePaused, startPosition } = this.props
+    const { subtitleUri, selectSubtitle, subtitles } = this.props
+    const { showControls, disableControls, paused, resizeMode } = this.state
     const { currentTime, duration, progress, loading } = this.state
 
     return (
@@ -220,6 +234,7 @@ export class VideoAndControls extends React.Component {
               style={styles.video}
               paused={paused || forcePaused}
               resizeMode={resizeMode}
+              subtitleUri={subtitleUri}
               onPlaying={this.handleOnPlaying}
               onProgress={this.handleOnProgress}
             />
@@ -241,8 +256,10 @@ export class VideoAndControls extends React.Component {
             {startPosition > 0 && !loading && (
               <ContinueOrRestart
                 pauseVideo={this.handlePauseVideo}
-                handleContinueVideo={this.handleContinueVideo}
-                handleRestartVideo={this.handleRestartVideo}
+                continueVideo={this.handleContinueVideo}
+                restartVideo={this.handleRestartVideo}
+                disableControls={this.handleDisableControls}
+                enableControls={this.handleEnableControls}
               />
             )}
 
@@ -251,6 +268,7 @@ export class VideoAndControls extends React.Component {
                 handlePlayVideo={this.handlePlayVideo}
                 handlePauseVideo={this.handlePauseVideo}
                 paused={paused}
+                disabled={disableControls}
               />
 
               <SeekBar
@@ -266,7 +284,7 @@ export class VideoAndControls extends React.Component {
                   pauseVideo={this.handlePauseVideo}
                   selectSubtitle={selectSubtitle}
                   subtitles={subtitles}
-                  disabled={loading}
+                  disabled={loading || disableControls}
                 />
               )}
             </View>

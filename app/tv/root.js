@@ -6,29 +6,28 @@ import IpFinder from 'modules/IpFinder'
 import SideSheetManager from 'modules/SideSheetManager'
 import navigationRef from 'modules/RootNavigation'
 import WatchOnTvManager from 'modules/WatchOnTvManager'
+import TvRemoteProvider from 'tv/modules/Controls/TvRemoteProvider'
 
 import ApolloLoader from 'components/ApolloLoader'
 
 import Screens from './screens'
 
 export default () => (
-  // <FocusManager>
-  <NavigationContainer ref={navigationRef}>
-    <IpFinder>
-      {(host) => (
-        <ApolloLoader host={host}>
-          <DownloadManager>
-            <WatchOnTvManager isTv>
-
-              <SideSheetManager>
-                <Screens />
-              </SideSheetManager>
-
-            </WatchOnTvManager>
-          </DownloadManager>
-        </ApolloLoader>
-      )}
-    </IpFinder>
-  </NavigationContainer>
-  // </FocusManager>
+  <TvRemoteProvider>
+    <NavigationContainer ref={navigationRef}>
+      <IpFinder>
+        {(host) => (
+          <ApolloLoader host={host}>
+            <DownloadManager>
+              <WatchOnTvManager isTv>
+                <SideSheetManager>
+                  <Screens />
+                </SideSheetManager>
+              </WatchOnTvManager>
+            </DownloadManager>
+          </ApolloLoader>
+        )}
+      </IpFinder>
+    </NavigationContainer>
+  </TvRemoteProvider>
 )

@@ -38,14 +38,16 @@ export const SelectSubtitle = ({
   subtitles,
   disabled,
 }) => {
-  const [openBottomSheet, updateBottomSheet, closeBottomSheet] = useSideSheet()
+  const [selectingSubs, setSelectingSubs] = React.useState(false)
+  const [openSideSheet, updateSideSheet, closeSideSheet] = useSideSheet()
 
   const handleSubtitleClick = React.useCallback((subtitle) => () => {
     selectSubtitle(subtitle)
-    closeBottomSheet()
+    closeSideSheet()
+    setSelectingSubs(false)
   }, [])
 
-  const getBottomSheetConfig = () => {
+  const getSideSheetConfig = () => {
     return {
       renderContent: renderSideSheetContent,
       onClose: () => {
@@ -61,23 +63,28 @@ export const SelectSubtitle = ({
 
       <OptionsGroup>
         <OptionsItem
+          disabled={!selectingSubs}
           onPress={handleSubtitleClick(null)}
-          label={i18n.t('No subtitles')} />
+          label={i18n.t('No subtitles')}
+          buttonProps={{
+            hasTVPreferredFocus: selectingSubs,
+          }} />
 
         {subtitles.map((subtitle) => (
           <OptionsItem
             key={subtitle.code}
+            disabled={!selectingSubs}
             onPress={handleSubtitleClick(subtitle)}
             label={subtitle.language} />
         ))}
       </OptionsGroup>
     </View>
-  ), [subtitles])
+  ), [subtitles, selectingSubs])
 
   const handleOnOpenSubtitlesPress = () => {
     pauseVideo()
-
-    openBottomSheet(getBottomSheetConfig())
+    setSelectingSubs(true)
+    openSideSheet(getSideSheetConfig())
   }
 
   return (

@@ -33,9 +33,8 @@ export const SideSheetProvider = ({ children }) => {
   const [fall] = React.useState(new ReAnimated.Value(1))
   const [visible, toggleVisible] = React.useState(false)
 
-  const [bottomSheetConfig, setBottomSheetConfig] = React.useState({
+  const [sideSheetConfig, setSideSheetConfig] = React.useState({
     renderContent: () => null,
-    borderRadius: 0,
     snapPoints: [200, 0],
     biggestSnapPoint: 200,
     contentHeight: 200,
@@ -49,14 +48,25 @@ export const SideSheetProvider = ({ children }) => {
   const handleSideSheetClose = React.useCallback(() => {
     toggleVisible(false)
 
-    if (bottomSheetConfig.onClose) {
-      bottomSheetConfig.onClose()
+    if (sideSheetConfig.onClose) {
+      sideSheetConfig.onClose()
     }
-  }, [bottomSheetConfig.onClose])
+  }, [sideSheetConfig.onClose])
+
+  const handleRenderContent = React.useCallback(() => (
+    <Container
+      elevation={1}
+      style={{
+        height: '100%',
+        width: sideSheetConfig.biggestSnapPoint,
+      }}>
+      {sideSheetConfig.renderContent()}
+    </Container>
+  ), [sideSheetConfig.biggestSnapPoint, sideSheetConfig.renderContent])
 
   useBackButton(() => {
     if (visible && sheetRef.current) {
-      closeBottomSheet()
+      closeSideSheet()
 
       return true
     }
@@ -64,17 +74,17 @@ export const SideSheetProvider = ({ children }) => {
     return false
   })
 
-  const updateBottomSheet = (config, force = false) => {
+  const updateSideSheet = (config, force = false) => {
     if (visible || force) {
-      setBottomSheetConfig({
-        ...bottomSheetConfig,
+      setSideSheetConfig({
+        ...sideSheetConfig,
         ...config,
       })
     }
   }
 
-  const openBottomSheet = (config) => {
-    updateBottomSheet(config, true)
+  const openSideSheet = (config) => {
+    updateSideSheet(config, true)
 
     // if we are already visible it can be content changes
     if (!visible) {
@@ -82,12 +92,12 @@ export const SideSheetProvider = ({ children }) => {
     }
   }
 
-  const closeBottomSheet = () => {
-    sheetRef.current.snapTo(bottomSheetConfig.snapPoints.length - 1)
+  const closeSideSheet = () => {
+    sheetRef.current.snapTo(sideSheetConfig.snapPoints.length - 1)
   }
 
   return (
-    <SideSheetContext.Provider value={[openBottomSheet, updateBottomSheet, closeBottomSheet]}>
+    <SideSheetContext.Provider value={[openSideSheet, updateSideSheet, closeSideSheet]}>
 
       {children}
 
@@ -105,30 +115,21 @@ export const SideSheetProvider = ({ children }) => {
           }),
         }}>
 
-        <TouchableWithoutFeedback onPress={closeBottomSheet}>
+        <TouchableWithoutFeedback onPress={closeSideSheet}>
           <View style={[styles.overlayContainer, styles.overlay]} />
         </TouchableWithoutFeedback>
       </ReAnimated.View>
 
       <SideSheet
         ref={sheetRef}
-        snapPoints={bottomSheetConfig.snapPoints}
-        borderRadius={bottomSheetConfig.borderRadius}
+        snapPoints={sideSheetConfig.snapPoints}
+        borderRadius={sideSheetConfig.borderRadius}
         enabledContentTapInteraction={false}
         callbackNode={fall}
         onOpenStart={handleSideSheetOpen}
         onCloseEnd={handleSideSheetClose}
-        initialSnap={bottomSheetConfig.snapPoints.length - 1}
-        renderContent={() => (
-          <Container
-            elevation={1}
-            style={{
-              height: '100%',
-              width: bottomSheetConfig.biggestSnapPoint,
-            }}>
-            {bottomSheetConfig.renderContent()}
-          </Container>
-        )}
+        initialSnap={sideSheetConfig.snapPoints.length - 1}
+        renderContent={handleRenderContent}
       />
     </SideSheetContext.Provider>
   )

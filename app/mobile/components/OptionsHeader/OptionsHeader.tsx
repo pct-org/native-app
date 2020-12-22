@@ -20,20 +20,20 @@ export const styles = StyleSheet.create({
 })
 
 export interface Props {
+
   label: string
+
 }
 
-export const SettingsHeader: React.FC<Props> = ({ label }) => {
-  return (
-    <>
-      <OptionsItem
-        style={styles.root}
-        label={label}
-      />
+export const SettingsHeader: React.FC<Props> = ({ label }) => (
+  <>
+    <OptionsItem
+      style={styles.root}
+      label={label}
+    />
 
-      <Divider />
-    </>
-  )
-}
+    <Divider />
+  </>
+)
 
 export default SettingsHeader

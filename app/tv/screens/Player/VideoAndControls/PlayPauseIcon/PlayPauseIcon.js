@@ -16,7 +16,7 @@ export const styles = StyleSheet.create({
 
 })
 
-export const PlayPauseIcon = ({ paused, handlePauseVideo, handlePlayVideo }) => (
+export const PlayPauseIcon = ({ paused, handlePauseVideo, handlePlayVideo, disabled }) => (
   <View
     style={styles.root}
     pointerEvents={'box-none'}>
@@ -33,10 +33,12 @@ export const PlayPauseIcon = ({ paused, handlePauseVideo, handlePlayVideo }) => 
           : 'pause'
       }
       buttonProps={{
-        hasTVPreferredFocus: true,
+        hasTVPreferredFocus: !disabled,
       }}
       color={'primary'}
-      size={dimensions.ICON_SIZE_TV_MEDIUM} />
+
+      size={dimensions.ICON_SIZE_TV_MEDIUM}
+      disabled={disabled} />
 
   </View>
 )

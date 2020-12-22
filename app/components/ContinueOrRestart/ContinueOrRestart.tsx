@@ -1,14 +1,13 @@
 import React from 'react'
-import { StyleSheet, View, TouchableNativeFeedback, Text } from 'react-native'
+import { StyleSheet, TouchableHighlight, View } from 'react-native'
 
 import dimensions from 'modules/dimensions'
 import i18n from 'modules/i18n'
+import { useTvRemoteProvider } from 'tv/modules/Controls/TvRemoteProvider'
 
 import Overlay from '../Overlay'
 import TextButton from '../TextButton'
 import Typography from '../Typography'
-import IconButton from '../IconButton'
-import Remote from '../../tv/modules/Controls/Remote'
 
 export const styles = StyleSheet.create({
 
@@ -48,30 +47,40 @@ export interface Props {
 
   pauseVideo: () => void
 
-  handleContinueVideo: () => void
+  continueVideo: () => void
 
-  handleRestartVideo: () => void
+  restartVideo: () => void
+
+  disableControls: () => void
+
+  enableControls: () => void
 
 }
 
 export const ContinueOrRestart: React.FC<Props> = ({
   pauseVideo,
-  handleContinueVideo,
-  handleRestartVideo
+  continueVideo,
+  restartVideo,
+  disableControls,
+  enableControls
 }) => {
   const [showedOverlay, setOverlayVisible] = React.useState(true)
+  const tvRemote = useTvRemoteProvider()
 
   React.useEffect(() => {
     pauseVideo()
+    disableControls()
   }, [])
 
   const handleContinue = () => {
-    handleContinueVideo()
+    continueVideo()
+    enableControls()
     setOverlayVisible(false)
   }
 
   const handleRestart = () => {
-    handleRestartVideo()
+    restartVideo()
+    enableControls()
     setOverlayVisible(false)
   }
 
@@ -91,12 +100,26 @@ export const ContinueOrRestart: React.FC<Props> = ({
 
       <View style={styles.actions}>
         <TextButton
+          innerRef={tvRemote.addRef('restart-video')}
+          onFocus={tvRemote.onFocus('restart-video', {
+            elementTop: 'restart-video',
+            elementLeft: 'continue-video',
+            elementRight: 'continue-video',
+            elementBottom: 'restart-video'
+          })}
           style={styles.action}
           onPress={handleRestart}>
           {i18n.t('Restart')}
         </TextButton>
 
         <TextButton
+          innerRef={tvRemote.addRef('continue-video')}
+          onFocus={tvRemote.onFocus('continue-video', {
+            elementTop: 'continue-video',
+            elementLeft: 'restart-video',
+            elementRight: 'restart-video',
+            elementBottom: 'continue-video'
+          })}
           style={styles.action}
           onPress={handleContinue}
           hasTVPreferredFocus>

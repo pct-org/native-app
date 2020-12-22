@@ -1,11 +1,11 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { Text } from 'react-native'
+import * as Animatable from 'react-native-animatable'
 
 import dimensions from 'modules/dimensions'
 
 import Typography from 'components/Typography'
-import * as Animatable from 'react-native-animatable'
 
 import BaseButton from '../BaseButton'
 

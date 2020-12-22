@@ -13,12 +13,17 @@ export const styles = StyleSheet.create({
     marginVertical: useCorrect(
       7,
       null,
-      dimensions.UNIT / 2
+      dimensions.UNIT / 4
     ),
     paddingHorizontal: useCorrect(
       dimensions.UNIT * 2,
       null,
       dimensions.UNIT
+    ),
+    paddingVertical: useCorrect(
+      0,
+      null,
+      dimensions.UNIT / 2
     ),
     display: 'flex',
     flexDirection: 'row',
@@ -29,18 +34,20 @@ export const styles = StyleSheet.create({
 
 export interface Props extends OptionsItemInnerProps {
 
-  style?: object
+  style?: any
 
   disabled?: boolean
 
   onPress?: () => void
 
+  buttonProps?: any
 }
 
 export const OptionsItem: React.FC<Props> = ({
-  style,
-  disabled,
+  style = {},
+  disabled = false,
   onPress,
+  buttonProps = {},
   ...rest
 }) => {
   if (disabled || !onPress) {
@@ -58,10 +65,12 @@ export const OptionsItem: React.FC<Props> = ({
         rippleBorderless={false}
         onPress={onPress}
         disabled={disabled}
-        style={[styles.root, style]}>
-        <OptionsItemInner
-          disabled={disabled}
-          {...rest} />
+        {...buttonProps}>
+        <View style={[styles.root, style]}>
+          <OptionsItemInner
+            disabled={disabled}
+            {...rest} />
+        </View>
       </BaseButton>
     )
   }

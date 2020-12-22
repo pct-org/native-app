@@ -1,11 +1,11 @@
 import React from 'react'
-import { findNodeHandle, TVEventHandler, Animated, Easing } from 'react-native'
-import { transitionDuration } from 'tv/modules/BackgroundManager/BackgroundManager'
+import { findNodeHandle, TVEventHandler } from 'react-native'
 
 import Context from './FocusManagerContext'
-import * as constants from './FocusManagerConstants'
 
-export default class FocusProvider extends React.Component {
+export const useTvRemoteProvider = () => React.useContext(Context)
+
+export default class TvRemoteProvider extends React.Component {
 
   focusRefs = {}
 
@@ -26,19 +26,9 @@ export default class FocusProvider extends React.Component {
     this._tvEventHandler.enable(this, function(manager, evt) {
       const { dirty } = manager.state
 
-      // eventKeyAction is an integer value representing button press(key down) and release(key up). "key up" is 1, "key down" is 0.
-
-      // if (eventType === 'playPause' && eventKeyAction === 0)
-      // {
-      //   console.log('play pressed')
-      // }
-
       if (!dirty && ['up', 'right', 'down', 'left'].includes(evt.eventType)) {
-        console.log('set dirty state')
         manager.setState({ dirty: true })
       }
-
-      console.log(dirty, evt)
     })
   }
 
@@ -47,36 +37,15 @@ export default class FocusProvider extends React.Component {
   }
 
   getApi = () => {
-    const { dirty, currentFocusContainer } = this.state
+    const { dirty, currentFocusElement } = this.state
 
     return {
-      constants,
       dirty,
-      currentFocusContainer,
+      currentFocusElement,
       addRef: this.addRef,
+      onFocus: this.handleFocusChange,
       updateCurrentItem: this.updateCurrentItem,
       toRight: this.handleToRight,
-      focusContainer: this.focusContainer,
-    }
-  }
-
-  focusContainer = (container, value, toValue) => {
-    const { currentFocusContainer } = this.state
-
-    if (currentFocusContainer !== container) {
-      this.setState({
-        currentFocusContainer: container,
-      }, () => {
-        Animated.timing(
-          value,
-          {
-            toValue: toValue,
-            easing: Easing.linear,
-            duration: 250,
-            useNativeDriver: true,
-          },
-        ).start()
-      })
     }
   }
 
@@ -101,13 +70,48 @@ export default class FocusProvider extends React.Component {
       const next = {
         nextFocusLeft: findNodeHandle(this.focusRefs[elementLeft]),
         nextFocusRight: findNodeHandle(this.focusRefs[elementRight]),
+        nextFocusDown: findNodeHandle(this.focusRefs[elementBottom]),
       }
+
+      // this.focusRefs[element].setNativeProps(next)
+    })
+  }
+
+  handleFocusChange = (element, nextFocus) => () => {
+    const { currentFocusElement } = this.state
+
+    this.setState({
+      nextFocus,
+      currentFocusElement: element,
+    }, () => {
+      const { elementTop = null, elementBottom = null, elementLeft = null, elementRight = null } = nextFocus
+
+      const next = {
+        nextFocusUp: elementTop !== null
+          ? findNodeHandle(this.focusRefs[elementTop])
+          : null,
+
+        nextFocusLeft: elementLeft !== null
+          ? findNodeHandle(this.focusRefs[elementLeft])
+          : null,
+
+        nextFocusRight: elementRight !== null
+          ? findNodeHandle(this.focusRefs[elementRight])
+          : null,
+
+        nextFocusDown: elementBottom !== null
+          ? findNodeHandle(this.focusRefs[elementBottom])
+          : null,
+      }
+
+      console.log('focus change', element, next)
 
       this.focusRefs[element].setNativeProps(next)
     })
   }
 
-  addRef = (key, ref) => {
+  addRef = (key) => (ref) => {
+    console.log(ref)
     this.focusRefs[key] = ref
   }
 
