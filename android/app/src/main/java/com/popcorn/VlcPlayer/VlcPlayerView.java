@@ -129,7 +129,7 @@ public class VlcPlayerView extends FrameLayout implements
             options.add("--subsdec-encoding");
             options.add("UTF-8");
             options.add("--android-display-chroma");
-            options.add("RV16");
+            options.add("RV32");
             options.add("--audio-resampler");
             options.add("soxr");
 
