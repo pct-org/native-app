@@ -7,6 +7,7 @@ import dimensions from 'modules/dimensions'
 
 import VlcPlayer from 'components/VlcPlayer'
 import Overlay from 'components/Overlay'
+import ContinueOrRestart from 'components/ContinueOrRestart'
 
 import PlayPauseIcon from './PlayPauseIcon'
 import SeekBar from './SeekBar'
@@ -39,8 +40,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     alignContent: 'center',
-    height: 76
-  }
+    height: 76,
+  },
 
 })
 
@@ -126,7 +127,17 @@ export class VideoAndControls extends React.Component {
     })
   }
 
-  handleOnProgress = ({ currentTime, duration }) => {
+  handleRestartVideo = () => {
+    this.videoRef.seek(0)
+
+    this.handlePlayVideo()
+  }
+
+  handleContinueVideo = () => {
+    this.handlePlayVideo()
+  }
+
+  handleOnProgress = ({ currentTime, duration = this.state.duration }) => {
     const { setProgress } = this.props
 
     const currentTimeSeconds = currentTime / 1000
@@ -144,12 +155,6 @@ export class VideoAndControls extends React.Component {
         duration: durationSeconds,
         progress,
       })
-    })
-  }
-
-  handleResizeModeChange = (resizeMode) => {
-    this.setState({
-      resizeMode,
     })
   }
 
@@ -192,10 +197,9 @@ export class VideoAndControls extends React.Component {
   }
 
   render() {
-    const { url, children, forcePaused } = this.props
-    const { resizeMode } = this.state
-    const { showControls, paused } = this.state
-    const { currentTime, duration, progress } = this.state
+    const { url, children, forcePaused, startPosition } = this.props
+    const { showControls, paused, resizeMode } = this.state
+    const { currentTime, duration, progress, loading } = this.state
 
     return (
       <React.Fragment>
@@ -232,6 +236,14 @@ export class VideoAndControls extends React.Component {
             animation={showControls ? 'fadeIn' : 'fadeOut'}
             pointerEvents={'box-none'}
             useNativeDriver>
+
+            {startPosition > 0 && !loading && (
+              <ContinueOrRestart
+                pauseVideo={this.handlePauseVideo}
+                handleContinueVideo={this.handleContinueVideo}
+                handleRestartVideo={this.handleRestartVideo}
+              />
+            )}
 
             <View style={styles.actionsContainer}>
               <PlayPauseIcon

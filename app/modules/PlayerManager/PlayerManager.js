@@ -99,7 +99,7 @@ export class PlayerManager extends React.Component {
    *
    * @returns {Promise<void>}
    */
-  startStream = async() => {
+  startStream = () => {
     const { apollo, item, torrent } = this.props
 
     return apollo.mutate({

@@ -87,5 +87,8 @@
   "All": "All",
   "Trending": "Trending",
   "About": "About",
-  "No subtitles": "No subtitles"
+  "No subtitles": "No subtitles",
+  "You already started watching this video, what do you want to do?": "You already started watching this video, what do you want to do?",
+  "Continue": "Continue",
+  "Restart": "Restart"
 }

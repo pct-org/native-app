@@ -1,4 +1,4 @@
-import { Dimensions, StatusBar } from 'react-native'
+import { Dimensions, StatusBar, Platform } from 'react-native'
 
 import useCorrect from 'modules/useCorrect'
 
@@ -7,7 +7,7 @@ const { width, height } = Dimensions.get('window')
 let screenWidth = width
 let screenHeight = height
 
-if (width > height) {
+if (width > height && !Platform.isTV) {
   screenWidth = (height)
   screenHeight = (width)
 }

@@ -5,6 +5,7 @@ import { Text } from 'react-native'
 import dimensions from 'modules/dimensions'
 
 import Typography from 'components/Typography'
+import * as Animatable from 'react-native-animatable'
 
 import BaseButton from '../BaseButton'
 
@@ -25,7 +26,6 @@ export const TextButton = ({
   onLongPress,
   onFocus,
   onBlur,
-  upperCase,
   component,
   hasTVPreferredFocus,
   nextFocusUp,
@@ -34,6 +34,8 @@ export const TextButton = ({
   nextFocusLeft,
   nextFocusRight,
   nativeID,
+  animatable,
+  animatableStyle,
   ...rest
 }) => (
   <BaseButton
@@ -50,13 +52,16 @@ export const TextButton = ({
     nextFocusLeft={nextFocusLeft}
     nextFocusRight={nextFocusRight}
     rippleBorderless={false}>
-    <Text style={[
-      styles.root,
-      Typography.getTextStyle(rest)
-    ]}>
-      {children}
-    </Text>
-
+    <Animatable.View
+      {...animatable}
+      style={animatableStyle}>
+      <Text style={[
+        styles.root,
+        Typography.getTextStyle(rest),
+      ]}>
+        {children}
+      </Text>
+    </Animatable.View>
   </BaseButton>
 )
 
@@ -65,15 +70,16 @@ TextButton.propTypes = {
   onLongPress: PropTypes.func,
   children: PropTypes.oneOfType([
     PropTypes.string,
-    PropTypes.array
+    PropTypes.array,
   ]).isRequired,
 }
 
 TextButton.defaultProps = {
-  upperCase: true,
   variant: 'button',
   color: 'white',
   emphasis: 'high',
+  animatable: {},
+  animatableStyle: {}
 }
 
 export default TextButton

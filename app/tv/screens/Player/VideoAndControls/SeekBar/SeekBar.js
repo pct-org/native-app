@@ -76,12 +76,18 @@ const SeekBar = ({
       seconds -= minutes * 60
 
       minutes = `0${minutes}`.substr(-2)
+
+    } else {
+      minutes = `00`
     }
 
     if (seconds > 0) {
       seconds = parseInt(seconds, 10)
 
       seconds = `0${seconds}`.substr(-2)
+
+    } else {
+      seconds = `00`
     }
 
     if (hours > 0 && minutes > 0) {
@@ -112,6 +118,7 @@ const SeekBar = ({
         maximumTrackTintColor={colors.BACKGROUND_SNACKBAR}
         thumbStyle={styles.thumb}
         trackStyle={styles.track}
+        disabled
       />
 
       <View style={styles.timeContainer}>
