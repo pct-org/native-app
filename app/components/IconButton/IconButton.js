@@ -1,9 +1,9 @@
-import useCorrect from 'modules/useCorrect'
 import React from 'react'
 import PropTypes from 'prop-types'
 import { StyleSheet } from 'react-native'
 import * as Animatable from 'react-native-animatable'
 
+import useCorrect from 'modules/useCorrect'
 import dimensions from 'modules/dimensions'
 
 import BaseButton from '../BaseButton'
@@ -12,21 +12,21 @@ import Icon from '../Icon'
 
 export const styles = StyleSheet.create({
 
-    container: {
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center',
-    },
-
-    text: {
-      marginTop: useCorrect(
-        -(dimensions.UNIT / 2),
-        null,
-        0,
-      ),
-    },
+  container: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
-)
+
+  text: {
+    marginTop: useCorrect(
+      -(dimensions.UNIT / 2),
+      null,
+      0,
+    ),
+  },
+
+})
 
 export const IconButton = ({
   onPress,
@@ -40,6 +40,7 @@ export const IconButton = ({
   children,
   disabled,
   emphasis,
+  innerRef,
   ...rest
 }) => (
   <BaseButton
@@ -48,6 +49,7 @@ export const IconButton = ({
     onFocus={onFocus}
     onBlur={onBlur}
     disabled={disabled}
+    innerRef={innerRef}
     {...buttonProps}>
     <Animatable.View
       {...animatable}
@@ -68,7 +70,7 @@ export const IconButton = ({
           emphasis={
             disabled
               ? 'low'
-              : 'medium'
+              : emphasis
           }
           {...textProps}>
           {children}
@@ -107,7 +109,7 @@ IconButton.defaultProps = {
   onFocus: null,
   onBlur: null,
   size: dimensions.ICON_SIZE_DEFAULT,
-  emphasis: 'high'
+  emphasis: 'high',
 }
 
 export default IconButton

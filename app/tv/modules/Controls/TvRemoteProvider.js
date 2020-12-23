@@ -111,7 +111,6 @@ export default class TvRemoteProvider extends React.Component {
   }
 
   addRef = (key) => (ref) => {
-    console.log(ref)
     this.focusRefs[key] = ref
   }
 

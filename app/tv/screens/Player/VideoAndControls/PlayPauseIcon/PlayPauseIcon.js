@@ -36,7 +36,6 @@ export const PlayPauseIcon = ({ paused, handlePauseVideo, handlePlayVideo, disab
         hasTVPreferredFocus: !disabled,
       }}
       color={'primary'}
-
       size={dimensions.ICON_SIZE_TV_MEDIUM}
       disabled={disabled} />
 
@@ -53,4 +52,4 @@ PlayPauseIcon.defaultProps = {
   paused: false,
 }
 
-export default PlayPauseIcon
+export default React.memo(PlayPauseIcon)

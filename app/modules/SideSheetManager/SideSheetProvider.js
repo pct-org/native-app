@@ -60,9 +60,9 @@ export const SideSheetProvider = ({ children }) => {
         height: '100%',
         width: sideSheetConfig.biggestSnapPoint,
       }}>
-      {sideSheetConfig.renderContent()}
+      {visible && sideSheetConfig.renderContent()}
     </Container>
-  ), [sideSheetConfig.biggestSnapPoint, sideSheetConfig.renderContent])
+  ), [visible, sideSheetConfig.biggestSnapPoint, sideSheetConfig.renderContent])
 
   useBackButton(() => {
     if (visible && sheetRef.current) {

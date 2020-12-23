@@ -21,12 +21,6 @@ export const styles = StyleSheet.create({
 
   root: {
     zIndex: 2000,
-    width: dimensions.ICON_SIZE_MEDIUM + (dimensions.UNIT * 2),
-    right: useCorrect(
-      dimensions.UNIT * 5,
-      null,
-      dimensions.UNIT,
-    ),
   },
 
 })

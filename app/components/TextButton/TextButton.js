@@ -51,7 +51,8 @@ export const TextButton = ({
     nextFocusForward={nextFocusForward}
     nextFocusLeft={nextFocusLeft}
     nextFocusRight={nextFocusRight}
-    rippleBorderless={false}>
+    rippleBorderless={false}
+    nativeID={nativeID}>
     <Animatable.View
       {...animatable}
       style={animatableStyle}>

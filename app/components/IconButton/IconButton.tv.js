@@ -5,7 +5,7 @@ import { TouchableHighlight } from 'react-native'
 
 import colors from 'modules/colors'
 
-import BaseTextButton from './TextButton'
+import BaseIconButton from './IconButton'
 
 export const styles = {
 
@@ -13,7 +13,7 @@ export const styles = {
     borderWidth: 1,
     borderColor: colors.TRANSPARENT,
 
-    padding: dimensions.UNIT
+    padding: dimensions.UNIT,
   },
 
   active: {
@@ -22,11 +22,13 @@ export const styles = {
 
 }
 
-export const TextButton = ({
+export const IconButtonTV = ({
   children,
   onFocus,
   onBlur,
-  style = {},
+  buttonProps = {},
+  emphasis,
+  size,
   ...rest
 }) => {
   const [active, setActive] = React.useState(false)
@@ -48,31 +50,27 @@ export const TextButton = ({
   }, [])
 
   return (
-    <BaseTextButton
-      component={TouchableHighlight}
+    <BaseIconButton
+      buttonProps={{
+        ...buttonProps,
+        component: TouchableHighlight,
+      }}
       onFocus={handleOnFocus}
       onBlur={handleOnBlur}
-      style={{
-        ...style,
-        ...styles.root,
-        ...(active ? styles.active : {}),
-      }}
+      emphasis={active ? emphasis : 'low'}
+      size={size}
       {...rest}>
       {children}
-    </BaseTextButton>
+    </BaseIconButton>
   )
 }
 
-TextButton.propTypes = {
+IconButtonTV.propTypes = {
   onPress: PropTypes.func.isRequired,
   onLongPress: PropTypes.func,
-  children: PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.array,
-  ]).isRequired,
 }
 
-TextButton.defaultProps = {
+IconButtonTV.defaultProps = {
   variant: 'button',
   color: 'white',
   emphasis: 'high',
@@ -80,4 +78,4 @@ TextButton.defaultProps = {
   animatableStyle: {},
 }
 
-export default TextButton
+export default IconButtonTV
