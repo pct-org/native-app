@@ -144,4 +144,11 @@ export default {
     opacity: 0.38,
   },
 
+  transformLowercase: {
+    textTransform: 'lowercase'
+  },
+
+  transformUppercase: {
+    textTransform: 'uppercase'
+  }
 }

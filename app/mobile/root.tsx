@@ -6,6 +6,7 @@ import IpFinder from 'modules/IpFinder'
 import WatchOnTvManager from 'modules/WatchOnTvManager'
 import navigationRef from 'modules/RootNavigation'
 import BottomSheetManager from 'modules/BottomSheetManager'
+import SideSheetManager from 'modules/SideSheetManager'
 
 import Portal from 'components/Portal'
 import ApolloLoader from 'components/ApolloLoader'
@@ -18,17 +19,17 @@ export default () => (
   <NavigationContainer ref={navigationRef}>
     <Disclaimer>
       <IpFinder>
-        {(host) => (
+        {(host: string) => (
           <ApolloLoader host={host}>
             <DownloadManager>
               <WatchOnTvManager>
 
                 <BottomSheetManager>
-
-                  <Portal.host>
-                    <Screens />
-                  </Portal.host>
-
+                  <SideSheetManager>
+                    <Portal.host>
+                      <Screens />
+                    </Portal.host>
+                  </SideSheetManager>
                 </BottomSheetManager>
 
                 <CheckForUpdates />

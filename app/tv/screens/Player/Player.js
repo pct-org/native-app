@@ -57,7 +57,7 @@ export const Player = ({ route: { params: { item, torrent } } }) => (
     item={item}
     torrent={torrent}
     style={styles.root}>
-    {({ mediaUrl, setProgress, startPosition, isBuffering, download }) => (
+    {({ mediaUrl, setProgress, startPosition, isBuffering, download, selectSubtitle, subtitleUri }) => (
       <React.Fragment>
         {(isBuffering) && (
           <View style={[styles.fullScreen, styles.bufferingContainer]}>
@@ -126,6 +126,9 @@ export const Player = ({ route: { params: { item, torrent } } }) => (
           <VideoAndControls
             item={item}
             url={mediaUrl}
+            subtitleUri={subtitleUri}
+            selectSubtitle={selectSubtitle}
+            subtitles={download.subtitles}
             startPosition={startPosition}
             setProgress={setProgress}>
 

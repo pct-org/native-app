@@ -2,6 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { View, StyleSheet } from 'react-native'
 
+import dimensions from 'modules/dimensions'
 import Remote from 'tv/modules/Controls/Remote'
 import IconButton from 'components/IconButton'
 
@@ -15,7 +16,7 @@ export const styles = StyleSheet.create({
 
 })
 
-export const PlayPauseIcon = ({ paused, handlePauseVideo, handlePlayVideo }) => (
+export const PlayPauseIcon = ({ paused, handlePauseVideo, handlePlayVideo, disabled }) => (
   <View
     style={styles.root}
     pointerEvents={'box-none'}>
@@ -32,11 +33,11 @@ export const PlayPauseIcon = ({ paused, handlePauseVideo, handlePlayVideo }) => 
           : 'pause'
       }
       buttonProps={{
-        hasTVPreferredFocus: true,
-        // component: TouchableWithoutFeedback,
+        hasTVPreferredFocus: !disabled,
       }}
       color={'primary'}
-      size={60} />
+      size={dimensions.ICON_SIZE_TV_MEDIUM}
+      disabled={disabled} />
 
   </View>
 )
@@ -51,4 +52,4 @@ PlayPauseIcon.defaultProps = {
   paused: false,
 }
 
-export default PlayPauseIcon
+export default React.memo(PlayPauseIcon)

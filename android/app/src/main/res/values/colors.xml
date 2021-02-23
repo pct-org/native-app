@@ -3,4 +3,5 @@
     <color name="background">#202125</color>
 
     <color name="text_color">#FAFAFA</color>
+    <color name="transparent">#00000000</color>
 </resources>

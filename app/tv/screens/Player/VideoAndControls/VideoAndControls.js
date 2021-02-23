@@ -7,6 +7,8 @@ import dimensions from 'modules/dimensions'
 
 import VlcPlayer from 'components/VlcPlayer'
 import Overlay from 'components/Overlay'
+import ContinueOrRestart from 'components/ContinueOrRestart'
+import SelectSubtitle from 'components/SelectSubtitle'
 
 import PlayPauseIcon from './PlayPauseIcon'
 import SeekBar from './SeekBar'
@@ -39,8 +41,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     alignContent: 'center',
-    height: 76
-  }
+    height: 76,
+  },
 
 })
 
@@ -58,6 +60,7 @@ export class VideoAndControls extends React.Component {
 
     this.state = {
       showControls: true,
+      disableControls: false,
       loading: true,
       paused: false,
       resizeMode: 'contain',
@@ -126,7 +129,17 @@ export class VideoAndControls extends React.Component {
     })
   }
 
-  handleOnProgress = ({ currentTime, duration }) => {
+  handleRestartVideo = () => {
+    this.videoRef.seek(0)
+
+    this.handlePlayVideo()
+  }
+
+  handleContinueVideo = () => {
+    this.handlePlayVideo()
+  }
+
+  handleOnProgress = ({ currentTime, duration = this.state.duration }) => {
     const { setProgress } = this.props
 
     const currentTimeSeconds = currentTime / 1000
@@ -147,9 +160,15 @@ export class VideoAndControls extends React.Component {
     })
   }
 
-  handleResizeModeChange = (resizeMode) => {
+  handleDisableControls = () => {
     this.setState({
-      resizeMode,
+      disableControls: true
+    })
+  }
+
+  handleEnableControls = () => {
+    this.setState({
+      disableControls: false
     })
   }
 
@@ -192,10 +211,10 @@ export class VideoAndControls extends React.Component {
   }
 
   render() {
-    const { url, children, forcePaused } = this.props
-    const { resizeMode } = this.state
-    const { showControls, paused } = this.state
-    const { currentTime, duration, progress } = this.state
+    const { url, children, forcePaused, startPosition } = this.props
+    const { subtitleUri, selectSubtitle, subtitles } = this.props
+    const { showControls, disableControls, paused, resizeMode } = this.state
+    const { currentTime, duration, progress, loading } = this.state
 
     return (
       <React.Fragment>
@@ -215,6 +234,7 @@ export class VideoAndControls extends React.Component {
               style={styles.video}
               paused={paused || forcePaused}
               resizeMode={resizeMode}
+              subtitleUri={subtitleUri}
               onPlaying={this.handleOnPlaying}
               onProgress={this.handleOnProgress}
             />
@@ -233,11 +253,22 @@ export class VideoAndControls extends React.Component {
             pointerEvents={'box-none'}
             useNativeDriver>
 
+            {startPosition > 0 && !loading && (
+              <ContinueOrRestart
+                pauseVideo={this.handlePauseVideo}
+                continueVideo={this.handleContinueVideo}
+                restartVideo={this.handleRestartVideo}
+                disableControls={this.handleDisableControls}
+                enableControls={this.handleEnableControls}
+              />
+            )}
+
             <View style={styles.actionsContainer}>
               <PlayPauseIcon
                 handlePlayVideo={this.handlePlayVideo}
                 handlePauseVideo={this.handlePauseVideo}
                 paused={paused}
+                disabled={disableControls}
               />
 
               <SeekBar
@@ -246,6 +277,16 @@ export class VideoAndControls extends React.Component {
                 progress={progress}
                 onSeek={this.onSliderPositionChange}
               />
+
+              {subtitles && subtitles.length > 0 && (
+                <SelectSubtitle
+                  playVideo={this.handlePlayVideo}
+                  pauseVideo={this.handlePauseVideo}
+                  selectSubtitle={selectSubtitle}
+                  subtitles={subtitles}
+                  disabled={loading || disableControls}
+                />
+              )}
             </View>
 
             {children}

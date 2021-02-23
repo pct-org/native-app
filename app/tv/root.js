@@ -3,30 +3,31 @@ import { NavigationContainer } from '@react-navigation/native'
 
 import DownloadManager from 'modules/DownloadManager'
 import IpFinder from 'modules/IpFinder'
-// import FocusManager from './modules/FocusManager'
+import SideSheetManager from 'modules/SideSheetManager'
 import navigationRef from 'modules/RootNavigation'
 import WatchOnTvManager from 'modules/WatchOnTvManager'
+import TvRemoteProvider from 'tv/modules/Controls/TvRemoteProvider'
 
 import ApolloLoader from 'components/ApolloLoader'
 
 import Screens from './screens'
 
 export default () => (
-  // <FocusManager>
+  <TvRemoteProvider>
     <NavigationContainer ref={navigationRef}>
       <IpFinder>
         {(host) => (
           <ApolloLoader host={host}>
             <DownloadManager>
               <WatchOnTvManager isTv>
-
-                <Screens />
-
+                <SideSheetManager>
+                  <Screens />
+                </SideSheetManager>
               </WatchOnTvManager>
             </DownloadManager>
           </ApolloLoader>
         )}
       </IpFinder>
     </NavigationContainer>
-  // </FocusManager>
+  </TvRemoteProvider>
 )

@@ -1,10 +1,9 @@
 package com.popcorn.VlcPlayer;
 
 import android.app.Activity;
-import android.content.SharedPreferences;
+import android.graphics.PixelFormat;
 import android.net.Uri;
 import android.os.Handler;
-import android.preference.PreferenceManager;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.Gravity;
@@ -13,8 +12,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.FrameLayout;
-
-import androidx.core.content.ContextCompat;
 
 import com.facebook.react.bridge.LifecycleEventListener;
 import com.facebook.react.uimanager.ThemedReactContext;
@@ -28,7 +25,6 @@ import org.videolan.libvlc.util.VLCUtil;
 import java.util.ArrayList;
 
 public class VlcPlayerView extends FrameLayout implements
-        IVLCVout.Callback,
         IVLCVout.OnNewVideoLayoutListener,
         LifecycleEventListener {
 
@@ -39,6 +35,7 @@ public class VlcPlayerView extends FrameLayout implements
     private final AspectRatioFrameLayout layout;
     private ViewGroup.LayoutParams layoutParams;
     private SurfaceView surfaceView;
+    private SurfaceView subtitleView;
     private ThemedReactContext context;
     private boolean isFullscreen;
 
@@ -71,8 +68,6 @@ public class VlcPlayerView extends FrameLayout implements
         layout = new AspectRatioFrameLayout(context);
         layout.setLayoutParams(aspectRatioParams);
 
-        layout.setBackgroundColor(ContextCompat.getColor(context, android.R.color.black));
-
         layoutParams = new ViewGroup.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.MATCH_PARENT
@@ -93,16 +88,27 @@ public class VlcPlayerView extends FrameLayout implements
     }
 
     private void updateSurfaceView() {
-        SurfaceView view = new SurfaceView(context);
-        view.setLayoutParams(layoutParams);
+        surfaceView = new SurfaceView(context);
+        surfaceView.setLayoutParams(layoutParams);
 
-        surfaceView = view;
+        subtitleView = new SurfaceView(context);
+        subtitleView.setLayoutParams(layoutParams);
+        subtitleView.setZOrderMediaOverlay(true);
+        subtitleView.getHolder().setFormat(PixelFormat.TRANSLUCENT);
 
         if (layout.getChildAt(0) != null) {
             layout.removeViewAt(0);
+
+            if (layout.getChildAt(1) != null) {
+                layout.removeViewAt(1);
+            }
         }
 
         layout.addView(surfaceView, 0, layoutParams);
+        layout.addView(subtitleView, 1, new ViewGroup.LayoutParams(
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT
+        ));
 
         if (this.mMediaPlayer != null) {
             setVideoView();
@@ -114,21 +120,28 @@ public class VlcPlayerView extends FrameLayout implements
 
         if (!vout.areViewsAttached()) {
             vout.setVideoView(surfaceView);
-        }
+            vout.setSubtitlesView(subtitleView);
 
-        vout.addCallback(this);
-        vout.attachViews(this);
+            vout.attachViews(this);
+        }
     }
 
     private void initializePlayerIfNeeded() {
         if (mMediaPlayer == null) {
-
             ArrayList<String> options = new ArrayList<>(50);
-
             options.add("--vout=android_display,none");
+            options.add("--subsdec-encoding");
+            options.add("UTF-8");
+            options.add("--android-display-chroma");
+            options.add("RV32");
+            options.add("--audio-resampler");
+            options.add("soxr");
 
+            options.add("--freetype-rel-fontsize=16");
+            options.add("--freetype-color=16777215");
+            options.add("--freetype-background-opacity=0");
 
-            libvlc = new LibVLC(getContext(),options);
+            libvlc = new LibVLC(getContext(), options);
 
             // Create media player
             mMediaPlayer = new MediaPlayer(libvlc);
@@ -149,7 +162,7 @@ public class VlcPlayerView extends FrameLayout implements
         media.setHWDecoderEnabled(true, true);
 
         mMediaPlayer.setMedia(media);
-        // mMediaPlayer.setRenderer()
+
         if (autoPlay) {
             mMediaPlayer.play();
         }
@@ -166,7 +179,6 @@ public class VlcPlayerView extends FrameLayout implements
 
         mMediaPlayer.stop();
         final IVLCVout vout = mMediaPlayer.getVLCVout();
-        vout.removeCallback(this);
         vout.detachViews();
         libvlc.release();
         libvlc = null;
@@ -246,16 +258,6 @@ public class VlcPlayerView extends FrameLayout implements
     }
 
     @Override
-    public void onSurfacesCreated(IVLCVout vout) {
-
-    }
-
-    @Override
-    public void onSurfacesDestroyed(IVLCVout vout) {
-
-    }
-
-    @Override
     public void onHostResume() {
         new Handler().post(new Runnable() {
             @Override
@@ -299,6 +301,18 @@ public class VlcPlayerView extends FrameLayout implements
             layout(getLeft(), getTop(), getRight(), getBottom());
         }
     };
+
+    public void setSubtitle(String uri) {
+        if (mMediaPlayer != null) {
+            if (uri != null) {
+                mMediaPlayer.addSlave(Media.Slave.Type.Subtitle, Uri.parse(uri), true);
+
+            } else {
+                // Uri is null so remove the subtitle
+                mMediaPlayer.setSpuTrack(-1);
+            }
+        }
+    }
 
     public void setFullscreen(boolean fullscreen) {
         if (fullscreen == isFullscreen) {

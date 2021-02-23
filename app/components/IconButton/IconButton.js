@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import { StyleSheet } from 'react-native'
 import * as Animatable from 'react-native-animatable'
 
+import useCorrect from 'modules/useCorrect'
 import dimensions from 'modules/dimensions'
 
 import BaseButton from '../BaseButton'
@@ -18,8 +19,13 @@ export const styles = StyleSheet.create({
   },
 
   text: {
-    marginTop: -(dimensions.UNIT / 2),
+    marginTop: useCorrect(
+      -(dimensions.UNIT / 2),
+      null,
+      0,
+    ),
   },
+
 })
 
 export const IconButton = ({
@@ -30,7 +36,11 @@ export const IconButton = ({
   animatable,
   animatableStyle,
   buttonProps,
+  textProps,
   children,
+  disabled,
+  emphasis,
+  innerRef,
   ...rest
 }) => (
   <BaseButton
@@ -38,11 +48,18 @@ export const IconButton = ({
     onLongPress={onLongPress}
     onFocus={onFocus}
     onBlur={onBlur}
+    disabled={disabled}
+    innerRef={innerRef}
     {...buttonProps}>
     <Animatable.View
       {...animatable}
       style={[styles.container, animatableStyle]}>
       <Icon
+        emphasis={
+          disabled
+            ? 'low'
+            : emphasis
+        }
         {...rest}
       />
 
@@ -50,7 +67,12 @@ export const IconButton = ({
         <Typography
           style={styles.text}
           variant={'captionSmall'}
-          emphasis={'medium'}>
+          emphasis={
+            disabled
+              ? 'low'
+              : emphasis
+          }
+          {...textProps}>
           {children}
         </Typography>
       )}
@@ -67,13 +89,16 @@ IconButton.propTypes = {
   onBlur: PropTypes.func,
   children: PropTypes.string,
   buttonProps: PropTypes.object,
+  textProps: PropTypes.object,
   animatableStyle: PropTypes.object,
   animatable: PropTypes.object,
   size: PropTypes.number,
+  emphasis: PropTypes.string,
 }
 
 IconButton.defaultProps = {
   buttonProps: {},
+  textProps: {},
   animatable: {},
   onPress: null,
   onPressIn: null,
@@ -84,6 +109,7 @@ IconButton.defaultProps = {
   onFocus: null,
   onBlur: null,
   size: dimensions.ICON_SIZE_DEFAULT,
+  emphasis: 'high',
 }
 
 export default IconButton

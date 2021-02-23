@@ -75,7 +75,9 @@ export const About = ({ data, ipFinder }) => (
 
     <Typography
       style={styles.title}
-      variant={'headline6'}>About</Typography>
+      variant={'headline6'}>
+      {i18n.t('About')}
+    </Typography>
 
     <Container
       style={styles.container}
@@ -86,7 +88,7 @@ export const About = ({ data, ipFinder }) => (
       </View>
 
       <View>
-        <Typography variant={'subtitle2'}>GraphQL-API</Typography>
+        <Typography variant={'subtitle2'}>API</Typography>
         <Typography variant={'caption'}>
           {i18n.t('Version: {{version}}', { version: data?.status?.version ?? 'unknown' })}
         </Typography>

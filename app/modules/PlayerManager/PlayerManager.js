@@ -21,6 +21,7 @@ export class PlayerManager extends React.Component {
       startPosition: item.watched.progress === 100
         ? 0
         : item.watched.progress,
+      subtitleUri: null,
     }
   }
 
@@ -79,12 +80,26 @@ export class PlayerManager extends React.Component {
     })
   }
 
+  handleSelectSubtitle = (subtitle) => {
+    const { ipFinder, item } = this.props
+
+    if (subtitle === null) {
+      return this.setState({
+        subtitleUri: null,
+      })
+    }
+
+    this.setState({
+      subtitleUri: `http://${ipFinder.host}/subtitle/${item._id}/${subtitle.code}`,
+    })
+  }
+
   /**
    * Does the start stream mutation
    *
    * @returns {Promise<void>}
    */
-  startStream = async() => {
+  startStream = () => {
     const { apollo, item, torrent } = this.props
 
     return apollo.mutate({
@@ -145,13 +160,15 @@ export class PlayerManager extends React.Component {
 
   getChildProps = () => {
     const { mediaUrl, startPosition } = this.state
-    const { download, isBuffering } = this.state
+    const { download, isBuffering, subtitleUri } = this.state
 
     return {
       mediaUrl,
       startPosition,
       download,
       isBuffering,
+      subtitleUri,
+      selectSubtitle: this.handleSelectSubtitle,
       setProgress: this.handleSetProgress,
     }
   }

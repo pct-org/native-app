@@ -31,6 +31,7 @@ module.exports = {
         root: [
           './app',
         ],
+        extensions: ['.ios.js', '.android.js', '.js', '.ts', '.tsx', '.json'],
       },
     ],
   ],

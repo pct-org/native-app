@@ -48,4 +48,5 @@ export default {
 
   STATUS_BAR_TRANSPARENT: 'rgba(0, 0, 0, 0.20)',
   STATUS_BAR_GONE: 'rgba(0, 0, 0, 0)',
+  TRANSPARENT: 'rgba(0, 0, 0, 0)',
 }

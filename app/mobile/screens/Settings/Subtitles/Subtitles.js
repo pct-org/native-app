@@ -46,6 +46,7 @@ export const styles = {
 
 }
 
+// TODO:: Change to use bottom sheet
 export const Subtitles = () => {
   const [showSubSelector, toggleSubSelector] = useState(false)
   const [defaultSubtitleCode, updateStorageItem] = useAsyncStorage(constants.KEY_DEFAULT_SUBTITLE)

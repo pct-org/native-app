@@ -10,7 +10,7 @@ import Typography from 'components/Typography'
 const styles = {
   container: {
     position: 'absolute',
-    bottom: dimensions.ICON_SIZE_DEFAULT + dimensions.UNIT * 4,
+    bottom: dimensions.ICON_SIZE_DEFAULT + dimensions.UNIT * 5,
     left: (dimensions.UNIT * 5),
     zIndex: 2000,
     flexDirection: 'row',
@@ -45,6 +45,7 @@ const SeekBar = ({
   duration,
   currentTime,
   onSeek,
+  disabled
 }) => {
   const [isSeekingPreviousValue, setSeeking] = useState(null)
 
@@ -109,6 +110,7 @@ const SeekBar = ({
         maximumTrackTintColor={colors.BACKGROUND_SNACKBAR}
         thumbStyle={styles.thumb}
         trackStyle={styles.track}
+        disabled={disabled}
       />
 
       <View style={styles.timeContainer}>

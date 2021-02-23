@@ -5,7 +5,6 @@ import { enableScreens } from 'react-native-screens'
 enableScreens()
 
 LogBox.ignoreLogs([
-  'Debugger and device times',
   'Cache data may be lost when replacing',
   'The updateQuery callback for fetchMore is deprecated'
 ])

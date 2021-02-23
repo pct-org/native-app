@@ -1,8 +1,16 @@
-import { Dimensions, StatusBar } from 'react-native'
+import { Dimensions, StatusBar, Platform } from 'react-native'
 
 import useCorrect from 'modules/useCorrect'
 
-const { width: screenWidth, height: screenHeight } = Dimensions.get('window')
+const { width, height } = Dimensions.get('window')
+
+let screenWidth = width
+let screenHeight = height
+
+if (width > height && !Platform.isTV) {
+  screenWidth = (height)
+  screenHeight = (width)
+}
 
 const UNIT = 8
 const SKETCH_DEFAULT_WIDTH = useCorrect(360, null, 1920)
@@ -21,6 +29,7 @@ export default {
   ICON_SIZE_SMALL: 18,
   ICON_SIZE_DEFAULT: 24,
   ICON_SIZE_MEDIUM: 32,
+  ICON_SIZE_TV_MEDIUM: 60,
 
   ICON_PLAY_DEFAULT: 30,
   ICON_PLAY_BIG: 45,

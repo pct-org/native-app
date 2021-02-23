@@ -13,7 +13,7 @@ export const styles = StyleSheet.create({
     flex: 1,
     position: 'relative',
 
-    width: '100%',
+    width: '100%'
   },
 
   background: {
@@ -21,11 +21,11 @@ export const styles = StyleSheet.create({
 
     width: dimensions.SCREEN_WIDTH,
     height: dimensions.SCREEN_HEIGHT
-  },
+  }
 
 })
 
-export const Home = () => {
+export const Home: React.FC = () => {
   React.useEffect(() => {
     SplashScreen.hide()
   }, [])

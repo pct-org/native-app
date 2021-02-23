@@ -1,16 +1,21 @@
 {
-  "parser": "babel-eslint",
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "ecmaVersion": 2018,
+    "sourceType": "module",
+    "project": "./tsconfig.*?.json"
+  },
   "extends": [
-    "standard",
-    "standard-react",
-    "airbnb",
-    "plugin:jest/recommended"
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:jest/recommended",
+    "eslint:recommended"
   ],
   "plugins": [
+    "@typescript-eslint",
     "babel",
     "react",
     "promise",
-    "jsx-a11y",
     "jest"
   ],
   "root": true,
@@ -79,7 +84,6 @@
     "react/no-unused-prop-types": [0],
     "react/prefer-es6-class": [2, "always"],
     "react/prefer-stateless-function": [2],
-    "react/prop-types": [2],
     "react/react-in-jsx-scope": [2],
     "react/require-optimization": [1],
     "react/require-render-return": [2],
@@ -108,38 +112,26 @@
     }],
     "react/sort-prop-types": [0],
     "react/style-prop-object": [2],
-
-    // React JSX Rules
-    "react/jsx-boolean-value": [0],
-    "react/jsx-closing-bracket-location": [0],
-    "react/jsx-curly-brace-presence": [2, { "props": "always", "children": "never" }],
-    "react/jsx-curly-spacing": [2],
-    "react/jsx-equals-spacing": [2],
-    "react/jsx-filename-extension": [2, { "extensions": [".js"] }],
-    "react/jsx-first-prop-new-line": [2, "multiline-multiprop"],
-    "react/jsx-handler-names": [2],
-    "react/jsx-indent": [2, 2],
-    "react/jsx-indent-props": [0, 2],
-    "react/jsx-key": [2],
-    "react/jsx-no-bind": [1],
-    "react/jsx-no-comment-textnodes": [2],
-    "react/jsx-no-duplicate-props": [2],
-    "react/jsx-no-literals": [0],
-    "react/jsx-no-target-blank": [2],
-    "react/jsx-no-undef": [2],
-    "react/jsx-pascal-case": [2],
-    "react/jsx-space-before-closing": [2],
-    "react/jsx-uses-react": [2],
-    "react/jsx-uses-vars": [2],
-    "react/jsx-wrap-multilines": [2],
-
-    // a11y Rules
-    "jsx-a11y/img-has-alt": [0],
-    "jsx-a11y/img-redundant-alt": [2],
-    "jsx-a11y/aria-role": [2],
-    "jsx-a11y/no-access-key": [2],
-    "jsx-a11y/href-no-hash": "off",
-    "react/jsx-one-expression-per-line": 0
-
-  }
+  },
+  "overrides": [
+    {
+      "files": [
+        "**/*.spec.js",
+        "**/*.spec.jsx",
+        "**/*.spec.ts",
+        "**/*.spec.tsx"
+      ],
+      "env": {
+        "jest": true
+      }
+    },
+    {
+      "files": [
+        "*.tsx"
+      ],
+      "rules": {
+        "@typescript-eslint/no-unused-vars": "off"
+      }
+    }
+  ]
 }

@@ -13,20 +13,49 @@ import Icon from 'components/Icon'
 export const styles = StyleSheet.create({
 
   icon: {
-    marginRight: dimensions.UNIT,
+    marginRight: dimensions.UNIT
   },
 
   labelsContainer: {
-    flex: 1,
+    flex: 1
   },
 
   labels: {
-    flexDirection: 'row',
-  },
+    flexDirection: 'row'
+  }
 
 })
 
-export const SettingsItem = ({ label, labelLine2, subLabel, subLabelLine2, icon, disabled, loading, downloading }) => {
+export interface Props {
+
+  label: string
+
+  labelLine2?: string
+
+  subLabel?: string
+
+  subLabelLine2?: string
+
+  icon?: string
+
+  disabled?: boolean
+
+  loading?: boolean
+
+  downloading?: boolean
+
+}
+
+export const SettingsItem: React.FC<Props> = ({
+  label,
+  labelLine2,
+  subLabel,
+  subLabelLine2,
+  icon,
+  disabled,
+  loading,
+  downloading
+}) => {
   return (
     <>
       {loading && (
@@ -76,7 +105,7 @@ export const SettingsItem = ({ label, labelLine2, subLabel, subLabelLine2, icon,
           <View style={styles.labels}>
             <Typography
               style={{
-                flex: 1,
+                flex: 1
               }}
               emphasis={
                 disabled
@@ -106,7 +135,7 @@ export const SettingsItem = ({ label, labelLine2, subLabel, subLabelLine2, icon,
             {labelLine2 && (
               <Typography
                 style={{
-                  flex: 1,
+                  flex: 1
                 }}
                 emphasis={
                   disabled
